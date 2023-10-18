@@ -21,7 +21,7 @@
 - 사용자로부터 입력받은 정보로 사용자의 관심사 활동 등을 확인한다.
 - 개발한 알고리즘을 통해 비슷한 관심사를 가진 사람을 찾아서 사용자에게 추천해준다.
 
-
+<br>
 ### 10.17
 
 ## 기능적 요구사항
@@ -112,3 +112,15 @@
 https://flower.at.or.kr/yfmc/front/stat/aucPrice.do?&menuId=23
 
 품목명, 거래량, 시세 등 참고
+
+<br>
+### 10.18
+
+## 요구사항 정의서
+![image](/uploads/c64c8788f577a969ba73be17e980be1a/image.png)
+
+![image](/uploads/52cf207be268d27756dc27a54adbaf70/image.png)
+
+![image](/uploads/1b67194cd60294bcfd66840f50a302a2/image.png)
+
+![image](/uploads/6709c753497ddcd7fcef140beafc263e/image.png)
