@@ -120,3 +120,13 @@
 https://flower.at.or.kr/yfmc/front/stat/aucPrice.do?&menuId=23
 
 품목명, 거래량, 시세 등 참고
+
+<br>
+
+## 1018_요구사항 정의서, 디자인 레퍼런스 조사
+
+![요구사항 정의서](https://github.com/giyeonkwon013/gifupload/assets/122511574/b5e483b4-c032-463b-b1dc-05efc15ccd67)
+
+
+
+![image](https://github.com/giyeonkwon013/gifupload/assets/122511574/5cd67e34-cd48-4f0f-a566-cd134d8870d4)
