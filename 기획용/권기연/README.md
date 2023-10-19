@@ -130,3 +130,12 @@ https://flower.at.or.kr/yfmc/front/stat/aucPrice.do?&menuId=23
 
 
 ![image](https://github.com/giyeonkwon013/gifupload/assets/122511574/5cd67e34-cd48-4f0f-a566-cd134d8870d4)
+
+
+
+## 화면설계
+
+![image](https://github.com/giyeonkwon013/gifupload/assets/122511574/ed04d148-77f0-400b-95eb-596500e3cca8)
+
+
+- 피그마를 통한 플리 사용 프로세스 화면 설계
