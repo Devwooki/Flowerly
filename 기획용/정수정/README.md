@@ -114,3 +114,9 @@
 ![피그마1](/uploads/7d2f9182216a611659c40aa942db63a1/피그마1.PNG)
 ![피그마2](/uploads/7848115616549d4de9ccacaf1de308d5/피그마2.PNG)
 
+
+## 중간발표 준비
+![image](https://github.com/giyeonkwon013/gifupload/assets/122511574/602158d2-7229-4e92-800c-320027322fde)
+
+PPT 발표 준비
+
