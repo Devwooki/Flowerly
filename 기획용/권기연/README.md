@@ -139,3 +139,14 @@ https://flower.at.or.kr/yfmc/front/stat/aucPrice.do?&menuId=23
 
 
 - 피그마를 통한 플리 사용 프로세스 화면 설계
+
+## 1020_ 중간발표 준비 및 UI 디자인 레퍼런스 조사
+
+
+![image](https://github.com/giyeonkwon013/gifupload/assets/122511574/602158d2-7229-4e92-800c-320027322fde)
+
+PPT 발표 준비
+
+![image](https://github.com/giyeonkwon013/gifupload/assets/122511574/93e01bac-06a1-4ed3-9ff6-b092534a7cdb)
+
+UI 디자인 조사
