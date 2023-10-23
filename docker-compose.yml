@@ -2,6 +2,7 @@
 version: "3"
 services:
   flly_fe:
+    image: wjdgusaho/flowerly_fe
     build:
       dockerfile: DockerFile
       context: ./Frontend
@@ -14,6 +15,7 @@ services:
       - "3000"
 
   flly_be:
+    image: wjdgusaho/flowerly_be
     build:
       dockerfile: DockerFile
       context: ./Backend
