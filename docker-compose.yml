@@ -7,8 +7,8 @@ services:
       dockerfile: DockerFile
       context: ./Frontend
     container_name: flly_fe
-    volumes: -/app/node_modules
-      -./Frontend:/app
+    volumes:
+      - ./Frontend:/app
     stdin_open: true
     restart: always
     expose:
@@ -21,8 +21,7 @@ services:
       context: ./Backend
     container_name: flly_be
     volumes:
-      - /app/node_modules
-      - ./backend:/app
+      - ./Backend:/app
     restart: always
     expose:
       - "9999"
