@@ -150,3 +150,15 @@ PPT 발표 준비
 ![image](https://github.com/giyeonkwon013/gifupload/assets/122511574/93e01bac-06a1-4ed3-9ff6-b092534a7cdb)
 
 UI 디자인 조사
+
+## 1023_화면 설계 
+
+![image](https://github.com/giyeonkwon013/gifupload/assets/122511574/1fad8682-7e6d-45d2-bbbd-5f539b51147e)
+
+![image](https://github.com/giyeonkwon013/gifupload/assets/122511574/fc4afe70-ef86-4d17-922d-4d3bd3553cc2)
+
+
+![image](https://github.com/giyeonkwon013/gifupload/assets/122511574/6dbf917d-10fb-473e-8896-be8f4a90c182)
+
+
+화면 UI 수정 
