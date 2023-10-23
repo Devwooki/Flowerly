@@ -35,3 +35,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### 설정파일 및 민감정보 ###
+src/main/resources/application.yml
+
