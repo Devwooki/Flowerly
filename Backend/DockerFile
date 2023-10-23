@@ -1,0 +1,13 @@
+FROM openjdk:11
+
+#ARG 도커 빌드 명령어를 사용할 때 입력받을수 있는 인자 선언
+ARG JAR_FILE=build/libs/*.jar
+
+COPY ${JAR_FILE} app.jar
+
+EXPOSE 9999
+
+#EntryPoint 컨테이너를 실요할 때, 실행할 명령어를 지정
+ENTRYPOINT ["java", "-jar", "app.jar"]
+
+
