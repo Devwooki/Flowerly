@@ -1,0 +1,26 @@
+#도커 버전
+version: "3"
+services:
+  flly_fe:
+    build:
+      dockerfile: DockerFile
+      context: ./Frontend
+    container_name: flly_fe
+    volumes: -/app/node_modules
+      -./Frontend:/app
+    stdin_open: true
+    restart: always
+    expose:
+      - "3000"
+
+  flly_be:
+    build:
+      dockerfile: DockerFile
+      context: ./Backend
+    container_name: flly_be
+    volumes:
+      - /app/node_modules
+      - ./backend:/app
+    restart: always
+    expose:
+      - "9999"
