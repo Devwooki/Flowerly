@@ -25,5 +25,5 @@ COPY staticConf /etc/nginx
 EXPOSE 3000   
 
 #next.js 로 build시 next 생성
-COPY --from=builder /app/next /usr/share/nginx/html
+COPY --from=builder /app/.next /usr/share/nginx/html
 
