@@ -14,7 +14,7 @@ services:
     expose:
       - "3000"
     ports:
-      - "3000"
+      - "3000:3000"
 
   flly_be:
     image: wjdgusaho/flowerly_be
@@ -28,4 +28,4 @@ services:
     expose:
       - "9999"
     ports:
-      - "9999"
+      - "9999:9999"
