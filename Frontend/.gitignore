@@ -178,9 +178,6 @@ Temporary Items
 /node_modules
 /.pnp
 .pnp.js
-package-lock.json
-./package-lock.json
-
 
 # testing
 /coverage
@@ -193,9 +190,7 @@ package-lock.json
 /build
 
 # misc
-.DS_Store
 *.pem
-
 
 # debug
 npm-debug.log*
