@@ -125,3 +125,6 @@ https://flower.at.or.kr/yfmc/front/stat/aucPrice.do?&menuId=23
 
 ### 10.23
 ![image](/uploads/e97079376e81fe73f61dcc3b446defd8/image.png)
+
+### 10.24
+![image](/uploads/61b10bbaa5b02d16b0044f3cc68ddd2a/image.png)
