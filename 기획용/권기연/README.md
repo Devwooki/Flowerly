@@ -162,3 +162,11 @@ UI 디자인 조사
 
 
 화면 UI 수정 
+
+## 1024 API 검증, 피그마 수정
+
+
+
+![image](https://github.com/giyeonkwon013/gifupload/assets/122511574/67646c9e-d5f5-4acb-881c-196b5e261071)
+
+![image](https://github.com/giyeonkwon013/gifupload/assets/122511574/71575f00-881c-48ee-820f-a4c233b7e7a6)
