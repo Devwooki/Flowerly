@@ -13,7 +13,7 @@ services:
     restart: always
     expose:
       - "3000"
-    port:
+    ports:
       - "3000"
 
   flly_be:
@@ -27,5 +27,5 @@ services:
     restart: always
     expose:
       - "9999"
-    port:
+    ports:
       - "9999"
