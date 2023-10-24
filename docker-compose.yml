@@ -11,6 +11,8 @@ services:
       - ./Frontend:/app
     stdin_open: true
     restart: always
+    expose:
+      - "3000"
     port:
       - 3000:3000
 
@@ -23,5 +25,7 @@ services:
     volumes:
       - ./Backend:/app
     restart: always
+    expose:
+      - "9999"
     port:
-      - 9999:9999
+      - "9999:9999"
