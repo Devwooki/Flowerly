@@ -3,7 +3,7 @@ const Mypage = () => {
 
   return (
     <div>
-      <div>mypage 입니다</div>
+      <div>mypage 입니다222</div>
       <div>mypage</div>
     </div>
   );
