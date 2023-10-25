@@ -9,6 +9,6 @@ EXPOSE 9999
 
 #EntryPoint 컨테이너를 실요할 때, 실행할 명령어를 지정
 ENTRYPOINT ["java", "-jar", "app.jar"]
-#테스트
+#테스트22
 
 
