@@ -15,12 +15,14 @@
     "incremental": true,
     "paths": {
       "@/*": ["./*"],
-      "@components/*": ["./pages/components/*"],
-      "@api/*": ["./pages/api/*"],
+      "@components/*": ["./src/components/*"],
+      "@pages/*": ["./src/pages/*"],
+      "@api/*": ["./src/api/*"],
+      "@styles/*": ["./src/styles/*"],
       "@public/*": ["./public/*"]
     },
     "baseUrl": "."
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/mypage/(test)/testpage"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
 }

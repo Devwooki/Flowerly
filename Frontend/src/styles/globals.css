@@ -1,0 +1,40 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  -ms-overflow-style: none; /* IE, Edge */
+  scrollbar-width: none; /* Firefox */
+  font-family: system-ui, -apple-system, "NanumSquareNeoOTF-Rg", "Arial", "Helvetica", sans-serif;
+}
+
+* {
+  -ms-overflow-style: none; /* IE, Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+*::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+@font-face {
+  font-family: "GangwonEduPowerExtraBoldA";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEduPowerExtraBoldA.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "NanumSquareNeoOTF-Bd";
+  src: url("/fonts/NanumSquareNeoOTF-Bd.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "NanumSquareNeoOTF-Lt";
+  src: url("/fonts/NanumSquareNeoOTF-Lt.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "NanumSquareNeoOTF-Rg";
+  src: url("/fonts/NanumSquareNeoOTF-Rg.otf") format("opentype");
+}
