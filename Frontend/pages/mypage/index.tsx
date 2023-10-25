@@ -1,5 +1,5 @@
 const Mypage = () => {
-  console.log("MyPage야 임마");
+  console.log("MyPage야 임마 어렵다");
 
   return (
     <div>
