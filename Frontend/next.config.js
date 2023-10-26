@@ -1,8 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  images: {
-    domains: ["localhost", "*"],
-  },
+  // images: {
+  //   loader: "imgix",
+  //   path: "../../../public/navi/",
+  // },
   reactStrictMode: true,
 };
 
