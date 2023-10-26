@@ -1,4 +1,4 @@
-**/application.yml
+**/application**.yml
 
 # Created by https://www.toptal.com/developers/gitignore/api/intellij,visualstudiocode,react,nextjs,node,java,windows,macos
 # Edit at https://www.toptal.com/developers/gitignore?templates=intellij,visualstudiocode,react,nextjs,node,java,windows,macos
