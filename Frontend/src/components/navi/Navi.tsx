@@ -17,19 +17,19 @@ const Navi = () => {
   return (
     <div className={style.naviMain}>
       <div className={style.item}>
-        <Image src={homeWhite} alt="홈" />
+        <Image src={homeWhite} alt="홈" width={35} />
       </div>
       <div className={style.item}>
-        <Image src={listWhite} alt="현황" />
+        <Image src={listWhite} alt="현황" width={35} />
       </div>
       <div className={style.item}>
-        <Image src={filyWhite} alt="플리" />
+        <Image src={filyWhite} alt="플리" width={40} />
       </div>
       <div className={style.item}>
-        <Image src={chatWhite} alt="채팅" />
+        <Image src={chatWhite} alt="채팅" width={35} />
       </div>
       <div className={style.item}>
-        <Image src={myWhite} alt="마이" />
+        <Image src={myWhite} alt="마이" width={30} />
       </div>
     </div>
   );
