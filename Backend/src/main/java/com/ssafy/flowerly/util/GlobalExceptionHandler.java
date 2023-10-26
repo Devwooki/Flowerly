@@ -15,7 +15,6 @@ public class GlobalExceptionHandler {
     }
 
     //CustomException을 발생시킬 때 쓰자
-    @ExceptionHandler(IllegalArgumentException.class)
     public CustomResponse handleICustomException(CustomException e){
         return new CustomResponse(e.getErrorCode().getCode(), e.getMessage());
 
