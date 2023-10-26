@@ -5,6 +5,7 @@ body {
   -ms-overflow-style: none; /* IE, Edge */
   scrollbar-width: none; /* Firefox */
   font-family: system-ui, -apple-system, "NanumSquareNeoOTF-Rg", "Arial", "Helvetica", sans-serif;
+  text-align: center;
 }
 
 * {
@@ -17,9 +18,9 @@ body {
 }
 
 @font-face {
-  font-family: "GangwonEduPowerExtraBoldA";
-  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEduPowerExtraBoldA.woff")
-    format("woff");
+  font-family: "TAEBAEKfont";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/TAEBAEKfont.woff2")
+    format("woff2");
   font-weight: normal;
   font-style: normal;
 }
