@@ -12,6 +12,7 @@
   "dependencies": {
     "axios": "^1.5.1",
     "next": "13.5.6",
+    "next-optimized-images": "^2.6.2",
     "react": "^18",
     "react-dom": "^18",
     "react-query": "^3.39.3",
