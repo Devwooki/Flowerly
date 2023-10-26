@@ -9,29 +9,30 @@ WORKDIR /app
 #Copy { 로컬에 있는 파일을 복사할 경로 } { 도커 컨테이너 내에서 파일을 복사할경로 }
 COPY package.json /app/package.json
 
-RUN npm install
+RUN npm install --global pm2
 
 COPY . /app
 #next의경우 build 할떄 CMD대신 RUN이여야 빌드가된다
 RUN npm run build
 
+CMD [ "pm2-runtime", "npm", "--", "start" ]
 
 #CMD ["npm", "run" ,"start"]
 
-RUN npm run export
+# RUN npm run export
 
-#RUN Stage 
-FROM nginx:latest
+# #RUN Stage 
+# FROM nginx:latest
 
-RUN rm -rf /etc/nginx/conf.d
-COPY staticConf /etc/nginx
+# RUN rm -rf /etc/nginx/conf.d
+# COPY staticConf /etc/nginx
 
-# #포트
-EXPOSE 3000
+# # #포트
+# EXPOSE 3000
 
-# #next.js 로 build시 next 생성
-COPY --from=frontend-builder /app/out /usr/share/nginx/html
+# # #next.js 로 build시 next 생성
+# COPY --from=frontend-builder /app/out /usr/share/nginx/html
 
-# # 컨테이너 내부 끼리 사용할 port를 허용해준다
-CMD ["nginx", "-g", "daemon off;"]
-# #테스트22 프론트222 테스트
+# # # 컨테이너 내부 끼리 사용할 port를 허용해준다
+# CMD ["nginx", "-g", "daemon off;"]
+# # #테스트22 프론트222 테스트
