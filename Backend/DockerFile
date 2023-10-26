@@ -5,7 +5,7 @@ ARG JAR_FILE=build/libs/*.jar
 
 COPY ${JAR_FILE} app.jar
 
-EXPOSE 9999
+EXPOSE 6090
 
 #EntryPoint 컨테이너를 실요할 때, 실행할 명령어를 지정
 ENTRYPOINT ["java", "-jar", "app.jar"]

@@ -26,6 +26,19 @@ services:
       - ./Backend:/app
     restart: always
     expose:
-      - "9999"
+      - "6090"
     ports:
-      - "9999:9999"
+      - "6090:6090"
+
+  mariadb:
+    container_name: mariadb
+    image: mariadb:11.0.3
+    volumes:
+      - /home/ubuntu/mysqlConfig:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    expose:
+      - "3306"
+    environment:
+      - TZ=Asia/Seoul
+      - MYSQL_ROOT_PASSWORD=flowerlybe-209
