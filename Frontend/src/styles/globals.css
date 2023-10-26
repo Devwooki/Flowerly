@@ -4,7 +4,7 @@ body {
   padding: 0;
   -ms-overflow-style: none; /* IE, Edge */
   scrollbar-width: none; /* Firefox */
-  font-family: system-ui, -apple-system, "NanumSquareNeoOTF-Rg", "Arial", "Helvetica", sans-serif;
+  font-family: "NanumSquareNeoOTF-Rg";
   text-align: center;
 }
 
@@ -17,25 +17,24 @@ body {
   display: none; /* Chrome, Safari, Opera */
 }
 
+/* 프리텐다드 */
 @font-face {
-  font-family: "TAEBAEKfont";
-  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/TAEBAEKfont.woff2")
-    format("woff2");
-  font-weight: normal;
-  font-style: normal;
+  font-family: "Pretendard-Bold";
+  src: url("/fonts/Pretendard-Bold.woff") format("woff");
 }
 
+/* 나눔 스퀘어 */
 @font-face {
   font-family: "NanumSquareNeoOTF-Bd";
-  src: url("/fonts/NanumSquareNeoOTF-Bd.otf") format("opentype");
+  src: url("/fonts/NanumSquareNeoOTF-Bd.woff") format("woff");
 }
 
 @font-face {
   font-family: "NanumSquareNeoOTF-Lt";
-  src: url("/fonts/NanumSquareNeoOTF-Lt.otf") format("opentype");
+  src: url("/fonts/NanumSquareNeoOTF-Lt.woff") format("woff");
 }
 
 @font-face {
   font-family: "NanumSquareNeoOTF-Rg";
-  src: url("/fonts/NanumSquareNeoOTF-Rg.otf") format("opentype");
+  src: url("/fonts/NanumSquareNeoOTF-Rg.woff") format("woff");
 }
