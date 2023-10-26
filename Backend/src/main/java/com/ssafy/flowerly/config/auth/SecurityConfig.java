@@ -24,7 +24,7 @@ public class SecurityConfig {
         http    //httpSecurity 영역 - 세부적인 보안을 적용할 수 있는 API
             .formLogin().disable() //폼 로그인 사용을 제한 - Social서비스 이용할 것이기 때문
             .httpBasic().disable() //
-            .csrf().disable() //csrf 보호 비활성화 함 -> 보호가 필요하지 않을때 사용
+            .csrf().disable() //csrf 보호 비활성화 함 -> 보호가 필요하지 않을때 사용(RESTful + Oauth2.0 + JWT)
             .cors() //cors규칙을 정의하기 위해 사용
             .and()
             //Session관리 설정 : stateless를 설정함으로써, 각 요청에 대해 독립적인 처리 -> RESTful 서버에서 적용, 세션을 유지하지 않음
@@ -59,7 +59,7 @@ public class SecurityConfig {
             )*/;
 
 
-        //http.addFilterBefore(jwtAuthenticationProcessingFilter(), UsernamePasswordAuthenticationFilter.class);
+  //      http.addFilterBefore(jwtAuthenticationProcessingFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 

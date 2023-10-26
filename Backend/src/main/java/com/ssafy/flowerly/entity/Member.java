@@ -2,19 +2,19 @@ package com.ssafy.flowerly.entity;
 
 import com.ssafy.flowerly.dtos.MemberDto;
 import com.ssafy.flowerly.enums.MemberRole;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@DynamicUpdate //update시, 실제 값이 변경되는 컬럼만 update 쿼리로 생성
+@Builder
 public class Member {
     @Id
     @GeneratedValue
@@ -48,6 +48,12 @@ public class Member {
                 .nickName(this.nickName)
                 .isNotification(this.isNotification)
                 .build();
+    }
+
+    public Member updateNicknameAndMail(String nickname, String kakaoId){
+        this.nickName = nickname;
+        this.kakaoId = kakaoId;
+        return this;
     }
     private void updateTime(){
         this.updateddAt = LocalDateTime.now();
