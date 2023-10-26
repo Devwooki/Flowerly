@@ -20,21 +20,21 @@ body {
 /* 프리텐다드 */
 @font-face {
   font-family: "Pretendard-Bold";
-  src: url("/fonts/Pretendard-Bold.woff") format("woff");
+  src: url("../../public/fonts/Pretendard-Bold.woff") format("woff");
 }
 
 /* 나눔 스퀘어 */
 @font-face {
   font-family: "NanumSquareNeoOTF-Bd";
-  src: url("/fonts/NanumSquareNeoOTF-Bd.woff") format("woff");
+  src: url("../../public/fonts/NanumSquareNeoOTF-Bd.woff") format("woff");
 }
 
 @font-face {
   font-family: "NanumSquareNeoOTF-Lt";
-  src: url("/fonts/NanumSquareNeoOTF-Lt.woff") format("woff");
+  src: url("../../public/fonts/NanumSquareNeoOTF-Lt.woff") format("woff");
 }
 
 @font-face {
   font-family: "NanumSquareNeoOTF-Rg";
-  src: url("/fonts/NanumSquareNeoOTF-Rg.woff") format("woff");
+  src: url("../../public/fonts/NanumSquareNeoOTF-Rg.woff") format("woff");
 }
