@@ -50,7 +50,7 @@ public class CustomOAuth2MemberService implements OAuth2UserService<OAuth2UserRe
 
         //customAttribute를 반환하는 이유는 OAuth2에서 받은 정보는 unmodifiedMap이라서 수정을 필요로함
         return new CustomOAuth2User(Collections.singleton(new SimpleGrantedAuthority(member.getRole().getKey())),
-                                    oAuth2User.getAttributes(), userNameAttributeName, member.getId());
+                                    oAuth2User.getAttributes(), userNameAttributeName, member.getMemberId());
     }
 
     //Email을 통해 정보 찾아옴. 있으면 업데이트, 없으면 삭제

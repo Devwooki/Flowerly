@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 public class Member {
     @Id
     @GeneratedValue
-    private Long id;
+    private Long memberId;
 
     @Column(nullable = false)
     private String kakaoId;
@@ -40,10 +40,13 @@ public class Member {
     @Column(nullable = false)
     private boolean isNotification;
 
+    @Column
+    String refreshToken;
+
 
     public MemberDto toDto(){
         return MemberDto.builder()
-                .id(this.id)
+                .id(this.memberId)
                 .kakaoId(this.kakaoId)
                 .nickName(this.nickName)
                 .isNotification(this.isNotification)
@@ -53,19 +56,26 @@ public class Member {
     public Member updateNicknameAndMail(String nickname, String kakaoId){
         this.nickName = nickname;
         this.kakaoId = kakaoId;
+        dataUpdate();
         return this;
     }
-    private void updateTime(){
+    private void dataUpdate(){
         this.updateddAt = LocalDateTime.now();
     }
 
     public String notificationToggle(){
         this.isNotification ^= this.isNotification;
-
+        dataUpdate();
         return this.isNotification ?  "이제부터 알림을 받습니다" : "이제부터 알림을 받지 않습니다.";
     }
 
     public void deleteMember(){
         this.isRemoved = true;
+        dataUpdate();
+    }
+
+    public void updateRefreshToken(String refreshToken){
+        this.refreshToken = refreshToken;
+        dataUpdate();
     }
 }

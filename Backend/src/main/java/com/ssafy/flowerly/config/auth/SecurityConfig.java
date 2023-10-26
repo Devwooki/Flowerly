@@ -21,12 +21,16 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-        http    //httpSecurity 영역 - 세부적인 보안을 적용할 수 있는 API
+        //************************************************
+        //httpSecurity 영역 - 세부적인 보안을 적용할 수 있는 API
+        //************************************************
+        http
             .formLogin().disable() //폼 로그인 사용을 제한 - Social서비스 이용할 것이기 때문
             .httpBasic().disable() //
             .csrf().disable() //csrf 보호 비활성화 함 -> 보호가 필요하지 않을때 사용(RESTful + Oauth2.0 + JWT)
             .cors() //cors규칙을 정의하기 위해 사용
             .and()
+
             //Session관리 설정 : stateless를 설정함으로써, 각 요청에 대해 독립적인 처리 -> RESTful 서버에서 적용, 세션을 유지하지 않음
             .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
@@ -39,10 +43,10 @@ public class SecurityConfig {
                 //.antMatchers("/api/conv/filter/**").permitAll() //해당 엔드포인트 모두 접근 O
                 //.antMatchers("/api/product/pick/**").authenticated() //해당 엔드포인트 접근시 filter로
                 //각 HTTP메소드들은 인증을 필요로함 -> Filter가 잡음
-                .antMatchers(HttpMethod.POST).authenticated()
-                .antMatchers(HttpMethod.DELETE).authenticated()
-                .antMatchers(HttpMethod.DELETE).authenticated()
-                .antMatchers(HttpMethod.PATCH).authenticated()
+                .antMatchers(HttpMethod.POST).permitAll() //authenticated() 추후 바꾼다.
+                .antMatchers(HttpMethod.DELETE).permitAll()
+                .antMatchers(HttpMethod.DELETE).permitAll()
+                .antMatchers(HttpMethod.PATCH).permitAll()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
                 // 인가
                 //.antMatchers("/admin/**").hasAuthority(MemberRole.SELLER.name())
@@ -59,7 +63,7 @@ public class SecurityConfig {
             )*/;
 
 
-  //      http.addFilterBefore(jwtAuthenticationProcessingFilter(), UsernamePasswordAuthenticationFilter.class);
+        //http.addFilterBefore(jwtAuthenticationProcessingFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 

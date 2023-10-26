@@ -40,6 +40,8 @@ dependencies {
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 	implementation 'org.springframework.security:spring-security-test'
+	implementation 'com.auth0:java-jwt:4.2.1'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
 	//AWS - S3 파일 업로드
 	//implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
