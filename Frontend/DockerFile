@@ -33,4 +33,4 @@ COPY --from=frontend-builder /app/.next /usr/share/nginx/html
 
 # 컨테이너 내부 끼리 사용할 port를 허용해준다
 CMD ["nginx", "-g", "daemon off;"]
-#test 222
+#test 222 이야후
