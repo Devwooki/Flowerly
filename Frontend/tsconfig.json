@@ -18,8 +18,8 @@
       "@components/*": ["components/*"],
       "@pages/*": ["pages/*"],
       "@api/*": ["api/*"],
-      "@styles/*": ["styles/*"]
-      // "@public/*": ["./public/*"]
+      "@styles/*": ["styles/*"],
+      "@public/*": ["../public/*"]
     },
     "baseUrl": "./src"
   },
