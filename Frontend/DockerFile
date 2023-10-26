@@ -15,22 +15,22 @@ COPY . /app
 #next의경우 build 할떄 CMD대신 RUN이여야 빌드가된다
 RUN npm run build
 
-#EXPOSE 3000
-
-#CMD ["npm", "run", "start"]
-
-#RUN Stage 
-FROM nginx:latest
-
-RUN rm -rf /etc/nginx/conf.d
-COPY staticConf /etc/nginx
-
-#포트
 EXPOSE 3000
 
-#next.js 로 build시 next 생성
-COPY --from=frontend-builder /app/.next /usr/share/nginx/html
+CMD ["npm", "run", "start"]
 
-# 컨테이너 내부 끼리 사용할 port를 허용해준다
-CMD ["nginx", "-g", "daemon off;"]
-#테스트22 프론트
+#RUN Stage 
+# FROM nginx:latest
+
+# RUN rm -rf /etc/nginx/conf.d
+# COPY staticConf /etc/nginx
+
+# #포트
+# EXPOSE 3000
+
+# #next.js 로 build시 next 생성
+# COPY --from=frontend-builder /app/.next /usr/share/nginx/html
+
+# # 컨테이너 내부 끼리 사용할 port를 허용해준다
+# CMD ["nginx", "-g", "daemon off;"]
+# #테스트22 프론트222
