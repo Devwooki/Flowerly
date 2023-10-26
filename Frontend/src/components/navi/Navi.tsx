@@ -20,19 +20,19 @@ const Navi = () => {
         <Image src={homeWhite} alt="홈" width={35} height={35} placeholder="blur" />
       </div> */}
       <div className={style.item}>
-        <Image src={homeWhite} alt="홈" width={35} placeholder="blur" />
+        <Image src="/navi/home-white.png" alt="홈" width={35} height={35} />
       </div>
       <div className={style.item}>
-        <Image src={listWhite} alt="현황" width={35} placeholder="blur" />
+        <Image src="/navi/list-white.png" alt="현황" width={35} height={25} />
       </div>
       <div className={style.item}>
-        <Image src={filyWhite} alt="플리" width={40} placeholder="blur" />
+        <Image src="/navi/fily-white.png" alt="플리" width={40} height={40} />
       </div>
       <div className={style.item}>
-        <Image src={chatWhite} alt="채팅" width={35} placeholder="blur" />
+        <Image src="/navi/chat-white.png" alt="채팅" width={40} height={35} />
       </div>
       <div className={style.item}>
-        <Image src={myWhite} alt="마이" width={30} placeholder="blur" />
+        <Image src="/navi/my-white.png" alt="마이" width={30} height={35} />
       </div>
     </div>
   );
