@@ -16,20 +16,23 @@ import myDark from "../../../public/navi/my-dark.png";
 const Navi = () => {
   return (
     <div className={style.naviMain}>
+      {/* <div className={style.item}>
+        <Image src={homeWhite} alt="홈" width={35} height={35} placeholder="blur" />
+      </div> */}
       <div className={style.item}>
-        <Image src={homeWhite} alt="홈" width={35} />
+        <Image src={homeWhite} alt="홈" width={35} placeholder="blur" />
       </div>
       <div className={style.item}>
-        <Image src={listWhite} alt="현황" width={35} />
+        <Image src={listWhite} alt="현황" width={35} placeholder="blur" />
       </div>
       <div className={style.item}>
-        <Image src={filyWhite} alt="플리" width={40} />
+        <Image src={filyWhite} alt="플리" width={40} placeholder="blur" />
       </div>
       <div className={style.item}>
-        <Image src={chatWhite} alt="채팅" width={35} />
+        <Image src={chatWhite} alt="채팅" width={35} placeholder="blur" />
       </div>
       <div className={style.item}>
-        <Image src={myWhite} alt="마이" width={30} />
+        <Image src={myWhite} alt="마이" width={30} placeholder="blur" />
       </div>
     </div>
   );
