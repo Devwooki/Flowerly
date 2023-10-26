@@ -15,13 +15,13 @@
     "incremental": true,
     "paths": {
       "@/*": ["./*"],
-      "@components/*": ["./src/components/*"],
-      "@pages/*": ["./src/pages/*"],
-      "@api/*": ["./src/api/*"],
-      "@styles/*": ["./src/styles/*"],
-      "@public/*": ["./public/*"]
+      "@components/*": ["components/*"],
+      "@pages/*": ["pages/*"],
+      "@api/*": ["api/*"],
+      "@styles/*": ["styles/*"]
+      // "@public/*": ["./public/*"]
     },
-    "baseUrl": "."
+    "baseUrl": "./src"
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
