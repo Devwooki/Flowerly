@@ -16,22 +16,44 @@ COPY . /app
 RUN npm run build
 
 
-#CMD ["npm", "run" ,"start"]
+#Run Stage
+From node:18-alpine
 
-RUN npm run export
+WORKDIR /app
 
-#RUN Stage 
-FROM nginx:latest
+#Builder stage 파일 복사
+COPY --from=frontend-builder /app/next.config.js ./
+COPY --from=frontend-builder /app/package*.json ./
+COPY --from=frontend-builder /app/.next ./.next
+COPY --from=frontend-builder /app/public ./public
 
-RUN rm -rf /etc/nginx/conf.d
-COPY staticConf /etc/nginx
+# 실행에 필요한 의존성만 설치
+RUN npm install --only=production
 
-# #포트
+# 서비스 포트 지정
 EXPOSE 3000
 
-# #next.js 로 build시 next 생성
-COPY --from=frontend-builder /app/out /usr/share/nginx/html
+# Next.js 애플리케이션 실행
+CMD ["npm", "run", "start"]
 
-# # 컨테이너 내부 끼리 사용할 port를 허용해준다
-CMD ["nginx", "-g", "daemon off;"]
+
+
+#CMD ["npm", "run" ,"start"]
+
+# RUN npm run export
+
+# #RUN Stage 
+# FROM nginx:latest
+
+# RUN rm -rf /etc/nginx/conf.d
+# COPY staticConf /etc/nginx
+
+# # #포트
+# EXPOSE 3000
+
+# # #next.js 로 build시 next 생성
+# COPY --from=frontend-builder /app/out /usr/share/nginx/html
+
+# # # 컨테이너 내부 끼리 사용할 port를 허용해준다
+# CMD ["nginx", "-g", "daemon off;"]
 # #테스트22 프론트222 테스트
