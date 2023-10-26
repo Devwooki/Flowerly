@@ -1,3 +1,10 @@
+html {
+  border: 0.1px solid black;
+  height: 100vh;
+  max-width: 768px;
+  min-width: 330px;
+}
+
 html,
 body {
   margin: 0;
@@ -15,6 +22,15 @@ body {
 
 *::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera */
+}
+
+:root {
+  --sky: #b0cde3;
+  --mint: #c1e0df;
+  --blue: #87b8cf;
+  --dark: #485256;
+  --gray: #f7f8f9;
+  --moregray: #e5e5e5;
 }
 
 /* 프리텐다드 */
