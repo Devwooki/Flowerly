@@ -19,9 +19,9 @@ const Navi = () => {
   // };
   return (
     <div className={style.naviMain}>
-      {/* <div className={style.item}>
+      <div className={style.item}>
         <Image src="/navi/my-white.png" alt="홈" width={35} height={35} />
-      </div> */}
+      </div>
       {/* <div className={style.item}>
         <Image src="/navi/home-white.png" alt="홈" width={35} height={35} />
       </div>
