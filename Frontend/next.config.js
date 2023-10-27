@@ -1,9 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // images: {
-  //   loader: "imgix",
-  //   path: "../../../public/navi/",
-  // },
+  images: {
+    unoptimized: true,
+  },
   reactStrictMode: true,
 };
 
