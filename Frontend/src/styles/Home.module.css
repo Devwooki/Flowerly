@@ -5,3 +5,12 @@
 .test2 {
   color: var(--sky);
 }
+
+.roseItem1,
+.roseItem2 {
+  background-size: cover;
+  width: 100px;
+  height: 100px;
+  background-repeat: no-repeat;
+  background-position: center;
+}

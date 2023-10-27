@@ -61,6 +61,14 @@ export default function Home() {
         요청사항 입니다. 요청사항 입니다. 요청사항 입니다. 요청사항 입니다. 요청사항 입니다.
       </div>
       <button onClick={() => callGetAddressAPI()}>주소 불러</button>
+      <div className={style.rose}>
+        <div className={style.roseItem1} style={{ backgroundImage: "url(/test/vertical.jpg)" }}>
+          aa
+        </div>
+        <div className={style.roseItem2} style={{ backgroundImage: "url(/test/horizental.jpg)" }}>
+          bb
+        </div>
+      </div>
     </div>
   );
 }
