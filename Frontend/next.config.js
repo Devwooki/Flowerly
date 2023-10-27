@@ -2,9 +2,9 @@
 const nextConfig = {
   images: {
     loader: "akamai",
-    path: "",
+    path: "/",
   },
-  output: "export",
+  // output: "export",
   // images: {
   //   loader: "imgix",
   //   path: "../../../public/navi/",

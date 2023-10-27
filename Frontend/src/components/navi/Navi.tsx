@@ -20,7 +20,7 @@ const Navi = () => {
   return (
     <div className={style.naviMain}>
       <div className={style.item}>
-        <Image src="/navi/home-white.png" alt="홈" width={35} height={35} />
+        <Image src={homeWhite} alt="홈" width={35} height={35} />
       </div>
       {/* <div className={style.item}>
         <Image src="/navi/home-white.png" alt="홈" width={35} height={35} />
