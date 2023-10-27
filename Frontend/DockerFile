@@ -19,8 +19,6 @@ RUN npm run build
 
 #CMD ["npm", "run" ,"start"]
 
- RUN npm run export
-
  #RUN Stage
  FROM nginx:latest
 
