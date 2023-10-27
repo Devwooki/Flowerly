@@ -14,9 +14,6 @@ import myWhite from "../../../public/navi/my-white.png";
 import myDark from "../../../public/navi/my-dark.png";
 
 const Navi = () => {
-  // const imageLoader: ImageLoader = ({ src, width, quality }: any) => {
-  //   return `http://example.com/${src}?w=${width || 35}&q=${quality || 75}`;
-  // };
   return (
     <div className={style.naviMain}>
       <div className={style.item}>
