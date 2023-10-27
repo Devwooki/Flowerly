@@ -11,14 +11,9 @@ COPY package.json /app/package.json
 
 RUN npm install
 
-COPY . /app
+COPY . /
 #next의경우 build 할떄 CMD대신 RUN이여야 빌드가된다
-
-COPY package.json /app/tmp/package.json 
-
 RUN npm run build
-
-RUN mv /app/tmp/package.json /app/package.json
 
 EXPOSE 3000
 
