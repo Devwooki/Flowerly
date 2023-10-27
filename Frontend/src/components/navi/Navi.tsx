@@ -20,9 +20,6 @@ const Navi = () => {
   return (
     <div className={style.naviMain}>
       <div className={style.item}>
-        <Image src="/navi/my-white.png" alt="홈" width={35} height={35} />
-      </div>
-      {/* <div className={style.item}>
         <Image src="/navi/home-white.png" alt="홈" width={35} height={35} />
       </div>
       <div className={style.item}>
@@ -36,7 +33,7 @@ const Navi = () => {
       </div>
       <div className={style.item}>
         <Image src="/navi/my-white.png" alt="마이" width={30} height={35} />
-      </div> */}
+      </div>
     </div>
   );
 };
