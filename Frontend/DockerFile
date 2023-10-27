@@ -15,9 +15,9 @@ COPY . /app
 #next의경우 build 할떄 CMD대신 RUN이여야 빌드가된다
 RUN npm run build
 
-EXPOSE 3000
+#EXPOSE 3000
 
-CMD ["npm", "run" ,"start"]
+#CMD ["npm", "run" ,"start"]
 
 #  RUN npm run export
 
