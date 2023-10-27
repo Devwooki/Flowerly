@@ -1,4 +1,4 @@
-package com.ssafy.flowerly.repository;
+package com.ssafy.flowerly.member;
 
 import com.ssafy.flowerly.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;

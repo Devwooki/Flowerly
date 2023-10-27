@@ -40,8 +40,6 @@ public class Member {
     @Column(nullable = false)
     private boolean isNotification;
 
-    @Column
-    String refreshToken;
 
 
     public MemberDto toDto(){
@@ -71,11 +69,6 @@ public class Member {
 
     public void deleteMember(){
         this.isRemoved = true;
-        dataUpdate();
-    }
-
-    public void updateRefreshToken(String refreshToken){
-        this.refreshToken = refreshToken;
         dataUpdate();
     }
 }
