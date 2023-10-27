@@ -1,20 +1,14 @@
 /** @type {import('next').NextConfig} */
-const withExportImages = require("next-export-optimize-images");
+const withExportImages = require("next-export-optimize-images"); // 추가
 
+//추가 module.exports
 module.exports = withExportImages({
   output: "export",
   // write your next.js configuration values.
 });
 
+//기존 module.exports
 // const nextConfig = {
-//   // images: {
-//   //   loader: "default",
-//   // },
-//   // output: "export",
-//   // images: {
-//   //   loader: "imgix",
-//   //   path: "../../../public/navi/",
-//   // },
 //   reactStrictMode: true,
 // };
 
