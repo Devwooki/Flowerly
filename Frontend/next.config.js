@@ -1,9 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  images: {
-    loader: "akamai",
-    path: "/",
-  },
+  // images: {
+  //   loader: "default",
+  // },
   // output: "export",
   // images: {
   //   loader: "imgix",
