@@ -17,19 +17,19 @@ RUN npm run build
 
 #EXPOSE 3000
 
-#CMD ["npm", "run", "start"]
+#CMD ["npm", "run" ,"start"]
 
-#RUN Stage 
-FROM nginx:latest
+ #RUN Stage
+ FROM nginx:latest
 
-RUN rm -rf /etc/nginx/conf.d
-COPY staticConf /etc/nginx
+ RUN rm -rf /etc/nginx/conf.d
+ COPY staticConf /etc/nginx
 
-#포트
-EXPOSE 3000
+ #포트
+ EXPOSE 3000
 
-#next.js 로 build시 next 생성
-COPY --from=frontend-builder /app/.next /usr/share/nginx/html
+ #next.js 로 build시 next 생성
+ COPY --from=frontend-builder /app/out /usr/share/nginx/html
 
-# 컨테이너 내부 끼리 사용할 port를 허용해준다
-CMD ["nginx", "-g", "daemon off;"]
+ # # 컨테이너 내부 끼리 사용할 port를 허용해준다
+ CMD ["nginx", "-g", "daemon off;"]

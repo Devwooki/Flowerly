@@ -1,6 +1,15 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  reactStrictMode: true,
-}
+const withExportImages = require("next-export-optimize-images"); // 추가
 
-module.exports = nextConfig
+//추가 module.exports
+module.exports = withExportImages({
+  output: "export",
+  // write your next.js configuration values.
+});
+
+//기존 module.exports
+// const nextConfig = {
+//   reactStrictMode: true,
+// };
+
+// module.exports = nextConfig;

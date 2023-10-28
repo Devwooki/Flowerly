@@ -1,0 +1,22 @@
+.naviMain {
+  background-color: var(--gray);
+  position: fixed;
+  max-width: 768px;
+  min-width: 330px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  border-radius: 20px 20px 0 0;
+}
+
+.naviMain > div {
+  float: left;
+  width: 20%;
+  height: 60px;
+  line-height: 60px;
+}
+
+.naviMain img {
+  vertical-align: middle;
+}
