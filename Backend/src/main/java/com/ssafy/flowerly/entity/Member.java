@@ -1,9 +1,9 @@
 package com.ssafy.flowerly.entity;
 
-import com.ssafy.flowerly.dtos.MemberDto;
-import com.ssafy.flowerly.enums.MemberRole;
+import com.ssafy.flowerly.member.SocialType;
+import com.ssafy.flowerly.member.vo.MemberDto;
+import com.ssafy.flowerly.member.MemberRole;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
@@ -15,16 +15,23 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @DynamicUpdate //update시, 실제 값이 변경되는 컬럼만 update 쿼리로 생성
 @Builder
+@ToString
 public class Member {
     @Id
     @GeneratedValue
     private Long memberId;
 
     @Column(nullable = false)
-    private String kakaoId;
+    private String socialId;
+
+    @Column(nullable = false)
+    private String email;
 
     @Enumerated(EnumType.STRING)
     private MemberRole role;
+
+    @Enumerated(EnumType.STRING)
+    private SocialType socialType;
 
     @Column(nullable = false)
     private String nickName;
@@ -45,15 +52,16 @@ public class Member {
     public MemberDto toDto(){
         return MemberDto.builder()
                 .id(this.memberId)
-                .kakaoId(this.kakaoId)
+                .socialId(this.socialId)
                 .nickName(this.nickName)
+                .email(this.email)
                 .isNotification(this.isNotification)
                 .build();
     }
 
-    public Member updateNicknameAndMail(String nickname, String kakaoId){
+    public Member updateNicknameAndMail(String nickname, String email){
         this.nickName = nickname;
-        this.kakaoId = kakaoId;
+        this.email = email;
         dataUpdate();
         return this;
     }

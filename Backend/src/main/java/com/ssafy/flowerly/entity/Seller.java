@@ -11,4 +11,6 @@ public class Seller {
     @Id
     @GeneratedValue
     Long id;
+
+
 }

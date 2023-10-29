@@ -1,7 +1,8 @@
 package com.ssafy.flowerly.config.auth.vo;
 
 import com.ssafy.flowerly.entity.Member;
-import com.ssafy.flowerly.enums.MemberRole;
+import com.ssafy.flowerly.member.MemberRole;
+import com.ssafy.flowerly.member.SocialType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -20,38 +21,18 @@ public abstract class OAuth2UserInfo {
     public abstract String getEmail();
 
     //유저 엔티티를 생성한다.
-    public Member toEntity(String kakaoId){
+    public Member toEntity(String socialId, SocialType socialType){
         LocalDateTime now = LocalDateTime.now();
         return Member.builder()
-                .kakaoId(kakaoId)
-                .role(MemberRole.USER)
+                .socialId(socialId)
+                .role(MemberRole.GUEST)
                 .nickName(getNickname())
+                .email(getEmail())
+                .socialType(socialType)
                 .isRemoved(false)
-                .isNotification(true)
+                .isNotification(false)
                 .createdAt(now)
                 .updateddAt(now)
                 .build();
     }
-
-    /* private Long id;
-
-    @Column(nullable = false)
-    private String kakaoId;
-
-    @Enumerated(EnumType.STRING)
-    private MemberRole role;
-
-    @Column(nullable = false)
-    private String nickName;
-
-    @Column(nullable = false)
-    private LocalDateTime createdAt;
-    @Column(nullable = false)
-    private LocalDateTime updateddAt;
-
-    @Column(nullable = false)
-    private boolean isRemoved;
-
-    @Column(nullable = false)
-    private boolean isNotification;*/
 }

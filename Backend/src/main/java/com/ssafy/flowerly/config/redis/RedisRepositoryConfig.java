@@ -33,9 +33,9 @@ public class RedisRepositoryConfig {
     }
 
     @Bean
-    public RedisTemplate<String, Object> redisTemplate(){
+    public RedisTemplate<?, ?> redisTemplate(){
         //템플릿을 가져와 set,get,delete를 사용
-        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+        RedisTemplate<?, ?> redisTemplate = new RedisTemplate<>();
 
         // setKeySerializer, setValueSerializer 설정
         // redis-cli을 통해 직접 데이터를 조회 시 알아볼 수 없는 형태로 출력되는 것을 방지

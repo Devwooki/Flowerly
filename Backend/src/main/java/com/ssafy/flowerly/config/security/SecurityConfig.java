@@ -1,19 +1,21 @@
 package com.ssafy.flowerly.config.security;
 
+import com.ssafy.flowerly.JWT.JWTAuthenticationProcessingFilter;
+import com.ssafy.flowerly.JWT.JWTService;
 import com.ssafy.flowerly.config.auth.CustomOAuth2MemberService;
 import com.ssafy.flowerly.config.auth.handler.OAuth2LoginFailureHandler;
 import com.ssafy.flowerly.config.auth.handler.OAuth2LoginSuccessHandler;
-import com.ssafy.flowerly.enums.MemberRole;
+import com.ssafy.flowerly.member.model.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -23,11 +25,12 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @RequiredArgsConstructor
 @EnableWebSecurity
 public class SecurityConfig {
+    private final JWTService jwtService;
+    private final MemberRepository memberRepository;
+    private final RedisTemplate<String, String> redisTemplate;
     private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
     private final OAuth2LoginFailureHandler oAuth2LoginFailureHandler;
     private final CustomOAuth2MemberService customOAuth2MemberService;
-
-    //reference https://github.com/wlwlsus/shabit/blob/main/SHabit-back/src/main/java/com/ezpz/shabit/config/security/WebSecurityConfig.java#L60
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -35,22 +38,26 @@ public class SecurityConfig {
         http.cors().configurationSource(corsConfigurationSource());
 
         //Spring Security 설정
-        http.httpBasic().disable()
-                .formLogin().disable()
-                .csrf().disable()
+        http.httpBasic().disable()                  // httpBasic 사용X
+                .formLogin().disable()              // FormLogin 사용X
+                .csrf().disable()                   // CSRF 보안 사용X
                 .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS) //Session이 아니니 STATELESS
                 .and()
-                .authorizeRequests().antMatchers("/**").permitAll()
-                .antMatchers(HttpMethod.GET).permitAll();
+                //===========URL 별 권한 옵션 =============
+                .authorizeRequests()
+                .antMatchers("/**").permitAll()
+                .antMatchers(HttpMethod.GET).authenticated();
+                //permitAll() : 인증이 처리 되었다고 생각했기 때문
 
         //Oauth 설정
         http.oauth2Login()
                 .loginPage("https://flower-ly.co.kr/")
-                .successHandler(oAuth2LoginSuccessHandler) // 성공할 경우 수행할 핸들러
-                .failureHandler(oAuth2LoginFailureHandler) // 실패할 경우 수행할 핸들러
-                .userInfoEndpoint()
-                .userService(customOAuth2MemberService);//Oauth2 정보를 가져오는데 사용할 서비스
+                //.loginPage("http://localhost:6090")
+                .successHandler(oAuth2LoginSuccessHandler)  //성공할 경우 수행할 핸들러
+                .failureHandler(oAuth2LoginFailureHandler)  //실패할 경우 수행할 핸들러
+                .userInfoEndpoint()                         //Oauth2 정보를 가져오는데 사용할 서비스
+                .userService(customOAuth2MemberService);
 
         return http.build();
     }
@@ -70,5 +77,11 @@ public class SecurityConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfiguration);
         return source;
+    }
+
+
+    @Bean
+    public JWTAuthenticationProcessingFilter jwtAuthenticationProcessingFilter() {
+        return new JWTAuthenticationProcessingFilter(jwtService, memberRepository, redisTemplate);
     }
 }
