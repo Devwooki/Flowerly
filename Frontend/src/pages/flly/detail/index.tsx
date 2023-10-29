@@ -1,13 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 
 import FllySellerDetail from "@/components/flly/fllySeller/FllySellerDetail";
 
-const fllyDetail = () => {
-  return (
-    <>
-      <FllySellerDetail />
-    </>
-  );
+const FllyDetail = () => {
+  const [userType, setUserType] = useState<string>("seller");
+  return <>{userType === "seller" && <FllySellerDetail />}</>;
 };
 
-export default fllyDetail;
+export default FllyDetail;
