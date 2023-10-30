@@ -1,4 +1,4 @@
-package com.ssafy.flowerly.dtos;
+package com.ssafy.flowerly.member.vo;
 
 import lombok.*;
 
@@ -12,7 +12,8 @@ import java.time.LocalDateTime;
 @Builder
 public class MemberDto {
     private Long id;
-    private String kakaoId;
+    private String socialId;
     private String nickName;
+    private String email;
     private boolean isNotification;
 }

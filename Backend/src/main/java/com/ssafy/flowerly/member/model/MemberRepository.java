@@ -1,4 +1,4 @@
-package com.ssafy.flowerly.repository;
+package com.ssafy.flowerly.member.model;
 
 import com.ssafy.flowerly.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,6 +8,8 @@ import java.util.Optional;
 
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long> {
-    Optional<Member> findByKakaoId(String kakaoId);
+    Optional<Member> findBySocialId(String socialId);
+    Optional<Member> findByMemberId(Long memberId);
+    Optional<Member> findByMemberIdAndIsRemovedFalse(Long memberId);
 
 }

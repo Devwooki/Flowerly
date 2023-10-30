@@ -1,7 +1,6 @@
-package com.ssafy.flowerly.controller;
+package com.ssafy.flowerly.test;
 
 import com.ssafy.flowerly.util.CustomResponse;
-import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
