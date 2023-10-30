@@ -1,7 +1,5 @@
-import { useRouter } from "next/router";
 import style from "@styles/Home.module.css";
-import { useEffect } from "react";
-import axios from "axios";
+import { useEffect, useRef } from "react";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -99,6 +97,7 @@ export default function Home() {
               <div className={style.imgDisc}>
                 <div>{card.date}</div>
                 <div>{card.desc}</div>
+                <div className={style.divider}></div>
                 <div>{card.message}</div>
               </div>
             </div>
@@ -113,6 +112,38 @@ export default function Home() {
           <span className="arrow">❯</span>
         </div>
       </div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
     </div>
   );
 }

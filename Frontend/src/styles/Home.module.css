@@ -29,17 +29,21 @@
   position: relative;
   height: 60vh;
   margin-top: 20px;
-  overflow: hidden; /* 겹쳐진 카드들이 부모 요소 밖으로 벗어나지 않게 합니다. */
+  overflow: hidden;
 }
 
 .bannerImg {
+  /* border: 1px solid black; */
   position: absolute;
   top: 50%;
   left: 50%;
   max-width: 450px;
   width: 85%;
   height: 60vh;
-  transition: transform 0.5s, opacity 0.8s; /* transform과 opacity에 대한 전환 효과를 추가합니다. */
+  max-height: 600px;
+  transition: transform 0.5s, opacity 0.8s;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.7);
+  border-radius: 40px;
 }
 
 .card1 {
@@ -65,24 +69,30 @@
   border-radius: 40px;
 }
 
+.divider {
+  /* width: 40%; */
+  border: 1px solid white;
+  margin-left: 5%;
+}
 .imgDisc {
   width: 100%;
   background: linear-gradient(
     to bottom,
-    transparent,
-    transparent 5%,
-    rgba(98, 98, 98, 0.7),
-    transparent 90%,
-    transparent
+    rgba(0, 0, 0, 0),
+    rgba(0, 0, 0, 0.4) 60%,
+    rgba(0, 0, 0, 0.2) 80%,
+    rgba(0, 0, 0, 0)
   );
   font-family: "NanumSquareNeoOTF-Rg";
   position: absolute;
   bottom: 0;
   color: white;
-  padding: 40px 0;
+  padding: 40px 0 60px 0;
+  border-radius: 40px;
 }
 
 .imgDisc div {
+  width: 60%;
   padding-left: 5%;
   margin-bottom: 5px;
 }
@@ -92,7 +102,7 @@
 }
 
 .imgDisc div:nth-child(2) {
-  font-size: 35px;
+  font-size: 28px;
 }
 .imgDisc div:nth-child(3) {
   font-size: 20px;
