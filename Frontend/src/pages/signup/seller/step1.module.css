@@ -1,0 +1,31 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  margin-bottom: 20px;
+  font-family: NanumSquareNeoOTF-rg;
+}
+
+.inputBox {
+  width: 320px;
+  height: 32px;
+  border-radius: 5;
+  border: 2px #cfcfcf solid;
+}
+
+.nextButton {
+  background-color: #c1e0df;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  border: 0px;
+  width: 120px;
+  height: 40px;
+  font-family: NanumSquareNeoOTF-Bd;
+}
