@@ -1,0 +1,86 @@
+.back {
+  width: 400px;
+  height: 220px;
+  margin: 20px auto;
+  border-radius: 13px;
+  background-color: #ffffff;
+  overflow: hidden;
+  box-shadow: 0px 0px 4px rgb(0, 0, 0, 0.25);
+  /* font-family: "NanumSquareNeoOTF-Rg"; */
+}
+
+.cardMain {
+  height: calc(100% - 30px);
+  display: flex;
+}
+
+.cardMainImg {
+  width: 190px;
+  position: relative;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.cardMainImgInfo {
+  position: absolute;
+  height: 35px;
+  line-height: 35px;
+  width: 100%;
+  font-size: 18px;
+  font-weight: bold;
+  background-color: rgb(193, 224, 224, 0.8);
+  bottom: 0px;
+}
+
+.cardMainDetail {
+  width: calc(100% - 190px);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 2px;
+}
+
+.cardMainDetail > div {
+  width: calc(100% - 10px);
+  height: 27px;
+  margin: 5px 5px;
+  display: flex;
+}
+
+.cardMainDetail > div:nth-child(4) {
+  height: 40px;
+}
+
+.cardMainDetail > div:nth-child(4) > button {
+  background-color: var(--mint);
+  margin: 0px auto;
+  width: 100px;
+  border-radius: 5px;
+  border: 0px;
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--dark);
+}
+
+.cardMainDetail > div > img {
+  padding: 2px 5px;
+}
+
+.cardMainDetail > div > span {
+  width: calc(100% - 35px);
+  margin-left: 3px;
+  font-size: 15px;
+  line-height: 25px;
+  text-align: start;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cardfooter {
+  line-height: 30px;
+  height: 30px;
+  background-color: #f7f8f9;
+}
