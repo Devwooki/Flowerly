@@ -47,6 +47,7 @@ public class SecurityConfig {
                 //===========URL 별 권한 옵션 =============
                 .authorizeRequests()
                 .antMatchers("/**").permitAll()
+                .antMatchers("/api/member/dummy-token").permitAll()
                 .antMatchers("/api/member/**").authenticated();
 //                .antMatchers(HttpMethod.GET).authenticated()
 ////                .antMatchers(HttpMethod.GET).permitAll()
