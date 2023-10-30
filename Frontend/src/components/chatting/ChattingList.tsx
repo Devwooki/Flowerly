@@ -43,7 +43,12 @@ const ChattingList = () => {
       </div>
       <div className={style.container}>
         {chattings.map((chatting, idx) => {
-          return <ChattingListCard chattingData={chatting}></ChattingListCard>;
+          return (
+            <ChattingListCard
+              key={idx + chatting.chattingId}
+              chattingData={chatting}
+            ></ChattingListCard>
+          );
         })}
       </div>
     </>
