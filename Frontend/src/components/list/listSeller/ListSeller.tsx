@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import style from "./style/ListSeller.module.css";
 import ListAdoptCard from "./listSellerCardComponent/ListAdoptCard";
+import ListParticipationCard from "./listSellerCardComponent/ListParticipationCard";
 
 const ListSeller = () => {
   const [ListState, setListState] = useState<String>("adopt");
@@ -56,7 +57,9 @@ const ListSeller = () => {
               <ListAdoptCard />
               <ListAdoptCard />
             </>
-          ) : null}
+          ) : (
+            <ListParticipationCard />
+          )}
         </div>
       </div>
     </>

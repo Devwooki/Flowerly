@@ -15,39 +15,19 @@ const ListAdoptCard = () => {
           <div className={style.cardHeaderInfoBox}>
             <div className={style.cardHeaderInfo}>
               <div>
-                <Image
-                  src="/img/icon/list-seller-user.png"
-                  width={18}
-                  height={18}
-                  alt="상태이미지"
-                />
+                <Image src="/img/icon/seller-user.png" width={18} height={18} alt="상태이미지" />
                 <div>김동민</div>
               </div>
               <div>
-                <Image
-                  src="/img/icon/list-seller-phon.png"
-                  width={18}
-                  height={18}
-                  alt="상태이미지"
-                />
+                <Image src="/img/icon/seller-phon.png" width={18} height={18} alt="상태이미지" />
                 <div>010-1234-5678</div>
               </div>
               <div>
-                <Image
-                  src="/img/icon/list-seller-forward.png"
-                  width={18}
-                  height={18}
-                  alt="상태이미지"
-                />
+                <Image src="/img/icon/seller-forward.png" width={18} height={18} alt="상태이미지" />
                 <div>배달</div>
               </div>
               <div>
-                <Image
-                  src="/img/icon/list-seller-time.png"
-                  width={18}
-                  height={18}
-                  alt="상태이미지"
-                />
+                <Image src="/img/icon/seller-time.png" width={18} height={18} alt="상태이미지" />
                 <div>23.10.21 18:00</div>
               </div>
             </div>
