@@ -22,6 +22,8 @@ const Navi = () => {
       router.push("/list");
     } else if (loc === "flly") {
       router.push("/flly");
+    } else if (loc === "chat") {
+      router.push("/chatting");
     }
   };
 
