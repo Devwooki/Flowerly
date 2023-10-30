@@ -2,6 +2,7 @@ package com.ssafy.flowerly.entity;
 
 import com.ssafy.flowerly.entity.common.BaseCreatedTimeEntity;
 import com.ssafy.flowerly.entity.type.*;
+import com.ssafy.flowerly.seller.vo.FllyRequestDto;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -75,4 +76,23 @@ public class Flly extends BaseCreatedTimeEntity {
 
     @Column(nullable = false)
     private LocalDateTime deadline;
+
+
+    public FllyRequestDto toFllyRequestDto(){
+        return FllyRequestDto.builder()
+                .fllyId(this.fllyId)
+                .consumer(this.consumer.toDto())
+                .imageUrl(this.imageUrl)
+                .situation(this.situation.getTitle())
+                .target(this.target.getTitle())
+                .color1(this.color1.getTitle())
+                .color2(this.color2.getTitle())
+                .color3(this.color3.getTitle())
+                .orderType(this.orderType.getTitle())
+                .requestContent(this.requestContent)
+                .progress(this.progress.getTitle())
+                .budget(this.budget)
+                .deadline(this.deadline)
+                .build();
+    }
 }
