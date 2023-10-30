@@ -49,7 +49,8 @@ export default function Home() {
   return (
     <div className={style.home}>
       <div className={style.mainHeader}>
-        <div className={style.header}>플리의 추천</div>
+        <div className={style.header}>플리로고</div>
+        <div className={style.title}>플리가 추천하는</div>
         <div className={style.title}>가을의 꽃을 만나보세요</div>
       </div>
       <div className={style.bannerImg}>
