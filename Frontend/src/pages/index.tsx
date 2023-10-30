@@ -1,7 +1,5 @@
-import { useRouter } from "next/router";
 import style from "@styles/Home.module.css";
-import { useEffect } from "react";
-import axios from "axios";
+import { useEffect, useRef } from "react";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -59,7 +57,7 @@ export default function Home() {
     },
     {
       id: 2,
-      src: "/img/homeBanner/141_purple_gladiolus.jpg",
+      src: "/img/homeBanner/test.webp",
       alt: "글라디올러스",
       date: "5월 ~ 11월",
       desc: "보라색 글라디올러스",
@@ -90,7 +88,6 @@ export default function Home() {
         <div className={style.title}>플리가 추천하는</div>
         <div className={style.title}>가을의 꽃을 만나보세요</div>
       </div>
-
       <div className={style.mainBody}>
         {cardOrder.map((order, index) => {
           const card = cards[order];
@@ -100,6 +97,7 @@ export default function Home() {
               <div className={style.imgDisc}>
                 <div>{card.date}</div>
                 <div>{card.desc}</div>
+                <div className={style.divider}></div>
                 <div>{card.message}</div>
               </div>
             </div>
@@ -114,6 +112,38 @@ export default function Home() {
           <span className="arrow">❯</span>
         </div>
       </div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
+      <div>sad</div>
     </div>
   );
 }

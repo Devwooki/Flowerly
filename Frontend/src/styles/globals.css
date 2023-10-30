@@ -1,17 +1,22 @@
 :root {
-  border: 0.1px solid black;
-  height: 100vh;
-  max-width: 450px;
-  min-width: 330px;
+  --sky: #b0cde3;
+  --mint: #c1e0df;
+  --blue: #87b8cf;
+  --dark: #485256;
+  --gray: #f7f8f9;
+  --moregray: #e5e5e5;
 }
 
 html,
 body {
+  max-width: 450px;
+  min-width: 330px;
   margin: 0 auto;
   padding: 0;
   -ms-overflow-style: none; /* IE, Edge */
   scrollbar-width: none; /* Firefox */
   font-family: "NanumSquareNeoOTF-Lt", "NanumSquareNeoOTF-Rg", "NanumSquareNeoOTF-Bd";
+  box-sizing: border-box;
 }
 
 * {
@@ -21,15 +26,6 @@ body {
 
 *::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera */
-}
-
-:root {
-  --sky: #b0cde3;
-  --mint: #c1e0df;
-  --blue: #87b8cf;
-  --dark: #485256;
-  --gray: #f7f8f9;
-  --moregray: #e5e5e5;
 }
 
 /* 프리텐다드 */
