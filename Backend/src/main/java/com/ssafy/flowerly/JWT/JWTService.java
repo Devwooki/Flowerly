@@ -19,6 +19,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -49,14 +51,6 @@ public class JWTService {
         log.info("현재 시간 : {}", LocalDateTime.now());
         Date now = new Date();
         Date expireDate = new Date(now.getTime() + accessExpiration);
-
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String formattedDate = sdf.format(now);
-        log.info("Date now : {} \n {}",formattedDate, now.getTime());
-
-        String formattedEXPDATE = sdf.format(expireDate);
-        log.info("Date expireDate: {} \n {}", formattedEXPDATE, expireDate.getTime());
-
         return JWT.create()
                 .withSubject("AccessToken")
                 .withExpiresAt(expireDate)
@@ -177,5 +171,35 @@ public class JWTService {
         //Redis의 RefreshToken 제거
         redisTemplate.delete(refreshToken);
         response.setStatus(HttpServletResponse.SC_OK);
+    }
+
+    //=======================
+    //    테스트용 더미 토큰 생성
+    //=======================
+    public Map<String, String> makeDummyToken(){
+        Map<String, String> tokens = new HashMap<>();
+        Date now = new Date();
+        Date veryBig = new Date(now.getTime() + 9999999999L);
+
+        String dummyRefreshToken =  JWT.create()
+                .withSubject("RefreshToken")
+                .withExpiresAt(veryBig)
+                .sign(Algorithm.HMAC512(secretKey));
+
+        //redis에 RefreshToken 저장
+        redisTemplate.opsForValue().set(
+                dummyRefreshToken,
+                String.valueOf(1L),
+                9999999999L,
+                TimeUnit.MILLISECONDS
+        );
+        tokens.put("accessToken", JWT.create()
+                                    .withSubject("AccessToken")
+                                    .withExpiresAt(veryBig)
+                                    .withClaim("memberId", 1L)
+                                    .sign(Algorithm.HMAC512(secretKey)));
+        tokens.put("refreshToken", dummyRefreshToken);
+
+        return tokens;
     }
 }
