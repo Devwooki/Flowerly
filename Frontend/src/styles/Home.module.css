@@ -1,16 +1,113 @@
-.test {
-  color: var(--mint);
+.home {
+  position: relative;
 }
 
-.test2 {
-  color: var(--sky);
+.mainHeader {
+  position: relative;
+  max-width: 450px;
+  font-family: "Pretendard-SemiBold";
+  width: 85%;
+  margin: 0 auto;
+  margin-top: 40px;
+  flex-flow: row;
+  align-items: flex-end;
 }
 
-.roseItem1,
-.roseItem2 {
-  background-size: cover;
-  width: 100px;
-  height: 100px;
-  background-repeat: no-repeat;
-  background-position: center;
+.header {
+  /* border: 1px solid black; */
+  display: block;
+  font-size: 20px;
+}
+
+.title {
+  /* border: 1px solid black; */
+  display: block;
+  font-size: 30px;
+}
+
+.mainBody {
+  position: relative;
+  height: 60vh;
+  margin-top: 20px;
+  overflow: hidden;
+}
+
+.bannerImg {
+  /* border: 1px solid black; */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  max-width: 450px;
+  width: 85%;
+  height: 60vh;
+  max-height: 600px;
+  transition: transform 0.5s, opacity 0.8s;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.7);
+  border-radius: 40px;
+}
+
+.card1 {
+  z-index: 3;
+  transform: translateX(-50%) translateY(-50%);
+  opacity: 1; /* 첫 번째 카드만 기본적으로 보이게 합니다. */
+}
+
+.card2 {
+  z-index: 2;
+  transform: translateX(-50%) translateY(-50%) rotate(2deg);
+  opacity: 1; /* 두 번째 카드도 기본적으로 보이게 합니다. */
+}
+
+.card3 {
+  z-index: 1;
+  transform: translateX(-50%) translateY(-50%) rotate(4deg);
+}
+
+.bannerImg > img {
+  position: relative !important;
+  object-fit: cover;
+  border-radius: 40px;
+}
+
+.divider {
+  /* width: 40%; */
+  border: 1px solid white;
+  margin-left: 5%;
+}
+.imgDisc {
+  width: 100%;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0),
+    rgba(0, 0, 0, 0.4) 60%,
+    rgba(0, 0, 0, 0.2) 80%,
+    rgba(0, 0, 0, 0)
+  );
+  font-family: "NanumSquareNeoOTF-Rg";
+  position: absolute;
+  bottom: 0;
+  color: white;
+  padding: 40px 0 60px 0;
+  border-radius: 40px;
+}
+
+.imgDisc div {
+  width: 60%;
+  padding-left: 5%;
+  margin-bottom: 5px;
+}
+
+.imgDisc div:nth-child(1) {
+  font-size: 20px;
+}
+
+.imgDisc div:nth-child(2) {
+  font-size: 28px;
+}
+.imgDisc div:nth-child(3) {
+  font-size: 20px;
+}
+
+.btnPakage {
+  display: flex;
 }
