@@ -26,13 +26,13 @@
 
 .barCompleted {
     height: 4px;
-    width: 33%;
+    width: 66%;
     background-color: #87B8CF;
 }
 
 .barWating {
     height: 4px;
-    width: 67%;
+    width: 34%;
     background-color: #F2F4F7;
 }
 
@@ -84,7 +84,7 @@
     height: 100px;
     border-radius: 10px;
     margin: 10px;
-    background-color: rgba(193, 224, 223, 0.3);
+    background-color: rgba(135, 184, 207, 0.2);
 }
 
 .selectWord {
@@ -93,8 +93,24 @@
     font-family: "NanumSquareNeoOTF-Bd";
 }
 
+.btnBox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.prevBtn {
+    background-color: var(--moregray);
+    color: var(--dark);
+    width: 20px;
+    padding: 12px;
+    border-radius: 12px;
+    margin-right: 10px;
+    text-align: center;
+    font-family: "NanumSquareNeoOTF-Bd";
+}
+
 .nextBtn {
-    margin: 0 auto;
     background-color: var(--blue);   
     width: 80px;
     padding: 12px;
