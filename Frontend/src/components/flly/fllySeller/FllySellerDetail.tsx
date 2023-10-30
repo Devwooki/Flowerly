@@ -1,5 +1,5 @@
 import React from "react";
-import style from "./FllySellerDetail.module.css";
+import style from "./style/FllySellerDetail.module.css";
 import Image from "next/image";
 
 const FllySellerDetail = () => {
