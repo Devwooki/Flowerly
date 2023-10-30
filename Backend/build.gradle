@@ -48,14 +48,10 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'com.google.code.gson:gson:2.10.1'
 
-
 	//AWS - S3 파일 업로드
-	//implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
-	//implementation 'com.amazonaws:aws-java-sdk-bom:1.11.228'
-	//implementation 'com.amazonaws:aws-java-sdk-s3'
-
-	//REDIS
-	//implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+	implementation 'com.amazonaws:aws-java-sdk-bom:1.11.228'
+	implementation 'com.amazonaws:aws-java-sdk-s3'
 
 	// 웹 통신 관련
 	//implementation 'org.springframework.boot:spring-boot-starter-webflux'
