@@ -12,5 +12,5 @@ export const targetState = atom({
 
 export const colorState = atom({
     key: 'colorState',
-    default: '',
+    default: [] as string[],
 });
