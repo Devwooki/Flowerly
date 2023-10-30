@@ -16,7 +16,11 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -44,6 +48,7 @@ public class JWTService {
     private static final String BEARER = "Bearer ";
 
     public String createAccessToken(Long memberId){
+        log.info("현재 시간 : {}", LocalDateTime.now());
         Date now = new Date();
         Date expireDate = new Date(now.getTime() + accessExpiration);
         return JWT.create()
@@ -96,7 +101,7 @@ public class JWTService {
                 .maxAge(refreshExpiration)
                 .build();
 
-        response.setHeader(refreshHeader, refreshCookie.toString());
+        response.setHeader("Set-Cookie", refreshCookie.toString());
         log.info("AccessToken 및 RefreshToken 설정 완료 : {} \n {}", accessToken, refreshToken);
     }
 
@@ -166,5 +171,35 @@ public class JWTService {
         //Redis의 RefreshToken 제거
         redisTemplate.delete(refreshToken);
         response.setStatus(HttpServletResponse.SC_OK);
+    }
+
+    //=======================
+    //    테스트용 더미 토큰 생성
+    //=======================
+    public Map<String, String> makeDummyToken(){
+        Map<String, String> tokens = new HashMap<>();
+        Date now = new Date();
+        Date veryBig = new Date(now.getTime() + 9999999999L);
+
+        String dummyRefreshToken =  JWT.create()
+                .withSubject("RefreshToken")
+                .withExpiresAt(veryBig)
+                .sign(Algorithm.HMAC512(secretKey));
+
+        //redis에 RefreshToken 저장
+        redisTemplate.opsForValue().set(
+                dummyRefreshToken,
+                String.valueOf(1L),
+                9999999999L,
+                TimeUnit.MILLISECONDS
+        );
+        tokens.put("accessToken", JWT.create()
+                                    .withSubject("AccessToken")
+                                    .withExpiresAt(veryBig)
+                                    .withClaim("memberId", 1L)
+                                    .sign(Algorithm.HMAC512(secretKey)));
+        tokens.put("refreshToken", dummyRefreshToken);
+
+        return tokens;
     }
 }
