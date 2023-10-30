@@ -3,6 +3,8 @@
 **/.idea/**
 **/.gradle
 **/.gradle/**
+# 테스트 입니당 ㅎ
+
 
 # Created by https://www.toptal.com/developers/gitignore/api/intellij,visualstudiocode,react,nextjs,node,java,windows,macos
 # Edit at https://www.toptal.com/developers/gitignore?templates=intellij,visualstudiocode,react,nextjs,node,java,windows,macos
@@ -152,8 +154,6 @@ replay_pid*
 .AppleDouble
 .LSOverride
 
-# Icon must end with two \r
-Icon
 
 
 # Thumbnails
