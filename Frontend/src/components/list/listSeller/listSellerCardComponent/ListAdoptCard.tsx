@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import style from "./ListAdoptCard.module.css";
 import Image from "next/image";
 
-const ListAdoptCard = () => {
+interface Props {
+  ModalChangeHandler: () => void;
+}
+
+const ListAdoptCard = ({ ModalChangeHandler }: Props) => {
   const urlSrc = "/img/icon/flower-bouquet.png";
 
   return (
@@ -15,39 +19,19 @@ const ListAdoptCard = () => {
           <div className={style.cardHeaderInfoBox}>
             <div className={style.cardHeaderInfo}>
               <div>
-                <Image
-                  src="/img/icon/list-seller-user.png"
-                  width={18}
-                  height={18}
-                  alt="상태이미지"
-                />
+                <Image src="/img/icon/seller-user.png" width={18} height={18} alt="상태이미지" />
                 <div>김동민</div>
               </div>
               <div>
-                <Image
-                  src="/img/icon/list-seller-phon.png"
-                  width={18}
-                  height={18}
-                  alt="상태이미지"
-                />
+                <Image src="/img/icon/seller-phon.png" width={18} height={18} alt="상태이미지" />
                 <div>010-1234-5678</div>
               </div>
               <div>
-                <Image
-                  src="/img/icon/list-seller-forward.png"
-                  width={18}
-                  height={18}
-                  alt="상태이미지"
-                />
+                <Image src="/img/icon/seller-forward.png" width={18} height={18} alt="상태이미지" />
                 <div>배달</div>
               </div>
               <div>
-                <Image
-                  src="/img/icon/list-seller-time.png"
-                  width={18}
-                  height={18}
-                  alt="상태이미지"
-                />
+                <Image src="/img/icon/seller-time.png" width={18} height={18} alt="상태이미지" />
                 <div>23.10.21 18:00</div>
               </div>
             </div>
@@ -61,7 +45,9 @@ const ListAdoptCard = () => {
             <Image src={urlSrc} width={16} height={16} alt="상태이미지"></Image>
             <span>제작중</span>
           </div>
-          <div className={style.cardFinshBtn}>완료하기</div>
+          <div className={style.cardFinshBtn} onClick={ModalChangeHandler}>
+            완료하기
+          </div>
         </div>
       </div>
     </>

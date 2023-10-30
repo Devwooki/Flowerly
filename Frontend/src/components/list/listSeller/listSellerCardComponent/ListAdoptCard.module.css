@@ -21,14 +21,12 @@
 .cardHeaderImg {
   width: 170px;
   height: 170px;
-  /* border: 1px solid black; */
-  display: flex;
 }
 
 .cardHeaderImg > div {
   width: 150px;
   height: 150px;
-  margin: auto;
+  margin: 10px;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -67,6 +65,10 @@
   gap: 15px;
   font-size: 14px;
   font-family: "NanumSquareNeoOTF-Rg";
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
   /* padding: 10px; */
 }
 

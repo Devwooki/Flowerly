@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from "react";
 import style from "./style/ListSeller.module.css";
 import ListAdoptCard from "./listSellerCardComponent/ListAdoptCard";
+import ListParticipationCard from "./listSellerCardComponent/ListParticipationCard";
+import ListAdoptCheckModal from "./listSellerCardComponent/ListAdoptCheckModal";
 
 const ListSeller = () => {
   const [ListState, setListState] = useState<String>("adopt");
+  //모달 상태
+  const [modalState, setModalStest] = useState<Boolean>(false);
+  //클릭한 아이템의 값
 
   const ChangeStatHander = () => {
     if (ListState === "adopt") {
@@ -13,6 +18,11 @@ const ListSeller = () => {
     }
   };
 
+  //모달의 상태 변경 함수
+  const ModalChangeHandler = () => {
+    setModalStest(!modalState);
+  };
+
   useEffect(() => {
     //엑시오스 요청 할예정
   }, [ListState]);
@@ -20,6 +30,7 @@ const ListSeller = () => {
   return (
     <>
       <div className={style.ListSellerBack}>
+        {modalState && <ListAdoptCheckModal ModalChangeHandler={ModalChangeHandler} />}
         <div className={style.ListSellerHeader}>
           <div className={style.headerTitle}>진행중인 플리</div>
           <div className={style.headerSideBtn}>
@@ -48,15 +59,17 @@ const ListSeller = () => {
         <div className={style.ListSellerMain}>
           {ListState === "adopt" ? (
             <>
-              <ListAdoptCard />
-              <ListAdoptCard />
-              <ListAdoptCard />
-              <ListAdoptCard />
-              <ListAdoptCard />
-              <ListAdoptCard />
-              <ListAdoptCard />
+              <ListAdoptCard ModalChangeHandler={ModalChangeHandler} />
+              <ListAdoptCard ModalChangeHandler={ModalChangeHandler} />
+              <ListAdoptCard ModalChangeHandler={ModalChangeHandler} />
+              <ListAdoptCard ModalChangeHandler={ModalChangeHandler} />
+              <ListAdoptCard ModalChangeHandler={ModalChangeHandler} />
+              <ListAdoptCard ModalChangeHandler={ModalChangeHandler} />
+              <ListAdoptCard ModalChangeHandler={ModalChangeHandler} />
             </>
-          ) : null}
+          ) : (
+            <ListParticipationCard />
+          )}
         </div>
       </div>
     </>
