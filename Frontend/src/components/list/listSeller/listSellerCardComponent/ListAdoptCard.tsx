@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import style from "./ListAdoptCard.module.css";
 import Image from "next/image";
 
-const ListAdoptCard = () => {
+interface Props {
+  ModalChangeHandler: () => void;
+}
+
+const ListAdoptCard = ({ ModalChangeHandler }: Props) => {
   const urlSrc = "/img/icon/flower-bouquet.png";
 
   return (
@@ -41,7 +45,9 @@ const ListAdoptCard = () => {
             <Image src={urlSrc} width={16} height={16} alt="상태이미지"></Image>
             <span>제작중</span>
           </div>
-          <div className={style.cardFinshBtn}>완료하기</div>
+          <div className={style.cardFinshBtn} onClick={ModalChangeHandler}>
+            완료하기
+          </div>
         </div>
       </div>
     </>
