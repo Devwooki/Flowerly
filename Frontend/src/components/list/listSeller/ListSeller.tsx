@@ -46,7 +46,17 @@ const ListSeller = () => {
           </div>
         </div>
         <div className={style.ListSellerMain}>
-          {ListState === "adopt" ? <ListAdoptCard /> : null}
+          {ListState === "adopt" ? (
+            <>
+              <ListAdoptCard />
+              <ListAdoptCard />
+              <ListAdoptCard />
+              <ListAdoptCard />
+              <ListAdoptCard />
+              <ListAdoptCard />
+              <ListAdoptCard />
+            </>
+          ) : null}
         </div>
       </div>
     </>
