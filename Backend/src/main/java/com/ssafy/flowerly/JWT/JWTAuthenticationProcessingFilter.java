@@ -39,7 +39,6 @@ public class JWTAuthenticationProcessingFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        new SimpleDateFormat("yyyy_MM_dd");
         //해당 필터는 JWT만 검증하므로 다음 필터에게 작업을 처리하도록한다.
         if(request.getRequestURI().equals(NO_CHECK_URL) || request.getRequestURI().contains("favicon")){
             filterChain.doFilter(request,response);

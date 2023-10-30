@@ -7,13 +7,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
 
 @Slf4j
@@ -25,12 +23,22 @@ public class MemberController {
     private final JWTService jwtService;
 
     @GetMapping("/jwt-test")
-    public CustomResponse jwtTest(HttpServletRequest request,
-            @RequestBody String token) {
+    public CustomResponse jwtTest(HttpServletRequest request) {
         log.info("jwt-test 접근 : {}", request.getRequestURI());
-        log.info("토큰 넘어오냐 : {}", token);
+        String accessToken = jwtService.extractAccessToken(request).get();
+        log.info("토큰 넘어오냐 : \n {} ", accessToken);
+        Long memberId = jwtService.extractMemberId(accessToken).get();
+        log.info("memberId 체크 : \n {} ", memberId);
+
         return new CustomResponse(HttpStatus.OK.value(), "JWT요청 성공");
     }
+
+    @PostMapping("/signup")
+    public CustomResponse signup(HttpServletRequest request,
+                                 @RequestBody Map<String, Object> data){
+        return new CustomResponse(HttpStatus.OK.value(), "요청 성공");
+    }
+
 
     @GetMapping("/logout")
     public CustomResponse logOut(HttpServletRequest request, HttpServletResponse response){

@@ -29,7 +29,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-    @Value("${url.test}")
+    @Value("${url.service}")
     private String redirectURL;
     private final JWTService jwtService;
     private final ObjectMapper mapper = new ObjectMapper();
@@ -45,7 +45,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
             if(oAuth2User.getRole() == MemberRole.GUEST){
                 String accessToken = jwtService.createAccessToken(oAuth2User.getMemberId());
                 response.addHeader(jwtService.getAccessHeader(), "Bearer " + accessToken);
-                response.sendRedirect("oauth2/sign-up"); //프론트 회원가입 후 추가 정보 입력 창으로 리다이렉트
+                response.sendRedirect("oauth2/signup?token" + accessToken); //프론트 회원가입 후 추가 정보 입력 창으로 리다이렉트
 
                 jwtService.sendAccessTokenAndRefreshToken(response, accessToken, null);
             }else{
@@ -63,14 +63,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         String accessToken = jwtService.createAccessToken(oAuth2User.getMemberId());
         String refreshToken = jwtService.createRefreshToken(oAuth2User.getMemberId());
         jwtService.sendAccessTokenAndRefreshToken(response, accessToken, refreshToken);
-        response.setContentType("application/json;charset=UTF-8");
 
-//        Map<String, String > map = new HashMap<>();
-//        map.put("token", accessToken);
-//        PrintWriter writer = response.getWriter();
-//        writer.println(mapper.writeValueAsString(map));
-//        writer.flush();
-
-        response.sendRedirect(redirectURL + "/api/member/jwt-test");
+        response.sendRedirect(redirectURL + "/temp?token=" + accessToken);
     }
 }

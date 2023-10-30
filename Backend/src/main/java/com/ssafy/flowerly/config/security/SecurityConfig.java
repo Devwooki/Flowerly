@@ -46,8 +46,8 @@ public class SecurityConfig {
                 .and()
                 //===========URL 별 권한 옵션 =============
                 .authorizeRequests()
-                .antMatchers("/**").permitAll();
-//                .antMatchers("/api/member/**").authenticated()
+                .antMatchers("/**").permitAll()
+                .antMatchers("/api/member/**").authenticated();
 //                .antMatchers(HttpMethod.GET).authenticated()
 ////                .antMatchers(HttpMethod.GET).permitAll()
 //                .antMatchers(HttpMethod.POST).permitAll()
@@ -58,8 +58,8 @@ public class SecurityConfig {
 
         //Oauth 설정
         http.oauth2Login()
-                //.loginPage("https://flower-ly.co.kr/")
-                .loginPage("http://localhost:6090")
+                .loginPage("https://flower-ly.co.kr/")
+                //.loginPage("http://localhost:6090")
                 .successHandler(oAuth2LoginSuccessHandler)  //성공할 경우 수행할 핸들러
                 .failureHandler(oAuth2LoginFailureHandler)  //실패할 경우 수행할 핸들러
                 .userInfoEndpoint()                         //Oauth2 정보를 가져오는데 사용할 서비스
