@@ -1,5 +1,5 @@
 import React from "react";
-import style from "./FllySeller.module.css";
+import style from "./style/FllySeller.module.css";
 
 import FllySellerCard from "./fllySellerCardComponent/FllySellerCard";
 
