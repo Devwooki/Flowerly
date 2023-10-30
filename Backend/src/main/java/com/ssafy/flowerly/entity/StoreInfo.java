@@ -35,4 +35,16 @@ public class StoreInfo {
 
     @Column(nullable = false)
     private String address;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sido_code")
+    private Sido sido;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sigungu_code")
+    private Sigungu sigungu;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "dong_code")
+    private Dong dong;
 }
