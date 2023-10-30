@@ -62,6 +62,7 @@ public class JWTAuthenticationProcessingFilter extends OncePerRequestFilter {
         //RefreshToken이 없거나 유효하지 않다면, AccessToken을 검사한다
         if (refreshToken == null) {
             checkAccessTokenAndAuthentication(request, response, filterChain);
+            filterChain.doFilter(request, response);
         }
     }
 
@@ -80,7 +81,7 @@ public class JWTAuthenticationProcessingFilter extends OncePerRequestFilter {
                     saveAuthentication(member);
                 });
 
-        filterChain.doFilter(request, response);
+        log.info("검증 성공!");
     }
 
     // 인증을 수행하는 메소드

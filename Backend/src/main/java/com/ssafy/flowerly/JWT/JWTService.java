@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -44,8 +46,17 @@ public class JWTService {
     private static final String BEARER = "Bearer ";
 
     public String createAccessToken(Long memberId){
+        log.info("현재 시간 : {}", LocalDateTime.now());
         Date now = new Date();
         Date expireDate = new Date(now.getTime() + accessExpiration);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String formattedDate = sdf.format(now);
+        log.info("Date now : {} \n {}",formattedDate, now.getTime());
+
+        String formattedEXPDATE = sdf.format(expireDate);
+        log.info("Date expireDate: {} \n {}", formattedEXPDATE, expireDate.getTime());
+
         return JWT.create()
                 .withSubject("AccessToken")
                 .withExpiresAt(expireDate)
@@ -96,7 +107,7 @@ public class JWTService {
                 .maxAge(refreshExpiration)
                 .build();
 
-        response.setHeader(refreshHeader, refreshCookie.toString());
+        response.setHeader("Set-Cookie", refreshCookie.toString());
         log.info("AccessToken 및 RefreshToken 설정 완료 : {} \n {}", accessToken, refreshToken);
     }
 

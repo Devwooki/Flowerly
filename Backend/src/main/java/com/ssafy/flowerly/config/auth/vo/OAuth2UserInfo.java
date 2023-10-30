@@ -31,8 +31,6 @@ public abstract class OAuth2UserInfo {
                 .socialType(socialType)
                 .isRemoved(false)
                 .isNotification(false)
-                .createdAt(now)
-                .updateddAt(now)
                 .build();
     }
 }

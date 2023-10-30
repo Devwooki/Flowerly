@@ -8,20 +8,27 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@RestController("/api/member")
+
 @Slf4j
 @RequiredArgsConstructor
+@RestController
+@RequestMapping("/api/member")
 public class MemberController {
     private final MemberService memberService;
     private final JWTService jwtService;
 
     @GetMapping("/jwt-test")
-    public CustomResponse jwtTest(){
+    public CustomResponse jwtTest(HttpServletRequest request,
+            @RequestBody String token) {
+        log.info("jwt-test 접근 : {}", request.getRequestURI());
+        log.info("토큰 넘어오냐 : {}", token);
         return new CustomResponse(HttpStatus.OK.value(), "JWT요청 성공");
     }
 

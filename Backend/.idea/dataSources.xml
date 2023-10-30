@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="flowerly@k9b209.p.ssafy.io" uuid="aea7eea2-ca30-4a7f-a459-1d4d29e0318e">
+      <driver-ref>mariadb</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.mariadb.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mariadb://k9b209.p.ssafy.io:3306/flowerly?serverTimezone=UTC&amp;useUniCode=yes&amp;characterEncoding=UTF-8</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="0@k9b209.p.ssafy.io" uuid="5cd87396-8dac-4c2b-95a9-60079e4f39d4">
+      <driver-ref>redis</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>jdbc.RedisDriver</jdbc-driver>
+      <jdbc-url>jdbc:redis://k9b209.p.ssafy.io:1357/0</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="flowerly_chat@k9b209.p.ssafy.io" uuid="22617edb-985e-4f8c-8b2f-982aed98fe7a">
+      <driver-ref>mongo</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.dbschema.MongoJdbcDriver</jdbc-driver>
+      <jdbc-url>mongodb://k9b209.p.ssafy.io:1201/flowerly_chat?authSource=admin</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+  </component>
+</project>
