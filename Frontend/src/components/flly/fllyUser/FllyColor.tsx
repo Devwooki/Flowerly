@@ -25,31 +25,30 @@ const FllySeller = () => {
       if(selected.includes(e)) {
        subValue(e);
       } else if(selected.length < 3) {
-        addValue(e);
+        if(selected.includes("선택안함")) {
+          addValue(e, true);
+        } else addValue(e, false);
       }
-      
     }
   };
   console.log(color);
-
-  const initValue = () => {
-    setSelected([]); // selected 배열을 빈 배열로 초기화
-    setColor([]); // Recoil 상태 역시 초기화
-    console.log("초기화???",selected);
-  };
   
-
   const subValue = (value:string) => {
     const updatedSelect = selected.filter(item => item !== value);
     setSelected(updatedSelect);
     setColor(updatedSelect);
   }
 
-  const addValue = (newValue:string) => {
-    console.log("add ", selected);
-    const updatedSelected = [...selected, newValue];
-    setSelected(updatedSelected);
-    setColor(updatedSelected); // Recoil 상태 업데이트를 이곳으로 옮깁니다.
+  const addValue = (newValue:string, hasNo:boolean) => {
+    if(hasNo) {
+      const updatedSelected = [...selected.filter(item => item !== "선택안함"), newValue];
+      setSelected(updatedSelected);
+      setColor(updatedSelected);
+    } else {
+      const updatedSelected = [...selected, newValue];
+      setSelected(updatedSelected);
+      setColor(updatedSelected); // Recoil 상태 업데이트를 이곳으로 옮깁니다.
+    }
   };
   
 
@@ -58,20 +57,28 @@ const FllySeller = () => {
       <div className={style.fllyBox}>
         <div className={style.contentBox}>
           <div className={style.progress}>
-            <div className={style.progressBar}><div className={style.barCompleted}></div><div className={style.barWating}></div></div>
+            <div className={style.progressBar}><div className={style.barCompleted}></div></div>
             <div className={style.progressNum}>3/3</div>
           </div>
           <div className={style.headerTitle}>
             <div className={style.stage}>3</div>
             <div className={style.guide}>색상을 선택해주세요.</div>
           </div>
-          <div className={style.selectBox}>
-            {selectList.map((item, index) => (
-              <div key={index} style={{ backgroundColor: colorList[index] }} className={style.selectedCard} onClick={() => {handleSelect(item)}}>
-                <div className={style.selectWord}>{item}</div>
-              </div>
-            ))}            
-          </div>
+          <div className={style.guidePlus}>최대 3개까지 선택 가능합니다.</div>
+          <div className={style.selectAreaBox}>
+            <div className={style.selectBox}>
+              {selectList.map((item, index) => (
+                <div key={index} style={{ backgroundColor: colorList[index] }} className={style.selectCard} onClick={() => {handleSelect(item)}}>
+                  <div className={style.selectWord}>{item}</div>
+                  <div className={item != "흰색"? style.selectCheck : style.selectCheckWhite}>
+                    {selected.includes(item) && (
+                      <Image src="/img/icon/check.png" width={30} height={25} alt="아이콘" />
+                    )}
+                  </div>
+                </div>
+              ))}            
+            </div>
+            </div>
           <div className={style.btnBox}>
             <div className={style.prevBtn}>&lt;</div>
             <div className={style.nextBtn}>다음</div>
