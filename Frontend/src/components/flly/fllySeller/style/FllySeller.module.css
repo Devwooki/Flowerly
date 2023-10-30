@@ -15,22 +15,23 @@
 
 .headerTitle {
   margin-top: 30px;
-  font-size: 25px;
+  font-size: 28px;
   font-weight: bold;
   height: 32px;
   margin-left: 20px;
-  font-family: "Pretendard-Bolds";
+  font-family: "Pretendard-Bold";
 }
 
 .headerSortBox {
-  margin-top: 45px;
+  margin-top: 40px;
   height: 20px;
   margin-right: 20px;
 }
 
 .headerSortBoxSelect {
   border: 0px;
-  font-size: 18px;
+  font-size: 20px;
+  font-family: "NanumSquareNeoOTF-Rg";
 }
 
 .mainBox {
