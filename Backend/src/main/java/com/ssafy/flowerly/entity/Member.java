@@ -1,5 +1,6 @@
 package com.ssafy.flowerly.entity;
 
+import com.ssafy.flowerly.entity.common.BaseTimeEntity;
 import com.ssafy.flowerly.member.SocialType;
 import com.ssafy.flowerly.member.vo.MemberDto;
 import com.ssafy.flowerly.member.MemberRole;
@@ -16,7 +17,7 @@ import java.time.LocalDateTime;
 @DynamicUpdate //update시, 실제 값이 변경되는 컬럼만 update 쿼리로 생성
 @Builder
 @ToString
-public class Member {
+public class Member extends BaseTimeEntity {
     @Id
     @GeneratedValue
     private Long memberId;
@@ -36,18 +37,16 @@ public class Member {
     @Column(nullable = false)
     private String nickName;
 
-    @Column(nullable = false)
-    private LocalDateTime createdAt;
-    @Column(nullable = false)
-    private LocalDateTime updateddAt;
+//    @Column(nullable = false)
+//    private LocalDateTime createdAt;
+//    @Column(nullable = false)
+//    private LocalDateTime updateddAt;
 
     @Column(nullable = false)
     private boolean isRemoved;
 
     @Column(nullable = false)
     private boolean isNotification;
-
-
 
     public MemberDto toDto(){
         return MemberDto.builder()
@@ -62,21 +61,21 @@ public class Member {
     public Member updateNicknameAndMail(String nickname, String email){
         this.nickName = nickname;
         this.email = email;
-        dataUpdate();
+//        dataUpdate();
         return this;
     }
-    private void dataUpdate(){
-        this.updateddAt = LocalDateTime.now();
-    }
+//    private void dataUpdate(){
+//        this.updatedAt = LocalDateTime.now();
+//    }
 
     public String notificationToggle(){
         this.isNotification ^= this.isNotification;
-        dataUpdate();
+//        dataUpdate();
         return this.isNotification ?  "이제부터 알림을 받습니다" : "이제부터 알림을 받지 않습니다.";
     }
 
     public void deleteMember(){
         this.isRemoved = true;
-        dataUpdate();
+//        dataUpdate();
     }
 }

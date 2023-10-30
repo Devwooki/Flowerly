@@ -1,3 +1,9 @@
+**/application**.yml
+**/.idea
+**/.idea/**
+**/.gradle
+**/.gradle/**
+# 테스트 입니당 ㅎ22
 
 
 # Created by https://www.toptal.com/developers/gitignore/api/intellij,visualstudiocode,react,nextjs,node,java,windows,macos
@@ -148,8 +154,6 @@ replay_pid*
 .AppleDouble
 .LSOverride
 
-# Icon must end with two \r
-Icon
 
 
 # Thumbnails

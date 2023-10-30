@@ -1,0 +1,57 @@
+.checkBack {
+  background-color: rgba(37, 37, 37, 0.2);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 20;
+  display: flex;
+}
+
+.modalBack {
+  width: calc(100% - 60px);
+  height: 200px;
+  background-color: white;
+  margin: auto;
+  border-radius: 10px;
+}
+
+.modalBack > div:nth-child(1) {
+  margin-top: 60px;
+  font-family: "NanumSquareNeoOTF-Bd";
+  font-size: 16px;
+}
+
+.modalBack > div:nth-child(2) {
+  margin-top: 5px;
+  font-family: "NanumSquareNeoOTF-Rg";
+  font-size: 16px;
+  color: #757575;
+}
+
+.modalBtnBox {
+  margin-top: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.modalBtnBox > div {
+  width: 80px;
+  line-height: 40px;
+  height: 40px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
+  color: white;
+  font-family: "NanumSquareNeoOTF-Bd";
+}
+
+.modalBtnBox > div:nth-child(1) {
+  background-color: var(--sky);
+}
+
+.modalBtnBox > div:nth-child(2) {
+  background-color: var(--blue);
+}

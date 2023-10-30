@@ -1,16 +1,67 @@
-.test {
-  color: var(--mint);
+.home {
+  position: relative;
 }
 
-.test2 {
-  color: var(--sky);
+.mainHeader {
+  position: relative;
+  max-width: 450px;
+  font-family: "Pretendard-SemiBold";
+  width: 85%;
+  margin: 0 auto;
+  margin-top: 100px;
+  flex-flow: row;
+  align-items: flex-end;
 }
 
-.roseItem1,
-.roseItem2 {
-  background-size: cover;
-  width: 100px;
-  height: 100px;
-  background-repeat: no-repeat;
-  background-position: center;
+.header {
+  /* border: 1px solid black; */
+  display: block;
+  font-size: 20px;
+}
+
+.title {
+  /* border: 1px solid black; */
+  display: block;
+  font-size: 30px;
+}
+
+.bannerImg {
+  position: relative;
+  max-width: 450px;
+  width: 85%;
+  height: 60vh;
+  margin: 0 auto;
+  margin-top: 10px;
+}
+
+.bannerImg > img {
+  position: relative !important;
+  object-fit: cover;
+  border-radius: 40px;
+}
+
+.imgDisc {
+  width: 100%;
+  background-color: rgb(255, 255, 255, 30%);
+  font-family: "NanumSquareNeoOTF-Rg";
+  position: absolute;
+  bottom: 0;
+  color: white;
+  padding: 30px 0;
+}
+
+.imgDisc div {
+  padding-left: 5%;
+  margin-bottom: 5px;
+}
+
+.imgDisc div:nth-child(1) {
+  font-size: 20px;
+}
+
+.imgDisc div:nth-child(2) {
+  font-size: 35px;
+}
+.imgDisc div:nth-child(3) {
+  font-size: 20px;
 }

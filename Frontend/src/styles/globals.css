@@ -11,8 +11,7 @@ body {
   padding: 0;
   -ms-overflow-style: none; /* IE, Edge */
   scrollbar-width: none; /* Firefox */
-  font-family: "NanumSquareNeoOTF-Rg";
-  text-align: center;
+  font-family: "NanumSquareNeoOTF-Lt", "NanumSquareNeoOTF-Rg", "NanumSquareNeoOTF-Bd";
 }
 
 * {
@@ -37,6 +36,11 @@ body {
 @font-face {
   font-family: "Pretendard-Bold";
   src: url("../../public/fonts/Pretendard-Bold.woff") format("woff");
+}
+
+@font-face {
+  font-family: "Pretendard-SemiBold";
+  src: url("../../public/fonts/Pretendard-SemiBold.woff") format("woff");
 }
 
 /* 나눔 스퀘어 */
