@@ -25,29 +25,59 @@
   font-size: 30px;
 }
 
+.mainBody {
+  height: 70vh;
+  overflow: hidden; /* 겹쳐진 카드들이 부모 요소 밖으로 벗어나지 않게 합니다. */
+}
+
 .bannerImg {
-  position: relative;
+  position: absolute;
+  top: 50%;
+  left: 50%;
   max-width: 450px;
   width: 85%;
   height: 60vh;
-  margin: 0 auto;
-  margin-top: 10px;
+  transition: transform 0.5s, opacity 0.8s; /* transform과 opacity에 대한 전환 효과를 추가합니다. */
+}
+
+.card1 {
+  z-index: 3;
+  transform: translateX(-50%) translateY(-50%);
+  opacity: 1; /* 첫 번째 카드만 기본적으로 보이게 합니다. */
+}
+
+.card2 {
+  z-index: 2;
+  transform: translateX(-47.5%) translateY(-47.5%);
+  opacity: 1; /* 두 번째 카드도 기본적으로 보이게 합니다. */
+}
+
+.card3 {
+  z-index: 1;
+  transform: translateX(-45%) translateY(-45%);
 }
 
 .bannerImg > img {
   position: relative !important;
   object-fit: cover;
-  border-radius: 40px;
+  border-radius: 10px;
 }
 
 .imgDisc {
   width: 100%;
-  background-color: rgb(255, 255, 255, 30%);
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    transparent 5%,
+    rgb(0, 0, 0, 0.3),
+    transparent 90%,
+    transparent
+  );
   font-family: "NanumSquareNeoOTF-Rg";
   position: absolute;
   bottom: 0;
   color: white;
-  padding: 30px 0;
+  padding: 60px 0;
 }
 
 .imgDisc div {
@@ -64,4 +94,8 @@
 }
 .imgDisc div:nth-child(3) {
   font-size: 20px;
+}
+
+.btnPakage {
+  display: flex;
 }
