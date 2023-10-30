@@ -59,7 +59,7 @@ export default function Home() {
     },
     {
       id: 2,
-      src: "/img/homeBanner/141_purple_gladiolus.jpg",
+      src: "/img/homeBanner/test.webp",
       alt: "글라디올러스",
       date: "5월 ~ 11월",
       desc: "보라색 글라디올러스",
@@ -90,7 +90,6 @@ export default function Home() {
         <div className={style.title}>플리가 추천하는</div>
         <div className={style.title}>가을의 꽃을 만나보세요</div>
       </div>
-
       <div className={style.mainBody}>
         {cardOrder.map((order, index) => {
           const card = cards[order];
