@@ -160,7 +160,7 @@ public class JWTService {
     }
 
     public void sendDeleteToken(HttpServletRequest request, HttpServletResponse response) {
-        String refreshToken = extractRefreshToken(request).orElseThrow(()-> new CustomException(ErrorCode.INVALID_REFRESHTOKEN));
+        String refreshToken = extractRefreshToken(request).orElseThrow(()-> new CustomException(ErrorCode.INVALID_REFRESH_TOKEN));
         //AccessToken 제거
         response.setHeader(accessHeader, "");
 
@@ -181,7 +181,7 @@ public class JWTService {
     //=======================
     //    테스트용 더미 토큰 생성
     //=======================
-    public Map<String, String> makeDummyToken(){
+    public Map<String, String> makeDummyToken(Long memberId){
         Map<String, String> tokens = new HashMap<>();
         Date now = new Date();
         Date veryBig = new Date(now.getTime() + 9999999999L);
@@ -201,7 +201,7 @@ public class JWTService {
         tokens.put("accessToken", JWT.create()
                                     .withSubject("AccessToken")
                                     .withExpiresAt(veryBig)
-                                    .withClaim("memberId", 1L)
+                                    .withClaim("memberId", memberId)
                                     .sign(Algorithm.HMAC512(secretKey)));
         tokens.put("refreshToken", dummyRefreshToken);
 

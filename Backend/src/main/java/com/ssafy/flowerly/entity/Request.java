@@ -2,6 +2,7 @@ package com.ssafy.flowerly.entity;
 
 import com.ssafy.flowerly.entity.common.BaseCreatedTimeEntity;
 import com.ssafy.flowerly.entity.type.OrderType;
+import com.ssafy.flowerly.seller.vo.OrderSelectSimpleDto;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -17,7 +18,7 @@ import java.time.LocalDateTime;
 @ToString
 public class Request extends BaseCreatedTimeEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long requestId;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -29,7 +30,7 @@ public class Request extends BaseCreatedTimeEntity {
     private Member seller;  // 판매자
 
     @Column(nullable = false)
-    private String ordererName;
+    private String orderName;
 
     @Column(nullable = false)
     private String phoneNumber;
@@ -46,4 +47,18 @@ public class Request extends BaseCreatedTimeEntity {
 
     @Column(nullable = false)
     private Integer price;
+
+
+    public OrderSelectSimpleDto toOrderSelectSimpleDto(){
+        return OrderSelectSimpleDto.builder()
+                .requestId(this.requestId)
+                .fllyId(this.getFlly().getFllyId())
+                .orderName(this.orderName)
+                .phoneNumber(this.phoneNumber)
+                .orderType(this.orderType.getTitle())
+                .deliveryPickupTime(this.deliveryPickupTime)
+                .progress(this.getFlly().getProgress().getTitle())
+                .build();
+    }
+
 }
