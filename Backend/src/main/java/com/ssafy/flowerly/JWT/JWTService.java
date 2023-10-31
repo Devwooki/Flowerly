@@ -2,6 +2,7 @@ package com.ssafy.flowerly.JWT;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.ssafy.flowerly.exception.CustomException;
 import com.ssafy.flowerly.exception.ErrorCode;
 import lombok.Getter;
@@ -16,7 +17,11 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -44,6 +49,7 @@ public class JWTService {
     private static final String BEARER = "Bearer ";
 
     public String createAccessToken(Long memberId){
+        log.info("현재 시간 : {}", LocalDateTime.now());
         Date now = new Date();
         Date expireDate = new Date(now.getTime() + accessExpiration);
         return JWT.create()
@@ -89,15 +95,17 @@ public class JWTService {
         response.setStatus(HttpServletResponse.SC_OK);
         response.setHeader(accessHeader,BEARER + accessToken);
 
-        ResponseCookie refreshCookie = ResponseCookie.from(refreshHeader, refreshToken)
-                .sameSite("Lax")
-                .httpOnly(true)
-                .secure(true)
-                .maxAge(refreshExpiration)
-                .build();
+        if(refreshToken != null){
+            ResponseCookie refreshCookie = ResponseCookie.from(refreshHeader, refreshToken)
+                    .sameSite("Lax")
+                    .httpOnly(true)
+                    .secure(true)
+                    .maxAge(refreshExpiration)
+                    .build();
+            response.setHeader("Set-Cookie", refreshCookie.toString());
+        }
 
-        response.setHeader(refreshHeader, refreshCookie.toString());
-        log.info("AccessToken 및 RefreshToken 설정 완료 : {} \n {}", accessToken, refreshToken);
+        log.info("AccessToken 및 RefreshToken 설정 완");
     }
 
     // 헤더에서 AccessToken 추출
@@ -128,8 +136,10 @@ public class JWTService {
             /**require : JWT검증 메소드
              * require : 요구사항을 지정한다. 현재 코드는 암호화 알고리즘과 비밀키로 검증한다.
              */
-            JWT.require(Algorithm.HMAC512(secretKey)).build().verify(token);
-            return true;
+            DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC512(secretKey)).build().verify(token);
+
+            //만료시간이 지났는지 체크
+            return decodedJWT.getExpiresAt().after(new Date());
         }catch(Exception e){
             log.error("유효하지 않은 토큰 입니다. {}", e.getMessage());
             return false;
@@ -166,5 +176,35 @@ public class JWTService {
         //Redis의 RefreshToken 제거
         redisTemplate.delete(refreshToken);
         response.setStatus(HttpServletResponse.SC_OK);
+    }
+
+    //=======================
+    //    테스트용 더미 토큰 생성
+    //=======================
+    public Map<String, String> makeDummyToken(){
+        Map<String, String> tokens = new HashMap<>();
+        Date now = new Date();
+        Date veryBig = new Date(now.getTime() + 9999999999L);
+
+        String dummyRefreshToken =  JWT.create()
+                .withSubject("RefreshToken")
+                .withExpiresAt(veryBig)
+                .sign(Algorithm.HMAC512(secretKey));
+
+        //redis에 RefreshToken 저장
+        redisTemplate.opsForValue().set(
+                dummyRefreshToken,
+                String.valueOf(1L),
+                9999999999L,
+                TimeUnit.MILLISECONDS
+        );
+        tokens.put("accessToken", JWT.create()
+                                    .withSubject("AccessToken")
+                                    .withExpiresAt(veryBig)
+                                    .withClaim("memberId", 1L)
+                                    .sign(Algorithm.HMAC512(secretKey)));
+        tokens.put("refreshToken", dummyRefreshToken);
+
+        return tokens;
     }
 }

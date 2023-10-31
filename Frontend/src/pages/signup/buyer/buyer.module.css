@@ -8,6 +8,7 @@
 
 .header {
   font-size: 28px;
+  text-align: center;
 }
 
 .inputBox {
@@ -17,7 +18,7 @@
   border: 1px solid #cfcfcf;
   margin-top: 40px;
   padding-left: 10px;
-  margin-bottom: 80px;
+  margin-bottom: 40px;
 }
 
 .button {

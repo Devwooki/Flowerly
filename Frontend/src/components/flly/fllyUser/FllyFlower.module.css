@@ -1,6 +1,7 @@
 .fllyBox {
     width: 100%;
-    height: 100%;
+    height: calc(100vh - 60px);
+    overflow: scroll;
     position: relative;
     background-color: var(--gray);
 }
@@ -32,6 +33,12 @@
     margin: 10px 0 13px 0;
     height: 600px;
     overflow: scroll;
+}
+
+.selectLoading {
+    margin-top: 50px;
+    text-align: center;
+    font-family: "NanumSquareNeoOTF-Bd";
 }
 
 .selectBox {

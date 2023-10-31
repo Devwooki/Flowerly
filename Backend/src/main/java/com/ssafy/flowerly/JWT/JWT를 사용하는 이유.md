@@ -55,3 +55,13 @@
 
 ![JWT로직 정리](https://velog.velcdn.com/images/iamminzzy/post/fe34833d-88aa-4467-96de-597379ca740e/image.png)
 [구현참고한 링크](https://ksh-coding.tistory.com/59
+
+---
+
+# workFlow
+모든 과정은 Spring Security Filter 과정에서 수행된다. 한마디로 Login Controller는 존재하지 않는다.
+
+1. 가장먼저 OAuth2LoginAuthenticationFilter에서 OAuth2 로그인 과정이 수행된다.
+2. OAuth2 Filter 단에서 직접 커스텀한 OAuth2 Service의 "loadUser"메소드가 실행된다.
+3. 로그인을 성공하게 되면 Success Handler의 "onAuthenticationSuccess" 메소드가 실행된다.
+4. Success Handler에서 최초 로그인 확인 및 JWT 생성 및 응답 과정이 실행된다.
