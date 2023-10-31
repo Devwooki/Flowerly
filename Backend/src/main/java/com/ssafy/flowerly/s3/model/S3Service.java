@@ -13,8 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 @Service
@@ -48,8 +47,31 @@ public class S3Service {
     public String uploadOneImage(MultipartFile uploadImg, UploadType uploadType) throws IOException {
         FileInfo temp = multiPartToFileInfo(uploadImg, uploadType);
         s3Repository.save(temp);
-
         return temp.getUploadFileUrl();
+    }
+
+    public String uploadBase64Image(String base64, UploadType uploadType) throws IOException {
+        byte[] decodeFile = Base64.getMimeDecoder().decode(base64.substring(base64.indexOf(",") +1));
+        InputStream fis = new ByteArrayInputStream(decodeFile);
+
+        String uploadFileName = uploadType.name() + "_" + UUID.randomUUID();
+        String uploadPath = uploadType.name() + "/" + uploadFileName;
+
+        //S3에 업로드할 객체 생성
+        ObjectMetadata objMeta = new ObjectMetadata();
+        objMeta.setContentLength(decodeFile.length);
+        objMeta.setContentType("image/png");
+        amazonS3Client.putObject(new PutObjectRequest(bucket, uploadPath, fis, objMeta));
+        String uploadFileUrl = amazonS3Client.getUrl(bucket, uploadPath).toString();
+
+        s3Repository.save(FileInfo.builder()
+                .originalFileName(uploadFileName)
+                .uploadFileName(uploadFileName)
+                .uploadFilePath(uploadType.name())
+                .uploadFileUrl(uploadFileUrl)
+                .build());
+
+        return uploadFileUrl;
     }
     private FileInfo multiPartToFileInfo(MultipartFile uploadImg, UploadType uploadType) throws IOException{
         String uploadFileName = getUUIDFileName(Objects.requireNonNull(uploadImg.getOriginalFilename()));
