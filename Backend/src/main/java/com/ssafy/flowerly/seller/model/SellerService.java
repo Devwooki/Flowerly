@@ -3,13 +3,17 @@ package com.ssafy.flowerly.seller.model;
 
 import com.ssafy.flowerly.entity.Flly;
 import com.ssafy.flowerly.entity.FlowerMeaning;
+import com.ssafy.flowerly.entity.Request;
 import com.ssafy.flowerly.seller.vo.FllyRequestDto;
 import com.ssafy.flowerly.seller.vo.FlowerMeaningDto;
+import com.ssafy.flowerly.seller.vo.OrderSelectSimpleDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -18,6 +22,7 @@ public class SellerService {
 
     private final FllyRepository fellyRepository;
     private final FlowerMeaningRepository flowerMeaningRepository;
+    private final RequestRepository requestRepository;
 
 
     public FllyRequestDto getRequestLetter(long fllyId) {
@@ -45,5 +50,21 @@ public class SellerService {
         }
 
         return fllyRequestDto;
+    }
+
+    public Page<OrderSelectSimpleDto> getOrderSelect(Long mamberId, Pageable pageable) {
+
+        Page<OrderSelectSimpleDto> oderBySelect = requestRepository.findBySellerMemberIdOrderByCreatedAt(mamberId, pageable).map(Request::toOrderSelectSimpleDto);
+
+        return oderBySelect;
+    }
+
+    @Transactional
+    public String UpdateProgressType(Long mamberId, Long fllyId) {
+
+        Flly fllyInfo = fellyRepository.findByFllyId(fllyId).orElseThrow();
+
+
+        return "1";
     }
 }
