@@ -62,8 +62,9 @@ public class SellerController {
         Map<String, Object> temp = new HashMap<>();
         Long memberId = Long.valueOf(1);
         String updateProgress = sellerService.UpdateProgressType(memberId, fllyId);
+        temp.put("fllyUpdateProgress", updateProgress);
 
-        DataResponse<Map<String,Object>> result = new DataResponse<>(200, "채택 리스트반환 성공 ", temp);
+        DataResponse<Map<String,Object>> result = new DataResponse<>(200, "플리상태 변경 완료", temp);
         return result;
     }
 
