@@ -35,6 +35,10 @@ public class SellerController {
         return null;
     }
 
+
+    /*
+      의뢰 내용 API
+   */
     @GetMapping("/request/{fllyId}")
     public DataResponse<FllyRequestDto> sellerRequest(@PathVariable("fllyId") long fllyId, HttpServletRequest request){
 
@@ -44,6 +48,11 @@ public class SellerController {
 
         return result;
     }
+
+
+      /*
+        채택된 주문 리스트
+     */
 
     @GetMapping("/order")
     public DataResponse<Page<OrderSelectSimpleDto>> sellerOrderSelect(HttpServletRequest request, @PageableDefault(size = 10) Pageable pageable){
@@ -57,17 +66,25 @@ public class SellerController {
 
     }
 
+
+    /*
+      채택된 주문 완료하기
+   */
     @PatchMapping("/flly/update/{fllyId}")
     public DataResponse<Map<String,Object>> fllyUpdateProgressType(HttpServletRequest request, @PathVariable("fllyId") long fllyId){
         Map<String, Object> temp = new HashMap<>();
         Long memberId = Long.valueOf(1);
         String updateProgress = sellerService.UpdateProgressType(memberId, fllyId);
+        temp.put("fllyUpdateProgress", updateProgress);
 
-        DataResponse<Map<String,Object>> result = new DataResponse<>(200, "채택 리스트반환 성공 ", temp);
+        DataResponse<Map<String,Object>> result = new DataResponse<>(200, "플리상태 변경 완료", temp);
         return result;
     }
 
 
+    /*
+       참여한 플리
+    */
     @GetMapping("/flly/seller")
     public DataResponse<Page<OrderParticipationDto>> fllyParticipationList(HttpServletRequest request, @PageableDefault(size = 10) Pageable pageable){
         Long memberId = Long.valueOf(1);
@@ -79,4 +96,12 @@ public class SellerController {
 
     }
 
+    /*
+        팜여한 플리 상세보기 ( 의뢰 내용 + 제안 내용 )
+     */
+    @GetMapping("/flly/request/{fllyId}")
+    public DataResponse<Map<String,Object>> getFllyRequestInfo(HttpServletRequest request){
+
+        return null;
+    }
 }

@@ -19,9 +19,10 @@ public class OrderParticipationDto {
     private Integer fllybudget;
     private LocalDateTime fllyDeadline;
     //응답 정보
-    private Long fllyParticipationId;
-    private String requestImageUrl;
-    private Integer requestPrice;
-    private String content;
+    FllyResponeDto fllyResponeDto;
+//    private Long fllyParticipationId;
+//    private String requestImageUrl;
+//    private Integer requestPrice;
+//    private String content;
 
 }
