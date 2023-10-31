@@ -115,11 +115,27 @@ public class SellerController {
                                                 @RequestPart("file") MultipartFile file,
                                                  RequestFllyParticipateDto data ){
         Long memberId = Long.valueOf(2);
-        log.info(data.getFllyId().toString());
-        log.info(data.getContent().toString());
         sellerService.sellerFllyParticipate(memberId, file, data);
 
         CustomResponse resulet = new CustomResponse(200, "참여 완료!");
         return resulet;
     }
+
+    /*
+        주변 플리 보기
+     */
+    @GetMapping("/near")
+    public DataResponse<Map<String,Page<FllyNearDto>>> getNearFllyList(HttpServletRequest request,
+                                                            @PageableDefault(size=10) Pageable pageable){
+
+        Long memberId = Long.valueOf(1);
+
+        Map<String, Page<FllyNearDto>> nearFllyList = sellerService.getNearFllylist(memberId, pageable);
+
+        DataResponse<Map<String, Page<FllyNearDto>>> result = new DataResponse<>(200, "근처 플리 요청성공", nearFllyList);
+
+        return result;
+    }
+
+
 }
