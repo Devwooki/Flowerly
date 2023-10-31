@@ -35,6 +35,12 @@
     overflow: scroll;
 }
 
+.selectLoading {
+    margin-top: 50px;
+    text-align: center;
+    font-family: "NanumSquareNeoOTF-Bd";
+}
+
 .selectBox {
     margin: 0 auto;
     display: grid;
