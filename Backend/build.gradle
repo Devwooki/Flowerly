@@ -52,6 +52,9 @@ dependencies {
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 	implementation 'com.amazonaws:aws-java-sdk-bom:1.11.228'
 	implementation 'com.amazonaws:aws-java-sdk-s3'
+	// S3 업로드릉 위한 리사이즈 라이브러리
+	implementation 'com.github.downgoon:marvin:1.5.5'
+	implementation 'com.github.downgoon:MarvinPlugins:1.5.5'
 
 	// 웹 통신 관련
 	//implementation 'org.springframework.boot:spring-boot-starter-webflux'

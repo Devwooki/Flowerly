@@ -60,7 +60,7 @@ public class S3Controller {
 
     @PostMapping("/upload/chat")
     public DataResponse<?>  uploadChat(@RequestPart("image") MultipartFile uploadImg) {
-        if(uploadImg == null || uploadImg.getSize() == 0) throw new CustomException(ErrorCode.INVALID_UPLOAD_FILE);
+        if (uploadImg == null || uploadImg.getSize() == 0) throw new CustomException(ErrorCode.INVALID_UPLOAD_FILE);
         return new DataResponse<>(HttpStatus.OK.value(),
                 "채팅 사진 업로드 업로드 완",
                 s3Service.uploadOneImage(uploadImg, UploadType.CHAT)
