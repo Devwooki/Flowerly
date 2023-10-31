@@ -43,11 +43,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
             CustomOAuth2User oAuth2User = (CustomOAuth2User) authentication.getPrincipal();
             //getPrincipal()로 얻은 Member정보가 GEUST인 경우 처음 요청 -> 정보 입력 페이지로 리다이렉트 한다.
             if(oAuth2User.getRole() == MemberRole.GUEST){
-                String accessToken = jwtService.createAccessToken(oAuth2User.getMemberId());
-                response.addHeader(jwtService.getAccessHeader(), "Bearer " + accessToken);
-                response.sendRedirect("oauth2/signup?token" + accessToken); //프론트 회원가입 후 추가 정보 입력 창으로 리다이렉트
-
-                jwtService.sendAccessTokenAndRefreshToken(response, accessToken, null);
+                getAdditionalInfo(response, oAuth2User);
             }else{
                 loginSuccess(response, oAuth2User);
             }
@@ -57,12 +53,20 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         }
     }
 
+    private void getAdditionalInfo(HttpServletResponse response, CustomOAuth2User oAuth2User) throws IOException {
+        String accessToken = jwtService.createAccessToken(oAuth2User.getMemberId());
+        response.addHeader(jwtService.getAccessHeader(), "Bearer " + accessToken);
+        jwtService.sendAccessToken(response,accessToken);
+
+        response.sendRedirect("oauth2/signup?token" + accessToken); //프론트 회원가입 후 추가 정보 입력 창으로 리다이렉트
+    }
+
     // 추후 과제 : 소설 로그인 시, 무조건 토큰 생성이 아닌 JWT필터링 처럼 RefreshToken 유무에 따라 다르게 처리한다.
     private void loginSuccess(HttpServletResponse response, CustomOAuth2User oAuth2User) throws IOException {
         log.info("로그인 성공!");
         String accessToken = jwtService.createAccessToken(oAuth2User.getMemberId());
-        String refreshToken = jwtService.createRefreshToken(oAuth2User.getMemberId());
-        jwtService.sendAccessTokenAndRefreshToken(response, accessToken, refreshToken);
+        jwtService.sendAccessToken(response,accessToken);
+        //jwtService.sendAccessTokenAndRefreshToken(response, accessToken, null);
 
         response.sendRedirect(redirectURL + "/temp?token=" + accessToken);
     }
