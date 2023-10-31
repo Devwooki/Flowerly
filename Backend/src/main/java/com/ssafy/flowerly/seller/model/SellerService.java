@@ -4,6 +4,7 @@ package com.ssafy.flowerly.seller.model;
 import com.ssafy.flowerly.entity.Flly;
 import com.ssafy.flowerly.entity.FlowerMeaning;
 import com.ssafy.flowerly.entity.Request;
+import com.ssafy.flowerly.entity.type.ProgressType;
 import com.ssafy.flowerly.seller.vo.FllyRequestDto;
 import com.ssafy.flowerly.seller.vo.FlowerMeaningDto;
 import com.ssafy.flowerly.seller.vo.OrderSelectSimpleDto;
@@ -24,7 +25,9 @@ public class SellerService {
     private final FlowerMeaningRepository flowerMeaningRepository;
     private final RequestRepository requestRepository;
 
-
+    /*
+        의뢰 내용 API
+     */
     public FllyRequestDto getRequestLetter(long fllyId) {
 
         Flly fllyInfo = fellyRepository.findByFllyId(fllyId).orElseThrow();
@@ -52,6 +55,10 @@ public class SellerService {
         return fllyRequestDto;
     }
 
+    /*
+        채택된 주문 리스트
+     */
+
     public Page<OrderSelectSimpleDto> getOrderSelect(Long mamberId, Pageable pageable) {
 
         Page<OrderSelectSimpleDto> oderBySelect = requestRepository.findBySellerMemberIdOrderByCreatedAt(mamberId, pageable).map(Request::toOrderSelectSimpleDto);
@@ -59,12 +66,27 @@ public class SellerService {
         return oderBySelect;
     }
 
+    /*
+        채택된 주문 완료하기
+     */
     @Transactional
     public String UpdateProgressType(Long mamberId, Long fllyId) {
 
         Flly fllyInfo = fellyRepository.findByFllyId(fllyId).orElseThrow();
+        if(fllyInfo.getProgress().getTitle().equals("주문완료")){
+            fllyInfo.UpdateFllyProgress(ProgressType.FINISH_MAKING);
+        }
+        if(fllyInfo.getProgress().getTitle().equals("제작완료")) {
+            fllyInfo.UpdateFllyProgress(ProgressType.FINISH_DELIVERY);
+        }
+        Flly updateInfo = fellyRepository.save(fllyInfo);
 
-
-        return "1";
+        return updateInfo.getProgress().getTitle();
     }
+
+    /*
+        참여한 플리
+     */
+
+
 }

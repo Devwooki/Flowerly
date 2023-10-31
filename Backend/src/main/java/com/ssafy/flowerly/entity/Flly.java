@@ -5,7 +5,6 @@ import com.ssafy.flowerly.entity.type.*;
 import com.ssafy.flowerly.seller.vo.FllyRequestDto;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
-import org.springframework.boot.autoconfigure.AutoConfiguration;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -95,6 +94,8 @@ public class Flly extends BaseCreatedTimeEntity {
                 .build();
     }
 
-//    public UpdateProgress
+    public void UpdateFllyProgress(ProgressType progress){
+        this.progress = progress;
+    }
 
 }
