@@ -66,7 +66,7 @@ public class Flly extends BaseCreatedTimeEntity {
     private String requestContent;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 10)
+    @Column(nullable = false, length = 20)
     private ProgressType progress;
 
     @Column(nullable = false)

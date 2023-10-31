@@ -3,6 +3,7 @@ package com.ssafy.flowerly.seller;
 import com.ssafy.flowerly.JWT.JWTService;
 import com.ssafy.flowerly.seller.model.SellerService;
 import com.ssafy.flowerly.seller.vo.FllyRequestDto;
+import com.ssafy.flowerly.seller.vo.OrderParticipationDto;
 import com.ssafy.flowerly.seller.vo.OrderSelectSimpleDto;
 import com.ssafy.flowerly.util.DataResponse;
 import lombok.RequiredArgsConstructor;
@@ -47,8 +48,8 @@ public class SellerController {
     @GetMapping("/order")
     public DataResponse<Page<OrderSelectSimpleDto>> sellerOrderSelect(HttpServletRequest request, @PageableDefault(size = 10) Pageable pageable){
 
-        Long mamberId = Long.valueOf(1);
-        Page<OrderSelectSimpleDto> orderSelectList = sellerService.getOrderSelect(mamberId, pageable);
+        Long memberId = Long.valueOf(1);
+        Page<OrderSelectSimpleDto> orderSelectList = sellerService.getOrderSelect(memberId, pageable);
 
         DataResponse<Page<OrderSelectSimpleDto>> result = new DataResponse<>(200, "채택 리스트반환 성공 ",orderSelectList );
 
@@ -59,12 +60,23 @@ public class SellerController {
     @PatchMapping("/flly/update/{fllyId}")
     public DataResponse<Map<String,Object>> fllyUpdateProgressType(HttpServletRequest request, @PathVariable("fllyId") long fllyId){
         Map<String, Object> temp = new HashMap<>();
-        Long mamberId = Long.valueOf(1);
-        String updateProgress = sellerService.UpdateProgressType(mamberId, fllyId);
+        Long memberId = Long.valueOf(1);
+        String updateProgress = sellerService.UpdateProgressType(memberId, fllyId);
 
         DataResponse<Map<String,Object>> result = new DataResponse<>(200, "채택 리스트반환 성공 ", temp);
         return result;
     }
 
-    
+
+    @GetMapping("/flly/seller")
+    public DataResponse<Page<OrderParticipationDto>> fllyParticipationList(HttpServletRequest request, @PageableDefault(size = 10) Pageable pageable){
+        Long memberId = Long.valueOf(1);
+
+        Page<OrderParticipationDto> participationList = sellerService.getParticipation(memberId, pageable);
+
+        DataResponse<Page<OrderParticipationDto>> result = new DataResponse<>(200, "참여한 플리목록 반환 성공 ", participationList);
+        return result;
+
+    }
+
 }
