@@ -14,7 +14,7 @@ import javax.persistence.*;
 @ToString
 public class StoreInfo {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long storeInfoId;
 
     @OneToOne(fetch = FetchType.LAZY)

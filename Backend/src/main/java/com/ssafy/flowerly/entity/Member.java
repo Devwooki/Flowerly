@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 @ToString
 public class Member extends BaseTimeEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
 
     @Column(nullable = false)

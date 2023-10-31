@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Entity
 public class FllyDeliveryRegion {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long fllyDeliveryRegionId;
 
     @ManyToOne(fetch = FetchType.LAZY)

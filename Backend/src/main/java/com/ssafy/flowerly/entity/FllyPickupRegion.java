@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Getter
 public class FllyPickupRegion {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long fllyPickupRegionId;
 
     @ManyToOne(fetch = FetchType.LAZY)
