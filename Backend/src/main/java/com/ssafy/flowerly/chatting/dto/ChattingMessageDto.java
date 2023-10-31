@@ -1,32 +1,43 @@
 package com.ssafy.flowerly.chatting.dto;
 
+import com.ssafy.flowerly.entity.ChattingMessage;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
-import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.Id;
 import java.time.LocalDateTime;
 
-@Document
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
 public class ChattingMessageDto {
-    @Id
-    private String id;
-    private Long chattingId;
-    private Long memberId;
-    private String content;
-    private String type;
-    private LocalDateTime sendTime;
 
-    public ChattingMessageDto(Long chattingId, String type, Long memberId, String content) {
-        this.chattingId = chattingId;
-        this.type = type;
-        this.memberId = memberId;
-        this.content = content;
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class Request {
+        private Long chattingId;
+        private Long memberId;
+        private String type;
+        private String content;
+    }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class Response {
+        private Long memberId;
+        private String type;
+        private String content;
+        private LocalDateTime sendTime;
+
+        public static ChattingMessageDto.Response of(ChattingMessage chattingMessage) {
+            return Response.builder()
+                    .memberId(chattingMessage.getMemberId())
+                    .type(chattingMessage.getType())
+                    .content(chattingMessage.getContent())
+                    .sendTime(chattingMessage.getSendTime())
+                    .build();
+        }
     }
 }
