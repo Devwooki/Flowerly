@@ -2,6 +2,7 @@ package com.ssafy.flowerly.JWT;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.ssafy.flowerly.exception.CustomException;
 import com.ssafy.flowerly.exception.ErrorCode;
 import lombok.Getter;
@@ -94,15 +95,17 @@ public class JWTService {
         response.setStatus(HttpServletResponse.SC_OK);
         response.setHeader(accessHeader,BEARER + accessToken);
 
-        ResponseCookie refreshCookie = ResponseCookie.from(refreshHeader, refreshToken)
-                .sameSite("Lax")
-                .httpOnly(true)
-                .secure(true)
-                .maxAge(refreshExpiration)
-                .build();
+        if(refreshToken != null){
+            ResponseCookie refreshCookie = ResponseCookie.from(refreshHeader, refreshToken)
+                    .sameSite("Lax")
+                    .httpOnly(true)
+                    .secure(true)
+                    .maxAge(refreshExpiration)
+                    .build();
+            response.setHeader("Set-Cookie", refreshCookie.toString());
+        }
 
-        response.setHeader("Set-Cookie", refreshCookie.toString());
-        log.info("AccessToken 및 RefreshToken 설정 완료 : {} \n {}", accessToken, refreshToken);
+        log.info("AccessToken 및 RefreshToken 설정 완");
     }
 
     // 헤더에서 AccessToken 추출
@@ -133,8 +136,10 @@ public class JWTService {
             /**require : JWT검증 메소드
              * require : 요구사항을 지정한다. 현재 코드는 암호화 알고리즘과 비밀키로 검증한다.
              */
-            JWT.require(Algorithm.HMAC512(secretKey)).build().verify(token);
-            return true;
+            DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC512(secretKey)).build().verify(token);
+
+            //만료시간이 지났는지 체크
+            return decodedJWT.getExpiresAt().after(new Date());
         }catch(Exception e){
             log.error("유효하지 않은 토큰 입니다. {}", e.getMessage());
             return false;
