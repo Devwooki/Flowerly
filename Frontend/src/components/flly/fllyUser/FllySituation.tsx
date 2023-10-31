@@ -31,7 +31,7 @@ const FllySeller = () => {
             {selectList.map((item, index) => (
               <div key={index} className={selected==item? style.selectedCard: style.selectCard} onClick={() => {handleSelect(item)}}>
                 <div className={style.selectWord}>{item}</div>
-                <Image src={imgList[index]} width={75} height={75} alt="아이콘" />
+                <Image src={imgList[index]} width={60} height={60} alt="아이콘" />
               </div>
             ))}            
           </div>
