@@ -26,7 +26,7 @@ public class S3Service {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    public String upload(MultipartFile[] mFiles, UploadType uploadType) throws IOException {
+    public String upload(MultipartFile[] mFiles, UploadType uploadType) {
 
         try{
             List<FileInfo> data = new ArrayList<>();
@@ -44,13 +44,13 @@ public class S3Service {
         }
     }
 
-    public String uploadOneImage(MultipartFile uploadImg, UploadType uploadType) throws IOException {
+    public String uploadOneImage(MultipartFile uploadImg, UploadType uploadType) {
         FileInfo temp = multiPartToFileInfo(uploadImg, uploadType);
         s3Repository.save(temp);
         return temp.getUploadFileUrl();
     }
 
-    public String uploadBase64Image(String base64, UploadType uploadType) throws IOException {
+    public String uploadBase64Image(String base64, UploadType uploadType) {
         byte[] decodeFile = Base64.getMimeDecoder().decode(base64.substring(base64.indexOf(",") +1));
         InputStream fis = new ByteArrayInputStream(decodeFile);
 
@@ -73,23 +73,28 @@ public class S3Service {
 
         return uploadFileUrl;
     }
-    private FileInfo multiPartToFileInfo(MultipartFile uploadImg, UploadType uploadType) throws IOException{
-        String uploadFileName = getUUIDFileName(Objects.requireNonNull(uploadImg.getOriginalFilename()));
-        String uploadPath = uploadType.name() + "/" + uploadFileName;
+    private FileInfo multiPartToFileInfo(MultipartFile uploadImg, UploadType uploadType){
+        try{
+            String uploadFileName = getUUIDFileName(Objects.requireNonNull(uploadImg.getOriginalFilename()));
+            String uploadPath = uploadType.name() + "/" + uploadFileName;
 
-        //S3에 업로드할 객체 생성
-        ObjectMetadata objMeta = new ObjectMetadata();
-        objMeta.setContentLength(uploadImg.getSize());
-        objMeta.setContentType(uploadImg.getContentType());
-        amazonS3Client.putObject(new PutObjectRequest(bucket, uploadPath, uploadImg.getInputStream(), objMeta));
+            //S3에 업로드할 객체 생성
+            ObjectMetadata objMeta = new ObjectMetadata();
+            objMeta.setContentLength(uploadImg.getSize());
+            objMeta.setContentType(uploadImg.getContentType());
+            amazonS3Client.putObject(new PutObjectRequest(bucket, uploadPath, uploadImg.getInputStream(), objMeta));
 
-        String uploadFileUrl = amazonS3Client.getUrl(bucket, uploadPath).toString();
-        return FileInfo.builder()
-                .originalFileName(uploadImg.getOriginalFilename())
-                .uploadFileName(uploadFileName)
-                .uploadFilePath(uploadType.name())
-                .uploadFileUrl(uploadFileUrl)
-                .build();
+            String uploadFileUrl = amazonS3Client.getUrl(bucket, uploadPath).toString();
+            return FileInfo.builder()
+                    .originalFileName(uploadImg.getOriginalFilename())
+                    .uploadFileName(uploadFileName)
+                    .uploadFilePath(uploadType.name())
+                    .uploadFileUrl(uploadFileUrl)
+                    .build();
+        }catch(IOException e){
+            log.error("업로드 예외 발생");
+            return null;
+        }
     }
 
 
