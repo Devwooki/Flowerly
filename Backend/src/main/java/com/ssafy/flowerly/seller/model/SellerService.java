@@ -8,6 +8,7 @@ import com.ssafy.flowerly.exception.CustomException;
 import com.ssafy.flowerly.exception.ErrorCode;
 import com.ssafy.flowerly.member.MemberRole;
 import com.ssafy.flowerly.member.model.MemberRepository;
+import com.ssafy.flowerly.member.model.StoreInfoRepository;
 import com.ssafy.flowerly.s3.model.S3Service;
 import com.ssafy.flowerly.seller.vo.*;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -34,7 +37,14 @@ public class SellerService {
     private final RequestRepository requestRepository;
     private final FllyParticipationRepository fllyParticipationRepository;
     private final MemberRepository memberRepository;
+    private final StoreDeliveryRegionRepository storeDeliveryRegionRepository;
+    private final FllyDeliveryRegionRepository fllyDeliveryRegionRepository;
+    private final StoreInfoRepository storeInfoRepository;
+    private final DongRepository dongRepository;
+    private final SigunguRepository sigunguRepository;
+    private final FllyPickupRegionRepository fllyPickupRegionRepository;
     private final S3Service s3Service;
+
 
     /*
         의뢰 내용 API
@@ -156,8 +166,6 @@ public class SellerService {
 
         String imgUrl = s3Service.uploadOneImage(file, UploadType.ORDER);
 
-        log.info(imgUrl);
-
         if(imgUrl.isEmpty()){
             throw new CustomException(ErrorCode.INVALID_UPLOAD_FILE);
         }
@@ -175,5 +183,94 @@ public class SellerService {
             throw new CustomException(ErrorCode.SELLER_PARTICIPATE_FAIL);
         }
 
+    }
+    
+    /*
+        주변 플리 정보 불러오기
+     */
+    public Map<String, Page<FllyNearDto>> getNearFllylist(Long memberId, Pageable pageable) {
+
+        Map<String, Page<FllyNearDto>> result = new HashMap<>();
+        //사이즈가 0이면 에러 발생 (주변에 플리가없어요!)
+        Integer listSize = 0;
+
+        //유저가 있는가 ? (판매자)
+        Member member = memberRepository.findByMemberId(memberId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_MEMBER));
+        //유저가 판매자가 아니라면?
+        if(member.getRole() != MemberRole.SELLER){
+            throw new CustomException(ErrorCode.MEMBER_NOT_SELLER);
+        }
+
+        //판매자가 배달 가능한 지역인가?
+        //1. 판매자가 설정한 배달 정보를 가져와야한다.
+        /* 이런 방법도 가능하다!! 바로 DTO 만들어서 하기..
+        List<AddressSimpleDto> storeDeliveryRegion = storeDeliveryRegionRepository.findBySellerMemberId(memberId)
+                .map(regions -> regions.stream()
+                        .map(StoreDeliveryRegion::toAddressSimpleDto)
+                        .collect(Collectors.toList()))
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_SELLER_DELIVERY_REGION));
+         */
+
+        List<StoreDeliveryRegion> storeDeliveryRegions = storeDeliveryRegionRepository.findBySellerMemberId(memberId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_SELLER_DELIVERY_REGION));
+
+        //배달일경우는 전체를 한다면 (충청북도)로 찾아야하기에 세개다 비교를 해야함
+        List<Sido> deliverySido = new ArrayList<>();
+        List<Sigungu> deliverySigugun = new ArrayList<>();
+        List<Dong> deliveryDong = new ArrayList<>();
+
+        //시 구군 동 세팅 (동부터 돌면서 전체가 있나 없나 비교)
+        for(StoreDeliveryRegion tmp : storeDeliveryRegions){
+            if(tmp.getDong().getDongName().equals("전체")){
+                if(tmp.getSigungu().getSigunguName().equals("전체")) deliverySido.add(tmp.getSido());
+                else deliverySigugun.add(tmp.getSigungu());
+            }
+            else deliveryDong.add(tmp.getDong());
+        }
+
+        // 해당 배달지역으로 가지고있는 것을 Flly번호를 찾아온다.
+        Page<FllyNearDto> deliveryAbleList = fllyDeliveryRegionRepository
+                .getSellerDeliverAbleList(deliverySido, deliverySigugun, deliveryDong, pageable)
+                .map(FllyDeliveryRegion::toDeliveryFllyNearDto);
+
+        listSize += deliveryAbleList.getContent().size();
+
+        result.put("deliveryAbleList", deliveryAbleList);
+
+        //2 픽업 가능한지 찾아야한다!
+        //2-1 판매자 가게의 주소
+        //없다고 화면에 출력이 안되는게 아니기때문에 에러발생 X
+        StoreInfo store = storeInfoRepository.findBySellerMemberId(memberId);
+
+        //나의 주소를 가지고 전체 값을 찾아야한다! (시를 보내 구군의 전체를 찾고 / 시구군을 보내 동에서 전체를 찾는다 )
+        if(store != null){
+            Sigungu sigunguAll = sigunguRepository.findBysigunguCodeAllCode(store.getSido());
+            Dong dongAll = dongRepository.findByDongCodeAllCode(store.getSigungu());
+
+            //픽업일경우에는 전체 + 내 주소만 보면되기때문
+            List<Sigungu> pickupSigugun = new ArrayList<>();
+            List<Dong> pickupDong = new ArrayList<>();
+
+            pickupSigugun.add(store.getSigungu());
+            pickupSigugun.add(sigunguAll);
+            pickupDong.add(store.getDong());
+            pickupDong.add(dongAll);
+
+            //2-2 가게의 시 군 구 와 전체 시군구 와 전체 동을 가지고 flly픽업정보에서 찾는다
+            Page<FllyNearDto> pickupAbleList =  fllyPickupRegionRepository
+                    .getSellerPickupAbleList(pickupSigugun, pickupDong, pageable)
+                    .map(FllyPickupRegion::toPickupFllyNearDto);
+
+            listSize += pickupAbleList.getContent().size();
+
+            result.put("pickupAbleList", pickupAbleList);
+        }
+
+        if(listSize == 0){
+            throw new CustomException(ErrorCode.NOT_SELLER_SEARCH_NEAR);
+        }
+
+        return result;
     }
 }

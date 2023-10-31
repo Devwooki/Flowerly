@@ -1,5 +1,6 @@
 package com.ssafy.flowerly.entity;
 
+import com.ssafy.flowerly.seller.vo.FllyNearDto;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -26,5 +27,19 @@ public class FllyPickupRegion {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dong_code")
     private Dong dong;
+
+
+    public FllyNearDto toPickupFllyNearDto(){
+        return FllyNearDto.builder()
+                .fllyId(this.flly.getFllyId())
+                .flowerName1(this.flly.getFlower1().getFlowerName())
+                .flowerName2(this.flly.getFlower2().getFlowerName())
+                .flowerName3(this.flly.getFlower3().getFlowerName())
+                .budget(this.flly.getBudget())
+                .imageUrl(this.flly.getImageUrl())
+                .progress(this.flly.getProgress().getTitle())
+                .deadline(this.flly.getDeadline())
+                .build();
+    }
 
 }
