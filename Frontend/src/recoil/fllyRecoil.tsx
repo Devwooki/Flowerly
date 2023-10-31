@@ -7,6 +7,11 @@ export interface flowerCardType {
   flower_meaning : string[],
 }
 
+export interface bouquetType {
+  url : string,
+  base64 : string
+}
+
 export const situationState = atom({
   key: 'situationState',
   default: '',
@@ -25,4 +30,9 @@ export const colorState = atom({
 export const flowerState = atom({
   key: 'flowerState',
   default: [] as flowerCardType[],
+})
+
+export const bouquetState = atom({
+  key: 'bouquetState',
+  default: [] as bouquetType[],
 })
