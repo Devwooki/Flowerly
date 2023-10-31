@@ -48,7 +48,6 @@ public class MemberController {
         return new CustomResponse(HttpStatus.OK.value(), "요청 성공");
     }
 
-
     @GetMapping("/logout")
     public CustomResponse logOut(HttpServletRequest request, HttpServletResponse response){
         log.info("로그아웃 시작");
