@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @ToString
 public class Chatting extends BaseCreatedTimeEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long chattingId;
 
     @OneToOne(fetch = FetchType.LAZY)

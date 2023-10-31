@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @ToString
 public class FllyParticipation extends BaseCreatedTimeEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long fllyParticipationId;
 
     @ManyToOne(fetch = FetchType.LAZY)

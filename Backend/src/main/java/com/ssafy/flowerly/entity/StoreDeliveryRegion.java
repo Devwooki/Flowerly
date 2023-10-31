@@ -14,7 +14,7 @@ import javax.persistence.*;
 @ToString
 public class StoreDeliveryRegion {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long storeDeliveryRegionId;
 
     @ManyToOne(fetch = FetchType.LAZY)
