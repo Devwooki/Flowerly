@@ -12,6 +12,7 @@ type Chatting = {
 };
 
 const ChattingList = () => {
+  // axios로 받아야 함!!
   const [chattings, setChattings] = useState<Chatting[]>([
     {
       chattingId: 1,
@@ -43,7 +44,11 @@ const ChattingList = () => {
       </div>
       <div className={style.container}>
         {chattings.map((chatting, idx) => {
+<<<<<<< Updated upstream
           return <ChattingListCard chattingData={chatting}></ChattingListCard>;
+=======
+          return <ChattingListCard key={chatting.chattingId} chattingData={chatting} />;
+>>>>>>> Stashed changes
         })}
       </div>
     </>

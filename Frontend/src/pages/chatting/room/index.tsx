@@ -3,7 +3,7 @@ import React, { useState } from "react";
 const ChattingRoomMain = () => {
   return (
     <>
-      <div>채팅룸</div>
+      <div>채팅방</div>
     </>
   );
 };
