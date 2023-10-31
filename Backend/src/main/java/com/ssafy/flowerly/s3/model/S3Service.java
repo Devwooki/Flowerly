@@ -23,20 +23,26 @@ import java.util.*;
 public class S3Service {
 
     private final AmazonS3Client amazonS3Client;
-    private S3Repository s3Repository;
+    private final S3Repository s3Repository;
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
     public String upload(MultipartFile[] mFiles, UploadType uploadType) throws IOException {
-        List<FileInfo> data = new ArrayList<>();
 
-        for(MultipartFile mFile : mFiles){
-            if(mFile.getSize() == 0) continue;
-            data.add(multiPartToFileInfo(mFile,uploadType));
+        try{
+            List<FileInfo> data = new ArrayList<>();
+            for(MultipartFile mFile : mFiles){
+                if(mFile.getSize() == 0) continue;
+                data.add(multiPartToFileInfo(mFile,uploadType));
+            }
+
+            s3Repository.saveAll(data);
+            return "꽃 사진 업로드 성공";
+        }catch(CustomException e){
+            e.printStackTrace();
+            log.error("매장 대표사진 업로드 예외발생");
+            return "문제발생";
         }
-
-        s3Repository.saveAll(data);
-        return "꽃 사진 업로드 성공";
     }
 
     public String uploadOneImage(MultipartFile uploadImg, UploadType uploadType) throws IOException {

@@ -60,8 +60,9 @@ public class MemberController {
         return new CustomResponse(200, "logout");
     }
 
-    @GetMapping("/dummy-token")
-    public DataResponse<?> getDummyToken(HttpServletRequest request){
-        return new DataResponse<>(HttpStatus.OK.value(), "더미토큰 발사!!", jwtService.makeDummyToken());
+    @GetMapping("/dummy-token/{memberId}")
+    public DataResponse<?> getDummyToken(@PathVariable Long memberId,
+                                        HttpServletRequest request){
+        return new DataResponse<>(HttpStatus.OK.value(), "더미토큰 발사!!", jwtService.makeDummyToken(memberId));
     }
 }
