@@ -9,7 +9,7 @@ public class Dong {
     private Long dongCode;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "singungu_code")
+    @JoinColumn(name = "sigungu_code")
     private Sigungu sigungu;
 
     private String dongName;
