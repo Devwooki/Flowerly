@@ -44,11 +44,7 @@ const ChattingList = () => {
       </div>
       <div className={style.container}>
         {chattings.map((chatting, idx) => {
-<<<<<<< Updated upstream
-          return <ChattingListCard chattingData={chatting}></ChattingListCard>;
-=======
           return <ChattingListCard key={chatting.chattingId} chattingData={chatting} />;
->>>>>>> Stashed changes
         })}
       </div>
     </>
