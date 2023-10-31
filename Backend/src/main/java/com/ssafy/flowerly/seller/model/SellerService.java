@@ -6,10 +6,7 @@ import com.ssafy.flowerly.entity.FllyParticipation;
 import com.ssafy.flowerly.entity.FlowerMeaning;
 import com.ssafy.flowerly.entity.Request;
 import com.ssafy.flowerly.entity.type.ProgressType;
-import com.ssafy.flowerly.seller.vo.FllyRequestDto;
-import com.ssafy.flowerly.seller.vo.FlowerMeaningDto;
-import com.ssafy.flowerly.seller.vo.OrderParticipationDto;
-import com.ssafy.flowerly.seller.vo.OrderSelectSimpleDto;
+import com.ssafy.flowerly.seller.vo.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -66,13 +63,11 @@ public class SellerService {
      */
 
     public Page<OrderSelectSimpleDto> getOrderSelect(Long mamberId, Pageable pageable) {
-        
         //내꺼인지
-        
         //주문완료인 제작완료인지
-        
-        Page<OrderSelectSimpleDto> oderBySelect = requestRepository.findBySellerMemberIdOrderByCreatedAt(mamberId, pageable).map(Request::toOrderSelectSimpleDto);
-
+        Page<OrderSelectSimpleDto> oderBySelect =
+                requestRepository.findBySellerMemberIdOrderByCreatedAt(mamberId, pageable)
+                        .map(Request::toOrderSelectSimpleDto);
         return oderBySelect;
     }
 
@@ -112,6 +107,19 @@ public class SellerService {
         return orderParticipation;
     }
 
+    /*
+       플리 의뢰서 상세 ( 제안 + 의뢰 )
+     */
+    public ParticipationRequestDto getFllyRequestInfo(Long memberId, Long fllyId){
 
+        ParticipationRequestDto result = new ParticipationRequestDto();
+        FllyRequestDto fllyRequestDto = getRequestLetter(fllyId);
+        result.setFllyRequestDto(fllyRequestDto);
+        FllyResponeDto fllyResponeDto = fllyParticipationRepository.findByFllyFllyId(fllyId)
+                .map(FllyParticipation::toFllyResponeDto).orElseThrow();
+        result.setFllyResponeDto(fllyResponeDto);
+
+        return result;
+    }
 
 }

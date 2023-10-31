@@ -5,6 +5,7 @@ import com.ssafy.flowerly.seller.model.SellerService;
 import com.ssafy.flowerly.seller.vo.FllyRequestDto;
 import com.ssafy.flowerly.seller.vo.OrderParticipationDto;
 import com.ssafy.flowerly.seller.vo.OrderSelectSimpleDto;
+import com.ssafy.flowerly.seller.vo.ParticipationRequestDto;
 import com.ssafy.flowerly.util.DataResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -97,11 +98,14 @@ public class SellerController {
     }
 
     /*
-        팜여한 플리 상세보기 ( 의뢰 내용 + 제안 내용 )
+        참여한 플리 상세보기 ( 의뢰 내용 + 제안 내용 )
      */
     @GetMapping("/flly/request/{fllyId}")
-    public DataResponse<Map<String,Object>> getFllyRequestInfo(HttpServletRequest request){
-
-        return null;
+    public DataResponse<ParticipationRequestDto> getFllyRequestInfo(HttpServletRequest request, @PathVariable("fllyId") long fllyId){
+        Long memberId = Long.valueOf(1);
+        ParticipationRequestDto participationRequestDto = sellerService.getFllyRequestInfo(memberId, fllyId);
+        log.info(participationRequestDto.toString());
+        DataResponse<ParticipationRequestDto> result = new DataResponse<>(200, "참여한 플리상제(제안+의뢰) 반환 성공 ", participationRequestDto);
+        return result;
     }
 }
