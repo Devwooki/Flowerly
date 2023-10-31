@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import style from "./FllySellerParticipation.module.css";
+import style from "./style/FllySellerParticipation.module.css";
 import Image from "next/image";
 
 const FllySellerParticipation = () => {

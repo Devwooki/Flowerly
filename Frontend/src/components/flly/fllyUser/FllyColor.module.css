@@ -1,0 +1,139 @@
+.fllyBox {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    background-color: var(--gray);
+}
+
+.contentBox {
+    padding: 30px 20px;
+}
+
+.progress {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.progressBar {
+    display: flex;
+    align-items: center;
+    width: 90%;
+    margin-right: 10px;
+}
+
+.progressNum {
+    font-size: 10px;
+}
+
+.barCompleted {
+    height: 4px;
+    width: 100%;
+    background-color: #87B8CF;
+}
+
+.headerTitle {
+    display: flex;
+}
+
+.stage {
+    background-color: #DEDEDE;
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    margin-right: 8px;
+    border-radius: 50px;
+    text-align: center;
+}
+
+.guide {
+    line-height: 24px;
+    font-size: 20px;
+    font-family: "NanumSquareNeoOTF-Bd";
+}
+
+.guidePlus {
+    margin: 4px 0 0 36px;
+    font-size: 12px;
+    color: var(--dark);
+    height: 16px;
+}
+
+.selectAreaBox {
+    margin-top: 30px;
+    height: 580px;
+    display: flex;
+    align-items: center;
+}
+
+.selectBox {
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 180px 180px;
+    justify-content: center;
+}
+
+.selectCard {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    width: 150px;
+    height: 80px;
+    border-radius: 16px;
+    margin: 10px;
+    background-color: var(--gray);
+}
+
+.selectWord {
+    margin-right: 10px;
+    width: 62px;
+    text-align: center;
+    font-family: "NanumSquareNeoOTF-Bd";
+}
+
+.selectCheck {
+    width: 50px;
+    height: 50px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.selectCheckWhite {
+    width: 50px;
+    height: 50px;
+    background-color: rgba(229, 229, 229, 0.5);
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btnBox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.prevBtn {
+    background-color: var(--moregray);
+    color: var(--dark);
+    width: 20px;
+    padding: 12px;
+    border-radius: 12px;
+    margin-right: 10px;
+    text-align: center;
+    font-family: "NanumSquareNeoOTF-Bd";
+}
+
+.nextBtn {
+    background-color: var(--blue);   
+    width: 80px;
+    padding: 12px;
+    border-radius: 16px;
+    color: var(--gray);
+    text-align: center;
+    font-family: "NanumSquareNeoOTF-Bd";
+}

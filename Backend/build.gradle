@@ -56,6 +56,11 @@ dependencies {
 	implementation 'com.github.downgoon:marvin:1.5.5'
 	implementation 'com.github.downgoon:MarvinPlugins:1.5.5'
 
+	// 채팅 관련
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+	implementation 'org.webjars:stomp-websocket:2.3.3-1'
+	implementation 'org.webjars:sockjs-client:1.1.2'
+
 	// 웹 통신 관련
 	//implementation 'org.springframework.boot:spring-boot-starter-webflux'
 }
