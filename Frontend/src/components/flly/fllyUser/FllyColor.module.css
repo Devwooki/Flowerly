@@ -27,14 +27,8 @@
 
 .barCompleted {
     height: 4px;
-    width: 66%;
+    width: 100%;
     background-color: #87B8CF;
-}
-
-.barWating {
-    height: 4px;
-    width: 34%;
-    background-color: #F2F4F7;
 }
 
 .headerTitle {
@@ -57,8 +51,22 @@
     font-family: "NanumSquareNeoOTF-Bd";
 }
 
+.guidePlus {
+    margin: 4px 0 0 36px;
+    font-size: 12px;
+    color: var(--dark);
+    height: 16px;
+}
+
+.selectAreaBox {
+    margin-top: 30px;
+    height: 580px;
+    display: flex;
+    align-items: center;
+}
+
 .selectBox {
-    margin: 50px auto;
+    margin: 0 auto;
     display: grid;
     grid-template-columns: 180px 180px;
     justify-content: center;
@@ -70,25 +78,37 @@
     align-items: center;
     padding: 10px;
     width: 150px;
-    border-radius: 10px;
+    height: 80px;
+    border-radius: 16px;
     margin: 10px;
     background-color: var(--gray);
 }
 
-.selectedCard {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px;
-    width: 150px;
-    border-radius: 10px;
-    margin: 10px;
-    background-color: rgba(135, 184, 207, 0.2);
-}
-
 .selectWord {
     margin-right: 10px;
+    width: 62px;
+    text-align: center;
     font-family: "NanumSquareNeoOTF-Bd";
+}
+
+.selectCheck {
+    width: 50px;
+    height: 50px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.selectCheckWhite {
+    width: 50px;
+    height: 50px;
+    background-color: rgba(229, 229, 229, 0.5);
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .btnBox {

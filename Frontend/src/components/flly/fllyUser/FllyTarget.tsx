@@ -27,13 +27,16 @@ const FllySeller = () => {
             <div className={style.stage}>2</div>
             <div className={style.guide}>선물할 대상을 선택해주세요.</div>
           </div>
-          <div className={style.selectBox}>
-            {selectList.map((item, index) => (
-              <div key={index} className={selected==item? style.selectedCard: style.selectCard} onClick={() => {handleSelect(item)}}>
-                <div className={style.selectWord}>{item}</div>
-                <Image src={imgList[index]} width={65} height={65} alt="아이콘" />
-              </div>
-            ))}            
+          <div className={style.selectAreaBox}>
+            <div className={style.selectBox}>
+              {selectList.map((item, index) => (
+                <div key={index} className={selected==item? style.selectedCard: style.selectCard} onClick={() => {handleSelect(item)}}>
+                  <div className={style.selectWord}>{item}</div>
+                  <Image src={imgList[index]} width={65} height={65} alt="아이콘" />
+                </div>
+              ))}            
+            </div>
+
           </div>
           <div className={style.btnBox}>
             <div className={style.prevBtn}>&lt;</div>
