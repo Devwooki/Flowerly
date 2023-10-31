@@ -2,10 +2,8 @@ package com.ssafy.flowerly.seller;
 
 import com.ssafy.flowerly.JWT.JWTService;
 import com.ssafy.flowerly.seller.model.SellerService;
-import com.ssafy.flowerly.seller.vo.FllyRequestDto;
-import com.ssafy.flowerly.seller.vo.OrderParticipationDto;
-import com.ssafy.flowerly.seller.vo.OrderSelectSimpleDto;
-import com.ssafy.flowerly.seller.vo.ParticipationRequestDto;
+import com.ssafy.flowerly.seller.vo.*;
+import com.ssafy.flowerly.util.CustomResponse;
 import com.ssafy.flowerly.util.DataResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,10 +11,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -107,5 +105,21 @@ public class SellerController {
         log.info(participationRequestDto.toString());
         DataResponse<ParticipationRequestDto> result = new DataResponse<>(200, "참여한 플리상제(제안+의뢰) 반환 성공 ", participationRequestDto);
         return result;
+    }
+
+    /*
+        플리 참여하기
+     */
+    @PostMapping("/flly/participate")
+    public CustomResponse sellerFllyParticipate(HttpServletRequest request,
+                                                @RequestPart("file") MultipartFile file,
+                                                 RequestFllyParticipateDto data ){
+        Long memberId = Long.valueOf(2);
+        log.info(data.getFllyId().toString());
+        log.info(data.getContent().toString());
+        sellerService.sellerFllyParticipate(memberId, file, data);
+
+        CustomResponse resulet = new CustomResponse(200, "참여 완료!");
+        return resulet;
     }
 }

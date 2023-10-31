@@ -66,4 +66,14 @@ public class FllyParticipation extends BaseCreatedTimeEntity {
                 .content(this.content)
                 .build();
     }
+
+
+    @Builder
+    public FllyParticipation(String imageUrl, Integer offerPrice, String content, Member seller, Flly flly ){
+        this.imageUrl = imageUrl;
+        this.offerPrice = offerPrice;
+        this.content = content;
+        this.seller = seller;
+        this.flly = flly;
+    }
 }
