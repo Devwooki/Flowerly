@@ -1,10 +1,13 @@
 package com.ssafy.flowerly.entity;
 
 import com.ssafy.flowerly.entity.type.ColorType;
+import com.ssafy.flowerly.seller.vo.FlowerMeaningDto;
+import com.ssafy.flowerly.seller.vo.FlowerSimpleInfoDto;
 import lombok.Getter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -33,4 +36,12 @@ public class Flower {
     private Boolean october;
     private Boolean november;
     private Boolean december;
+
+    public FlowerSimpleInfoDto toFlowerSimpleInfoDto(List<FlowerMeaningDto> mean){
+        return FlowerSimpleInfoDto.builder()
+                .flowerName(flowerName)
+                .flowerMeaning(mean)
+                .build();
+    }
+
 }

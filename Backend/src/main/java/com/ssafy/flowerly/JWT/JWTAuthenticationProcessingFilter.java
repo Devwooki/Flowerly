@@ -39,7 +39,6 @@ public class JWTAuthenticationProcessingFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        new SimpleDateFormat("yyyy_MM_dd");
         //해당 필터는 JWT만 검증하므로 다음 필터에게 작업을 처리하도록한다.
         if(request.getRequestURI().equals(NO_CHECK_URL) || request.getRequestURI().contains("favicon")){
             filterChain.doFilter(request,response);
@@ -62,6 +61,7 @@ public class JWTAuthenticationProcessingFilter extends OncePerRequestFilter {
         //RefreshToken이 없거나 유효하지 않다면, AccessToken을 검사한다
         if (refreshToken == null) {
             checkAccessTokenAndAuthentication(request, response, filterChain);
+            filterChain.doFilter(request, response);
         }
     }
 
@@ -80,7 +80,7 @@ public class JWTAuthenticationProcessingFilter extends OncePerRequestFilter {
                     saveAuthentication(member);
                 });
 
-        filterChain.doFilter(request, response);
+        log.info("검증 성공!");
     }
 
     // 인증을 수행하는 메소드

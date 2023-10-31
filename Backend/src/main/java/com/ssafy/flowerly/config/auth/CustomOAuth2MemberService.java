@@ -56,8 +56,6 @@ public class CustomOAuth2MemberService implements OAuth2UserService<OAuth2UserRe
 
 
         Member member = saveOfFind(oAuth2UserInfo, socialType);
-        log.info("memberInfo : {}", member);
-
         //OAuth2User 기본 표현 OAuth 2.0 표준 사용자를 나타내며 이름, 이메일, 전화번호, 주소 처럼 하나이상의 속성으로 구성
         //OAuth2는 SNS 서비스간 표준화 되지 않아서 CustomOAuth2User를 만들어서 서비스 내부에서 표준화 처리한다.
 
