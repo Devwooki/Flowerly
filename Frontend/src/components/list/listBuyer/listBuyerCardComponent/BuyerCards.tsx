@@ -16,9 +16,9 @@ const BuyerCards = ({ card }: BuyerCardsProps) => {
     <div className={style.cardBox}>
       <ProgressBar currentStep={stepNumber} />
       <div className={style.cardInfo}>
-        <Image src={card.img} alt="꽃 이미지" width={200} height={200} />
+        <Image src={card.img} alt="꽃 이미지" width={150} height={150} />
         <div className={style.InfoText}>
-          <div className={style.infoTitle}>상품정보</div>
+          <div className={style.InfoTextHeader}>상품정보</div>
           <div className={style.infoTable}>
             <div className={style.infoTitle}>상황</div>
             <div className={style.info}>{card.situation}</div>
@@ -27,13 +27,16 @@ const BuyerCards = ({ card }: BuyerCardsProps) => {
             <div className={style.infoTitle}>대상</div>
             <div className={style.info}>{card.target}</div>
           </div>
-          <div className={style.infoTable} style={{ display: "inline-block" }}>
-            <div className={style.infoTitle}>주요색상</div>
+          <div
+            className={style.infoTable}
+            style={{ display: "inline-block", marginBottom: "10px" }}
+          >
+            <div className={style.infoColorTable}>주요색상</div>
             {card.selectedColor.map((color, idx) => {
               return (
                 <div
                   key={idx}
-                  className={`${style.info} `}
+                  className={`${style.info} ${style.colorfirst}`}
                   style={{ display: "inline", marginRight: "10px" }}
                 >
                   {color}
@@ -43,7 +46,7 @@ const BuyerCards = ({ card }: BuyerCardsProps) => {
           </div>
           <div className={style.infoTable}>
             <div className={style.infoTitle}>꽃집</div>
-            <div className={style.info}>{card.shopName}</div>
+            <div className={`${style.flowerShop}`}>{card.shopName}</div>
           </div>
         </div>
       </div>
