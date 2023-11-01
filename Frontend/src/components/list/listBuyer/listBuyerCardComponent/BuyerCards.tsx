@@ -33,7 +33,9 @@ const BuyerCards = ({ card }: BuyerCardsProps) => {
   };
 
   const fllistBtn = (fllyId: number) => {
-    console.log(fllyId);
+    route.push({
+      pathname: `/list/buyer/${fllyId}/${encodeURIComponent(JSON.stringify(card))}`,
+    });
   };
 
   return (
