@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface DongRepository extends JpaRepository<Dong, Long> {
 
@@ -13,5 +15,7 @@ public interface DongRepository extends JpaRepository<Dong, Long> {
             "SELECT d FROM Dong d " +
                     "WHERE d.sigungu = :sigungu AND d.dongName = '전체' ")
     Dong findByDongCodeAllCode(Sigungu sigungu);
+
+    List<Dong> findDongsBySigunguSigunguCode(Long sigunguCode);
 
 }

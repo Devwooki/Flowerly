@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface SigunguRepository extends JpaRepository<Sigungu, Long > {
 
@@ -15,4 +17,6 @@ public interface SigunguRepository extends JpaRepository<Sigungu, Long > {
                     "Where s.sido = :sido AND s.sigunguName = '전체' "
     )
     Sigungu findBysigunguCodeAllCode(Sido sido);
+
+    List<Sigungu> findSigungusBySido_SidoCode(Long sidoCode);
 }
