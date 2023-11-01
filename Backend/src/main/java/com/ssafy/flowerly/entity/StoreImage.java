@@ -14,7 +14,7 @@ import javax.persistence.*;
 @ToString
 public class StoreImage {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long storeImageId;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -1,6 +1,10 @@
 package com.ssafy.flowerly.chatting.service;
 
 import com.ssafy.flowerly.chatting.dto.ChattingDto;
+import com.ssafy.flowerly.chatting.dto.StompChatRequest;
+import com.ssafy.flowerly.entity.ChattingMessage;
+import com.ssafy.flowerly.chatting.dto.ChattingMessageDto;
+import com.ssafy.flowerly.chatting.repository.ChattingMessageRepository;
 import com.ssafy.flowerly.chatting.repository.ChattingRepository;
 import com.ssafy.flowerly.entity.Chatting;
 import com.ssafy.flowerly.entity.Member;
@@ -10,6 +14,7 @@ import com.ssafy.flowerly.member.model.StoreInfoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,12 +24,13 @@ public class ChattingService {
     private final MemberRepository memberRepository;
     private final StoreInfoRepository storeInfoRepository;
     private final ChattingRepository chattingRepository;
+    private final ChattingMessageRepository chattingMessageRepository;
 
-    public List<ChattingDto> getChattingList(Long memberId) {
+    public List<ChattingDto.BasicResponse> getChattingList(Long memberId) {
         Member member = memberRepository.findByMemberId(memberId).orElseThrow();
 
         List<Chatting> chattingList = null;
-        List<ChattingDto> chattingDtoList = new ArrayList<>();
+        List<ChattingDto.BasicResponse> chattingDtoList = new ArrayList<>();
 
         if(member.getRole().equals(MemberRole.USER)) {  // 소비자 입장인 경우
             chattingList = chattingRepository.findAllByConsumerAndIsRemovedFalse(member);
@@ -32,7 +38,7 @@ public class ChattingService {
             for(Chatting chatting : chattingList) {
                 Member opponent = chatting.getSeller();
                 String opponentName = storeInfoRepository.findStoreName(opponent);
-                ChattingDto chattingDto = ChattingDto.of(chatting, opponent.getMemberId(), opponentName);
+                ChattingDto.BasicResponse chattingDto = ChattingDto.BasicResponse.of(chatting, opponent.getMemberId(), opponentName);
                 chattingDtoList.add(chattingDto);
             }
         } else if(member.getRole().equals(MemberRole.SELLER)) {  // 판매자 입장인 경우
@@ -40,7 +46,7 @@ public class ChattingService {
 
             for(Chatting chatting : chattingList) {
                 Member opponent = chatting.getConsumer();
-                ChattingDto chattingDto = ChattingDto.of(chatting, opponent.getMemberId(), opponent.getNickName());
+                ChattingDto.BasicResponse chattingDto = ChattingDto.BasicResponse.of(chatting, opponent.getMemberId(), opponent.getNickName());
                 chattingDtoList.add(chattingDto);
             }
         } else {
@@ -48,5 +54,35 @@ public class ChattingService {
         }
 
         return chattingDtoList;
+    }
+
+    public ChattingDto.RoomResponse getChattingMessageList(Long memberId, Long chattingId) {
+        Member member = memberRepository.findByMemberId(memberId).orElseThrow();
+        Chatting chatting = chattingRepository.findById(chattingId).orElseThrow();
+
+        Long opponentMemberId = null;
+        String opponentName = null;
+        if(member.getRole().equals(MemberRole.USER)) {
+            Member opponent = chatting.getSeller();
+            opponentMemberId = opponent.getMemberId();
+            opponentName = storeInfoRepository.findStoreName(opponent);
+        } else if(member.getRole().equals(MemberRole.SELLER)) {
+            Member opponent = chatting.getConsumer();
+            opponentMemberId = opponent.getMemberId();
+            opponentName = opponent.getNickName();
+        }
+
+        List<ChattingMessage> messages = chattingMessageRepository.findAllByChattingIdOrderBySendTime(chatting.getChattingId());
+        List<ChattingMessageDto.Response> messageDtos = new ArrayList<>();
+        for(ChattingMessage message : messages) {
+            messageDtos.add(ChattingMessageDto.Response.of(message));
+        }
+
+        return new ChattingDto.RoomResponse(chattingId, opponentMemberId, opponentName, messageDtos);
+    }
+
+    @Transactional
+    public void saveChattingMessage(StompChatRequest messageDto) {
+        chattingMessageRepository.save(ChattingMessage.toEntity(messageDto));
     }
 }
