@@ -13,7 +13,6 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ currentStep }) => {
     const stepWidths = ["0", "20%", "40%", "65%", "100%"];
     setBarWidth(stepWidths[currentStep]);
   }, [currentStep]);
-  console.log(currentStep);
 
   return (
     <div className={style.main}>

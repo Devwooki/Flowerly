@@ -7,7 +7,7 @@ const ListBuyer = () => {
   const procesingCard: BuyerCard[] = [
     {
       state: "입찰",
-      img: "test1.png",
+      img: "/img/homeBanner/164_red_phalaenopsis.jpg",
       situation: "축하",
       target: "연인",
       selectedColor: ["분홍", "파랑", "보라"],
@@ -15,7 +15,7 @@ const ListBuyer = () => {
     },
     {
       state: "조율",
-      img: "test2.png",
+      img: "/img/homeBanner/test.webp",
       situation: "사랑",
       target: "연인",
       selectedColor: ["노랑", "파랑", "흰색"],
@@ -23,7 +23,7 @@ const ListBuyer = () => {
     },
     {
       state: "제작완료",
-      img: "test3.png",
+      img: "/img/homeBanner/121_pink_gomphrena.jpg",
       situation: "선택안함",
       target: "부모님 ",
       selectedColor: ["주황", "분홍", "노랑"],
