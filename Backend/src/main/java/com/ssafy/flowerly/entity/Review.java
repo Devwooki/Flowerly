@@ -15,7 +15,7 @@ import javax.persistence.*;
 @ToString
 public class Review extends BaseTimeEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reviewId;
 
     @OneToOne(fetch = FetchType.LAZY)

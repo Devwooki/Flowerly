@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @ToString
 public class Flly extends BaseCreatedTimeEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long fllyId;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -63,12 +63,10 @@ public class Flly extends BaseCreatedTimeEntity {
     @Column(nullable = false, length = 10)
     private OrderType orderType;
 
-    private String deliveryAddress;  // 배달인 경우에만 존재
-
     private String requestContent;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 10)
+    @Column(nullable = false, length = 20)
     private ProgressType progress;
 
     @Column(nullable = false)
@@ -95,4 +93,9 @@ public class Flly extends BaseCreatedTimeEntity {
                 .deadline(this.deadline)
                 .build();
     }
+
+    public void UpdateFllyProgress(ProgressType progress){
+        this.progress = progress;
+    }
+
 }

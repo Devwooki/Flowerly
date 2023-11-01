@@ -1,5 +1,6 @@
 package com.ssafy.flowerly.entity;
 
+import com.ssafy.flowerly.seller.vo.FllyNearDto;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -13,8 +14,12 @@ import javax.persistence.*;
 @Builder
 @ToString
 public class PickupRegion {
+
+    //이거 사용안하고 fllyPickRegion 을 씁니다!!
+
+
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long pickupRegionId;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -32,4 +37,5 @@ public class PickupRegion {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dong_code")
     private Dong dong;
+
 }

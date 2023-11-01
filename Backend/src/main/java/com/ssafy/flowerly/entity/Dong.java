@@ -1,8 +1,13 @@
 package com.ssafy.flowerly.entity;
 
+
+import lombok.Getter;
+
+
 import javax.persistence.*;
 
 @Entity
+@Getter
 public class Dong {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -48,6 +48,7 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/**").permitAll()
                 .antMatchers("/api/member/dummy-token").permitAll()
+                .antMatchers("/api/s3/**").permitAll()
                 .antMatchers("/api/member/**").authenticated();
 //                .antMatchers(HttpMethod.GET).authenticated()
 ////                .antMatchers(HttpMethod.GET).permitAll()
