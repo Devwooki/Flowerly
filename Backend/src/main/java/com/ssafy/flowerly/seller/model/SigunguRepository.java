@@ -3,11 +3,14 @@ package com.ssafy.flowerly.seller.model;
 
 import com.ssafy.flowerly.entity.Sido;
 import com.ssafy.flowerly.entity.Sigungu;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface SigunguRepository extends JpaRepository<Sigungu, Long > {
@@ -18,5 +21,5 @@ public interface SigunguRepository extends JpaRepository<Sigungu, Long > {
     )
     Sigungu findBysigunguCodeAllCode(Sido sido);
 
-    List<Sigungu> findSigungusBySido_SidoCode(Long sidoCode);
+    Optional<Page<Sigungu>> findSigungusBySido_SidoCode(Pageable pageable, Long sidoCode);
 }

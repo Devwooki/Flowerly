@@ -9,6 +9,8 @@ import com.ssafy.flowerly.seller.model.DongRepository;
 import com.ssafy.flowerly.seller.model.SigunguRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,11 +27,11 @@ public class AddressService {
         return sidoRspository.findAll();
     }
 
-    public List<Sigungu> getSigunguByCode(Long sidoCode) {
-        return sigunguRspository.findSigungusBySido_SidoCode(sidoCode);
+    public Page<Sigungu> getSigunguByCode(Pageable pageable, Long sidoCode) {
+        return sigunguRspository.findSigungusBySido_SidoCode(pageable, sidoCode).orElseThrow(() -> new IllegalArgumentException("잘못된 입력값 입니다."));
     }
 
-    public List<Dong> getDongsByCode(Long sigunguCode) {
-        return dongRspository.findDongsBySigunguSigunguCode(sigunguCode);
+    public Page<Dong> getDongsByCode(Pageable pageable, Long sigunguCode) {
+        return dongRspository.findDongsBySigunguSigunguCode(pageable, sigunguCode).orElseThrow(() -> new IllegalArgumentException("잘못된 입력값 입니다."));
     }
 }

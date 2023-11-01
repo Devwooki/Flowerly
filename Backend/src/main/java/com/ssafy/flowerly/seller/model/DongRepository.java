@@ -2,11 +2,14 @@ package com.ssafy.flowerly.seller.model;
 
 import com.ssafy.flowerly.entity.Dong;
 import com.ssafy.flowerly.entity.Sigungu;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface DongRepository extends JpaRepository<Dong, Long> {
@@ -16,6 +19,6 @@ public interface DongRepository extends JpaRepository<Dong, Long> {
                     "WHERE d.sigungu = :sigungu AND d.dongName = '전체' ")
     Dong findByDongCodeAllCode(Sigungu sigungu);
 
-    List<Dong> findDongsBySigunguSigunguCode(Long sigunguCode);
+    Optional<Page<Dong>> findDongsBySigunguSigunguCode(Pageable pageable, Long sigunguCode);
 
 }
