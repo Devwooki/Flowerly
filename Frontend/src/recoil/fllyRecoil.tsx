@@ -1,10 +1,11 @@
 import { atom } from "recoil";
 
 export interface flowerCardType {
-  id: number;
-  img_url: string;
-  flower_name: string;
-  flower_meaning: string[];
+  id : number,
+  img_url : string,
+  flower_name : string,
+  flower_color : string,
+  flower_meaning : string[],
 }
 
 export interface bouquetType {
@@ -32,6 +33,7 @@ export const flowerState = atom({
 });
 
 export const bouquetState = atom({
-  key: "bouquetState",
+  key: 'bouquetState',
+  // default: [{url:""}, {url:""}] as bouquetType[],
   default: [] as bouquetType[],
 });
