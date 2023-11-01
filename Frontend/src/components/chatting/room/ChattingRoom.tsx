@@ -1,14 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
-import style from "./style/ChattingRoom.module.css";
+import style from "./ChattingRoom.module.css";
 import { useRouter } from "next/router";
 
 import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
 
 import ChattingInput from "./ChattingInput";
-import MyChattingMsg from "./MyChattingMsg";
-import YourChattingMsg from "./YourChattingMsg";
+import MyChattingMsg from "../message/MyChattingMsg";
+import YourChattingMsg from "../message/YourChattingMsg";
 import ChattingMenu from "./ChattingMenu";
+import FllyDetailModal from "../modal/FllyDetailModal";
 
 type ChattingRoomProps = {
   chattingId: number;
@@ -16,6 +17,7 @@ type ChattingRoomProps = {
 
 const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
   const [stompClient, setStompClient] = useState<Client | null>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
   const route = useRouter();
   const messageEndRef = useRef<HTMLDivElement | null>(null);
 
@@ -60,8 +62,6 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
   });
 
   useEffect(() => {
-    messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
-
     // SockJS와 STOMP 설정
     // const socket = new SockJS("http://localhost:6090/stomp-chat"); // 로컬 테스트용
     const socket = new SockJS("https://flower-ly.co.kr/stomp-chat"); // 배포용
@@ -70,8 +70,7 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
     });
 
     client.onConnect = (frame) => {
-      console.log("Connected");
-      console.log(chattingId);
+      console.log(chattingId, "Connected");
       // 특정 채팅방의 메세지를 구독
       client.subscribe(`/sub/message/${chattingId}`, (message) => {
         // console.log(message.body);
@@ -107,18 +106,23 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
         client.deactivate();
       }
     };
-  }, [chattingMsgs, chattingId]);
+  }, []);
+
+  useEffect(() => {
+    messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [chattingMsgs, menuOpen]);
 
   const moveBack = () => {
     route.back();
   };
 
-  const sendMessage = (content: string) => {
+  const sendMessage = (type: string, content: string) => {
     const destination = `/pub/message/${chattingId}`;
     const stompChatRequest = {
       chattingId,
-      memberId: 2,
-      type: "TEXT",
+      memberId: 999,
+      // memberId: 1,
+      type: type,
       content: content,
     };
     const body = JSON.stringify(stompChatRequest);
@@ -126,6 +130,32 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
     if (stompClient && stompClient.connected) {
       stompClient.publish({ destination, body });
       // console.log("메세지 보내기 성공");
+    }
+  };
+
+  const sendTextMessage = (content: string) => {
+    sendMessage("TEXT", content);
+  };
+
+  const changeMenuOpen = () => {
+    // console.log(menuOpen);
+    setMenuOpen(!menuOpen);
+  };
+
+  const closeMenu = () => {
+    if (menuOpen) changeMenuOpen();
+  };
+
+  const sendOrderForm = () => {
+    sendMessage("ORDER_FORM", "배송 방법을 선택해주세요.");
+  };
+
+  const [fllyModalState, setFllyModalState] = useState(false);
+  const [fllyId, setFllyId] = useState<number>();
+  const modalHandler = (modalType: string, state: boolean, data: number) => {
+    if (modalType == "FLLY") {
+      setFllyId(data);
+      setFllyModalState(state);
     }
   };
 
@@ -138,21 +168,32 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
           </div>
           <div className={style.chattingName}>{chattingMsgs.opponentName}</div>
         </div>
-        <div className={style.container}>
+        <div className={menuOpen ? style.containerWithMenu : style.container} onClick={closeMenu}>
           {chattingMsgs.messages.map((message, idx) => {
             return message.memberId == chattingMsgs.opponentMemberId ? (
-              <YourChattingMsg key={idx} message={message} />
+              <YourChattingMsg
+                key={idx}
+                message={message}
+                chattingId={chattingId}
+                modalHandler={modalHandler}
+              />
             ) : (
-              <MyChattingMsg key={idx} message={message} />
+              <MyChattingMsg
+                key={idx}
+                message={message}
+                chattingId={chattingId}
+                modalHandler={modalHandler}
+              />
             );
           })}
           <div ref={messageEndRef}></div> {/* 스크롤 맨아래로 설정하기 위한 빈 div */}
         </div>
         <div className={style.bottom}>
-          <ChattingInput sendHandler={sendMessage} />
-          <ChattingMenu />
+          <ChattingInput sendHandler={sendTextMessage} menuHandler={changeMenuOpen} />
+          {menuOpen && <ChattingMenu sendOrderFormHandler={sendOrderForm} />}
         </div>
       </div>
+      {fllyModalState && <FllyDetailModal fllyId={fllyId} modalHandler={modalHandler} />}
     </>
   );
 };
