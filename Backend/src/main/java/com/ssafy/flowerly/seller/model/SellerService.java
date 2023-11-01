@@ -273,7 +273,7 @@ public class SellerService {
             //2-2 가게의 시 군 구 와 전체 시군구 와 전체 동을 가지고 flly픽업정보에서 찾는다
             pickupAbleList =  fllyPickupRegionRepository
                     .getSellerPickupAbleList(pickupSigugun, pickupDong, pageable)
-                    .map(FllyPickupRegion::toPickupFllyNearDto)
+                    .map(FllyPickupRegion::toPickupFllyNearDto);
 
         }
         if(pickupAbleList.getContent().size() <= 0){
