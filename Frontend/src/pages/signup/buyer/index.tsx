@@ -1,6 +1,6 @@
 import React from "react";
 import router, { useRouter } from "next/router";
-import style from "./buyer.module.css";
+import style from "./Buyer.module.css";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { tempTokenState, buyerInputState } from "../../../recoil/tokenRecoil";
 import axios from "axios";

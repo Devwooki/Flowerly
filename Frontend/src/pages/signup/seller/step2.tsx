@@ -1,5 +1,5 @@
 import React from "react";
-import style from "./step2.module.css";
+import style from "./Step2.module.css";
 import { useRouter } from "next/router";
 
 const Step2 = () => {
