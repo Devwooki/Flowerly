@@ -24,6 +24,7 @@
 .cardMainImgInfo {
   position: absolute;
   height: 35px;
+  text-align: center;
   line-height: 35px;
   width: 100%;
   font-size: 20px;
@@ -80,8 +81,9 @@
 }
 
 .cardfooter {
-  line-height: 30px;
+  line-height: 32px;
   height: 30px;
+  text-align: center;
   background-color: #f7f8f9;
   font-size: 16px;
   font-family: "NanumSquareNeoOTF-Rg";

@@ -4,6 +4,8 @@ import style from "../styles/app.module.css";
 import type { AppProps } from "next/app";
 import { RecoilRoot } from "recoil";
 import { useRouter } from "next/router";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -12,6 +14,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <RecoilRoot>
+        <ToastContainer position="top-center" />
         {isChattingRoom ? (
           <Component {...pageProps} />
         ) : (
