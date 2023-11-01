@@ -1,0 +1,129 @@
+.fllyBox {
+    width: 100%;
+    height: calc(100vh - 60px);
+    overflow: scroll;
+    position: relative;
+    background-color: var(--gray);
+}
+
+.contentBox {
+    padding: 30px 10px;
+}
+
+.headerTitle {
+    display: flex;
+    flex-direction: column;
+    margin: 0 20px;
+}
+
+.guide {
+    line-height: 24px;
+    font-size: 20px;
+    font-family: "NanumSquareNeoOTF-Bd";
+}
+
+.selectAreaBox {
+    margin: 100px 0 13px 0;
+    height: 526px;
+}
+
+.selectBox {
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 150px 150px;
+    justify-content: center;
+    justify-items: center;
+    height: 300px;
+    overflow-y: scroll;
+}
+
+.selectCard {
+    /* display: flex;
+    flex-direction: column;
+    width: 150px;
+    height: 150px;
+    border-radius: 16px;
+    margin: 10px;
+    box-shadow: 0 3px 3px rgba(0,0,0,0.2); */
+}
+
+.selectImg {
+    margin-top: 10px;
+    border-radius: 10px;
+    width: 140px;
+    height: 140px;
+    position: relative;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.selectedImg {
+    width: 140px;
+    height: 140px;
+    opacity: 0.5;
+}
+
+.selectedImg img {
+    width: 60px;
+    height: 45px;
+    margin: 42px 35px;
+}
+
+.selectCheck {
+    width: 50px;
+    height: 50px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.againBtn {
+    background-color: var(--mint);
+    width: 60px;
+    height: 60px;
+    transform: rotate(45deg);
+    border-radius: 5px;
+    margin: 50px auto 0;
+}
+
+.againBtn img {
+    margin: 10px;
+    width: 40px;
+    height: 40px;
+}
+
+.btnCount {
+    margin-top: 20px;
+    text-align: center;
+    font-family: "NanumSquareNeoOTF-Bd";
+}
+
+.btnBox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.prevBtn {
+    background-color: var(--moregray);
+    color: var(--dark);
+    width: 20px;
+    padding: 12px;
+    border-radius: 12px;
+    margin-right: 10px;
+    text-align: center;
+    font-family: "NanumSquareNeoOTF-Bd";
+}
+
+.nextBtn {
+    background-color: var(--blue);   
+    width: 80px;
+    padding: 12px;
+    border-radius: 16px;
+    color: var(--gray);
+    text-align: center;
+    font-family: "NanumSquareNeoOTF-Bd";
+}

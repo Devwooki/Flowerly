@@ -6,29 +6,37 @@ import { flowerState } from "@/recoil/fllyRecoil";
 import OpenAI from "openai";
 import { bouquetState, bouquetType } from "@/recoil/fllyRecoil";
 
-const FllySeller = () => {
+const FllyLoading = () => {
   const [imgList, setImgList] = useState<bouquetType[]>([]);
+  const [order, setOrder] = useState<string>("");
 
-  // const OpenAI = require("openai");
-  // require("dotenv").config();
-  // const apiKey = process.env.OPENAI_API_KEY;
-
+  const apikey = process.env.OPENAI_API_KEY;
   const openai = new OpenAI({
-    apiKey: "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",
-    // apiKey: apiKey,
+    apiKey: apikey,
     dangerouslyAllowBrowser: true,
   });
 
   const flowers = useRecoilValue(flowerState);
   const [bouquets, setBouquets] = useRecoilState(bouquetState);
 
+  const generateOrder = async () => {
+    const flowerStringArray = flowers.map((flower) => {
+      return `${flower.flower_color} ${flower.flower_name}`;
+    });
+
+    const flowerString = flowerStringArray.join(", ");
+    setOrder(`a bouquet including ${flowerString}`);
+  };
+
   const generateImage = async () => {
+    console.log("생성전 문구", order);
     try {
       const response = await openai.images.generate({
-        prompt: "a bouquet of red roses and pink astilbe",
+        prompt: order,
         n: 4,
         size: "1024x1024",
       });
+      console.log(order);
       console.log("ㅋㅋㅋ", response);
       const NewImage: bouquetType[] = [];
       if (response) {
@@ -48,15 +56,18 @@ const FllySeller = () => {
   };
 
   useEffect(() => {
+    console.log(imgList.length);
     if (imgList.length <= 0) {
-      // generateImage();
-      console.log("bouquet ", bouquets);
+      generateOrder();
     } else {
-      setBouquets([...bouquets, ...imgList]);
-      console.log(imgList);
+      setBouquets([...imgList, ...bouquets]);
       console.log("페이지이동");
     }
   }, [imgList]);
+
+  useEffect(() => {
+    // if(order != "") generateImage();
+  },[order])
 
   return (
     <>
@@ -64,7 +75,7 @@ const FllySeller = () => {
         <div className={style.contentBox}>
           <div className={style.guide}>하나뿐인 꽃다발을 생성중입니다.</div>
           <Image
-            src="img/homeBanner/121_pink_gomphrena.jpg"
+            src="/img/homeBanner/121_pink_gomphrena.jpg"
             width={300}
             height={300}
             alt="아이콘"
@@ -75,4 +86,4 @@ const FllySeller = () => {
   );
 };
 
-export default FllySeller;
+export default FllyLoading;

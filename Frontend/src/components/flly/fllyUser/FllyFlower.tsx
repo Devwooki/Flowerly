@@ -9,7 +9,7 @@ import { colorState } from "@/recoil/fllyRecoil";
 import { flowerState } from "@/recoil/fllyRecoil";
 import { flowerCardType } from "@/recoil/fllyRecoil";
 
-const FllySeller = () => {
+const FllyFlower = () => {
   const situation = useRecoilValue(situationState);
   const target = useRecoilValue(targetState);
   const colors = useRecoilValue(colorState);
@@ -81,7 +81,7 @@ const FllySeller = () => {
                 <div className={style.selectCard}></div>
               </div>
             }
-            </div>
+          </div>
           <div className={style.btnBox}>
             <div className={style.prevBtn}>&lt;</div>
             <div className={style.nextBtn}>다음</div>
@@ -92,4 +92,4 @@ const FllySeller = () => {
   );
 };
 
-export default FllySeller;
+export default FllyFlower;
