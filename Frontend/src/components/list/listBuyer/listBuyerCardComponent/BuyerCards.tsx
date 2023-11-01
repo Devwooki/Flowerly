@@ -32,11 +32,9 @@ const BuyerCards = ({ card }: BuyerCardsProps) => {
     }
   };
 
-  // const fllistBtn = (fllyId) => {
-  //   route.push({
-  //     pathname: "/list/"
-  //   })
-  // };
+  const fllistBtn = (fllyId: number) => {
+    console.log(fllyId);
+  };
 
   return (
     <div className={style.cardBox}>
