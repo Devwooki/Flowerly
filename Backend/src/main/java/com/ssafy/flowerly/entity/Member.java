@@ -78,4 +78,13 @@ public class Member extends BaseTimeEntity {
         this.isRemoved = true;
 //        dataUpdate();
     }
+    public void updateRole(MemberRole role){
+        this.role = role;
+    }
+
+    public void updateNickName(String nickname){
+        this.nickName =nickname;
+    }
+
+
 }
