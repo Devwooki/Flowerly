@@ -51,6 +51,8 @@ public class SecurityConfig {
                 .antMatchers("/**").permitAll()
                 .antMatchers("/api/member/dummy-token").permitAll()
                 .antMatchers("/api/s3/**").permitAll()
+                .antMatchers("/ws/**").permitAll()
+                .antMatchers("/stomp-chat/**").permitAll()
                 .antMatchers("/api/member/**").authenticated();
 //                .antMatchers(HttpMethod.GET).authenticated()
 ////                .antMatchers(HttpMethod.GET).permitAll()
