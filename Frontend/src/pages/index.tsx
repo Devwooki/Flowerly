@@ -121,32 +121,6 @@ export default function Home() {
       <div>sad</div>
       <div>sad</div>
       <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
     </div>
   );
 }

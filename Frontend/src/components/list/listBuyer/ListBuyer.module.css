@@ -1,6 +1,5 @@
 .ListBuyerBack {
   position: relative;
-  border: 1px solid black;
 }
 .ListBuyerHeader {
   background-color: white;
@@ -18,6 +17,6 @@
 }
 .ListBuyerMain {
   width: 100%;
-  height: calc(100vh - 150px);
+  height: calc(100vh - 130px);
   overflow: scroll;
 }
