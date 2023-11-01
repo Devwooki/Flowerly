@@ -17,6 +17,8 @@ public enum ErrorCode {
     SELLER_PARTICIPATE_FAIL(-5000, "플리 참여에 실패하였습니다"),
     SELLER_ALREADY_PARTICIPATE(-5001, "이미 참가하신 플리입니다"),
 
+    CHATTING_NOT_FOUND(6001, "채팅 정보를 찾을 수 없습니다."),
+
     INVALID_UPLOAD_FILE(-8001, "업로드한 파일을 찾을 수 없습니다."),
     INVALID_UPLOAD_TYPE(-8002, "업로드 요청 타입을 찾을 수 없습니다."),
     INVALID_BASE64(-8003, "지원하지 않는 타입입니다."),
