@@ -1,5 +1,13 @@
 import { atom } from "recoil";
 
+export interface sellerInputType {
+  storename: string;
+  sellername: string;
+  phonenumber: string;
+  auth: Number;
+  address: string;
+}
+
 export const tempTokenState = atom({
   key: "tempTokenState",
   default: "",
@@ -12,13 +20,13 @@ export const buyerInputState = atom({
   },
 });
 
-export const sellerInputState = atom({
+export const sellerInputState = atom<sellerInputType>({
   key: "sellerInputState",
   default: {
     storename: "",
     sellername: "",
     phonenumber: "",
-    auth: "",
+    auth: 0,
     address: "",
   },
 });
