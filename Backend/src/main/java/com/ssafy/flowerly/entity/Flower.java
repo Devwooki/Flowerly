@@ -18,11 +18,13 @@ public class Flower {
     private Long flowerCode;
 
     private String flowerName;
+    private String engName;
     @Enumerated(EnumType.STRING)
     @Column(length = 10)
     private ColorType color;
     private String imageUrl;
     private String flowerPeriod;  // 메인 화면에서 보여줄 시기
+    private String meaning;
 
     private Boolean january;
     private Boolean february;
