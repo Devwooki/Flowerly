@@ -6,11 +6,11 @@ import FllyTarget from "@/components/flly/fllyUser/FllyTarget"
 import FllyCollor from "@/components/flly/fllyUser/FllyColor"
 import FllyFlower from "@/components/flly/fllyUser/FllyFlower"
 import FllyLoading from "@/components/flly/fllyUser/FllyLoading"
-
+import FllyBouquet from "@/components/flly/fllyUser/FllyBouquet"
 const FllyMain = () => {
   const [userType, setUserType] = useState<string>("user");
 
-  return <>{userType !== "seller" && <FllyLoading /> || userType === "seller" && <FllySeller />}</>;
+  return <>{userType !== "seller" && <FllyBouquet /> || userType === "seller" && <FllySeller />}</>;
 };
 
 export default FllyMain;

@@ -5,7 +5,7 @@ import { useRecoilState } from "recoil";
 import { targetState } from "@/recoil/fllyRecoil";
 import Image from "next/image";
 
-const FllySeller = () => {
+const FllyTarget = () => {
   const [target, setTarget] = useRecoilState(targetState);
   const [selected, setSelected] = useState<string>("");
   const selectList = ["친구", "연인", "부모님", "가족", "선생님", "동료", "나", "선택 안함"];
@@ -48,4 +48,4 @@ const FllySeller = () => {
   );
 };
 
-export default FllySeller;
+export default FllyTarget;
