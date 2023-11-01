@@ -46,7 +46,7 @@ export default function Home() {
   // }
   const [cardOrder, setCardOrder] = useState([0, 1, 2]);
 
-  const [cards, setCards] = useState([
+  const cards = [
     {
       id: 1,
       src: "/img/homeBanner/164_red_phalaenopsis.jpg",
@@ -71,7 +71,7 @@ export default function Home() {
       desc: "분홍색 천일홍",
       message: "우아함, 달콤함, 치절, 애정",
     },
-  ]);
+  ];
 
   const handleUpClick = () => {
     setCardOrder([cardOrder[2], cardOrder[0], cardOrder[1]]);
