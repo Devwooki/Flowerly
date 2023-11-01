@@ -124,15 +124,28 @@ public class SellerController {
     /*
         주변 플리 보기
      */
-    @GetMapping("/near")
-    public DataResponse<Map<String,Page<FllyNearDto>>> getNearFllyList(HttpServletRequest request,
+    @GetMapping("/near/delivery")
+    public DataResponse<Page<FllyNearDto>> getNearFllyDeliveryList(HttpServletRequest request,
                                                             @PageableDefault(size=10) Pageable pageable){
 
         Long memberId = Long.valueOf(1);
 
-        Map<String, Page<FllyNearDto>> nearFllyList = sellerService.getNearFllylist(memberId, pageable);
+        Page<FllyNearDto> nearFllyList = sellerService.getNearFllyDeliverylist(memberId, pageable);
 
-        DataResponse<Map<String, Page<FllyNearDto>>> result = new DataResponse<>(200, "근처 플리 요청성공", nearFllyList);
+        DataResponse<Page<FllyNearDto>> result = new DataResponse<>(200, "근처 플리 요청성공", nearFllyList);
+
+        return result;
+    }
+
+    @GetMapping("/near/pickup")
+    public DataResponse<Page<FllyNearDto>> getNearFllyPickupList(HttpServletRequest request,
+                                                                       @PageableDefault(size=10) Pageable pageable){
+
+        Long memberId = Long.valueOf(1);
+
+        Page<FllyNearDto> nearFllyList = sellerService.getNearFllyPickuplist(memberId, pageable);
+
+        DataResponse<Page<FllyNearDto>> result = new DataResponse<>(200, "근처 플리 요청성공", nearFllyList);
 
         return result;
     }

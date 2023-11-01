@@ -188,11 +188,7 @@ public class SellerService {
     /*
         주변 플리 정보 불러오기
      */
-    public Map<String, Page<FllyNearDto>> getNearFllylist(Long memberId, Pageable pageable) {
-
-        Map<String, Page<FllyNearDto>> result = new HashMap<>();
-        //사이즈가 0이면 에러 발생 (주변에 플리가없어요!)
-        Integer listSize = 0;
+    public Page<FllyNearDto> getNearFllyDeliverylist(Long memberId, Pageable pageable) {
 
         //유저가 있는가 ? (판매자)
         Member member = memberRepository.findByMemberId(memberId)
@@ -234,9 +230,26 @@ public class SellerService {
                 .getSellerDeliverAbleList(deliverySido, deliverySigugun, deliveryDong, pageable)
                 .map(FllyDeliveryRegion::toDeliveryFllyNearDto);
 
-        listSize += deliveryAbleList.getContent().size();
+        if(deliveryAbleList.getContent().size() <= 0){
+            throw new CustomException(ErrorCode.NOT_SELLER_SEARCH_NEAR);
+        }
 
-        result.put("deliveryAbleList", deliveryAbleList);
+        return deliveryAbleList;
+    }
+
+    /*
+        주변 플리 정보 불러오기
+     */
+    public Page<FllyNearDto> getNearFllyPickuplist(Long memberId, Pageable pageable) {
+
+        Page<FllyNearDto> pickupAbleList = null;
+        //유저가 있는가 ? (판매자)
+        Member member = memberRepository.findByMemberId(memberId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_MEMBER));
+        //유저가 판매자가 아니라면?
+        if(member.getRole() != MemberRole.SELLER){
+            throw new CustomException(ErrorCode.MEMBER_NOT_SELLER);
+        }
 
         //2 픽업 가능한지 찾아야한다!
         //2-1 판매자 가게의 주소
@@ -258,19 +271,14 @@ public class SellerService {
             pickupDong.add(dongAll);
 
             //2-2 가게의 시 군 구 와 전체 시군구 와 전체 동을 가지고 flly픽업정보에서 찾는다
-            Page<FllyNearDto> pickupAbleList =  fllyPickupRegionRepository
+            pickupAbleList =  fllyPickupRegionRepository
                     .getSellerPickupAbleList(pickupSigugun, pickupDong, pageable)
-                    .map(FllyPickupRegion::toPickupFllyNearDto);
+                    .map(FllyPickupRegion::toPickupFllyNearDto)
 
-            listSize += pickupAbleList.getContent().size();
-
-            result.put("pickupAbleList", pickupAbleList);
         }
-
-        if(listSize == 0){
+        if(pickupAbleList.getContent().size() <= 0){
             throw new CustomException(ErrorCode.NOT_SELLER_SEARCH_NEAR);
         }
-
-        return result;
+        return pickupAbleList;
     }
 }
