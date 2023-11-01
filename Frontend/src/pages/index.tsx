@@ -2,8 +2,6 @@ import style from "@styles/Home.module.css";
 import { useEffect, useRef } from "react";
 import Image from "next/image";
 import { useState } from "react";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 export default function Home() {
   // const router = useRouter();
@@ -84,43 +82,70 @@ export default function Home() {
   };
 
   return (
-    <div className={style.home}>
-      <ToastContainer style={{ margin: "0px auto" }} />
-      <div className={style.mainHeader}>
-        <div className={style.header}>플리로고</div>
-        <div className={style.title}>플리가 추천하는</div>
-        <div className={style.title}>가을의 꽃을 만나보세요</div>
-      </div>
-      <div className={style.mainBody}>
-        {cardOrder.map((order, index) => {
-          const card = cards[order];
-          return (
-            <div key={card.id} className={`${style.bannerImg} ${style[`card${index + 1}`]} `}>
-              <Image src={card.src} alt={card.alt} fill />
-              <div className={style.imgDisc}>
-                <div>{card.date}</div>
-                <div>{card.desc}</div>
-                <div className={style.divider}></div>
-                <div>{card.message}</div>
+    <>
+      <div className={style.home}>
+        <div className={style.mainHeader}>
+          <div className={style.header}>플리로고</div>
+          <div className={style.title}>플리가 추천하는</div>
+          <div className={style.title}>가을의 꽃을 만나보세요</div>
+        </div>
+        <div className={style.mainBody}>
+          {cardOrder.map((order, index) => {
+            const card = cards[order];
+            return (
+              <div key={card.id} className={`${style.bannerImg} ${style[`card${index + 1}`]} `}>
+                <Image src={card.src} alt={card.alt} fill />
+                <div className={style.imgDisc}>
+                  <div>{card.date}</div>
+                  <div>{card.desc}</div>
+                  <div className={style.divider}></div>
+                  <div>{card.message}</div>
+                </div>
               </div>
-            </div>
-          );
-        })}
-      </div>
-      <div className={style.btnPakage}>
-        <div className="card-nav-btn card-nav-btn-up" onClick={handleDownClick}>
-          <span className="arrow">❮</span>
+            );
+          })}
         </div>
-        <div className="card-nav-btn card-nav-btn-down" onClick={handleUpClick}>
-          <span className="arrow">❯</span>
+        <div className={style.btnPakage}>
+          <div className="card-nav-btn card-nav-btn-up" onClick={handleDownClick}>
+            <span className="arrow">❮</span>
+          </div>
+          <div className="card-nav-btn card-nav-btn-down" onClick={handleUpClick}>
+            <span className="arrow">❯</span>
+          </div>
         </div>
+        <div>sad</div>
+        <div>sad</div>
+        <div>sad</div>
+        <div>sad</div>
+        <div>sad</div>
+        <div>sad</div>
+        <div>sad</div>
+        <div>sad</div>
+        <div>sad</div>
+        <div>sad</div>
+        <div>sad</div>
+        <div>sad</div>
+        <div>sad</div>
+        <div>sad</div>
+        <div>sad</div>
+        <div>sad</div>
+        <div>sad</div>
+        <div>sad</div>
+        <div>sad</div>
+        <div>sad</div>
+        <div>sad</div>
+        <div>sad</div>
+        <div>sad</div>
+        <div>sad</div>
+        <div>sad</div>
+        <div>sad</div>
+        <div>sad</div>
+        <div>sad</div>
+        <div>sad</div>
+        <div>sad</div>
+        <div>sad</div>
+        <div>sad</div>
       </div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-    </div>
+    </>
   );
 }
