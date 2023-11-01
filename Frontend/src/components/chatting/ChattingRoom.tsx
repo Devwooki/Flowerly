@@ -8,6 +8,7 @@ import { Client } from "@stomp/stompjs";
 import ChattingInput from "./ChattingInput";
 import MyChattingMsg from "./MyChattingMsg";
 import YourChattingMsg from "./YourChattingMsg";
+import ChattingMenu from "./ChattingMenu";
 
 type ChattingRoomProps = {
   chattingId: number;
@@ -59,7 +60,7 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
   });
 
   useEffect(() => {
-    messageEndRef.current?.scrollIntoView({ behavior: "auto" });
+    messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
 
     // SockJS와 STOMP 설정
     // const socket = new SockJS("http://localhost:6090/stomp-chat"); // 로컬 테스트용
@@ -70,7 +71,7 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
 
     client.onConnect = (frame) => {
       console.log("Connected");
-
+      console.log(chattingId);
       // 특정 채팅방의 메세지를 구독
       client.subscribe(`/sub/message/${chattingId}`, (message) => {
         // console.log(message.body);
@@ -106,7 +107,7 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
         client.deactivate();
       }
     };
-  }, [chattingMsgs]);
+  }, [chattingMsgs, chattingId]);
 
   const moveBack = () => {
     route.back();
@@ -149,6 +150,7 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
         </div>
         <div className={style.bottom}>
           <ChattingInput sendHandler={sendMessage} />
+          <ChattingMenu />
         </div>
       </div>
     </>
