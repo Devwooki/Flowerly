@@ -1,27 +1,44 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import style from "./FllySellerCard.module.css";
 import Image from "next/image";
 
-const FllySellerCard = () => {
+interface FllyNearType {
+  fllyId: number;
+  flowerName1: String;
+  flowerName2: String;
+  flowerName3: String;
+  imageUrl: String;
+  progress: String;
+  deadline: String;
+  budget: number;
+}
+
+const FllySellerCard = ({ $FllyDeliveryNear }: { $FllyDeliveryNear: FllyNearType }) => {
   return (
     <>
       <div className={style.back}>
         <div className={style.cardMain}>
-          <div className={style.cardMainImg} style={{ backgroundImage: "url(/test/vertical.jpg)" }}>
-            <div className={style.cardMainImgInfo}>조율중</div>
+          <div
+            className={style.cardMainImg}
+            style={{ backgroundImage: `url(${$FllyDeliveryNear.imageUrl})` }}
+          >
+            <div className={style.cardMainImgInfo}>{$FllyDeliveryNear.progress}중</div>
           </div>
           <div className={style.cardMainDetail}>
             <div>
-              <Image src="/img/icon/flower-icon.png" alt="꽃" width={22} height={22}></Image>
-              <span>파란수국, 분홍 수국</span>
+              <Image src="/img/icon/seller-flower.png" alt="꽃" width={22} height={22}></Image>
+              <span>
+                {$FllyDeliveryNear.flowerName1}, {$FllyDeliveryNear.flowerName2},{" "}
+                {$FllyDeliveryNear.flowerName3}
+              </span>
             </div>
             <div>
-              <Image src="/img/icon/money-icon.png" alt="돈" width={22} height={22}></Image>
-              <span>30,000 원</span>
+              <Image src="/img/icon/seller-money.png" alt="돈" width={22} height={22}></Image>
+              <span>{$FllyDeliveryNear.budget} 원</span>
             </div>
             <div>
-              <Image src="/img/icon/time-icon.png" alt="마감" width={22} height={22}></Image>
-              <span>~ 23.10.20 18:00</span>
+              <Image src="/img/icon/seller-time.png" alt="마감" width={22} height={22}></Image>
+              <span>~ {$FllyDeliveryNear.deadline}</span>
             </div>
             <div>
               <button>참여하기</button>
