@@ -1,19 +1,23 @@
-import React, { useState } from "react";
-import style from "./step1.module.css";
+import React, { useEffect, useState } from "react";
+import style from "./Step1.module.css";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { useRecoilState } from "recoil";
 import { sellerInputState } from "@/recoil/tokenRecoil";
+import { useDaumPostcodePopup } from "react-daum-postcode";
 
 const Step1 = () => {
   const router = useRouter();
   //사업자등록번호
-  const [businessStaus, setBusinessStatus] = useState("");
+
   const [sellerInput, setSellerInput] = useRecoilState(sellerInputState);
+  const [basicAddress, setBasicAddress] = useState("");
+  const [detailAddress, setDetailAddress] = useState("");
 
   const handleNext = () => {
     // input 모두 입력 되었는지 확인하는 로직 추가
-    router.push("/signup/seller/step2");
+    console.log(sellerInput);
+    router.push("/signup/seller/Step2");
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,10 +29,10 @@ const Step1 = () => {
   // 국세청 사업자등록 상태조회 api
   const handleCheckBusinessStatus = async () => {
     try {
-      const auth = sellerInput.auth;
+      const storenumber = sellerInput.storenumber;
 
       const requestData = {
-        b_no: [auth],
+        b_no: [storenumber],
       };
 
       const response = await axios.post(
@@ -49,7 +53,6 @@ const Step1 = () => {
       if (response.status === 200) {
         const data = response.data;
         const b_stt_cd = data.data[0].b_stt_cd;
-        setBusinessStatus(b_stt_cd);
 
         if (b_stt_cd === "01") {
           alert("사업자등록번호가 확인되었습니다.");
@@ -63,6 +66,38 @@ const Step1 = () => {
       console.log(error);
     }
   };
+
+  // 다음 주소 api
+
+  const scriptUrl = "https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
+
+  const open = useDaumPostcodePopup(scriptUrl);
+  const handleComplete = (data: any) => {
+    let fullAddress = data.address;
+    let extraAddress = "";
+
+    if (data.addressType === "R") {
+      if (data.bname !== "") {
+        extraAddress += data.bname;
+      }
+      if (data.buildingName !== "") {
+        extraAddress += extraAddress !== "" ? `, ${data.buildingName}` : data.buildingName;
+      }
+      fullAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
+    }
+    console.log(data);
+    setBasicAddress(fullAddress);
+  };
+
+  // 트리거 해줄 함수
+  const handleClick = () => {
+    open({ onComplete: handleComplete });
+  };
+
+  useEffect(() => {
+    const finalAddress = `${basicAddress} ${detailAddress}`;
+    setSellerInput((prevSellerInput) => ({ ...prevSellerInput, address: finalAddress }));
+  }, [basicAddress, detailAddress, setSellerInput]);
 
   return (
     <div>
@@ -103,14 +138,14 @@ const Step1 = () => {
           />
         </div>
         <div className={style.inputContainer}>
-          <label htmlFor="auth">사업자 등록 번호 확인</label>
+          <label htmlFor="storenumber">사업자 등록 번호 확인</label>
           <div className={style.statusContainer}>
             <input
               type="text"
-              id="auth"
-              name="auth"
+              id="storenumber"
+              name="storenumber"
               className={style.statusInputBox}
-              value={sellerInput.auth}
+              value={sellerInput.storenumber}
               onChange={handleInputChange}
             />
             <button onClick={handleCheckBusinessStatus} className={style.confirmButton}>
@@ -119,14 +154,29 @@ const Step1 = () => {
           </div>
         </div>
         <div className={style.inputContainer}>
-          <label htmlFor="address">주소</label>
+          <label htmlFor="basicaddress">주소</label>
+          <div className={style.statusContainer}>
+            <input
+              type="text"
+              id="basicaddress"
+              name="basicaddress"
+              placeholder="주소검색을 통해 입력해주세요"
+              className={style.statusInputBox}
+              value={basicAddress}
+              onChange={handleInputChange}
+            />
+            <button className={style.confirmButton} onClick={handleClick}>
+              주소 검색
+            </button>
+          </div>
           <input
             type="text"
-            id="address"
-            name="address"
+            id="detailaddress"
+            name="detailaddress"
+            placeholder="상세주소를 입력해주세요"
             className={style.inputBox}
-            value={sellerInput.address}
-            onChange={handleInputChange}
+            value={detailAddress}
+            onChange={(e) => setDetailAddress(e.target.value)}
           />
         </div>
 
