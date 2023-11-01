@@ -1,52 +1,50 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import style from "./FllyLoading.module.css";
 import Image from "next/image";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useRecoilState } from "recoil";
 import { flowerState } from "@/recoil/fllyRecoil";
-import OpenAI from 'openai';
-import { bouquetState } from "@/recoil/fllyRecoil";
-// import { Configuration, OpenAIApi } from "openai";
-import Configuration from "openai";
-import OpenAIApi from "openai";
+import OpenAI from "openai";
+import { bouquetState, bouquetType } from "@/recoil/fllyRecoil";
 
+const FllyLoading = () => {
+  const [imgList, setImgList] = useState<bouquetType[]>([]);
+  const [order, setOrder] = useState<string>("");
 
-const FllySeller = () => {
-  // const { Configuration, OpenAIApi } = require('openai');
-
-  // const configuration = new Configuration({
-  //   organization: "org-pqPYvjuFC8MSuOE138uEhT2K",
-  //   apiKey: process.env.OPENAI_API_KEY,
-  // });
-  // const openai = new OpenAIApi(configuration);
-
-
-  const openai = require('openai');
-  const api_key = process.env.OPEN_API_KEY;
-  openai.api_key = api_key;
-
-  // const openai = new OpenAI({key: process.env.OPENAI_API_KEY});
+  const apikey = process.env.OPENAI_API_KEY;
+  const openai = new OpenAI({
+    apiKey: apikey,
+    dangerouslyAllowBrowser: true,
+  });
 
   const flowers = useRecoilValue(flowerState);
-  // console.log("==================");
-  // console.log("flowers", flowers);
-  // console.log("==================");
+  const [bouquets, setBouquets] = useRecoilState(bouquetState);
 
-  // const bouquets = [] as any[];
-  const bouquets = useRecoilValue(bouquetState);
+  const generateOrder = async () => {
+    const flowerStringArray = flowers.map((flower) => {
+      return `${flower.flower_color} ${flower.flower_name}`;
+    });
+
+    const flowerString = flowerStringArray.join(", ");
+    setOrder(`a bouquet including ${flowerString}`);
+  };
 
   const generateImage = async () => {
+    console.log("생성전 문구", order);
     try {
-      const response = await openai.createImage({
-        prompt: "a bouquet of red roses and pink astilbe",
+      const response = await openai.images.generate({
+        prompt: order,
         n: 4,
         size: "1024x1024",
       });
-      console.log(response.data.data[0].url);
-      console.log(response.data.data[0].base64);
-      bouquets.push({
-        url: response.data.data[0].url,
-        base64: response.data.data[0].base64,
-      });
+      console.log(order);
+      console.log("ㅋㅋㅋ", response);
+      const NewImage: bouquetType[] = [];
+      if (response) {
+        response.data.forEach((image) => {
+          NewImage.push({ url: image.url });
+        });
+        setImgList(NewImage);
+      }
     } catch (error: any) {
       if (error.response) {
         console.log(error.response.status);
@@ -58,21 +56,34 @@ const FllySeller = () => {
   };
 
   useEffect(() => {
-    generateImage();
-    console.log("bouquet ", bouquets);
-  },[])
+    console.log(imgList.length);
+    if (imgList.length <= 0) {
+      generateOrder();
+    } else {
+      setBouquets([...imgList, ...bouquets]);
+      console.log("페이지이동");
+    }
+  }, [imgList]);
 
+  useEffect(() => {
+    // if(order != "") generateImage();
+  },[order])
 
   return (
     <>
       <div className={style.fllyBox}>
         <div className={style.contentBox}>
           <div className={style.guide}>하나뿐인 꽃다발을 생성중입니다.</div>
-          <Image src="img/homeBanner/121_pink_gomphrena.jpg" width={300} height={300} alt="아이콘" ></Image>
+          <Image
+            src="/img/homeBanner/121_pink_gomphrena.jpg"
+            width={300}
+            height={300}
+            alt="아이콘"
+          ></Image>
         </div>
       </div>
     </>
   );
 };
 
-export default FllySeller;
+export default FllyLoading;

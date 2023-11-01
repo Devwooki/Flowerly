@@ -1,0 +1,76 @@
+.main {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-bottom: 5px;
+  font-family: "NanumSquareNeoOTF-Rg";
+  position: relative;
+}
+.step {
+  width: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  list-style: none;
+  padding: 0px;
+  margin: 5px;
+  position: relative;
+}
+.progressBarBefore {
+  content: "";
+  height: 2px;
+  width: 100%;
+  display: block;
+  background: var(--moregray);
+  position: absolute;
+  z-index: 2;
+}
+
+.progressBarAfter {
+  height: 4px;
+  display: block;
+  background: var(--sky);
+  position: absolute;
+  z-index: 2;
+}
+
+.step li span {
+  width: 10px;
+  height: 10px;
+  display: flex;
+  background: #ffffff;
+  color: #999;
+  border-radius: 50px;
+  border: 4px solid var(--moregray);
+  /* box-shadow: 0px 0px 5px #ccc; */
+  z-index: 2;
+  position: relative;
+}
+.step li.active span {
+  background: var(--sky);
+  color: white;
+}
+
+.text {
+  position: relative;
+  display: flex;
+  width: 95%;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+}
+/* 프로세스바 */
+.step > li:nth-child(4) {
+  padding-right: 10px; /* 원하는 간격을 여기에 설정하세요 */
+}
+.step > li:nth-child(5) {
+  padding-right: 20px; /* 원하는 간격을 여기에 설정하세요 */
+}
+.step > li:nth-child(6) {
+  padding-right: 70px; /* 원하는 간격을 여기에 설정하세요 */
+}
+
+/* 진행 텍스트 */
+.text > div:first-child {
+  margin: 5px; /* 원하는 간격을 여기에 설정하세요 */
+}

@@ -5,7 +5,7 @@ import { useRecoilState } from "recoil";
 import { colorState } from "@/recoil/fllyRecoil";
 import Image from "next/image";
 
-const FllySeller = () => {
+const FllyColor = () => {
   const [color, setColor] = useRecoilState(colorState);
   const [selected, setSelected] = useState<string[]>([]);
   const selectList = ["빨간색", "주황색", "분홍색", "노랑색", "파란색", "보라색", "흰색", "선택안함"];
@@ -89,4 +89,4 @@ const FllySeller = () => {
   );
 };
 
-export default FllySeller;
+export default FllyColor;
