@@ -3,6 +3,7 @@ import style from "./FllyBouquet.module.css";
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
 import { bouquetState, bouquetType } from "@/recoil/fllyRecoil";
+import Image from "next/image";
 
 const FllyBouquet = () => {
   const [selected, setSelected] = useState<bouquetType>();
@@ -29,12 +30,12 @@ const FllyBouquet = () => {
               {bouquets.map((item, index) => (
                 <div key={index} className={style.selectCard} onClick={() => {handleSelect(item)}}>
                   <div className={selected == item?`${style.selectImg} ${style.selectedImg}` : style.selectImg} style={{ backgroundImage: `url(${item.url})` }}>
-                    {(selected == item) && <img src="/img/icon/check.png"></img>}
+                    {(selected == item) && <Image src="/img/icon/check.png" width={60} height={45} alt="check"></Image>}
                   </div>
                 </div>
               ))}
             </div>
-            <div className={style.againBtn}><img src="/img/icon/again.png"></img></div>
+            <div className={style.againBtn}><Image src="/img/icon/again.png" width={40} height={40} alt="again"></Image></div>
             <div className={style.btnCount}>남은 생성 횟수 : {cnt}/3</div>
           </div>
           <div className={style.btnBox}>

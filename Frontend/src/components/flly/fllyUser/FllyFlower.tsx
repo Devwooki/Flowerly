@@ -8,6 +8,7 @@ import { targetState } from "@/recoil/fllyRecoil";
 import { colorState } from "@/recoil/fllyRecoil";
 import { flowerState } from "@/recoil/fllyRecoil";
 import { flowerCardType } from "@/recoil/fllyRecoil";
+import Image from "next/image";
 
 const FllyFlower = () => {
   const situation = useRecoilValue(situationState);
@@ -51,7 +52,7 @@ const FllyFlower = () => {
               {flowerList.map((item, index) => (
                 <div key={index} className={style.selectCard} onClick={() => {handleSelect(item)}}>
                   <div className={selected.includes(item)?`${style.selectImg} ${style.selectedImg}` : style.selectImg} style={{ backgroundImage: `url(${item.img_url})` }}>
-                    {selected.includes(item) && <img src="/img/icon/check.png"></img>}
+                    {selected.includes(item) && <Image src="/img/icon/check.png" width={60} height={45} alt="체크"></Image>}
                   </div>
                   <div className={style.selectWord}>
                     <div className={style.flowerName}>{item.flower_name}</div>
@@ -61,7 +62,7 @@ const FllyFlower = () => {
               ))}
                 <div className={style.selectCard}>
                   <div className={`${style.selectImg} ${style.selectedImg}`} style={{ backgroundImage: "url(/img/homeBanner/121_pink_gomphrena.jpg)" }}>
-                    <img src="/img/icon/check.png"></img>
+                    <Image src="/img/icon/check.png" width={60} height={45} alt="체크"></Image>
                   </div>
                   <div className={style.selectWord}>
                     <div className={style.flowerName}>알스트로메리아</div>
