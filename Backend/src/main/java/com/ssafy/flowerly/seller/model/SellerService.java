@@ -276,7 +276,8 @@ public class SellerService {
                     .map(FllyPickupRegion::toPickupFllyNearDto);
 
         }
-        if(pickupAbleList.getContent().size() <= 0){
+
+        if(pickupAbleList == null || pickupAbleList.getContent().size() <= 0){
             throw new CustomException(ErrorCode.NOT_SELLER_SEARCH_NEAR);
         }
         return pickupAbleList;

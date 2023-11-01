@@ -129,9 +129,7 @@ public class SellerController {
                                                             @PageableDefault(size=10) Pageable pageable){
 
         Long memberId = Long.valueOf(1);
-
         Page<FllyNearDto> nearFllyList = sellerService.getNearFllyDeliverylist(memberId, pageable);
-
         DataResponse<Page<FllyNearDto>> result = new DataResponse<>(200, "근처 플리 요청성공", nearFllyList);
 
         return result;
@@ -142,9 +140,7 @@ public class SellerController {
                                                                        @PageableDefault(size=10) Pageable pageable){
 
         Long memberId = Long.valueOf(1);
-
         Page<FllyNearDto> nearFllyList = sellerService.getNearFllyPickuplist(memberId, pageable);
-
         DataResponse<Page<FllyNearDto>> result = new DataResponse<>(200, "근처 플리 요청성공", nearFllyList);
 
         return result;
