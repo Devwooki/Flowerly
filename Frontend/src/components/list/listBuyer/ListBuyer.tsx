@@ -31,7 +31,7 @@ const ListBuyer = () => {
     },
     {
       state: "픽업/배달완료",
-      img: "test3.png",
+      img: "/img/homeBanner/141_purple_gladiolus.jpg",
       situation: "선택안함",
       target: "부모님 ",
       selectedColor: ["주황", "분홍", "노랑"],
