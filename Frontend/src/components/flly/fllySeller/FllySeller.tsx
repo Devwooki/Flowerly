@@ -4,6 +4,8 @@ import style from "./style/FllySeller.module.css";
 import FllySellerCard from "./fllySellerCardComponent/FllySellerCard";
 import axios from "axios";
 
+import { ToastErrorMessage } from "@/model/toastMessageJHM";
+
 interface FllyNearType {
   fllyId: Number;
   flowerName1: String;
@@ -19,17 +21,15 @@ const FllySeller = () => {
   const [nearFllyList, setNearFllyList] = useState<FllyNearType[]>([]);
 
   const axiosHandelr = () => {
-    axios
-      .get("https://flower-ly.co.kr/api/seller/near")
-      .then((res) => {
-        const rData = res.data;
+    axios.get("https://flower-ly.co.kr/api/seller/near").then((res) => {
+      const rData = res.data;
+      if (rData.code === 200) {
         setNearFllyList(rData.data);
-
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      }
+      if (rData.code === -4004) {
+        ToastErrorMessage(rData.message);
+      }
+    });
   };
 
   useEffect(() => {
