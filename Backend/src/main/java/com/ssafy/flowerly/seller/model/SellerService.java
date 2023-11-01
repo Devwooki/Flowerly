@@ -33,7 +33,6 @@ import java.util.stream.Collectors;
 public class SellerService {
 
     private final FllyRepository fellyRepository;
-    private final FlowerMeaningRepository flowerMeaningRepository;
     private final RequestRepository requestRepository;
     private final FllyParticipationRepository fllyParticipationRepository;
     private final MemberRepository memberRepository;
@@ -50,30 +49,7 @@ public class SellerService {
         의뢰 내용 API
      */
     public FllyRequestDto getRequestLetter(long fllyId) {
-
-        Flly fllyInfo = fellyRepository.findByFllyId(fllyId).orElseThrow();
-        FllyRequestDto fllyRequestDto = fllyInfo.toFllyRequestDto();
-        if(fllyInfo.getFlower1() != null){
-            List<FlowerMeaningDto> flowerMeain1 = flowerMeaningRepository
-                    .findByFlowerFlowerCode(fllyInfo.getFlower1().getFlowerCode())
-                    .stream().map(FlowerMeaning::toFlowerMeaningDto).collect(Collectors.toList());
-            fllyRequestDto.setFlower1(fllyInfo.getFlower1().toFlowerSimpleInfoDto(flowerMeain1));
-        }
-        if(fllyInfo.getFlower2() != null){
-            List<FlowerMeaningDto> flowerMeain2 = flowerMeaningRepository
-                    .findByFlowerFlowerCode(fllyInfo.getFlower2().getFlowerCode())
-                    .stream().map(FlowerMeaning::toFlowerMeaningDto).collect(Collectors.toList());
-
-            fllyRequestDto.setFlower2(fllyInfo.getFlower2().toFlowerSimpleInfoDto(flowerMeain2));
-        }
-        if(fllyInfo.getFlower3() != null){
-            List<FlowerMeaningDto> flowerMeain3 = flowerMeaningRepository
-                    .findByFlowerFlowerCode(fllyInfo.getFlower3().getFlowerCode())
-                    .stream().map(FlowerMeaning::toFlowerMeaningDto).collect(Collectors.toList());
-            fllyRequestDto.setFlower3(fllyInfo.getFlower3().toFlowerSimpleInfoDto(flowerMeain3));
-        }
-
-        return fllyRequestDto;
+        return null;
     }
 
     /*
@@ -130,14 +106,14 @@ public class SellerService {
      */
     public ParticipationRequestDto getFllyRequestInfo(Long memberId, Long fllyId){
 
-        ParticipationRequestDto result = new ParticipationRequestDto();
-        FllyRequestDto fllyRequestDto = getRequestLetter(fllyId);
-        result.setFllyRequestDto(fllyRequestDto);
-        FllyResponeDto fllyResponeDto = fllyParticipationRepository.findByFllyFllyId(fllyId)
-                .map(FllyParticipation::toFllyResponeDto).orElseThrow();
-        result.setFllyResponeDto(fllyResponeDto);
+//        ParticipationRequestDto result = new ParticipationRequestDto();
+//        //FllyRequestDto fllyRequestDto = getRequestLetter(fllyId);
+//        result.setFllyRequestDto(fllyRequestDto);
+//        FllyResponeDto fllyResponeDto = fllyParticipationRepository.findByFllyFllyId(fllyId)
+//                .map(FllyParticipation::toFllyResponeDto).orElseThrow();
+//        result.setFllyResponeDto(fllyResponeDto);
 
-        return result;
+        return null;
     }
 
     /*
