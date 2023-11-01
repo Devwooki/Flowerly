@@ -4,7 +4,7 @@ export interface sellerInputType {
   storename: string;
   sellername: string;
   phonenumber: string;
-  auth: number;
+  storenumber: string;
   address: string;
 }
 
@@ -26,7 +26,7 @@ export const sellerInputState = atom<sellerInputType>({
     storename: "",
     sellername: "",
     phonenumber: "",
-    auth: 0,
+    storenumber: "",
     address: "",
   },
 });
