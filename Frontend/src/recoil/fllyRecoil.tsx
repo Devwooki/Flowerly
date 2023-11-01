@@ -8,8 +8,7 @@ export interface flowerCardType {
 }
 
 export interface bouquetType {
-  url : string,
-  base64 : string
+  url : string | undefined,
 }
 
 export const situationState = atom({

@@ -1,52 +1,26 @@
 import React, { useEffect, useState } from "react";
 import style from "./FllyLoading.module.css";
 import Image from "next/image";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useRecoilState } from "recoil";
 import { flowerState } from "@/recoil/fllyRecoil";
 import OpenAI from "openai";
-// import Image from "openai";
-import { bouquetState } from "@/recoil/fllyRecoil";
-// import { Configuration, OpenAIApi } from "openai";
-// import Configuration from "openai";
-// import OpenAIApi from "openai";
-
-interface imageDataType {
-  url: string | undefined;
-}
+import { bouquetState, bouquetType } from "@/recoil/fllyRecoil";
 
 const FllySeller = () => {
-  const [imgList, setImgList] = useState<imageDataType[]>([]);
-  // const { Configuration, OpenAIApi } = require("openai");
+  const [imgList, setImgList] = useState<bouquetType[]>([]);
 
-  // const configuration = new Configuration({
-  //   apiKey: "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",
-  //   // dangerouslyAllowBrowser: true,
-  // });
+  // const OpenAI = require("openai");
+  // require("dotenv").config();
+  // const apiKey = process.env.OPENAI_API_KEY;
 
   const openai = new OpenAI({
     apiKey: "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",
+    // apiKey: apiKey,
     dangerouslyAllowBrowser: true,
   });
 
-  // const configuration = new Configuration({
-  //   organization: "org-pqPYvjuFC8MSuOE138uEhT2K",
-  //   apiKey: process.env.OPENAI_API_KEY,
-  // });
-  // const openai = new OpenAIApi(configuration);
-
-  // const openai = require("openai");
-  // const api_key = process.env.OPEN_API_KEY;
-  // openai.api_key = api_key;
-
-  // const openai = new OpenAI({key: process.env.OPENAI_API_KEY});
-
   const flowers = useRecoilValue(flowerState);
-  // console.log("==================");
-  // console.log("flowers", flowers);
-  // console.log("==================");
-
-  // const bouquets = [] as any[];
-  const bouquets = useRecoilValue(bouquetState);
+  const [bouquets, setBouquets] = useRecoilState(bouquetState);
 
   const generateImage = async () => {
     try {
@@ -56,18 +30,13 @@ const FllySeller = () => {
         size: "1024x1024",
       });
       console.log("ㅋㅋㅋ", response);
-      const NewImage: imageDataType[] = [];
+      const NewImage: bouquetType[] = [];
       if (response) {
         response.data.forEach((image) => {
           NewImage.push({ url: image.url });
         });
         setImgList(NewImage);
       }
-      // console.log(response.data.data[0].base64);
-      // bouquets.push({
-      //   url: response.data.data[0].url,
-      //   base64: response.data.data[0].base64,
-      // });
     } catch (error: any) {
       if (error.response) {
         console.log(error.response.status);
@@ -80,9 +49,10 @@ const FllySeller = () => {
 
   useEffect(() => {
     if (imgList.length <= 0) {
-      generateImage();
+      // generateImage();
       console.log("bouquet ", bouquets);
     } else {
+      setBouquets([...bouquets, ...imgList]);
       console.log(imgList);
       console.log("페이지이동");
     }
