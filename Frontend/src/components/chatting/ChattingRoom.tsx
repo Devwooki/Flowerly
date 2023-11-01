@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import style from "./style/ChattingRoom.module.css";
 import { useRouter } from "next/router";
 
@@ -15,44 +15,9 @@ type ChattingRoomProps = {
 
 const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
   const [stompClient, setStompClient] = useState<Client | null>(null);
-  useEffect(() => {
-    // SockJS와 STOMP 설정
-    // const socket = new SockJS("http://localhost:6090/stomp-chat");
-    const socket = new SockJS("https://flower-ly.co.kr/stomp-chat");
-    const client = new Client({
-      webSocketFactory: () => socket,
-    });
-
-    client.onConnect = (frame) => {
-      console.log("Connected: ", frame);
-
-      // 특정 채팅방의 메세지를 구독
-      client.subscribe(`/sub/message/${chattingId}`, (message) => {
-        console.log(message.body);
-      });
-    };
-
-    client.onStompError = (error) => {
-      console.error("STOMP Error:", error);
-    };
-
-    client.onDisconnect = () => {
-      console.log("Disconnected");
-    };
-
-    // 연결 시작
-    client.activate();
-    setStompClient(client);
-
-    // 컴포넌트 unmount 시 연결 종료
-    return () => {
-      if (client.connected) {
-        client.deactivate();
-      }
-    };
-  }, []);
-
   const route = useRouter();
+  const messageEndRef = useRef<HTMLDivElement | null>(null);
+
   // axios로 받아야 함!!
   const [chattingMsgs, setChattingMsgs] = useState({
     chattingId: chattingId,
@@ -62,7 +27,7 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
       {
         memberId: 999,
         createdAt: "2023-10-31 12:00",
-        content: "",
+        content: "해당 상품에 관심을 가지고 있습니다.",
         type: "PARTICIPATION",
       },
       {
@@ -93,23 +58,73 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
     ],
   });
 
+  useEffect(() => {
+    messageEndRef.current?.scrollIntoView({ behavior: "auto" });
+
+    // SockJS와 STOMP 설정
+    // const socket = new SockJS("http://localhost:6090/stomp-chat"); // 로컬 테스트용
+    const socket = new SockJS("https://flower-ly.co.kr/stomp-chat"); // 배포용
+    const client = new Client({
+      webSocketFactory: () => socket,
+    });
+
+    client.onConnect = (frame) => {
+      console.log("Connected");
+
+      // 특정 채팅방의 메세지를 구독
+      client.subscribe(`/sub/message/${chattingId}`, (message) => {
+        // console.log(message.body);
+        const newMsgJson = JSON.parse(message.body);
+        const newMsg = {
+          memberId: newMsgJson.memberId,
+          type: newMsgJson.type,
+          content: newMsgJson.content,
+          createdAt: String(new Date()),
+        };
+        setChattingMsgs((prevState) => ({
+          ...prevState,
+          messages: [...prevState.messages, newMsg],
+        }));
+      });
+    };
+
+    client.onStompError = (error) => {
+      console.error("STOMP Error:", error);
+    };
+
+    client.onDisconnect = () => {
+      console.log("Disconnected");
+    };
+
+    // 연결 시작
+    client.activate();
+    setStompClient(client);
+
+    // 컴포넌트 unmount 시 연결 종료
+    return () => {
+      if (client.connected) {
+        client.deactivate();
+      }
+    };
+  }, [chattingMsgs]);
+
   const moveBack = () => {
     route.back();
   };
 
-  const sendMessage = () => {
+  const sendMessage = (content: string) => {
     const destination = `/pub/message/${chattingId}`;
     const stompChatRequest = {
       chattingId,
-      memberId: 1,
+      memberId: 2,
       type: "TEXT",
-      content: "채팅 테스트",
+      content: content,
     };
     const body = JSON.stringify(stompChatRequest);
 
     if (stompClient && stompClient.connected) {
       stompClient.publish({ destination, body });
-      console.log("메세지 보내기 성공");
+      // console.log("메세지 보내기 성공");
     }
   };
 
@@ -130,9 +145,10 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
               <MyChattingMsg key={idx} message={message} />
             );
           })}
+          <div ref={messageEndRef}></div> {/* 스크롤 맨아래로 설정하기 위한 빈 div */}
         </div>
-        <div className={style.bottom} onClick={sendMessage}>
-          <ChattingInput />
+        <div className={style.bottom}>
+          <ChattingInput sendHandler={sendMessage} />
         </div>
       </div>
     </>
