@@ -2,6 +2,8 @@ import style from "@styles/Home.module.css";
 import { useEffect, useRef } from "react";
 import Image from "next/image";
 import { useState } from "react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Home() {
   // const router = useRouter();
@@ -46,7 +48,7 @@ export default function Home() {
   // }
   const [cardOrder, setCardOrder] = useState([0, 1, 2]);
 
-  const [cards, setCards] = useState([
+  const cards = [
     {
       id: 1,
       src: "/img/homeBanner/164_red_phalaenopsis.jpg",
@@ -71,7 +73,7 @@ export default function Home() {
       desc: "분홍색 천일홍",
       message: "우아함, 달콤함, 치절, 애정",
     },
-  ]);
+  ];
 
   const handleUpClick = () => {
     setCardOrder([cardOrder[2], cardOrder[0], cardOrder[1]]);
@@ -83,6 +85,7 @@ export default function Home() {
 
   return (
     <div className={style.home}>
+      <ToastContainer style={{ margin: "0px auto" }} />
       <div className={style.mainHeader}>
         <div className={style.header}>플리로고</div>
         <div className={style.title}>플리가 추천하는</div>
