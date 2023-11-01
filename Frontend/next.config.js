@@ -6,14 +6,11 @@ module.exports = withExportImages({
   reactStrictMode: false,
   output: "export",
   // write your next.js configuration values.
-});
-
-module.exports = {
   env: {
     OPENAI_API_KEY: process.env.OPENAI_API_KEY,
     // ANOTHER_VARIABLE: process.env.ANOTHER_VARIABLE,
   },
-};
+});
 
 //기존 module.exports
 // const nextConfig = {
