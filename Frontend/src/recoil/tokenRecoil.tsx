@@ -4,7 +4,7 @@ export interface sellerInputType {
   storename: string;
   sellername: string;
   phonenumber: string;
-  auth: Number;
+  auth: number;
   address: string;
 }
 
