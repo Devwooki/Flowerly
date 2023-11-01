@@ -19,7 +19,9 @@ public enum ErrorCode {
     MEMBER_NOT_SELLER(-4003, "해당 유저는 판매자가 아닙니다"),
 
     SELLER_PARTICIPATE_FAIL(-5000, "플리 참여에 실패하였습니다"),
-    SELLER_ALREADY_PARTICIPATE(-5001, "이미 참가하신 플리입니다");
+    SELLER_ALREADY_PARTICIPATE(-5001, "이미 참가하신 플리입니다"),
+
+    CHATTING_NOT_FOUND(6001, "채팅 정보를 찾을 수 없습니다.");
 
     private final int code;
     private final String message;

@@ -20,5 +20,6 @@ public class StompChatController {
     public void chat(@DestinationVariable Long chattingId, StompChatRequest stompChatRequest) {
         simpMessagingTemplate.convertAndSend("/sub/message/" + chattingId, stompChatRequest);
         chattingService.saveChattingMessage(stompChatRequest);
+        log.info("채팅 메세지 전송 성공");
     }
 }
