@@ -2,6 +2,7 @@
   display: flex;
   align-items: center;
   flex-direction: column;
+  margin-bottom: 20px;
 }
 .step {
   width: 90%;
@@ -13,22 +14,22 @@
   margin: 5px;
   position: relative;
 }
-.step::before {
+.progressBarBefore {
   content: "";
   height: 2px;
   width: 100%;
   display: block;
   background: var(--moregray);
   position: absolute;
-  z-index: -1;
+  z-index: 2;
 }
 
-.progressBar {
+.progressBarAfter {
   height: 4px;
   display: block;
   background: var(--mint);
   position: absolute;
-  z-index: -1;
+  z-index: 2;
 }
 
 .step li span {
@@ -39,7 +40,9 @@
   color: #999;
   border-radius: 50px;
   border: 1px solid var(--moregray);
-  box-shadow: 0px 0px 5px #ccc;
+  /* box-shadow: 0px 0px 5px #ccc; */
+  z-index: 2;
+  position: relative;
 }
 .step li.active span {
   background: var(--mint);
@@ -54,13 +57,13 @@
   font-size: 14px;
 }
 /* 프로세스바 */
-.step > li:nth-child(3) {
+.step > li:nth-child(4) {
   padding-right: 10px; /* 원하는 간격을 여기에 설정하세요 */
 }
-.step > li:nth-child(4) {
+.step > li:nth-child(5) {
   padding-right: 20px; /* 원하는 간격을 여기에 설정하세요 */
 }
-.step > li:nth-child(5) {
+.step > li:nth-child(6) {
   padding-right: 70px; /* 원하는 간격을 여기에 설정하세요 */
 }
 

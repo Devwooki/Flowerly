@@ -1,24 +1,68 @@
 .cardBox {
-  border: 1px solid black;
+  margin: 20px;
+  border-radius: 20px;
+  padding: 15px;
+  font-size: 16px;
+  box-shadow: 0 0 2px #a7a7a7;
+  background-color: var(--gray);
 }
 
 .cardInfo {
   display: flex;
 }
 
+.cardInfo > img {
+  min-width: 150px;
+  margin-top: 10px;
+  border-radius: 10px;
+}
+
+.InfoTextHeader {
+  font-family: "NanumSquareNeoOTF-Bd";
+  padding-bottom: 10px;
+  padding-left: 10px;
+  margin-right: 10px;
+  /* border: 1px solid black; */
+}
 .infoTable {
   display: flex;
+  margin-bottom: 5px;
+  margin-left: 5px;
+  font-size: 12px;
+}
+
+.infoColorTable {
+  font-family: "NanumSquareNeoOTF-Bd";
+  padding-bottom: 10px;
+  padding-left: 10px;
+  margin-right: 10px;
 }
 
 .infoTitle {
   font-family: "NanumSquareNeoOTF-Bd";
-  padding: 5px;
-  margin-right: 20px;
+  padding: 10px;
+  margin-right: 10px;
 }
-.infoTable div:nth-child(2) {
-  margin-left: 50px;
+
+.infoTable > .colorfirst:nth-child(2) {
+  margin-left: 10px;
 }
+
 .info {
-  padding: 5px;
+  padding: 5px 15px 5px 15px;
   background-color: var(--moregray);
+  font-family: "NanumSquareNeoOTF-Rg";
+  line-height: 20px;
+  height: 20px;
+  border-radius: 5px;
+  margin-top: 3px;
+}
+.flowerShop {
+  padding: 5px 15px 5px 15px;
+  font-family: "NanumSquareNeoOTF-Lt";
+  line-height: 20px;
+  height: 20px;
+  border-radius: 5px;
+  margin-top: 3px;
+  font-size: 16px;
 }

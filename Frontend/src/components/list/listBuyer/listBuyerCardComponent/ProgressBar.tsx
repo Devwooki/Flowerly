@@ -10,17 +10,15 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ currentStep }) => {
   const [barWidth, setBarWidth] = useState("0");
 
   useEffect(() => {
-    const stepWidths = ["0", "20%", "40%", "65%", "100%"];
+    const stepWidths = ["0", "20%", "40%", "60%", "100%"];
     setBarWidth(stepWidths[currentStep]);
   }, [currentStep]);
 
   return (
     <div className={style.main}>
       <ul className={`${style.step}`}>
-        <div
-          style={{ width: barWidth }}
-          className={style.progressBar} // 이 클래스 이름은 추가해야 합니다.
-        />
+        <div className={style.progressBarBefore} />
+        <div style={{ width: barWidth }} className={style.progressBarAfter} />
         {[0, 1, 2, 3, 4].map((index) => (
           <li key={index} className={currentStep >= index ? style.active : ""}>
             <span></span>
