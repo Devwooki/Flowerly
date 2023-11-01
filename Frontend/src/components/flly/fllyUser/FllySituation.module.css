@@ -6,6 +6,8 @@
 
 .contentBox {
     padding: 30px 20px;
+    height: calc(100vh - 120px);
+    overflow: scroll;
 }
 
 .progress {
@@ -59,7 +61,7 @@
 .selectBox {
     margin: 50px auto;
     display: grid;
-    grid-template-columns: 180px 180px;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 45%));
     justify-content: center;
 }
 
@@ -68,10 +70,11 @@
     justify-content: center;
     align-items: center;
     padding: 10px;
-    width: 150px;
-    height: 100px;
+    min-width: 115px;
+    width: 80%;
+    height: 80px;
     border-radius: 10px;
-    margin: 10px;
+    margin: 10px auto;
     background-color: var(--gray);
 }
 
@@ -80,10 +83,11 @@
     justify-content: center;
     align-items: center;
     padding: 10px;
-    width: 150px;
-    height: 100px;
+    min-width: 115px;
+    width: 80%;
+    height: 80px;
     border-radius: 10px;
-    margin: 10px;
+    margin: 10px auto;
     background-color: rgba(193, 224, 223, 0.3);
 }
 

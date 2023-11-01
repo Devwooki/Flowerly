@@ -6,7 +6,9 @@
 }
 
 .contentBox {
-    padding: 30px 20px;
+    padding: 30px 15px;
+    height: calc(100vh - 120px);
+    overflow: scroll;
 }
 
 .progress {
@@ -59,16 +61,14 @@
 }
 
 .selectAreaBox {
-    margin-top: 30px;
-    height: 580px;
-    display: flex;
-    align-items: center;
+    height: 450px;
+    margin-top: 60px;
 }
 
 .selectBox {
-    margin: 0 auto;
     display: grid;
-    grid-template-columns: 180px 180px;
+    /* grid-template-columns: 180px 180px; */
+    grid-template-columns: repeat(auto-fill, minmax(130px, 50%));
     justify-content: center;
 }
 
@@ -77,23 +77,25 @@
     justify-content: center;
     align-items: center;
     padding: 10px;
-    width: 150px;
-    height: 80px;
+    min-width: 110px;
+    width: 70%;
+    height: 55px;
     border-radius: 16px;
-    margin: 10px;
+    margin: 10px auto;
     background-color: var(--gray);
+    font-size: 14px;
 }
 
 .selectWord {
-    margin-right: 10px;
+    margin-right: 4px;
     width: 62px;
     text-align: center;
     font-family: "NanumSquareNeoOTF-Bd";
 }
 
 .selectCheck {
-    width: 50px;
-    height: 50px;
+    width: 45px;
+    height: 45px;
     background-color: rgba(255, 255, 255, 0.5);
     border-radius: 50px;
     display: flex;
@@ -102,8 +104,8 @@
 }
 
 .selectCheckWhite {
-    width: 50px;
-    height: 50px;
+    width: 45px;
+    height: 45px;
     background-color: rgba(229, 229, 229, 0.5);
     border-radius: 50px;
     display: flex;

@@ -8,6 +8,10 @@ const TestPageMain = () => {
     getSet((prevSet) => !prevSet);
   };
 
+  const dalle = () => {
+    console.log("이미지 테스트");
+  };
+
   return (
     <div className={style.common}>
       <h2 className={set ? `${style.blue}` : style.red} onClick={() => chmod()}>
@@ -16,6 +20,7 @@ const TestPageMain = () => {
       <h2 className={set ? style.red : style.blue} onClick={() => chmod()}>
         클릭해 봐
       </h2>
+      <button onClick={() => dalle()}>달리 사용</button>
       <TestCompo />
     </div>
   );

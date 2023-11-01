@@ -1,0 +1,24 @@
+.cardBox {
+  border: 1px solid black;
+}
+
+.cardInfo {
+  display: flex;
+}
+
+.infoTable {
+  display: flex;
+}
+
+.infoTitle {
+  font-family: "NanumSquareNeoOTF-Bd";
+  padding: 5px;
+  margin-right: 20px;
+}
+.infoTable div:nth-child(2) {
+  margin-left: 50px;
+}
+.info {
+  padding: 5px;
+  background-color: var(--moregray);
+}
