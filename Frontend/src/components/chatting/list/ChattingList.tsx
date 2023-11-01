@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import style from "./style/ChattingList.module.css";
+import style from "./ChattingList.module.css";
 
 import ChattingListCard from "./ChattingListCard";
 

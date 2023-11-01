@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import ChattingList from "@/components/chatting/ChattingList";
+import ChattingList from "@/components/chatting/list/ChattingList";
 
 const ChattingMain = () => {
   return (

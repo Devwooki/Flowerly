@@ -31,6 +31,16 @@
   overflow-y: auto;
 }
 
+.containerWithMenu {
+  box-sizing: border-box;
+  padding: 5px 20px;
+  height: calc(100vh - 250px);
+  width: 100%;
+  position: absolute;
+  top: 70px;
+  overflow-y: auto;
+}
+
 .bottom {
   width: 100%;
   position: absolute;
