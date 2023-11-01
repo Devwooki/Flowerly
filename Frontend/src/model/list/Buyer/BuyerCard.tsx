@@ -1,4 +1,5 @@
 type BuyerCard = {
+  fllyId: number;
   state: string;
   img: string;
   situation: string;

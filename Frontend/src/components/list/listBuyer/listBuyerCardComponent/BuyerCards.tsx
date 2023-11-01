@@ -2,6 +2,7 @@ import React from "react";
 import style from "./BuyerCards.module.css";
 import ProgressBar from "./ProgressBar";
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 type BuyerCardsProps = {
   card: BuyerCard;
@@ -10,36 +11,45 @@ type BuyerCardsProps = {
 const stateProps = ["입찰", "조율", "주문완료", "제작완료", "픽업/배달완료"];
 
 const BuyerCards = ({ card }: BuyerCardsProps) => {
+  const route = useRouter();
   const stepNumber = stateProps.indexOf(card.state);
 
   const posFlowerLeft = (step: number) => {
     if (step === 0) {
-      return 0;
+      return "0";
     }
     if (step === 1) {
-      return 55;
+      return "16%";
     }
     if (step === 2) {
-      return 120;
+      return "32%";
     }
     if (step === 3) {
-      return 200;
+      return "53%";
     }
     if (step === 4) {
-      return 330;
+      return "86%";
     }
   };
 
+  // const fllistBtn = (fllyId) => {
+  //   route.push({
+  //     pathname: "/list/"
+  //   })
+  // };
+
   return (
     <div className={style.cardBox}>
-      <Image
-        src="/img/icon/currentFlower.png"
-        alt="현재상태"
-        width={50}
-        height={50}
-        className={style.currentFlower}
-        style={{ left: posFlowerLeft(stepNumber) }}
-      />
+      <div style={{ height: "40px" }}>
+        <Image
+          src="/img/icon/currentFlower.png"
+          alt="현재상태"
+          width={50}
+          height={50}
+          className={style.currentFlower}
+          style={{ marginLeft: posFlowerLeft(stepNumber) }}
+        />
+      </div>
       <ProgressBar currentStep={stepNumber} />
       <div className={style.cardInfo}>
         <Image src={card.img} alt="꽃 이미지" width={150} height={150} />
@@ -72,6 +82,14 @@ const BuyerCards = ({ card }: BuyerCardsProps) => {
             <div className={`${style.flowerShop}`}>{card.shopName}</div>
           </div>
         </div>
+      </div>
+      <div className={style.cardBtn}>
+        <button className={style.fllistBtn} onClick={() => fllistBtn(card.fllyId)}>
+          플리스트
+        </button>
+        <button className={style.cancelBtn} onClick={() => console.log("취소")}>
+          취소하기
+        </button>
       </div>
     </div>
   );

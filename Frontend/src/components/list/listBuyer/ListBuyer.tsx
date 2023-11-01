@@ -6,6 +6,7 @@ import BuyerCards from "./listBuyerCardComponent/BuyerCards";
 const ListBuyer = () => {
   const procesingCard: BuyerCard[] = [
     {
+      fllyId: 1,
       state: "입찰",
       img: "/img/homeBanner/164_red_phalaenopsis.jpg",
       situation: "축하",
@@ -14,6 +15,7 @@ const ListBuyer = () => {
       shopName: "현욱이네 꼬까게",
     },
     {
+      fllyId: 2,
       state: "조율",
       img: "/img/homeBanner/test.webp",
       situation: "사랑",
@@ -22,6 +24,16 @@ const ListBuyer = () => {
       shopName: "기여니는 힘두러",
     },
     {
+      fllyId: 3,
+      state: "주문완료",
+      img: "/img/homeBanner/121_pink_gomphrena.jpg",
+      situation: "선택안함",
+      target: "부모님 ",
+      selectedColor: ["주황", "분홍", "노랑"],
+      shopName: "현욱이네 꼬까게",
+    },
+    {
+      fllyId: 4,
       state: "제작완료",
       img: "/img/homeBanner/121_pink_gomphrena.jpg",
       situation: "선택안함",
@@ -30,6 +42,7 @@ const ListBuyer = () => {
       shopName: "현욱이네 꼬까게",
     },
     {
+      fllyId: 5,
       state: "픽업/배달완료",
       img: "/img/homeBanner/141_purple_gladiolus.jpg",
       situation: "선택안함",
