@@ -1,6 +1,6 @@
 package com.ssafy.flowerly.entity;
 
-import com.ssafy.flowerly.seller.vo.FlowerMeaningDto;
+
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -19,10 +19,4 @@ public class FlowerMeaning {
     private String meaning;
 
 
-    public FlowerMeaningDto toFlowerMeaningDto(){
-        return FlowerMeaningDto.builder()
-                .flowerMeaningCode(this.flowerMeaningCode)
-                .meaning(this.meaning)
-                .build();
-    }
 }
