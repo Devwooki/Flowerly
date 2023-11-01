@@ -10,4 +10,6 @@ import java.util.Optional;
 public interface StoreInfoRepository extends JpaRepository<StoreInfo, Long> {
     @Query("SELECT s.storeName FROM StoreInfo s WHERE s.seller = :seller")
     String findStoreName(Member seller);
+
+    StoreInfo findBySellerMemberId(Long memerId);
 }

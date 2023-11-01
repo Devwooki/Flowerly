@@ -1,5 +1,6 @@
 package com.ssafy.flowerly.entity;
 
+import com.ssafy.flowerly.seller.vo.AddressSimpleDto;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -32,4 +33,16 @@ public class StoreDeliveryRegion {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dong_code")
     private Dong dong;
+
+
+    public AddressSimpleDto toAddressSimpleDto() {
+        return AddressSimpleDto.builder()
+                .sidoCode(this.sido.getSidoCode())
+                .sidoName(this.sido.getSidoName())
+                .sigunCode(this.sigungu.getSigunguCode())
+                .sigunName(this.sigungu.getSigunguName())
+                .dongCode(this.dong.getDongCode())
+                .dongName(this.dong.getDongName())
+                .build();
+    }
 }
