@@ -1,11 +1,15 @@
 import React from "react";
-import ShopList from "./shopList";
+import ShopList from "./ShopList";
 import Disc from "./Disc";
 
-const FllyListMain = () => {
+type FllyListMainProps = {
+  card: BuyerCard;
+};
+
+const FllyListMain = ({ card }: FllyListMainProps) => {
   return (
     <>
-      <Disc />
+      <Disc card={card} />
       <ShopList />
     </>
   );
