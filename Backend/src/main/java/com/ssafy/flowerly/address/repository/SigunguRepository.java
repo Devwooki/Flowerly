@@ -1,4 +1,4 @@
-package com.ssafy.flowerly.seller.model;
+package com.ssafy.flowerly.address.repository;
 
 
 import com.ssafy.flowerly.entity.Sido;

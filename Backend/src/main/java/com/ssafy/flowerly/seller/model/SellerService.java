@@ -1,6 +1,8 @@
 package com.ssafy.flowerly.seller.model;
 
 
+import com.ssafy.flowerly.address.repository.DongRepository;
+import com.ssafy.flowerly.address.repository.SigunguRepository;
 import com.ssafy.flowerly.entity.*;
 import com.ssafy.flowerly.entity.type.ProgressType;
 import com.ssafy.flowerly.entity.type.UploadType;
@@ -19,13 +21,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
