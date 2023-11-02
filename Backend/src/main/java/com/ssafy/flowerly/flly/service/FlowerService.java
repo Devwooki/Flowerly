@@ -1,6 +1,7 @@
 package com.ssafy.flowerly.flly.service;
 
 import com.ssafy.flowerly.entity.Flower;
+import com.ssafy.flowerly.entity.type.SituationType;
 import com.ssafy.flowerly.flly.dto.FlowerDto;
 import com.ssafy.flowerly.flly.dto.FlowerRequestDto;
 import com.ssafy.flowerly.flly.repository.FlowerRepository;
@@ -15,6 +16,9 @@ import java.util.List;
 public class FlowerService {
     private final FlowerRepository flowerRepository;
     public List<FlowerDto> getFlowerList(FlowerRequestDto flowerRequest) {
+//        System.out.println(flowerRequest.getSituation());
+//        System.out.println(SituationType.사랑);
+//        System.out.println(flowerRequest.getSituation().equals(SituationType.사랑));
         List<Flower> flowerList = flowerRepository.findFlowersByColorAndRecommendation(
                 flowerRequest.getColors(), flowerRequest.getSituation(), flowerRequest.getTarget());
 
