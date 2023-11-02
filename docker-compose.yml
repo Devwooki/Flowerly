@@ -15,8 +15,6 @@ services:
     # restart: always
     expose:
       - "3000"
-    ports:
-      - "3000:3000"
 
   flly_be:
     image: wjdgusaho/flowerly_be
@@ -29,8 +27,6 @@ services:
     restart: always
     expose:
       - "6090"
-    ports:
-      - "6090:6090"
 
   mariadb:
     container_name: mariadb
