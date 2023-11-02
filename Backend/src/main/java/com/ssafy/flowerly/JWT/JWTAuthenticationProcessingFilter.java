@@ -1,10 +1,13 @@
 package com.ssafy.flowerly.JWT;
 
 import com.ssafy.flowerly.entity.Member;
+import com.ssafy.flowerly.exception.AuthException;
+import com.ssafy.flowerly.exception.CustomException;
 import com.ssafy.flowerly.member.model.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
@@ -72,7 +75,7 @@ public class JWTAuthenticationProcessingFilter extends OncePerRequestFilter {
         log.info("accessToken 검증 시작 : checkAccessTokenAndAuthentication() 호출");
 
         jwtService.extractAccessToken(request)
-                .filter(jwtService::isValidToken).orElseThrow(() -> new IllegalArgumentException("text"))
+                .filter(jwtService::isValidToken)
                 .flatMap(jwtService::extractMemberId)
                 .flatMap(memberRepository::findByMemberIdActivate)
                 .ifPresent(member -> {
@@ -107,20 +110,27 @@ public class JWTAuthenticationProcessingFilter extends OncePerRequestFilter {
 
     //RefreshToken이 Redis에 있는지 체크하는 로직
     public void checkRefreshTokenAndReIssueAccessToken(HttpServletResponse response, String refreshToken) {
+        try{
+            //RefreshToken으로 유저 정보(ID) 찾기
+            String storedValue = redisTemplate.opsForValue().get(refreshToken);
+            if(storedValue == null)
+                throw new AuthException(HttpStatus.FORBIDDEN.value(), "로그인 기간이 만료되었습니다.");
 
-        //RefreshToken으로 유저 정보(ID) 찾기
-        Long memberId = Long.valueOf(redisTemplate.opsForValue().get(refreshToken));
-
-        //값이 존재하면 accessToken생성해준다. 이때 RefreshToken도 다시 생성하는 RTR방식으로 적용
-        if (memberId != null) {
             //기존 RefreshToken 제거
             redisTemplate.delete(refreshToken);
 
-            //refreshToken을 새로 만든다
-            String reIssueRefreshToken = jwtService.createRefreshToken(memberId);
-            String reIssueAccessToken = jwtService.createAccessToken(memberId);
-
-            jwtService.sendAccessTokenAndRefreshToken(response, reIssueAccessToken, reIssueRefreshToken);
+            // RefreshToken 및 AccessToken 재발급
+            Long memberId = Long.valueOf(storedValue);
+            reIssueTokens(response, memberId);
+        }catch(Exception e){
+            throw new AuthException(HttpStatus.FORBIDDEN.value(), "로그인 기간이 만료되었습니다.");
         }
+    }
+
+    private void reIssueTokens(HttpServletResponse response, Long memberId) {
+        String reIssueRefreshToken = jwtService.createRefreshToken(memberId);
+        String reIssueAccessToken = jwtService.createAccessToken(memberId);
+
+        jwtService.sendAccessTokenAndRefreshToken(response, reIssueAccessToken, reIssueRefreshToken);
     }
 }

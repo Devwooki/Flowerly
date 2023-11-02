@@ -48,18 +48,12 @@ public class SecurityConfig {
                 .and()
                 //===========URL 별 권한 옵션 =============
                 .authorizeRequests()
+                .antMatchers("/api/member/**").authenticated()
                 .antMatchers("/**").permitAll()
                 .antMatchers("/api/member/dummy-token").permitAll()
                 .antMatchers("/api/s3/**").permitAll()
                 .antMatchers("/ws/**").permitAll()
-                .antMatchers("/stomp-chat/**").permitAll()
-                .antMatchers("/api/member/**").authenticated();
-//                .antMatchers(HttpMethod.GET).authenticated()
-////                .antMatchers(HttpMethod.GET).permitAll()
-//                .antMatchers(HttpMethod.POST).permitAll()
-//                .antMatchers(HttpMethod.PATCH).permitAll()
-//                .antMatchers(HttpMethod.DELETE).permitAll()
-//                .antMatchers(HttpMethod.PUT).permitAll();
+                .antMatchers("/stomp-chat/**").permitAll();
                 //permitAll() : 인증이 처리 되었다고 생각했기 때문
 
         //Oauth 설정

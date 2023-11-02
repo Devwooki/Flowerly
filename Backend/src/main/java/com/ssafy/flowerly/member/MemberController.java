@@ -27,12 +27,12 @@ public class MemberController {
     @GetMapping("/jwt-test")
     public CustomResponse jwtTest(HttpServletRequest request) {
         log.info("jwt-test 접근 : {}", request.getRequestURI());
-        String accessToken = jwtService.extractAccessToken(request).get();
-        Long memberId = jwtService.extractMemberId(accessToken).get();
-
-        log.info("jwt-test 접근 : {} \n " +
-                "토큰 넘어오냐 : {} \n" +
-                "memberId 체크 : \n {}", request.getRequestURI(), accessToken, memberId);
+//        String accessToken = jwtService.extractAccessToken(request).get();
+//        Long memberId = jwtService.extractMemberId(accessToken).get();
+//
+//        log.info("jwt-test 접근 : {} \n " +
+//                "토큰 넘어오냐 : {} \n" +
+//                "memberId 체크 : \n {}", request.getRequestURI(), accessToken, memberId);
 
         return new CustomResponse(HttpStatus.OK.value(), "JWT요청 성공");
     }

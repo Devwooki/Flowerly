@@ -18,6 +18,5 @@ public interface FllyRepository extends JpaRepository<Flly, Long> {
             "WHERE f.fllyId = :fllyId AND f.isCanceled = false " +
             "AND f.deadline > current_timestamp")
     Optional<Flly> findByFllyIdAndActivate (Long fllyId);
-
     Optional<Page<Flly>> findFllyByConsumerMemberId(Pageable pageable, Long memberId);
 }

@@ -29,7 +29,6 @@ public class BuyerController {
 
         return new DataResponse<>(HttpStatus.OK.value(), "진행중인 flly를 반환합니다.", buyerService.getMyFlly(pageable, memberId));
     }
-
     @GetMapping("/flist/{flistId}")
     public DataResponse<?> getFilst(HttpServletRequest request,
                                     @PageableDefault(size = 6) Pageable pageable,

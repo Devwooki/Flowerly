@@ -43,10 +43,11 @@ public class BuyerService {
 
     //플리스트 찾기
     public Page<?> getFlist(Pageable pageable, Long memberId, Long fllyId) {
-        fllyParticipationRepository.findByFllyFllyId(fllyId).orElseThrow(()->new CustomException(ErrorCode.NOT_FIND_FLLY));
+        fllyParticipationRepository.findByFllyFllyId(fllyId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_FLLY));
 
-        return fllyParticipationRepository.findFllyParticipationsByFllyFllyId(fllyId)
-                .map(Flist -> Flist.map(FllyParticipation::))
-                .orElseThrow(()-> new CustomException(ErrorCode.NOT_FIND_FLLY));
+//        return fllyParticipationRepository.findFllyParticipationsByFllyFllyId(fllyId)
+//                .map(Flist -> Flist.map(FllyParticipation::))
+//                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_FLLY));
+        return null;
     }
 }
