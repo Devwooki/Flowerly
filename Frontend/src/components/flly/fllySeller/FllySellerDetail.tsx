@@ -5,6 +5,8 @@ import RequestDetail from "./fllySellerDetailComponent/RequestDetail";
 import { useParams } from "next/navigation";
 import axios from "axios";
 import { ToastErrorMessage } from "@/model/toastMessageJHM";
+import { useRouter } from "next/router";
+import { backIn } from "framer-motion";
 
 interface flowerInfoType {
   flowerName: string;
@@ -34,6 +36,7 @@ interface fllyReqeustDeatilType {
 const FllySellerDetail = () => {
   const [fllyRequestInfo, setFllyRequestInfo] = useState<fllyReqeustDeatilType>();
   const fllyId = useParams();
+  const router = useRouter();
 
   useEffect(() => {
     console.log(fllyId.fllyId);
@@ -48,6 +51,21 @@ const FllySellerDetail = () => {
     });
   }, []);
 
+  const pageMoveHandelr = () => {
+    if (fllyRequestInfo) {
+      router.push(
+        {
+          pathname: "/flly/create/[fllyId]",
+          query: { fllyId: fllyRequestInfo.fllyId },
+        },
+        "/flly/create", // 이것은 브라우저 주소창에 표시될 URL입니다.
+        { shallow: true },
+      );
+    } else {
+      ToastErrorMessage("잠시후 다시 눌러주세요!");
+    }
+  };
+
   return (
     <>
       <div className={style.detailBack}>
@@ -55,13 +73,22 @@ const FllySellerDetail = () => {
           className={style.detailHeader}
           style={{ backgroundImage: `url(${fllyRequestInfo?.imageUrl})` }}
         >
-          <Image src="/img/btn/left-btn.png" alt="뒤로가기" width={15} height={25} />
+          <Image
+            src="/img/btn/left-btn.png"
+            alt="뒤로가기"
+            width={15}
+            height={25}
+            onClick={() => {
+              router.back();
+            }}
+          />
           <Image
             className={style.partBtn}
             src="/img/btn/participate-btn2.png"
-            alt="꽃"
+            alt="참여하기"
             width={80}
             height={100}
+            onClick={pageMoveHandelr}
           />
         </div>
         <div className={style.detailMain}>
