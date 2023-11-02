@@ -25,7 +25,8 @@ const ShopLocation = ({ shopInfo }: ShopLocationProps) => {
         const mapContainer = document.getElementById("map"), // 지도를 표시할 div
           mapOption = {
             center: new window.kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-            level: 3, // 지도의 확대 레벨
+            level: 4, // 지도의 확대 레벨
+            draggable: false,
           };
 
         const map = new window.kakao.maps.Map(mapContainer, mapOption);
@@ -49,8 +50,10 @@ const ShopLocation = ({ shopInfo }: ShopLocationProps) => {
   return (
     <div className={style.locationMain}>
       <div id="map" className={style.mapRender} />
-      <div>{shopInfo.shopName}</div>
-      <div>{shopInfo.shopLoc}</div>
+      <div className={style.shopInfoText}>
+        <div className={style.shopName}>{shopInfo.shopName}</div>
+        <div className={style.shopLoc}>{shopInfo.shopLoc}</div>
+      </div>
     </div>
   );
 };
