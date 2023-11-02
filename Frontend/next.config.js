@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
-const withExportImages = require("next-export-optimize-images"); // 추가
+// import withExportImages from "next-export-optimize-images";
+
+const withExportImages = require("next-export-optimize-images");
 
 //추가 module.exports
 module.exports = withExportImages({
