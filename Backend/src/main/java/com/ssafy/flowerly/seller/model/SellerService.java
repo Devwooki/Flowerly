@@ -1,6 +1,8 @@
 package com.ssafy.flowerly.seller.model;
 
 
+import com.ssafy.flowerly.address.repository.DongRepository;
+import com.ssafy.flowerly.address.repository.SigunguRepository;
 import com.ssafy.flowerly.entity.*;
 import com.ssafy.flowerly.entity.type.ProgressType;
 import com.ssafy.flowerly.entity.type.UploadType;
@@ -19,13 +21,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -33,7 +31,6 @@ import java.util.stream.Collectors;
 public class SellerService {
 
     private final FllyRepository fellyRepository;
-    private final FlowerMeaningRepository flowerMeaningRepository;
     private final RequestRepository requestRepository;
     private final FllyParticipationRepository fllyParticipationRepository;
     private final MemberRepository memberRepository;
@@ -50,30 +47,7 @@ public class SellerService {
         의뢰 내용 API
      */
     public FllyRequestDto getRequestLetter(long fllyId) {
-
-        Flly fllyInfo = fellyRepository.findByFllyId(fllyId).orElseThrow();
-        FllyRequestDto fllyRequestDto = fllyInfo.toFllyRequestDto();
-        if(fllyInfo.getFlower1() != null){
-            List<FlowerMeaningDto> flowerMeain1 = flowerMeaningRepository
-                    .findByFlowerFlowerCode(fllyInfo.getFlower1().getFlowerCode())
-                    .stream().map(FlowerMeaning::toFlowerMeaningDto).collect(Collectors.toList());
-            fllyRequestDto.setFlower1(fllyInfo.getFlower1().toFlowerSimpleInfoDto(flowerMeain1));
-        }
-        if(fllyInfo.getFlower2() != null){
-            List<FlowerMeaningDto> flowerMeain2 = flowerMeaningRepository
-                    .findByFlowerFlowerCode(fllyInfo.getFlower2().getFlowerCode())
-                    .stream().map(FlowerMeaning::toFlowerMeaningDto).collect(Collectors.toList());
-
-            fllyRequestDto.setFlower2(fllyInfo.getFlower2().toFlowerSimpleInfoDto(flowerMeain2));
-        }
-        if(fllyInfo.getFlower3() != null){
-            List<FlowerMeaningDto> flowerMeain3 = flowerMeaningRepository
-                    .findByFlowerFlowerCode(fllyInfo.getFlower3().getFlowerCode())
-                    .stream().map(FlowerMeaning::toFlowerMeaningDto).collect(Collectors.toList());
-            fllyRequestDto.setFlower3(fllyInfo.getFlower3().toFlowerSimpleInfoDto(flowerMeain3));
-        }
-
-        return fllyRequestDto;
+        return null;
     }
 
     /*
@@ -130,14 +104,14 @@ public class SellerService {
      */
     public ParticipationRequestDto getFllyRequestInfo(Long memberId, Long fllyId){
 
-        ParticipationRequestDto result = new ParticipationRequestDto();
-        FllyRequestDto fllyRequestDto = getRequestLetter(fllyId);
-        result.setFllyRequestDto(fllyRequestDto);
-        FllyResponeDto fllyResponeDto = fllyParticipationRepository.findByFllyFllyId(fllyId)
-                .map(FllyParticipation::toFllyResponeDto).orElseThrow();
-        result.setFllyResponeDto(fllyResponeDto);
+//        ParticipationRequestDto result = new ParticipationRequestDto();
+//        //FllyRequestDto fllyRequestDto = getRequestLetter(fllyId);
+//        result.setFllyRequestDto(fllyRequestDto);
+//        FllyResponeDto fllyResponeDto = fllyParticipationRepository.findByFllyFllyId(fllyId)
+//                .map(FllyParticipation::toFllyResponeDto).orElseThrow();
+//        result.setFllyResponeDto(fllyResponeDto);
 
-        return result;
+        return null;
     }
 
     /*
@@ -188,11 +162,7 @@ public class SellerService {
     /*
         주변 플리 정보 불러오기
      */
-    public Map<String, Page<FllyNearDto>> getNearFllylist(Long memberId, Pageable pageable) {
-
-        Map<String, Page<FllyNearDto>> result = new HashMap<>();
-        //사이즈가 0이면 에러 발생 (주변에 플리가없어요!)
-        Integer listSize = 0;
+    public Page<FllyNearDto> getNearFllyDeliverylist(Long memberId, Pageable pageable) {
 
         //유저가 있는가 ? (판매자)
         Member member = memberRepository.findByMemberId(memberId)
@@ -234,9 +204,26 @@ public class SellerService {
                 .getSellerDeliverAbleList(deliverySido, deliverySigugun, deliveryDong, pageable)
                 .map(FllyDeliveryRegion::toDeliveryFllyNearDto);
 
-        listSize += deliveryAbleList.getContent().size();
+        if(deliveryAbleList.getContent().size() <= 0){
+            throw new CustomException(ErrorCode.NOT_SELLER_SEARCH_NEAR);
+        }
 
-        result.put("deliveryAbleList", deliveryAbleList);
+        return deliveryAbleList;
+    }
+
+    /*
+        주변 플리 정보 불러오기
+     */
+    public Page<FllyNearDto> getNearFllyPickuplist(Long memberId, Pageable pageable) {
+
+        Page<FllyNearDto> pickupAbleList = null;
+        //유저가 있는가 ? (판매자)
+        Member member = memberRepository.findByMemberId(memberId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_MEMBER));
+        //유저가 판매자가 아니라면?
+        if(member.getRole() != MemberRole.SELLER){
+            throw new CustomException(ErrorCode.MEMBER_NOT_SELLER);
+        }
 
         //2 픽업 가능한지 찾아야한다!
         //2-1 판매자 가게의 주소
@@ -258,19 +245,15 @@ public class SellerService {
             pickupDong.add(dongAll);
 
             //2-2 가게의 시 군 구 와 전체 시군구 와 전체 동을 가지고 flly픽업정보에서 찾는다
-            Page<FllyNearDto> pickupAbleList =  fllyPickupRegionRepository
+            pickupAbleList =  fllyPickupRegionRepository
                     .getSellerPickupAbleList(pickupSigugun, pickupDong, pageable)
                     .map(FllyPickupRegion::toPickupFllyNearDto);
 
-            listSize += pickupAbleList.getContent().size();
-
-            result.put("pickupAbleList", pickupAbleList);
         }
 
-        if(listSize == 0){
+        if(pickupAbleList == null || pickupAbleList.getContent().size() <= 0){
             throw new CustomException(ErrorCode.NOT_SELLER_SEARCH_NEAR);
         }
-
-        return result;
+        return pickupAbleList;
     }
 }

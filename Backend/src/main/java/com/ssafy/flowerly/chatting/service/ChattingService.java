@@ -8,6 +8,8 @@ import com.ssafy.flowerly.chatting.repository.ChattingMessageRepository;
 import com.ssafy.flowerly.chatting.repository.ChattingRepository;
 import com.ssafy.flowerly.entity.Chatting;
 import com.ssafy.flowerly.entity.Member;
+import com.ssafy.flowerly.exception.CustomException;
+import com.ssafy.flowerly.exception.ErrorCode;
 import com.ssafy.flowerly.member.MemberRole;
 import com.ssafy.flowerly.member.model.MemberRepository;
 import com.ssafy.flowerly.member.model.StoreInfoRepository;
@@ -83,6 +85,13 @@ public class ChattingService {
 
     @Transactional
     public void saveChattingMessage(StompChatRequest messageDto) {
-        chattingMessageRepository.save(ChattingMessage.toEntity(messageDto));
+        // 채팅 메세지 MongoDB 저장
+        ChattingMessage message = ChattingMessage.toEntity(messageDto);
+        chattingMessageRepository.save(message);
+
+        // 채팅방 마지막 메세지 업데이트
+        Chatting chatting = chattingRepository.findById(messageDto.getChattingId())
+                            .orElseThrow(() -> new CustomException(ErrorCode.CHATTING_NOT_FOUND));
+        chatting.updateChatting(message.getContent(), message.getSendTime());
     }
 }
