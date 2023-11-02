@@ -1,22 +1,24 @@
 package com.ssafy.flowerly.chatting.service;
 
-import com.ssafy.flowerly.chatting.dto.ChattingDto;
-import com.ssafy.flowerly.chatting.dto.StompChatRequest;
-import com.ssafy.flowerly.entity.ChattingMessage;
-import com.ssafy.flowerly.chatting.dto.ChattingMessageDto;
+import com.ssafy.flowerly.chatting.dto.*;
+import com.ssafy.flowerly.chatting.repository.RequestDeliveryInfoRepository;
+import com.ssafy.flowerly.entity.*;
 import com.ssafy.flowerly.chatting.repository.ChattingMessageRepository;
 import com.ssafy.flowerly.chatting.repository.ChattingRepository;
-import com.ssafy.flowerly.entity.Chatting;
-import com.ssafy.flowerly.entity.Member;
+import com.ssafy.flowerly.entity.type.OrderType;
 import com.ssafy.flowerly.exception.CustomException;
 import com.ssafy.flowerly.exception.ErrorCode;
 import com.ssafy.flowerly.member.MemberRole;
 import com.ssafy.flowerly.member.model.MemberRepository;
 import com.ssafy.flowerly.member.model.StoreInfoRepository;
+import com.ssafy.flowerly.seller.model.FllyDeliveryRegionRepository;
+import com.ssafy.flowerly.seller.model.RequestRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +29,9 @@ public class ChattingService {
     private final StoreInfoRepository storeInfoRepository;
     private final ChattingRepository chattingRepository;
     private final ChattingMessageRepository chattingMessageRepository;
+    private final RequestRepository requestRepository;
+    private final RequestDeliveryInfoRepository requestDeliveryInfoRepository;
+    private final FllyDeliveryRegionRepository fllyDeliveryRegionRepository;
 
     public List<ChattingDto.BasicResponse> getChattingList(Long memberId) {
         Member member = memberRepository.findByMemberId(memberId).orElseThrow();
@@ -93,5 +98,70 @@ public class ChattingService {
         Chatting chatting = chattingRepository.findById(messageDto.getChattingId())
                             .orElseThrow(() -> new CustomException(ErrorCode.CHATTING_NOT_FOUND));
         chatting.updateChatting(message.getContent(), message.getSendTime());
+    }
+
+    @Transactional
+    public Long saveRequestInfo(RequestFromChattingDto requestDto, Long chattingId) {
+        Chatting chatting = chattingRepository.findById(chattingId)
+                .orElseThrow(() -> new CustomException(ErrorCode.CHATTING_NOT_FOUND));
+
+        Request request = Request.builder()
+                .flly(chatting.getFllyParticipation().getFlly())
+                .seller(chatting.getSeller())
+                .orderName(requestDto.getOrdererName())
+                .phoneNumber(requestDto.getPhoneNumber())
+                .orderType(requestDto.getOrderType().equals("DELIVERY") ? OrderType.DELIVERY : OrderType.PICKUP)
+                .deliveryPickupTime(stringToTime(requestDto.getDeliveryPickupTime()))
+                .requestContent(requestDto.getRequestContent())
+                .price(-1)
+                .build();
+        request = requestRepository.save(request);
+
+        if(requestDto.getOrderType().equals("DELIVERY")) {
+            RequestDeliveryInfo deliveryInfo = RequestDeliveryInfo.builder()
+                    .request(request)
+                    .recipientName(requestDto.getRecipientName())
+                    .phoneNumber(requestDto.getRecipientPhoneNumber())
+                    .address(requestDto.getAddress())
+                    .build();
+            requestDeliveryInfoRepository.save(deliveryInfo);
+        }
+
+        return request.getRequestId();
+    }
+
+    public LocalDateTime stringToTime(String timeStr) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime dateTime = LocalDateTime.parse(timeStr, formatter);
+
+        return dateTime;
+    }
+
+    @Transactional
+    public void saveRequestInfo(Long requestId, Integer price) {
+        Request request = requestRepository.findById(requestId)
+                .orElseThrow(() -> new CustomException(ErrorCode.REQUEST_NOT_FOUND));
+        request.setRequestPrice(price);
+    }
+
+    public FllyFromChattingDto.Participation getParticipationInfo(Long chattingId) {
+        Chatting chatting = chattingRepository.findById(chattingId)
+                .orElseThrow(() -> new CustomException(ErrorCode.CHATTING_NOT_FOUND));
+        return FllyFromChattingDto.Participation.of(chatting.getConsumer().getNickName(), chatting.getFllyParticipation());
+    }
+
+    public FllyFromChattingDto.FllyInfo getFllyInfo(Long chattingId) {
+        Chatting chatting = chattingRepository.findById(chattingId)
+                .orElseThrow(() -> new CustomException(ErrorCode.CHATTING_NOT_FOUND));
+
+        Flly flly = chatting.getFllyParticipation().getFlly();
+        FllyFromChattingDto.FllyInfo fllyDto = FllyFromChattingDto.FllyInfo.of(flly);
+        if(flly.getOrderType().equals(OrderType.DELIVERY)) {
+            FllyDeliveryRegion deliveryRegion = fllyDeliveryRegionRepository.findByFlly(flly)
+                    .orElseThrow();
+            fllyDto.setAddress(deliveryRegion.getSido().getSidoName() + " " + deliveryRegion.getSigungu().getSigunguName());
+        }
+
+        return fllyDto;
     }
 }

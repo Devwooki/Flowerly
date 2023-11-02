@@ -1,9 +1,6 @@
 package com.ssafy.flowerly.seller.model;
 
-import com.ssafy.flowerly.entity.Dong;
-import com.ssafy.flowerly.entity.FllyDeliveryRegion;
-import com.ssafy.flowerly.entity.Sido;
-import com.ssafy.flowerly.entity.Sigungu;
+import com.ssafy.flowerly.entity.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -30,6 +27,8 @@ public interface FllyDeliveryRegionRepository extends JpaRepository<FllyDelivery
 
 
         Optional<FllyDeliveryRegion> findByFllyFllyId(Long aLong);
+
+        Optional<FllyDeliveryRegion> findByFlly(Flly flly);
 }
 
 

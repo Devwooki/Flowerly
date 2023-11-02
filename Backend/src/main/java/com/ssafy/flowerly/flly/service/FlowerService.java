@@ -30,7 +30,10 @@ public class FlowerService {
 
         List<SituationType> situationTypes = flowerRequest.getSituation();
         List<TargetType> targetTypes = flowerRequest.getTarget();
-        List<ColorType> colorTypes = flowerRequest.getColors();
+        List<ColorType> colorTypes = new ArrayList<>();
+        for(String color: flowerRequest.getColors()) {
+            colorTypes.add(ColorType.valueOf(color));
+        }
 
         Pageable pageable = PageRequest.of(0, 20);
         if(flowerRequest.getSituation() == null) {
@@ -46,7 +49,6 @@ public class FlowerService {
             }
         }
         if(flowerRequest.getColors() == null) {
-            colorTypes = new ArrayList<>();
             for(ColorType colorType: ColorType.values()) {
                 colorTypes.add(colorType);
             }
@@ -63,7 +65,7 @@ public class FlowerService {
         if(flowerList.size() < 10) {
             List<FlowerDto> flowerDtoListColor = new ArrayList<>();
             if(flowerRequest.getColors() != null) {
-                List<Flower> flowerListColor = flowerRepository.findFlowersByColor(flowerRequest.getColors(), pageable);
+                List<Flower> flowerListColor = flowerRepository.findFlowersByColor(colorTypes, pageable);
 
                 for(Flower flower: flowerListColor) {
                     if(flowerDtoListColor.size() > 9) break;

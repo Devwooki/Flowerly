@@ -17,7 +17,7 @@ public class OrderParticipationDto {
     private String fllyFlower2;
     private String fllyFlower3;
     private Integer fllybudget;
-    private LocalDateTime fllyDeadline;
+    private String fllyDeadline;
     //응답 정보
     FllyResponeDto fllyResponeDto;
 //    private Long fllyParticipationId;

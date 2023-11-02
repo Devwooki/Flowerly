@@ -15,6 +15,7 @@ services:
     # restart: always
     expose:
       - "3000"
+  
 
   flly_be:
     image: wjdgusaho/flowerly_be
