@@ -5,6 +5,7 @@
   border-radius: 15px;
   background-color: var(--gray);
   overflow: hidden;
+  text-align: center;
 }
 
 /* 요청 박스 */
