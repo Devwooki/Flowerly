@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import style from "./FllyFlower.module.css";
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
@@ -9,17 +9,41 @@ import { colorState } from "@/recoil/fllyRecoil";
 import { flowerState } from "@/recoil/fllyRecoil";
 import { flowerCardType } from "@/recoil/fllyRecoil";
 import Image from "next/image";
+import axios from "axios";
 
 const FllyFlower = () => {
   const situation = useRecoilValue(situationState);
   const target = useRecoilValue(targetState);
   const colors = useRecoilValue(colorState);
-  const [flowers, setFlowers] = useRecoilState(flowerState);
-  const [selected, setSelected] = useState<flowerCardType[]>([]);
-  const flowerList = [] as flowerCardType[];
+  const [selectedFlowers, setSelcetedFlowers] = useRecoilState(flowerState);
+  const [selected, setSelected] = useState<number[]>([]);
+  const [flowers, setFlowers] = useState<flowerCardType[]>([]);
+  const [flowersColor, setFlowersColor] = useState<flowerCardType[]>([]);
+  const [flowersMeaning, setFlowersMeaning] = useState<flowerCardType[]>([]);
+
+  const axiosHandler = () => {
+    console.log(situation, target, colors);
+    axios
+      .post(`https://flower-ly.co.kr/api/flly`, {
+        "situation" : [situation == "선택 안함"? null : situation],
+        "target" : [target == "선택 안함"? null : target],
+        "colors": colors.includes("선택 안함")? null : colors
+      })
+      .then((res) => {
+        console.log(res.data);
+        const data = res.data;
+        if (data.code === 200) {
+          setFlowers(data.data.flowers);
+          setFlowersColor(data.data.flowersColor);
+          setFlowersMeaning(data.data.flowersMeaning);
+          console.log("=== ",selected);
+        }
+        else console.log("오류 발생");
+      });
+  };
 
   const handleSelect = (e:flowerCardType) => {
-    if(selected.includes(e)) {
+    if(selected.includes(e.flowerCode)) {
       subValue(e);
     } else if(selected.length < 3) {
       addValue(e);
@@ -27,16 +51,33 @@ const FllyFlower = () => {
   };
 
   const subValue = (value:flowerCardType) => {
-    const updatedSelect = selected.filter(item => item !== value);
-    setSelected(updatedSelect);
-    setFlowers(updatedSelect);
+    const updatedSelected = selected.filter(item => item != value.flowerCode);
+    const updatedFlowers = selectedFlowers.filter(item => item !== value);
+    setSelected(updatedSelected);
+    setSelcetedFlowers(updatedFlowers);
+    console.log(selected);
   }
 
   const addValue = (newValue:flowerCardType) => {
-    const updatedSelected = [...selected, newValue];
+    console.log(selected);
+    const updatedSelected = [...selected, newValue.flowerCode];
+    const updatedFlowers = [...selectedFlowers, newValue];
     setSelected(updatedSelected);
-    setFlowers(updatedSelected);
+    setSelcetedFlowers(updatedFlowers);
+    console.log(selected);
   };
+
+  useEffect(() => {
+    selectedFlowers.map((value, index)=>{
+      selected.push(value.flowerCode);
+    })
+    console.log(selectedFlowers);
+    console.log("selected ", selected);
+  },[])
+
+  useEffect(() => {
+    axiosHandler();
+  },[])
 
   return (
     <>
@@ -47,39 +88,55 @@ const FllyFlower = () => {
             <div className={style.guidePlus}>최대 3개까지 선택 가능합니다.</div>
           </div>
           <div className={style.selectAreaBox}>
-            {flowerList.length === 0? <div className={style.selectLoading}>꽃 목록을 로딩중입니다.</div> : 
+            {flowers.length === 0? <div className={style.selectLoading}>꽃 목록을 로딩중입니다.</div> : 
               <div className={style.selectBox}>
-              {flowerList.map((item, index) => (
-                <div key={index} className={style.selectCard} onClick={() => {handleSelect(item)}}>
-                  <div className={selected.includes(item)?`${style.selectImg} ${style.selectedImg}` : style.selectImg} style={{ backgroundImage: `url(${item.img_url})` }}>
-                    {selected.includes(item) && <Image src="/img/icon/check.png" width={60} height={45} alt="체크"></Image>}
+                {flowers.map((item, index) => (
+                  <div key={index} className={style.selectCard} onClick={() => {handleSelect(item)}}>
+                    <div className={selected.includes(item.flowerCode)?`${style.selectImg} ${style.selectedImg}` : style.selectImg} style={{ backgroundImage: `url(${item.imageUrl})` }}>
+                      {selected.includes(item.flowerCode) && <Image src="/img/icon/check.png" width={60} height={45} alt="체크"></Image>}
+                    </div>
+                    <div className={style.selectWord}>
+                      <div className={style.flowerName}>{item.flowerName}</div>
+                      <div className={style.flowerMeaning}>{item.meaning}</div>
+                    </div>
                   </div>
-                  <div className={style.selectWord}>
-                    <div className={style.flowerName}>{item.flower_name}</div>
-                    <div className={style.flowerMeaning}>{item.flower_meaning}</div>
-                  </div>
+                ))}
+              </div>
+            }
+            {(flowersColor != null && flowersColor.length != 0) && 
+              <div>
+                <div className={style.sentence}>선택한 색의 꽃</div>
+                <div className={style.selectBox}>
+                  {flowersColor.map((item, index) => (
+                    <div key={index} className={style.selectCard} onClick={() => {handleSelect(item)}}>
+                      <div className={selected.includes(item.flowerCode)?`${style.selectImg} ${style.selectedImg}` : style.selectImg} style={{ backgroundImage: `url(${item.imageUrl})` }}>
+                        {selected.includes(item.flowerCode) && <Image src="/img/icon/check.png" width={60} height={45} alt="체크"></Image>}
+                      </div>
+                      <div className={style.selectWord}>
+                        <div className={style.flowerName}>{item.flowerName}</div>
+                        <div className={style.flowerMeaning}>{item.meaning}</div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              ))}
-                <div className={style.selectCard}>
-                  <div className={`${style.selectImg} ${style.selectedImg}`} style={{ backgroundImage: "url(/img/homeBanner/121_pink_gomphrena.jpg)" }}>
-                    <Image src="/img/icon/check.png" width={60} height={45} alt="체크"></Image>
-                  </div>
-                  <div className={style.selectWord}>
-                    <div className={style.flowerName}>알스트로메리아</div>
-                    <div className={style.flowerMeaning}>사랑, 부드러운 감정</div>
-                  </div>
+              </div>
+            }
+            {(flowersMeaning != null && flowersMeaning.length != 0) && 
+              <div>
+                <div className={style.sentence}>선택한 상황과 대상의 꽃</div>
+                <div className={style.selectBox}>
+                  {flowersMeaning.map((item, index) => (
+                    <div key={index} className={style.selectCard} onClick={() => {handleSelect(item)}}>
+                      <div className={selected.includes(item.flowerCode)?`${style.selectImg} ${style.selectedImg}` : style.selectImg} style={{ backgroundImage: `url(${item.imageUrl})` }}>
+                        {selected.includes(item.flowerCode) && <Image src="/img/icon/check.png" width={60} height={45} alt="체크"></Image>}
+                      </div>
+                      <div className={style.selectWord}>
+                        <div className={style.flowerName}>{item.flowerName}</div>
+                        <div className={style.flowerMeaning}>{item.meaning}</div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-                <div className={style.selectCard}>
-                  <div className={style.selectImg} style={{ backgroundImage: "url(/img/homeBanner/141_purple_gladiolus.jpg)" }}></div>
-                  <div className={style.selectWord}>
-                    <div className={style.flowerName}>글라디올러스</div>
-                    <div className={style.flowerMeaning}>우아함, 아름다움</div>
-                  </div>
-                </div>
-                <div className={style.selectCard}></div>
-                <div className={style.selectCard}></div>
-                <div className={style.selectCard}></div>
-                <div className={style.selectCard}></div>
               </div>
             }
           </div>

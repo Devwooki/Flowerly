@@ -21,11 +21,11 @@ const FllyLoading = () => {
 
   const generateOrder = async () => {
     const flowerStringArray = flowers.map((flower) => {
-      return `${flower.flower_color} ${flower.flower_name}`;
+      return `${flower.color} ${flower.engName}`;
     });
 
     const flowerString = flowerStringArray.join(", ");
-    setOrder(`a bouquet including ${flowerString}`);
+    setOrder(`a bouquet of ${flowerString}, on Light Bluish Gray background`);
   };
 
   const generateImage = async () => {

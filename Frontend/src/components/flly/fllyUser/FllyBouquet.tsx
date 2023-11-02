@@ -28,7 +28,7 @@ const FllyBouquet = () => {
           <div className={style.selectAreaBox}>
             <div className={style.selectBox}>
               {bouquets.map((item, index) => (
-                <div key={index} className={style.selectCard} onClick={() => {handleSelect(item)}}>
+                <div key={index} onClick={() => {handleSelect(item)}}>
                   <div className={selected == item?`${style.selectImg} ${style.selectedImg}` : style.selectImg} style={{ backgroundImage: `url(${item.url})` }}>
                     {(selected == item) && <Image src="/img/icon/check.png" width={60} height={45} alt="check"></Image>}
                   </div>

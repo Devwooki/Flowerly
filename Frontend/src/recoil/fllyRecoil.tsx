@@ -1,11 +1,12 @@
 import { atom } from "recoil";
 
 export interface flowerCardType {
-  id : number,
-  img_url : string,
-  flower_name : string,
-  flower_color : string,
-  flower_meaning : string[],
+  flowerCode : number,
+  imageUrl:  string,
+  flowerName : string,
+  color : string,
+  engName : string
+  meaning : string,
 }
 
 export interface bouquetType {
