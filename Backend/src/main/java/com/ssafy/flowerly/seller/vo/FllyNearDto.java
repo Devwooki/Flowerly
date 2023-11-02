@@ -19,6 +19,6 @@ public class FllyNearDto {
     private String flowerName3;
     private String imageUrl;
     private Integer budget;
-    private LocalDateTime deadline;
+    private String deadline;
     private String progress;
 }
