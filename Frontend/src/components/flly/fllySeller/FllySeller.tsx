@@ -5,15 +5,16 @@ import FllySellerCard from "./fllySellerCardComponent/FllySellerCard";
 import axios from "axios";
 
 import { ToastErrorMessage } from "@/model/toastMessageJHM";
+import { useRouter } from "next/router";
 
 interface FllyNearType {
   fllyId: number;
-  flowerName1: String;
-  flowerName2: String;
-  flowerName3: String;
-  imageUrl: String;
-  progress: String;
-  deadline: String;
+  flowerName1: string;
+  flowerName2: string;
+  flowerName3: string;
+  imageUrl: string;
+  progress: string;
+  deadline: string;
   budget: number;
 }
 
