@@ -13,12 +13,15 @@
   display: flex;
 }
 
-.cardMainImg {
+.cardMainImgBox {
+  height: 100%;
   width: 190px;
   position: relative;
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
+}
+
+.cardMainImgBox > img {
+  object-position: center;
+  object-fit: cover;
 }
 
 .cardMainImgInfo {
@@ -55,6 +58,7 @@
 
 .cardMainDetail > div:nth-child(4) > button {
   background-color: var(--mint);
+  height: 40px;
   margin: 0px auto;
   width: 100px;
   border-radius: 5px;

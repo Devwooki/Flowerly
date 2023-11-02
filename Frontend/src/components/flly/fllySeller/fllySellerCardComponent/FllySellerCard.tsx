@@ -1,27 +1,50 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import style from "./FllySellerCard.module.css";
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 interface FllyNearType {
   fllyId: number;
-  flowerName1: String;
-  flowerName2: String;
-  flowerName3: String;
-  imageUrl: String;
-  progress: String;
-  deadline: String;
+  flowerName1: string;
+  flowerName2: string;
+  flowerName3: string;
+  imageUrl: string;
+  progress: string;
+  deadline: string;
   budget: number;
 }
 
 const FllySellerCard = ({ $FllyDeliveryNear }: { $FllyDeliveryNear: FllyNearType }) => {
+  const [imageSrc, setImageSrc] = useState($FllyDeliveryNear.imageUrl);
+  const rounter = useRouter();
+
+  const errImageChangHandler = (event: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    setImageSrc("/img/etc/no-image.jpg");
+  };
+
+  const pageMoveHandler = () => {
+    rounter.push(
+      {
+        pathname: "/flly/detail/[fllyId]",
+        query: { fllyId: $FllyDeliveryNear.fllyId },
+      },
+      "/flly/detail", // 이것은 브라우저 주소창에 표시될 URL입니다.
+      { shallow: true },
+    );
+  };
+
   return (
     <>
       <div className={style.back}>
         <div className={style.cardMain}>
-          <div
-            className={style.cardMainImg}
-            style={{ backgroundImage: `url(${$FllyDeliveryNear.imageUrl})` }}
-          >
+          <div className={style.cardMainImgBox}>
+            <Image
+              src={imageSrc}
+              onError={errImageChangHandler}
+              width={190}
+              height={190}
+              alt="이미지"
+            ></Image>
             <div className={style.cardMainImgInfo}>{$FllyDeliveryNear.progress}중</div>
           </div>
           <div className={style.cardMainDetail}>
@@ -41,7 +64,7 @@ const FllySellerCard = ({ $FllyDeliveryNear }: { $FllyDeliveryNear: FllyNearType
               <span>~ {$FllyDeliveryNear.deadline}</span>
             </div>
             <div>
-              <button>참여하기</button>
+              <button onClick={pageMoveHandler}>참여하기</button>
             </div>
           </div>
         </div>
