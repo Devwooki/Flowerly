@@ -5,9 +5,24 @@ import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 
 const Navi = () => {
-  const [selectedButton, setSelectedButton] = useState<string>("home"); // 현재 선택된 버튼을 저장하는 state
-
   const router = useRouter();
+
+  const determineInitialButton = () => {
+    switch (router.pathname) {
+      case "/":
+        return "home";
+      case "/list":
+        return "list";
+      case "/flly":
+        return "flly";
+      case "/chatting":
+        return "chat";
+      default:
+        return "home";
+    }
+  };
+
+  const [selectedButton, setSelectedButton] = useState<string>(determineInitialButton());
 
   // 이미지 경로를 동적으로 반환하는 helper 함수
   const getImageSrc = (baseName: string) => {
