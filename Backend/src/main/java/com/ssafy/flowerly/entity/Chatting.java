@@ -38,8 +38,8 @@ public class Chatting extends BaseCreatedTimeEntity {
     @Column(nullable = false)
     private boolean isRemoved;
 
-    public void updateChatting(String chattingMessage) {
+    public void updateChatting(String chattingMessage, LocalDateTime chattingTime) {
         this.lastChattingMessage = chattingMessage;
-        this.lastChattingTime = LocalDateTime.now();
+        this.lastChattingTime = chattingTime;
     }
 }

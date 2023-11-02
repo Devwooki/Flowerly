@@ -1,23 +1,32 @@
 import { useState } from "react";
-import style from "./style/ChattingInput.module.css";
+import style from "./ChattingInput.module.css";
 import Image from "next/image";
 
 type ChattingInputProps = {
   sendHandler: Function;
+  menuHandler: Function;
 };
 
-const ChattingInput: React.FC<ChattingInputProps> = ({ sendHandler }) => {
+const ChattingInput: React.FC<ChattingInputProps> = ({ sendHandler, menuHandler }) => {
   const [sendMsg, setSendMsg] = useState("");
   const sendMessage = () => {
-    sendHandler(sendMsg);
-    setSendMsg("");
+    if (sendMsg.trim() != "") {
+      sendHandler(sendMsg);
+      setSendMsg("");
+    }
   };
 
   return (
     <>
       <div className={style.inputMain}>
         <div className={style.left}>
-          <Image src="/img/icon/chatting-plus.png" width={22} height={22} alt="채팅 더보기 버튼" />
+          <Image
+            src="/img/icon/chatting-plus.png"
+            width={22}
+            height={22}
+            alt="채팅 메뉴 버튼"
+            onClick={() => menuHandler()}
+          />
         </div>
         <div className={style.right}>
           <input

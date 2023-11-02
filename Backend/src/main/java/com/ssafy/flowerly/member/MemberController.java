@@ -42,9 +42,23 @@ public class MemberController {
                                  @RequestBody Map<String, Object> data){
         return new CustomResponse(HttpStatus.OK.value(), "요청 성공");
     }
-    @PostMapping("/signup")
-    public CustomResponse signup(HttpServletRequest request,
+    @PostMapping("/signup/buyer")
+    public CustomResponse signupBuyer(HttpServletRequest request,
                                  @RequestBody Map<String, Object> data){
+
+        Long memberId = Long.valueOf(request.getHeader(jwtService.getAccessHeader()));
+        memberService.signupBuyer(data, memberId);
+
+        return new CustomResponse(HttpStatus.OK.value(), "요청 성공");
+    }
+
+    @PostMapping("/signup/seller")
+    public CustomResponse signupSeller(HttpServletRequest request,
+                                 @RequestBody Map<String, Object> data){
+
+        Long memberId = Long.valueOf(request.getHeader(jwtService.getAccessHeader()));
+        memberService.signupSeller(data, memberId);
+
         return new CustomResponse(HttpStatus.OK.value(), "요청 성공");
     }
 

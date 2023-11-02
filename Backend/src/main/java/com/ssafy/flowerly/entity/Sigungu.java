@@ -1,5 +1,6 @@
 package com.ssafy.flowerly.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -15,6 +16,7 @@ public class Sigungu {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sido_code")
+    @JsonIgnore
     private Sido sido;
 
     private String sigunguName;
