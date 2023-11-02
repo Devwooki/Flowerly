@@ -1,9 +1,6 @@
 package com.ssafy.flowerly.seller.model;
 
-import com.ssafy.flowerly.entity.Dong;
-import com.ssafy.flowerly.entity.FllyDeliveryRegion;
-import com.ssafy.flowerly.entity.Sido;
-import com.ssafy.flowerly.entity.Sigungu;
+import com.ssafy.flowerly.entity.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface FllyDeliveryRegionRepository extends JpaRepository<FllyDeliveryRegion, Long> {
@@ -26,4 +24,11 @@ public interface FllyDeliveryRegionRepository extends JpaRepository<FllyDelivery
                         " order by fy.deadline "
         )
         Page<FllyDeliveryRegion> getSellerDeliverAbleList(List<Sido> sidoList, List<Sigungu> sigunguList, List<Dong> dongList, Pageable pageable);
+
+
+        Optional<FllyDeliveryRegion> findByFllyFllyId(Long aLong);
+
+        Optional<FllyDeliveryRegion> findByFlly(Flly flly);
 }
+
+

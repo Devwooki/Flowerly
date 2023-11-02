@@ -8,6 +8,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Getter
@@ -77,20 +78,25 @@ public class Flly extends BaseCreatedTimeEntity {
 
 
     public FllyRequestDto toFllyRequestDto(){
+        DateTimeFormatter Timeformatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
         return FllyRequestDto.builder()
                 .fllyId(this.fllyId)
-                .consumer(this.consumer.toDto())
+                .consumer(this.consumer.toDto().getNickName())
                 .imageUrl(this.imageUrl)
-                .situation(this.situation.getTitle())
-                .target(this.target.getTitle())
-                .color1(this.color1.getTitle())
-                .color2(this.color2.getTitle())
-                .color3(this.color3.getTitle())
+                .situation(this.target != null ? this.situation.toString() : null)
+                .target(this.target != null ? this.target.toString() : null)
+                .color1(this.color1 != null ? this.color1.getTitle() : null)
+                .color2(this.color2 != null ? this.color2.getTitle() : null)
+                .color3(this.color3 != null ? this.color3.getTitle() : null)
+                .flower1(this.flower1 != null ? this.flower1.toFlowerSimpleInfoDto() : null)
+                .flower2(this.flower2 != null ?this.flower2.toFlowerSimpleInfoDto() : null)
+                .flower3(this.flower3 != null ?this.flower3.toFlowerSimpleInfoDto() : null)
                 .orderType(this.orderType.getTitle())
                 .requestContent(this.requestContent)
                 .progress(this.progress.getTitle())
                 .budget(this.budget)
-                .deadline(this.deadline)
+                .deadline(this.deadline != null ? this.deadline.format(Timeformatter) : null)
                 .build();
     }
 

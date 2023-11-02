@@ -1,9 +1,9 @@
 package com.ssafy.flowerly.flly.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.ssafy.flowerly.entity.type.ColorType;
+import com.ssafy.flowerly.entity.type.SituationType;
+import com.ssafy.flowerly.entity.type.TargetType;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,8 +12,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Setter
 public class FlowerRequestDto {
-    private String situation;
-    private String target;
+    private List<SituationType> situation;
+    private List<TargetType> target;
     private List<String> colors = new ArrayList<>();
 }

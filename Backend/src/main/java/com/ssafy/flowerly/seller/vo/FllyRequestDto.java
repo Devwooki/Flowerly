@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class FllyRequestDto {
 
     private Long fllyId;
-    private MemberDto consumer;
+    private String consumer;
     private String imageUrl;
     private String situation;
     private String target;
@@ -31,6 +31,8 @@ public class FllyRequestDto {
     private String requestContent;
     private String progress;
     private Integer budget;
-    private LocalDateTime deadline;
+    private String deadline;
+
+    private String requestAddress;
 
 }

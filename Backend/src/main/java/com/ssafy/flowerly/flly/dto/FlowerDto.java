@@ -19,14 +19,19 @@ public class FlowerDto {
     private String engName;
     private String meaning;
 
+    @Override
+    public boolean equals(Object o) {
+        return this.flowerCode == ((Flower)o).getFlowerCode();
+    }
+
     public static FlowerDto of(Flower flower) {
         return FlowerDto.builder()
                 .flowerCode(flower.getFlowerCode())
-                .flowerName(flower.getFlowerName())
+                .flowerName(flower.getScientificName())
                 .imageUrl(flower.getImageUrl())
                 .color(flower.getColor())
-//                .engName(flower.get)
-//                .meaning()
+                .engName(flower.getEngName())
+                .meaning(flower.getMeaning())
                 .build();
     }
 }
