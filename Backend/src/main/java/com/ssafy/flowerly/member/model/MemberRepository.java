@@ -3,6 +3,7 @@ package com.ssafy.flowerly.member.model;
 import com.ssafy.flowerly.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -14,8 +15,9 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     @Query(
             "SELECT m FROM Member m " +
-                    "Where m.role != 'DELETE' "
+                    "Where m.memberId = :memberId " +
+                    " and m.role != 'DELETE' "
     )
-    Optional<Member> findByMemberIdActivate(Long memberID);
+    Optional<Member> findByMemberIdActivate(@Param("memberId") Long memberID);
 
 }
