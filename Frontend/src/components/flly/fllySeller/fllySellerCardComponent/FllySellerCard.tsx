@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import style from "./FllySellerCard.module.css";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import Picture from "next-export-optimize-images/picture";
 
 interface FllyNearType {
   fllyId: number;
@@ -38,13 +39,13 @@ const FllySellerCard = ({ $FllyDeliveryNear }: { $FllyDeliveryNear: FllyNearType
       <div className={style.back}>
         <div className={style.cardMain}>
           <div className={style.cardMainImgBox}>
-            <Image
+            <Picture
               src={imageSrc}
               onError={errImageChangHandler}
               width={190}
               height={190}
               alt="이미지"
-            ></Image>
+            ></Picture>
             <div className={style.cardMainImgInfo}>{$FllyDeliveryNear.progress}중</div>
           </div>
           <div className={style.cardMainDetail}>

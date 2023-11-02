@@ -5,7 +5,6 @@ const withExportImages = require("next-export-optimize-images"); // 추가
 module.exports = withExportImages({
   reactStrictMode: false,
   output: "export",
-  remoteImages: ["https://neighbrew.s3.ap-northeast-2.amazonaws.com/*"],
   // write your next.js configuration values.
   env: {
     OPENAI_API_KEY: process.env.OPENAI_API_KEY,
