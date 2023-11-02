@@ -6,7 +6,7 @@ module.exports = withExportImages({
   reactStrictMode: false,
   output: "export",
   images: {
-    domains: ["https://neighbrew.s3.ap-northeast-2.amazonaws.com", "*"],
+    domains: ["neighbrew.s3.ap-northeast-2.amazonaws.com", "*"],
   },
   // write your next.js configuration values.
   env: {
