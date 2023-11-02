@@ -25,8 +25,8 @@ public class FlowerDto {
                 .flowerName(flower.getFlowerName())
                 .imageUrl(flower.getImageUrl())
                 .color(flower.getColor())
-//                .engName(flower.get)
-//                .meaning()
+                .engName(flower.getEngName())
+                .meaning(flower.getMeaning())
                 .build();
     }
 }
