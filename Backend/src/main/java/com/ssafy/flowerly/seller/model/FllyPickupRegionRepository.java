@@ -17,9 +17,11 @@ public interface FllyPickupRegionRepository extends JpaRepository<FllyPickupRegi
     @Query(
             "SELECT pr FROM PickupRegion pr " +
                     "Left Join Flly fy ON fy.fllyId = pr.flly.fllyId " +
+                    " LEFT JOIN FllyParticipation fp ON fp.flly.fllyId = fy.fllyId " +
                     "WHere ( pr.sigungu IN :sigunguList OR pr.dong IN :dongList ) " +
                     "AND fy.deadline > current_timestamp AND fy.isCanceled = false " +
+                    "AND (fp.seller.memberId IS NULL OR fp.seller.memberId != :memberId) " +
                     "order by fy.deadline "
     )
-    Page<FllyPickupRegion> getSellerPickupAbleList(List<Sigungu> sigunguList, List<Dong> dongList, Pageable pageable);
+    Page<FllyPickupRegion> getSellerPickupAbleList(List<Sigungu> sigunguList, List<Dong> dongList, Pageable pageable, Long memberId);
 }
