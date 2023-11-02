@@ -12,6 +12,7 @@ import java.util.List;
 public class FlowerSimpleInfoDto {
 
     private String flowerName;
-    private List<FlowerMeaningDto> flowerMeaning;
+    private String meaning;
+
 
 }
