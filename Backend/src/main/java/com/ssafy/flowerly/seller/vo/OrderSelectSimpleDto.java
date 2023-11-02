@@ -15,7 +15,7 @@ public class OrderSelectSimpleDto {
     private String orderName;
     private String phoneNumber;
     private String orderType;
-    private LocalDateTime deliveryPickupTime;
+    private String deliveryPickupTime;
     private Long fllyId;
     private String progress;
 

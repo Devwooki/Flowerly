@@ -77,7 +77,7 @@ public class SellerService {
         if(fllyRequest.getOrderType().equals(OrderType.DELIVERY.getTitle())) {
             FllyDeliveryRegion fllyDelivery = fllyDeliveryRegionRepository
                     .findByFllyFllyId(fllyId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_FLLY_DELIVERYREGION));
-            fllyRequest.setRequestAddress(fllyDelivery.getSido() + " " + fllyDelivery.getSigungu());
+            fllyRequest.setRequestAddress(fllyDelivery.getSido().getSidoName() + " " + fllyDelivery.getSigungu().getSigunguName());
         }
 
         return fllyRequest;
