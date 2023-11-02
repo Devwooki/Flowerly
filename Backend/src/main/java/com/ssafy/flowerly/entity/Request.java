@@ -50,18 +50,18 @@ public class Request extends BaseCreatedTimeEntity {
     private Integer price;
 
 
-    public OrderSelectSimpleDto toOrderSelectSimpleDto(){
-        DateTimeFormatter Timeformatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        return OrderSelectSimpleDto.builder()
-                .requestId(this.requestId)
-                .fllyId(this.getFlly().getFllyId())
-                .orderName(this.orderName)
-                .phoneNumber(this.phoneNumber)
-                .orderType(this.orderType.getTitle())
-                .deliveryPickupTime(this.deliveryPickupTime != null ? this.deliveryPickupTime.format(Timeformatter) : null)
-                .progress(this.getFlly().getProgress().getTitle())
-                .build();
-    }
+//    public OrderSelectSimpleDto toOrderSelectSimpleDto(){
+//        DateTimeFormatter Timeformatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+//        return OrderSelectSimpleDto.builder()
+//                .requestId(this.requestId)
+//                .fllyId(this.getFlly().getFllyId())
+//                .orderName(this.orderName)
+//                .phoneNumber(this.phoneNumber)
+//                .orderType(this.orderType.getTitle())
+//                .deliveryPickupTime(this.deliveryPickupTime != null ? this.deliveryPickupTime.format(Timeformatter) : null)
+//                .progress(this.getFlly().getProgress().getTitle())
+//                .build();
+//    }
 
     public void setRequestPrice(Integer price) {
         this.price = price;
