@@ -10,6 +10,7 @@ interface adoptType {
   deliveryPickupTime: string;
   fllyId: number;
   progress: string;
+  imageUrl: string;
 }
 
 interface Props {
@@ -38,7 +39,7 @@ const ListAdoptCard = ({
         <div className={style.cardBack}>
           <div className={style.cardHeader}>
             <div className={style.cardHeaderImg}>
-              <div style={{ backgroundImage: `url(${"/test/test-flower-img.png"})` }} />
+              <div style={{ backgroundImage: `url(${$adoptInfo.imageUrl})` }} />
             </div>
             <div className={style.cardHeaderInfoBox}>
               <div className={style.cardHeaderInfo}>
