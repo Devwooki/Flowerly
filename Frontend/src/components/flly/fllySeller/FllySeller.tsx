@@ -34,6 +34,7 @@ const FllySeller = () => {
           setTotalPage(rData.totalPages);
         }
         if (rData.code === -4004) {
+          setNearFllyList([]);
           ToastErrorMessage(rData.message);
         }
       });
