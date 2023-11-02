@@ -8,6 +8,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Getter
@@ -77,9 +78,11 @@ public class Flly extends BaseCreatedTimeEntity {
 
 
     public FllyRequestDto toFllyRequestDto(){
+        DateTimeFormatter Timeformatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
         return FllyRequestDto.builder()
                 .fllyId(this.fllyId)
-                .consumer(this.consumer.toDto())
+                .consumer(this.consumer.toDto().getNickName())
                 .imageUrl(this.imageUrl)
                 .situation(this.target != null ? this.situation.toString() : null)
                 .target(this.target != null ? this.target.toString() : null)
@@ -93,7 +96,7 @@ public class Flly extends BaseCreatedTimeEntity {
                 .requestContent(this.requestContent)
                 .progress(this.progress.getTitle())
                 .budget(this.budget)
-                .deadline(this.deadline)
+                .deadline(this.deadline != null ? this.deadline.format(Timeformatter) : null)
                 .build();
     }
 
