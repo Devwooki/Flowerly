@@ -2,10 +2,9 @@ package com.ssafy.flowerly.chatting.controller;
 
 import com.ssafy.flowerly.JWT.JWTService;
 import com.ssafy.flowerly.chatting.dto.ChattingDto;
-import com.ssafy.flowerly.chatting.dto.ChattingMessageDto;
+import com.ssafy.flowerly.chatting.dto.FllyFromChattingDto;
+import com.ssafy.flowerly.chatting.dto.RequestFromChattingDto;
 import com.ssafy.flowerly.chatting.service.ChattingService;
-import com.ssafy.flowerly.exception.CustomException;
-import com.ssafy.flowerly.exception.ErrorCode;
 import com.ssafy.flowerly.util.CustomResponse;
 import com.ssafy.flowerly.util.DataResponse;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +12,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -32,11 +33,8 @@ public class ChattingController {
     @GetMapping
     public CustomResponse getChattingList(HttpServletRequest request){
         log.info("채팅방 목록 조회");
-        Long memberId = jwtService.extractMemberId(
-                jwtService.extractAccessToken(request)
-                .orElseThrow(() -> new CustomException(ErrorCode.INVALID_ACCESS_TOKEN))
-            ).orElseThrow(() -> new CustomException(ErrorCode.INVALID_ACCESS_TOKEN));
-//        System.out.println(memberId);
+//        Long memberId = (Long) request.getAttribute("memberId");
+        Long memberId = 1L;
         List<ChattingDto.BasicResponse> chattingList = chattingService.getChattingList(memberId);
 
         return new DataResponse<>(200, "채팅방 리스트 조회 성공", chattingList);
@@ -46,26 +44,68 @@ public class ChattingController {
      * 채팅방의 메세지 목록 조회
      * @param request 로그인한 유저의 id 추출
      * @param chattingId 조회할 채팅방 id
-     * @return
+     * @return chattingRoom 채팅방 정보
      */
     @GetMapping("/{chattingId}")
     public CustomResponse getChattingMessageList(HttpServletRequest request, @PathVariable Long chattingId) {
         log.info(chattingId + "번 채팅방 조회");
-        Long memberId = jwtService.extractMemberId(
-                jwtService.extractAccessToken(request)
-                        .orElseThrow(() -> new CustomException(ErrorCode.INVALID_ACCESS_TOKEN))
-        ).orElseThrow(() -> new CustomException(ErrorCode.INVALID_ACCESS_TOKEN));
+//        Long memberId = (Long) request.getAttribute("memberId");
+        Long memberId = 1L;
 
         ChattingDto.RoomResponse chattingRoom = chattingService.getChattingMessageList(memberId, chattingId);
 
         return new DataResponse<>(200, "채팅방 메세지 조회 성공", chattingRoom);
     }
 
-//    @PostMapping("/message")
-//    public CustomResponse saveChattingMessage(@RequestBody ChattingMessageDto.Request message) {
-//        chattingService.saveChattingMessage(message);
-//
-//        return new CustomResponse(200, "채팅 메세지 저장 성공");
-//    }
+    /**
+     * 주문서 작성 내용 저장
+     * @param chattingId 채팅 ID
+     * @param requestDto 주문서 작성 내용
+     * @return requestId 주문 ID
+     */
+    @PostMapping("/request/{chattingId}")
+    public CustomResponse saveRequestInfo(@PathVariable Long chattingId, @RequestBody RequestFromChattingDto requestDto) {
+        Long requestId = chattingService.saveRequestInfo(requestDto, chattingId);
 
+        return new DataResponse<Long>(200, "주문서 저장 성공", requestId);
+    }
+
+    /**
+     * 결제 금액 설정
+     * @param requestBody requestId, price
+     * @return
+     */
+    @PostMapping("/price")
+    public CustomResponse saveRequestPrice(@RequestBody Map<String, Object> requestBody) {
+        chattingService.saveRequestInfo(
+                Long.parseLong(requestBody.get("requestId").toString()),
+                Integer.parseInt(requestBody.get("price").toString())
+        );
+
+        return new CustomResponse(200, "결제 금액 저장 성공");
+    }
+
+    /**
+     * 플리 참여 정보 조회
+     * @param chattingId 채팅 ID
+     * @return fllyDto 플리 참여 정보
+     */
+    @GetMapping("/flly/{chattingId}")
+    public CustomResponse getFllyInfo(@PathVariable Long chattingId) {
+        FllyFromChattingDto.Participation fllyDto = chattingService.getParticipationInfo(chattingId);
+
+        return new DataResponse<FllyFromChattingDto.Participation>(200, "플리 참여 정보 조회 성공", fllyDto);
+    }
+
+    @GetMapping("/flly/detail/{chattingId}")
+    public CustomResponse getFllyDetailInfo(@PathVariable Long chattingId) {
+        FllyFromChattingDto.Participation partipationDto = chattingService.getParticipationInfo(chattingId);
+        FllyFromChattingDto.FllyInfo fllyDto = chattingService.getFllyInfo(chattingId);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("fllyDto", fllyDto);
+        response.put("participationDto", partipationDto);
+
+        return new DataResponse<>(200, "플리 자세히 보기 조회 성공", response);
+    }
 }
