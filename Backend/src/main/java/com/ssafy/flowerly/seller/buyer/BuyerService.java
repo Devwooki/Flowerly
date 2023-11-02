@@ -45,9 +45,7 @@ public class BuyerService {
     public Page<?> getFlist(Pageable pageable, Long memberId, Long fllyId) {
         fllyParticipationRepository.findByFllyFllyId(fllyId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_FLLY));
 
-//        return fllyParticipationRepository.findFllyParticipationsByFllyFllyId(fllyId)
-//                .map(Flist -> Flist.map(FllyParticipation::))
-//                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_FLLY));
+        fllyParticipationRepository.findFlistByFllyId(pageable,fllyId);
         return null;
     }
 }
