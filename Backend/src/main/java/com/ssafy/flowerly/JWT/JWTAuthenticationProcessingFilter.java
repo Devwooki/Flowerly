@@ -72,9 +72,9 @@ public class JWTAuthenticationProcessingFilter extends OncePerRequestFilter {
         log.info("accessToken 검증 시작 : checkAccessTokenAndAuthentication() 호출");
 
         jwtService.extractAccessToken(request)
-                .filter(jwtService::isValidToken)
+                .filter(jwtService::isValidToken).orElseThrow(() -> new IllegalArgumentException("text"))
                 .flatMap(jwtService::extractMemberId)
-                .flatMap(memberRepository::findByMemberIdAndIsRemovedFalse)
+                .flatMap(memberRepository::findByMemberIdActivate)
                 .ifPresent(member -> {
                     request.setAttribute("memberId", member.getMemberId());
                     saveAuthentication(member);

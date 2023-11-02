@@ -23,4 +23,6 @@ public interface FllyParticipationRepository extends JpaRepository<FllyParticipa
     Optional<FllyParticipation> findByFllyFllyId(long fllyId);
 
     Optional<FllyParticipation> findByFllyFllyIdAndSellerMemberId(long memberId, long fllyId);
+
+    Optional<Page<FllyParticipation>> findFllyParticipationsByFllyFllyId(long fllyId);
 }

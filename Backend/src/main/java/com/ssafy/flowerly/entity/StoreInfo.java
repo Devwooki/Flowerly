@@ -1,5 +1,6 @@
 package com.ssafy.flowerly.entity;
 
+import com.ssafy.flowerly.seller.buyer.dto.FlistStoreInfo;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -47,4 +48,14 @@ public class StoreInfo {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dong_code")
     private Dong dong;
+
+    public FlistStoreInfo toDto(){
+        return FlistStoreInfo.builder()
+                .storeInfoId(this.storeInfoId)
+                .storeName(this.storeName)
+                .sellerName(this.sellerName)
+                .phoneNumber(this.phoneNumber)
+                .address(this.address)
+                .build();
+    }
 }
