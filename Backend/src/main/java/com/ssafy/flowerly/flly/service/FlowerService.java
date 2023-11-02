@@ -13,80 +13,78 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 public class FlowerService {
     private final FlowerRepository flowerRepository;
-    public List<FlowerDto> getFlowerList(FlowerRequestDto flowerRequest) {
+
+    public Map<String, List<FlowerDto>> getFlowerList(FlowerRequestDto flowerRequest) {
+        Map<String, List<FlowerDto>> lists = new HashMap<>();
+        lists.put("flowers", null);
+        lists.put("flowersColor", null);
+        lists.put("flowersMeaning", null);
+
+        List<SituationType> situationTypes = flowerRequest.getSituation();
+        List<TargetType> targetTypes = flowerRequest.getTarget();
+        List<ColorType> colorTypes = flowerRequest.getColors();
+
         Pageable pageable = PageRequest.of(0, 20);
         if(flowerRequest.getSituation() == null) {
-            List<SituationType> temp = new ArrayList<>();
+            situationTypes = new ArrayList<>();
             for(SituationType situationType: SituationType.values()) {
-                temp.add(situationType);
+                situationTypes.add(situationType);
             }
-            flowerRequest.setSituation(temp);
         }
         if(flowerRequest.getTarget() == null) {
-            List<TargetType> temp = new ArrayList<>();
+            targetTypes = new ArrayList<>();
             for(TargetType targetType: TargetType.values()) {
-                temp.add(targetType);
+                targetTypes.add(targetType);
             }
-            flowerRequest.setTarget(temp);
         }
         if(flowerRequest.getColors() == null) {
-            List<ColorType> temp = new ArrayList<>();
+            colorTypes = new ArrayList<>();
             for(ColorType colorType: ColorType.values()) {
-                temp.add(colorType);
+                colorTypes.add(colorType);
             }
-            flowerRequest.setColors(temp);
         }
         List<Flower> flowerList = flowerRepository.findFlowersByRequest(
-                flowerRequest.getColors(), flowerRequest.getSituation(), flowerRequest.getTarget(), pageable);
+                colorTypes, situationTypes, targetTypes, pageable);
 
         List<FlowerDto> flowerDtoList = new ArrayList<>();
         for(Flower flower: flowerList) {
             flowerDtoList.add(FlowerDto.of(flower));
         }
+        lists.put("flowers", flowerDtoList);
 
-        return flowerDtoList;
-    }
+        if(flowerList.size() < 10) {
+            List<FlowerDto> flowerDtoListColor = new ArrayList<>();
+            if(flowerRequest.getColors() != null) {
+                List<Flower> flowerListColor = flowerRepository.findFlowersByColor(flowerRequest.getColors(), pageable);
 
-    public List<FlowerDto> getFlowerListByColor(FlowerRequestDto flowerRequest) {
-        Pageable pageable = PageRequest.of(0, 10);
-        List<Flower> flowerList = flowerRepository.findFlowersByColor(flowerRequest.getColors(), pageable);
-
-        List<FlowerDto> flowerDtoList = new ArrayList<>();
-        for(Flower flower: flowerList) {
-            flowerDtoList.add(FlowerDto.of(flower));
-        }
-        return flowerDtoList;
-    }
-
-    public List<FlowerDto> getFlowerListByMeaning(FlowerRequestDto flowerRequest) {
-        if(flowerRequest.getSituation() == null) {
-            List<SituationType> temp = new ArrayList<>();
-            for(SituationType situationType: SituationType.values()) {
-                temp.add(situationType);
+                for(Flower flower: flowerListColor) {
+                    if(flowerDtoListColor.size() > 9) break;
+                    if(flowerDtoList.contains(flower)) continue;
+                    flowerDtoListColor.add(FlowerDto.of(flower));
+                }
+                lists.put("flowersColor", flowerDtoListColor);
             }
-            flowerRequest.setSituation(temp);
-        }
-        if(flowerRequest.getTarget() == null) {
-            List<TargetType> temp = new ArrayList<>();
-            for(TargetType targetType: TargetType.values()) {
-                temp.add(targetType);
+
+            List<Flower> flowerListMeaning = flowerRepository.findFlowersByMeaning(situationTypes, targetTypes, pageable);
+
+            List<FlowerDto> flowerDtoListMeaning = new ArrayList<>();
+            for(Flower flower: flowerListMeaning) {
+                if(flowerDtoListMeaning.size() > 9) break;
+                if(flowerDtoList.contains(flower) || flowerDtoListColor.contains(flower)) continue;
+                flowerDtoListMeaning.add(FlowerDto.of(flower));
             }
-            flowerRequest.setTarget(temp);
+            lists.put("flowersMeaning", flowerDtoListMeaning);
+
         }
 
-        Pageable pageable = PageRequest.of(0, 10);
-        List<Flower> flowerList = flowerRepository.findFlowersByMeaning(flowerRequest.getSituation(), flowerRequest.getTarget(), pageable);
-
-        List<FlowerDto> flowerDtoList = new ArrayList<>();
-        for(Flower flower: flowerList) {
-            flowerDtoList.add(FlowerDto.of(flower));
-        }
-        return flowerDtoList;
+        return lists;
     }
 }
