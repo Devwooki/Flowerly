@@ -13,17 +13,21 @@
   display: flex;
 }
 
-.cardMainImg {
+.cardMainImgBox {
+  height: 100%;
   width: 190px;
   position: relative;
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
+}
+
+.cardMainImgBox > img {
+  object-position: center;
+  object-fit: cover;
 }
 
 .cardMainImgInfo {
   position: absolute;
   height: 35px;
+  text-align: center;
   line-height: 35px;
   width: 100%;
   font-size: 20px;
@@ -54,6 +58,7 @@
 
 .cardMainDetail > div:nth-child(4) > button {
   background-color: var(--mint);
+  height: 40px;
   margin: 0px auto;
   width: 100px;
   border-radius: 5px;
@@ -80,8 +85,9 @@
 }
 
 .cardfooter {
-  line-height: 30px;
+  line-height: 32px;
   height: 30px;
+  text-align: center;
   background-color: #f7f8f9;
   font-size: 16px;
   font-family: "NanumSquareNeoOTF-Rg";

@@ -1,5 +1,5 @@
 import React from "react";
-import style from "./signup.module.css";
+import style from "./Signup.module.css";
 import { useRouter } from "next/router";
 import { useRecoilState } from "recoil";
 import { useEffect } from "react";
@@ -21,7 +21,7 @@ const Signup = () => {
   };
 
   const onClickSeller = () => {
-    router.push("/signup/seller/step1");
+    router.push("/signup/seller/Step1");
   };
   return (
     <div>

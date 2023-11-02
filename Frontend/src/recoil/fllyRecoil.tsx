@@ -1,37 +1,40 @@
-import { atom } from 'recoil';
+import { atom } from "recoil";
 
 export interface flowerCardType {
-  id : Number,
-  img_url : string,
-  flower_name : string,
-  flower_meaning : string[],
+  flowerCode : number,
+  imageUrl:  string,
+  flowerName : string,
+  color : string,
+  engName : string
+  meaning : string,
 }
 
 export interface bouquetType {
-  url : string | undefined,
+  url: string | undefined;
 }
 
 export const situationState = atom({
-  key: 'situationState',
-  default: '',
+  key: "situationState",
+  default: "",
 });
 
 export const targetState = atom({
-    key: 'targetState',
-    default: '',
+  key: "targetState",
+  default: "",
 });
 
 export const colorState = atom({
-    key: 'colorState',
-    default: [] as string[],
+  key: "colorState",
+  default: [] as string[],
 });
 
 export const flowerState = atom({
-  key: 'flowerState',
+  key: "flowerState",
   default: [] as flowerCardType[],
-})
+});
 
 export const bouquetState = atom({
   key: 'bouquetState',
+  // default: [{url:""}, {url:""}] as bouquetType[],
   default: [] as bouquetType[],
-})
+});

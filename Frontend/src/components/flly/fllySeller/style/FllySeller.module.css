@@ -6,11 +6,36 @@
 
 .header {
   position: absolute;
-  display: flex;
-  justify-content: space-between;
-  height: 80px;
+  background-color: white;
   width: 100%;
+  height: 125px;
+  text-align: left;
+  border-bottom: 1px solid var(--moregray);
   z-index: 10;
+}
+
+.headerSideBtn {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 30px;
+  font-size: 20px;
+  font-family: "Pretendard-Bold";
+  width: 100%;
+}
+
+.headerSideBtnCheck {
+  border-bottom: 4px solid black;
+  color: black;
+}
+
+.headerSideBtnUnchek {
+  color: var(--moregray);
+}
+
+.headerSideBtn > div {
+  width: 140px;
+  height: 30px;
+  text-align: center;
 }
 
 .headerTitle {
@@ -35,9 +60,9 @@
 }
 
 .mainBox {
-  position: absolute;
-  margin-top: 80px;
   width: 100%;
+  height: calc(100vh - 190px);
+  padding-top: 130px;
   overflow: scroll;
-  height: calc(100vh - 135px);
+  /* border: 1px solid black; */
 }

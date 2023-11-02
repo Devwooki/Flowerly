@@ -31,7 +31,7 @@
 
 .selectAreaBox {
     margin: 10px 0 13px 0;
-    height: 600px;
+    height: calc(100vh - 220px);
     overflow: scroll;
 }
 
@@ -72,7 +72,7 @@
 
 .selectedImg {
     width: 130px;
-    height: 130px;
+    height: 125.5px;
     opacity: 0.5;
 }
 
@@ -121,10 +121,18 @@
     justify-content: center;
 }
 
+.sentence {
+    margin: 20px 0 0 30px;
+    font-family: "NanumSquareNeoOTF-Bd";
+}
+
 .btnBox {
     display: flex;
     align-items: center;
     justify-content: center;
+    position: fixed;
+    bottom: 80px;
+    width: 100%;
 }
 
 .prevBtn {
