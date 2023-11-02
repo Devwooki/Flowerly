@@ -13,17 +13,32 @@ const Step1 = () => {
   const [sellerInput, setSellerInput] = useRecoilState(sellerInputState);
   const [basicAddress, setBasicAddress] = useState("");
   const [detailAddress, setDetailAddress] = useState("");
-
-  const handleNext = () => {
-    // input 모두 입력 되었는지 확인하는 로직 추가
-    console.log(sellerInput);
-    router.push("/signup/seller/Step2");
-  };
+  const [isStoreNumberValid, setIsStoreNumberValid] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setSellerInput({ ...sellerInput, [name]: value });
     console.log(sellerInput);
+  };
+
+  const isAllDataFilled = () => {
+    return (
+      sellerInput.storename &&
+      sellerInput.sellername &&
+      sellerInput.phonenumber &&
+      sellerInput.storenumber &&
+      basicAddress &&
+      detailAddress
+    );
+  };
+
+  const handleNext = () => {
+    // input 모두 입력 되었는지 확인하는 로직 추가
+    if (isAllDataFilled() && isStoreNumberValid) {
+      router.push("/signup/seller/Step2");
+    } else {
+      alert("모든 정보를 입력해주세요");
+    }
   };
 
   // 국세청 사업자등록 상태조회 api
@@ -56,8 +71,10 @@ const Step1 = () => {
 
         if (b_stt_cd === "01") {
           alert("사업자등록번호가 확인되었습니다.");
+          setIsStoreNumberValid(true);
         } else {
           alert("존재하지 않는 사업자등록번호입니다. 다시 입력해주세요");
+          setIsStoreNumberValid(false);
         }
       } else {
         console.log("사업자등록번호 상태 조회 실패:", response);

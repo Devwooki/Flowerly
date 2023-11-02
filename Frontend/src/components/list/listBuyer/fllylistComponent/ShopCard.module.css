@@ -17,8 +17,16 @@
 }
 
 .shopInfo {
-  padding: 15px;
+  padding: 15px 15px 5px 15px;
   font-family: "NanumSquareNeoOTF-Rg";
+}
+
+.shopInfo .infoTable:nth-child(2) {
+  margin-left: 2px;
+}
+
+.shopInfo .infoTable:nth-child(2) img {
+  margin-right: 8px;
 }
 
 .infoTable {
@@ -26,14 +34,17 @@
   margin-bottom: 5px;
 }
 
+.infoTable img {
+  margin-right: 5px;
+}
+
 .chatAction {
   font-family: "NanumSquareNeoOTF-Rg";
-
   text-align: center;
-  margin: 0 40px;
+  margin: 0 50px;
   padding: 10px 10px;
-  margin-bottom: 15px;
-  border-radius: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
   background-color: var(--blue);
   color: white;
 }

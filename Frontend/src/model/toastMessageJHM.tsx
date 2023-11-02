@@ -11,7 +11,7 @@ export const UserNotLogin = () =>
     hideProgressBar: true,
   });
 
-export const ToastBackMessage = (message: string) => {
+export const ToastSuccessMessage = (message: string) => {
   toast.success(message, {
     autoClose: 1000, // 메시지를 자동으로 닫을 시간 (밀리초)
     hideProgressBar: true,

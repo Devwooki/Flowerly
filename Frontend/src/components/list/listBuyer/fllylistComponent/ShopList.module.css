@@ -2,8 +2,6 @@
   margin-top: 20px;
   background-color: var(--gray);
   height: calc(100vh - 370px);
-  overflow-x: scroll;
-  overflow-x: hidden;
   max-width: 450px;
   padding: 15px;
   display: grid;

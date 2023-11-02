@@ -38,3 +38,7 @@
 .detailMainBox:nth-child(7) {
   margin-top: 10px;
 }
+
+.detailMainBox > div > span {
+  margin-right: 5px;
+}

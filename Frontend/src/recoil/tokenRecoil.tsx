@@ -8,6 +8,22 @@ export interface sellerInputType {
   address: string;
 }
 
+export interface storeDeliveryRegionType {
+  sidoCode: number;
+  sigunguCode: number;
+  dongCode: number;
+}
+
+export const storeDeliveryRegionState = atom<storeDeliveryRegionType[]>({
+  key: "storeDeliveryRegionState",
+  default: [],
+});
+
+export const sellerDeliveryRegionState = atom<string[]>({
+  key: "sellerDeliveryRegionState",
+  default: [],
+});
+
 export const tempTokenState = atom({
   key: "tempTokenState",
   default: "",
