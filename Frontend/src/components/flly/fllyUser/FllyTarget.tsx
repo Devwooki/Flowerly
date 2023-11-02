@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import style from "./FllyTarget.module.css";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
@@ -14,6 +14,10 @@ const FllyTarget = () => {
     setSelected(e);
     setTarget(e);
   };
+
+  useEffect(() => {
+    setSelected(target);
+  }, [])
 
   return (
     <>
