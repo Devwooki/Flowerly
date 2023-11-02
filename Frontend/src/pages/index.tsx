@@ -6,6 +6,14 @@ import { useState } from "react";
 export default function Home() {
   const [cardOrder, setCardOrder] = useState([0, 1, 2]);
 
+  const f1 =
+    "https://neighbrew.s3.ap-northeast-2.amazonaws.com/FlOWER/9ab5e8bb-56f9-4cff-967b-22075b73e37a010_pink_gookhwa.jpg.jpg";
+
+  const f2 =
+    "https://neighbrew.s3.ap-northeast-2.amazonaws.com/FlOWER/da3f0e9f-0c1e-45d8-ba34-86e57331687b011_yellow_gookhwa.jpg.jpg";
+
+  const f3 =
+    "https://neighbrew.s3.ap-northeast-2.amazonaws.com/FlOWER/f82c544a-7f65-4879-9293-76ceaba5a6d2069_pink_peony.jpg.jpg";
   const cards = [
     {
       id: 1,
@@ -73,11 +81,9 @@ export default function Home() {
             <span className="arrow">다음</span>
           </div>
         </div>
-        <div>sad</div>
-        <div>sad</div>
-        <div>sad</div>
-        <div>sad</div>
-        <div>sad</div>
+        <Image src={f1} alt="150" width={100} height={100} />
+        <Image src={f2} alt="150" width={100} height={100} />
+        <Image src={f3} alt="150" width={100} height={100} />
       </div>
     </>
   );
