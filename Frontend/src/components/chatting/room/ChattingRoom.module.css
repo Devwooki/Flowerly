@@ -1,0 +1,58 @@
+.rooomBg {
+  position: absolute;
+  background-color: var(--gray);
+  width: 100%;
+  max-width: 430px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  box-sizing: border-box;
+  font-size: 20px;
+  font-family: "NanumSquareNeoOTF-Bd";
+  display: flex;
+  position: absolute;
+  height: 70px;
+  width: 100%;
+  z-index: 10;
+  align-items: center;
+  padding: 20px;
+}
+
+.container {
+  box-sizing: border-box;
+  padding: 5px 20px;
+  height: calc(100vh - 130px);
+  width: 100%;
+  position: absolute;
+  top: 70px;
+  overflow-y: auto;
+}
+
+.containerWithMenu {
+  box-sizing: border-box;
+  padding: 5px 20px;
+  height: calc(100vh - 250px);
+  width: 100%;
+  position: absolute;
+  top: 70px;
+  overflow-y: auto;
+}
+
+.bottom {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.backBtn {
+  margin-right: 10px;
+  cursor: pointer;
+}
+.chattingName {
+  margin-left: 10px;
+}

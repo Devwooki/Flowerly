@@ -1,74 +1,84 @@
-import { useRouter } from "next/router";
 import style from "@styles/Home.module.css";
-import { useEffect } from "react";
-import axios from "axios";
+import { useEffect, useRef } from "react";
+import Image from "next/image";
+import { useState } from "react";
 
 export default function Home() {
-  const router = useRouter();
-  const id = 123;
+  const [cardOrder, setCardOrder] = useState([0, 1, 2]);
 
-  //정적 라우팅
-  const moveToTestPage = () => {
-    router.push("/testpage");
+  const cards = [
+    {
+      id: 1,
+      src: "/img/homeBanner/164_red_phalaenopsis.jpg",
+      alt: "호접란",
+      date: "11월 ~ 3월",
+      desc: "빨간색 호접란",
+      message: "강렬한 사랑과 매력",
+    },
+    {
+      id: 2,
+      src: "/img/homeBanner/test.webp",
+      alt: "글라디올러스",
+      date: "5월 ~ 11월",
+      desc: "보라색 글라디올러스",
+      message: "우아함, 고귀함, 아름다움",
+    },
+    {
+      id: 3,
+      src: "/img/homeBanner/121_pink_gomphrena.jpg",
+      alt: "천일홍",
+      date: "7월 ~ 12월",
+      desc: "분홍색 천일홍",
+      message: "우아함, 달콤함, 치절, 애정",
+    },
+  ];
+
+  const handleUpClick = () => {
+    setCardOrder([cardOrder[2], cardOrder[0], cardOrder[1]]);
   };
 
-  //동적 라우팅
-  const moveToMyPage = (id: number) => {
-    router.push(`/mypage/${id}`);
+  const handleDownClick = () => {
+    setCardOrder([cardOrder[1], cardOrder[2], cardOrder[0]]);
   };
-
-  async function callGetAddressAPI() {
-    const confmKey = "U01TX0FVVEgyMDIzMTAyNjE0NDMzNjExNDIxNjI="; // 여기에 승인키를 넣으세요
-    const countPerPage = 4; // 페이지당 결과 개수
-    const keyword = "탄방동"; // 검색어
-
-    try {
-      const response = await axios.get(`https://business.juso.go.kr/addrlink/addrLinkApi.do`, {
-        params: {
-          confmKey,
-          currentPage: 5,
-          countPerPage,
-          keyword,
-          resultType: "json", // JSON 형식으로 결과 요청
-        },
-      });
-
-      if (response.status === 200) {
-        console.log(response.data.results.common);
-        return response.data;
-      } else {
-        throw new Error(`Failed to retrieve data. Status: ${response.status}`);
-      }
-    } catch (error) {
-      console.error("API call error:", error);
-      throw error;
-    }
-  }
 
   return (
-    <div>
-      <h2 className={style.test}>Home 메인 화면</h2>
-      <button onClick={() => moveToTestPage()}>테스트 페이지 이동</button>
-      <button onClick={() => moveToMyPage(id)}>123번 마이페이지 페이지 이동</button>
-      <div className={style.test2} style={{ fontFamily: "Pretendard-Bold", fontSize: "30px" }}>
-        원하는 꽃을 선택해주세요.
-      </div>
-      <div style={{ fontFamily: "Pretendard-Bold", fontSize: "20px" }}>플리 주문서</div>
-      <div style={{ fontFamily: "Pretendard-Bold", fontSize: "20px" }}>참여한 플리</div>
-      <div>아름다운 꽃가게</div>
-      <div>아름다운 꽃가게</div>
-      <div>
-        요청사항 입니다. 요청사항 입니다. 요청사항 입니다. 요청사항 입니다. 요청사항 입니다.
-      </div>
-      <button onClick={() => callGetAddressAPI()}>주소 불러</button>
-      <div className={style.rose}>
-        <div className={style.roseItem1} style={{ backgroundImage: "url(/test/vertical.jpg)" }}>
-          aa
+    <>
+      <div className={style.home}>
+        <div className={style.mainHeader}>
+          <div className={style.header}>플리로고</div>
+          <div className={style.title}>플리가 추천하는</div>
+          <div className={style.title}>가을의 꽃을 만나보세요</div>
         </div>
-        <div className={style.roseItem2} style={{ backgroundImage: "url(/test/horizental.jpg)" }}>
-          bb
+        <div className={style.mainBody}>
+          {cardOrder.map((order, index) => {
+            const card = cards[order];
+            return (
+              <div key={card.id} className={`${style.bannerImg} ${style[`card${index + 1}`]} `}>
+                <Image src={card.src} alt={card.alt} fill priority />
+                <div className={style.imgDisc}>
+                  <div>{card.date}</div>
+                  <div>{card.desc}</div>
+                  <div className={style.divider}></div>
+                  <div>{card.message}</div>
+                </div>
+              </div>
+            );
+          })}
         </div>
+        <div className={style.btnPakage}>
+          <div onClick={handleDownClick}>
+            <span className="arrow">이전</span>
+          </div>
+          <div onClick={handleUpClick}>
+            <span className="arrow">다음</span>
+          </div>
+        </div>
+        <div>sad</div>
+        <div>sad</div>
+        <div>sad</div>
+        <div>sad</div>
+        <div>sad</div>
       </div>
-    </div>
+    </>
   );
 }

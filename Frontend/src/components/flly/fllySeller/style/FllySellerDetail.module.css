@@ -1,0 +1,42 @@
+.detailBack {
+  width: 100%;
+  min-height: 100%;
+  position: relative;
+  overflow: scroll;
+  font-family: "NanumSquareNeoOTF-Rg";
+}
+
+.detailHeader {
+  position: relative;
+  height: 440px;
+  width: 100%;
+  border-radius: 0px 0px 25px 25px;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.detailHeader > img:nth-child(1) {
+  position: absolute;
+  top: 45px;
+  left: 30px;
+}
+
+.partBtn {
+  position: absolute;
+  bottom: -60px;
+  left: calc(50% - 40px);
+}
+
+.detailHeader > img:nth-child(1) {
+  position: absolute;
+  width: 15px;
+  height: 25px;
+}
+
+.detailMain {
+  margin: 90px auto 65px auto;
+  width: calc(100% - 40px);
+  /* height: calc(100vh - 590px); */
+  /* border: 1px solid black; */
+}

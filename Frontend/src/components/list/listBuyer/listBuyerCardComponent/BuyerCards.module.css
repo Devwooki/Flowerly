@@ -1,0 +1,109 @@
+.cardBox {
+  margin: 20px;
+  border-radius: 20px;
+  padding: 10px;
+  font-size: 16px;
+  box-shadow: 0 0 2px #a7a7a7;
+  background-color: var(--gray);
+  padding-top: 0;
+}
+
+.cardInfo {
+  display: flex;
+  position: relative;
+  margin: 0 10px 0 10px;
+}
+
+.cardInfo > img {
+  min-width: 150px;
+  margin-top: 30px;
+  border-radius: 10px;
+}
+
+.InfoTextHeader {
+  font-family: "NanumSquareNeoOTF-Bd";
+  padding-bottom: 10px;
+  padding-left: 10px;
+  margin-right: 10px;
+  /* border: 1px solid black; */
+}
+.infoTable {
+  display: flex;
+  margin-bottom: 5px;
+  margin-left: 5px;
+  font-size: 12px;
+}
+
+.infoColorTable {
+  font-family: "NanumSquareNeoOTF-Bd";
+  padding-bottom: 10px;
+  padding-left: 10px;
+  margin-right: 10px;
+}
+
+.infoTitle {
+  font-family: "NanumSquareNeoOTF-Bd";
+  padding: 10px;
+  margin-right: 10px;
+}
+
+.infoTable > .colorfirst:nth-child(2) {
+  margin-left: 10px;
+}
+
+.info {
+  padding: 5px 10px 5px 10px;
+  background-color: var(--moregray);
+  font-family: "NanumSquareNeoOTF-Rg";
+  line-height: 20px;
+  height: 20px;
+  border-radius: 5px;
+  margin-top: 3px;
+}
+
+.color {
+  padding: 5px 10px 5px 10px;
+  background-color: var(--moregray);
+  font-family: "NanumSquareNeoOTF-Rg";
+  line-height: 20px;
+  height: 20px;
+  border-radius: 5px;
+  margin-top: 3px;
+}
+
+.flowerShop {
+  padding: 5px 15px 5px 5px;
+  font-family: "NanumSquareNeoOTF-Lt";
+  line-height: 20px;
+  height: 20px;
+  border-radius: 5px;
+  margin-top: 3px;
+  font-size: 12px;
+}
+
+.currentFlower {
+  top: 10px;
+}
+
+.cardBtn {
+  text-align: center;
+  margin: 10px 5px;
+}
+
+.cardBtn > button {
+  padding: 8px 20px;
+  border-style: none;
+  border-radius: 5px;
+  color: white;
+  box-shadow: 0 0 4px #d5d5d5;
+}
+
+.fllistBtn {
+  margin-right: 15px;
+  background-color: var(--blue);
+}
+
+.cancelBtn {
+  margin-right: 15px;
+  background-color: var(--mint);
+}

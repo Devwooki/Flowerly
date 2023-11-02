@@ -1,0 +1,37 @@
+.menuMain {
+  height: 120px;
+  width: 100%;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.menuItem {
+  width: 70px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.menuIcon {
+  background-color: var(--dark);
+  margin-bottom: 8px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon {
+  opacity: 80%;
+}
+
+.menuName {
+  font-family: "NanumSquareNeoOTF-Rg";
+  font-size: 14px;
+}

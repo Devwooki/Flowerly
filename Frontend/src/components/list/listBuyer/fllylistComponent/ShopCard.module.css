@@ -1,0 +1,39 @@
+.shopCardMain {
+  width: auto;
+  border-radius: 15px;
+  box-shadow: 0 0 4px;
+  background-color: white;
+  font-size: 14px;
+}
+
+.shopFlowerImg {
+  position: relative;
+  width: 100%;
+  height: 180px;
+}
+
+.shopFlowerImg img {
+  border-radius: 15px 15px 0 0;
+}
+
+.shopInfo {
+  padding: 15px;
+  font-family: "NanumSquareNeoOTF-Rg";
+}
+
+.infoTable {
+  display: flex;
+  margin-bottom: 5px;
+}
+
+.chatAction {
+  font-family: "NanumSquareNeoOTF-Rg";
+
+  text-align: center;
+  margin: 0 40px;
+  padding: 10px 10px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  background-color: var(--blue);
+  color: white;
+}
