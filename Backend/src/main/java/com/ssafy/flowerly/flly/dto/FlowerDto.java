@@ -27,7 +27,7 @@ public class FlowerDto {
     public static FlowerDto of(Flower flower) {
         return FlowerDto.builder()
                 .flowerCode(flower.getFlowerCode())
-                .flowerName(flower.getFlowerName())
+                .flowerName(flower.getScientificName())
                 .imageUrl(flower.getImageUrl())
                 .color(flower.getColor())
                 .engName(flower.getEngName())

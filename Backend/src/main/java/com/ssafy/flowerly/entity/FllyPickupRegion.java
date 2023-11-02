@@ -4,6 +4,7 @@ import com.ssafy.flowerly.seller.vo.FllyNearDto;
 import lombok.Getter;
 
 import javax.persistence.*;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Getter
@@ -30,6 +31,8 @@ public class FllyPickupRegion {
 
 
     public FllyNearDto toPickupFllyNearDto(){
+        DateTimeFormatter Timeformatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
         return FllyNearDto.builder()
                 .fllyId(this.flly.getFllyId())
                 .flowerName1(this.flly.getFlower1().getFlowerName())
@@ -38,7 +41,7 @@ public class FllyPickupRegion {
                 .budget(this.flly.getBudget())
                 .imageUrl(this.flly.getImageUrl())
                 .progress(this.flly.getProgress().getTitle())
-                .deadline(this.flly.getDeadline())
+                .deadline(this.flly.getDeadline() != null ? this.flly.getDeadline().format(Timeformatter) : null)
                 .build();
     }
 

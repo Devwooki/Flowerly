@@ -16,5 +16,5 @@ import java.util.List;
 public class FlowerRequestDto {
     private List<SituationType> situation;
     private List<TargetType> target;
-    private List<ColorType> colors = new ArrayList<>();
+    private List<String> colors = new ArrayList<>();
 }

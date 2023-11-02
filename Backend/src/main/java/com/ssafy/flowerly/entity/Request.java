@@ -8,6 +8,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Getter
@@ -50,13 +51,14 @@ public class Request extends BaseCreatedTimeEntity {
 
 
     public OrderSelectSimpleDto toOrderSelectSimpleDto(){
+        DateTimeFormatter Timeformatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         return OrderSelectSimpleDto.builder()
                 .requestId(this.requestId)
                 .fllyId(this.getFlly().getFllyId())
                 .orderName(this.orderName)
                 .phoneNumber(this.phoneNumber)
                 .orderType(this.orderType.getTitle())
-                .deliveryPickupTime(this.deliveryPickupTime)
+                .deliveryPickupTime(this.deliveryPickupTime != null ? this.deliveryPickupTime.format(Timeformatter) : null)
                 .progress(this.getFlly().getProgress().getTitle())
                 .build();
     }
