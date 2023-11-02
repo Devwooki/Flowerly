@@ -16,7 +16,9 @@ public class Flower {
     private Long flowerCode;
 
     private String flowerName;
+    private String scientificName;
     private String engName;
+
     @Enumerated(EnumType.STRING)
     @Column(length = 10)
     private ColorType color;
@@ -36,5 +38,12 @@ public class Flower {
     private Boolean october;
     private Boolean november;
     private Boolean december;
+
+    public FlowerSimpleInfoDto toFlowerSimpleInfoDto(){
+        return FlowerSimpleInfoDto.builder()
+                .flowerName(this.flowerName)
+                .meaning(this.meaning)
+                .build();
+    }
 
 }

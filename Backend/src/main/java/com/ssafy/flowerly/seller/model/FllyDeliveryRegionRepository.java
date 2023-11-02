@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface FllyDeliveryRegionRepository extends JpaRepository<FllyDeliveryRegion, Long> {
@@ -26,4 +27,9 @@ public interface FllyDeliveryRegionRepository extends JpaRepository<FllyDelivery
                         " order by fy.deadline "
         )
         Page<FllyDeliveryRegion> getSellerDeliverAbleList(List<Sido> sidoList, List<Sigungu> sigunguList, List<Dong> dongList, Pageable pageable);
+
+
+        Optional<FllyDeliveryRegion> findByFllyFllyId(Long aLong);
 }
+
+
