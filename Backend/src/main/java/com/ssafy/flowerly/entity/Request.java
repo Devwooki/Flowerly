@@ -61,4 +61,8 @@ public class Request extends BaseCreatedTimeEntity {
                 .build();
     }
 
+    public void setRequestPrice(Integer price) {
+        this.price = price;
+    }
+
 }
