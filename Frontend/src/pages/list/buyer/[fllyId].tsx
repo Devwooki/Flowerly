@@ -1,14 +1,16 @@
-import { useParams } from "next/navigation";
 import style from "./fllyId.module.css";
 import FllyListMain from "@/components/list/listBuyer/fllylistComponent/FllyListMain";
-import { useEffect } from "react";
-import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
-import { fllylistDisc } from "@/recoil/kdmRecoil";
-import { log } from "console";
+import { FllylistDiscRecoil } from "@/recoil/kdmRecoil";
 
 const FllyList = () => {
-  const getCardProps = useRecoilValue(fllylistDisc);
+  const getCardProps = useRecoilValue(FllylistDiscRecoil);
+  const [sesstionCard, setSessionCard] = useState<BuyerCard>();
+
+  useEffect(() => {
+    setSessionCard(getCardProps);
+  }, [getCardProps]);
 
   return (
     <div className={style.ListBuyerBack}>
@@ -16,7 +18,7 @@ const FllyList = () => {
         <div className={style.headerTitle}>플리스트</div>
       </div>
       <div className={style.ListBuyerMain}>
-        <FllyListMain card={getCardProps} />
+        {sesstionCard && <FllyListMain card={sesstionCard} />}
       </div>
     </div>
   );

@@ -1,0 +1,93 @@
+.discMain {
+  margin: 20px 20px 0 20px;
+  box-shadow: 0 0 4px #d5d5d5;
+  border-radius: 5px;
+}
+
+.discMainShortUp {
+  padding: 15px;
+  display: flex;
+}
+.discMain img {
+  border-radius: 5px;
+}
+
+.discText {
+  margin-left: 20px;
+  font-family: "NanumSquareNeoOTF-Rg";
+  font-size: 14px;
+}
+
+.discTextPlus {
+  margin-left: 20px;
+  font-family: "NanumSquareNeoOTF-Rg";
+  font-size: 14px;
+  overflow: hidden; /* 추가된 코드 */
+  max-height: 0px; /* 추가된 코드 */
+  transition: max-height 0.2s ease-in-out; /* 추가된 코드: 0.5초 동안 max-height의 변화에 애니메이션 적용 */
+}
+
+.discTextPlus.open {
+  max-height: 1000px; /* 충분히 큰 값으로 설정하여 최대 높이 제한을 없앰 */
+}
+
+.discTable div:first-child {
+  font-family: "NanumSquareNeoOTF-Bd";
+}
+
+.discTable div:nth-child(2) {
+  display: inline-block;
+  background-color: var(--sky);
+  padding: 5px 15px;
+  border-radius: 5px;
+  margin: 5px 0 10px 0;
+}
+
+.discDetailTable {
+  display: flex;
+  margin: 10px 0;
+}
+
+.detailMius {
+  display: block;
+  text-align: center;
+  padding: 5px 0;
+  background-color: var(--gray);
+  font-size: 14px;
+  font-family: "NanumSquareNeoOTF-Rg";
+}
+
+.detailPlus {
+  display: block;
+  text-align: center;
+  padding: 5px 0;
+  background-color: var(--gray);
+  font-size: 14px;
+  font-family: "NanumSquareNeoOTF-Rg";
+  transition: opacity 0.1s, visibility 0.1s;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.detailPlus.show {
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0.2s;
+}
+
+.detailTitle {
+  color: #757575;
+  width: 90px;
+}
+
+.requestContent {
+  width: 95%;
+  margin-top: 10px;
+}
+
+.divider {
+  height: 2px;
+  width: auto;
+  border-top: 2px solid var(--moregray);
+  margin-right: 15px;
+}
