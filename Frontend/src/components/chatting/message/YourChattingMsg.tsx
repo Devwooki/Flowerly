@@ -23,7 +23,7 @@ const YourChattingMsg: React.FC<ChattingMsgProps> = ({ message, chattingId, moda
         {message.type === "PARTICIPATION" ? (
           <ParticipationInfo chattingId={chattingId} modalHandler={modalHandler} />
         ) : message.type === "ORDER_FORM" ? (
-          <OrderFormMsg />
+          <OrderFormMsg modalHandler={modalHandler} />
         ) : (
           <div className={style.contentDiv}>{message.content}</div>
         )}

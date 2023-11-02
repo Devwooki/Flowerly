@@ -42,18 +42,6 @@ const ChattingMenu: React.FC<ChattingMenuProps> = ({ sendOrderFormHandler }) => 
           <div className={style.menuIcon}>
             <Image
               className={style.icon}
-              src="/img/icon/chatting-cash.png"
-              width={32}
-              height={32}
-              alt="결제"
-            />
-          </div>
-          <div className={style.menuName}>결제</div>
-        </div>
-        <div className={style.menuItem}>
-          <div className={style.menuIcon}>
-            <Image
-              className={style.icon}
               src="/img/icon/chatting-report.png"
               width={32}
               height={32}

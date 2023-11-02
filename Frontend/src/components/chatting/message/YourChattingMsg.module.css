@@ -3,7 +3,7 @@
   display: flex;
   width: 100%;
   justify-content: start;
-  align-items: end;
+  align-items: flex-end;
   padding: 7px 0;
 }
 

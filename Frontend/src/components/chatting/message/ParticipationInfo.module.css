@@ -59,6 +59,7 @@
   height: 30px;
   background-color: var(--gray);
   border-radius: 5px;
+  color: black;
 }
 
 #nickname {

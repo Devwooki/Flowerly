@@ -10,6 +10,8 @@ import MyChattingMsg from "../message/MyChattingMsg";
 import YourChattingMsg from "../message/YourChattingMsg";
 import ChattingMenu from "./ChattingMenu";
 import FllyDetailModal from "../modal/FllyDetailModal";
+import PickupOrderModal from "../modal/PickupOrderModal";
+import DeliveryOrderModal from "../modal/DeliveryOrderModal";
 
 type ChattingRoomProps = {
   chattingId: number;
@@ -25,6 +27,7 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
   const [chattingMsgs, setChattingMsgs] = useState({
     chattingId: chattingId,
     opponentMemberId: 1,
+    // opponentMemberId: 999,
     opponentName: "아름다운 꽃가게",
     messages: [
       {
@@ -147,15 +150,28 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
   };
 
   const sendOrderForm = () => {
-    sendMessage("ORDER_FORM", "배송 방법을 선택해주세요.");
+    sendMessage("ORDER_FORM", "주문 유형을 선택해주세요.");
+  };
+
+  const sendRequestMsg = () => {
+    sendMessage("ORDER_COMPLETE", "주문서가 도착했습니다.");
   };
 
   const [fllyModalState, setFllyModalState] = useState(false);
   const [fllyId, setFllyId] = useState<number>();
+  const [pickupModalState, setPickupModalState] = useState(false);
+  const [deliveryModalState, setDeliveryModalState] = useState(false);
+  const [requestModalState, setRequestModalState] = useState(false);
   const modalHandler = (modalType: string, state: boolean, data: number) => {
     if (modalType == "FLLY") {
       setFllyId(data);
       setFllyModalState(state);
+    } else if (modalType == "PICKUP") {
+      setPickupModalState(state);
+    } else if (modalType == "DELIVERY") {
+      setDeliveryModalState(state);
+    } else if (modalType == "REQUEST") {
+      setRequestModalState(state);
     }
   };
 
@@ -194,6 +210,12 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
         </div>
       </div>
       {fllyModalState && <FllyDetailModal fllyId={fllyId} modalHandler={modalHandler} />}
+      {pickupModalState && (
+        <PickupOrderModal modalHandler={modalHandler} sendHandler={sendRequestMsg} />
+      )}
+      {deliveryModalState && (
+        <DeliveryOrderModal modalHandler={modalHandler} sendHandler={sendRequestMsg} />
+      )}
     </>
   );
 };
