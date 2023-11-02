@@ -14,6 +14,7 @@ interface adoptType {
   deliveryPickupTime: string;
   fllyId: number;
   progress: string;
+  imageUrl: string;
 }
 
 interface fllyResponeDtoType {
