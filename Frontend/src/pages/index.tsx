@@ -4,46 +4,6 @@ import Image from "next/image";
 import { useState } from "react";
 
 export default function Home() {
-  // const router = useRouter();
-  // const id = 123;
-
-  // //정적 라우팅
-  // const moveToTestPage = () => {
-  //   router.push("/testpage");
-  // };
-
-  // //동적 라우팅
-  // const moveToMyPage = (id: number) => {
-  //   router.push(`/mypage/${id}`);
-  // };
-
-  // async function callGetAddressAPI() {
-  //   const confmKey = "U01TX0FVVEgyMDIzMTAyNjE0NDMzNjExNDIxNjI="; // 여기에 승인키를 넣으세요
-  //   const countPerPage = 4; // 페이지당 결과 개수
-  //   const keyword = "탄방동"; // 검색어
-
-  //   try {
-  //     const response = await axios.get(`https://business.juso.go.kr/addrlink/addrLinkApi.do`, {
-  //       params: {
-  //         confmKey,
-  //         currentPage: 5,
-  //         countPerPage,
-  //         keyword,
-  //         resultType: "json", // JSON 형식으로 결과 요청
-  //       },
-  //     });
-
-  //     if (response.status === 200) {
-  //       console.log(response.data.results.common);
-  //       return response.data;
-  //     } else {
-  //       throw new Error(`Failed to retrieve data. Status: ${response.status}`);
-  //     }
-  //   } catch (error) {
-  //     console.error("API call error:", error);
-  //     throw error;
-  //   }
-  // }
   const [cardOrder, setCardOrder] = useState([0, 1, 2]);
 
   const cards = [
