@@ -35,7 +35,7 @@ const Navi = () => {
         onClick={() => moveNavi("home")}
       >
         <div className={style.item}>
-          <Image src={getImageSrc("home")} alt="홈" width={33} height={33} />
+          <Image src={getImageSrc("home")} alt="홈" width={33} height={33} priority />
         </div>
       </motion.div>
       <motion.div
@@ -44,7 +44,7 @@ const Navi = () => {
         onClick={() => moveNavi("list")}
       >
         <div className={style.item}>
-          <Image src={getImageSrc("list")} alt="현황" width={35} height={30} />
+          <Image src={getImageSrc("list")} alt="현황" width={35} height={30} priority />
         </div>
       </motion.div>
       <motion.div
@@ -53,7 +53,7 @@ const Navi = () => {
         onClick={() => moveNavi("flly")}
       >
         <div className={style.item}>
-          <Image src={getImageSrc("flly")} alt="플리" width={37} height={37} />
+          <Image src={getImageSrc("flly")} alt="플리" width={37} height={37} priority />
         </div>
       </motion.div>
 
@@ -63,7 +63,7 @@ const Navi = () => {
         onClick={() => moveNavi("chat")}
       >
         <div className={style.item}>
-          <Image src={getImageSrc("chat")} alt="채팅" width={35} height={40} />
+          <Image src={getImageSrc("chat")} alt="채팅" width={35} height={40} priority />
         </div>
       </motion.div>
       <motion.div
@@ -72,7 +72,7 @@ const Navi = () => {
         onClick={() => moveNavi("my")}
       >
         <div className={style.item}>
-          <Image src={getImageSrc("my")} alt="마이" width={35} height={35} />
+          <Image src={getImageSrc("my")} alt="마이" width={35} height={35} priority />
         </div>
       </motion.div>
     </div>

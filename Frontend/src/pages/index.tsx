@@ -94,7 +94,7 @@ export default function Home() {
             const card = cards[order];
             return (
               <div key={card.id} className={`${style.bannerImg} ${style[`card${index + 1}`]} `}>
-                <Image src={card.src} alt={card.alt} fill />
+                <Image src={card.src} alt={card.alt} fill priority />
                 <div className={style.imgDisc}>
                   <div>{card.date}</div>
                   <div>{card.desc}</div>
@@ -106,40 +106,13 @@ export default function Home() {
           })}
         </div>
         <div className={style.btnPakage}>
-          <div className="card-nav-btn card-nav-btn-up" onClick={handleDownClick}>
-            <span className="arrow">❮</span>
+          <div onClick={handleDownClick}>
+            <span className="arrow">이전</span>
           </div>
-          <div className="card-nav-btn card-nav-btn-down" onClick={handleUpClick}>
-            <span className="arrow">❯</span>
+          <div onClick={handleUpClick}>
+            <span className="arrow">다음</span>
           </div>
         </div>
-        <div>sad</div>
-        <div>sad</div>
-        <div>sad</div>
-        <div>sad</div>
-        <div>sad</div>
-        <div>sad</div>
-        <div>sad</div>
-        <div>sad</div>
-        <div>sad</div>
-        <div>sad</div>
-        <div>sad</div>
-        <div>sad</div>
-        <div>sad</div>
-        <div>sad</div>
-        <div>sad</div>
-        <div>sad</div>
-        <div>sad</div>
-        <div>sad</div>
-        <div>sad</div>
-        <div>sad</div>
-        <div>sad</div>
-        <div>sad</div>
-        <div>sad</div>
-        <div>sad</div>
-        <div>sad</div>
-        <div>sad</div>
-        <div>sad</div>
         <div>sad</div>
         <div>sad</div>
         <div>sad</div>
