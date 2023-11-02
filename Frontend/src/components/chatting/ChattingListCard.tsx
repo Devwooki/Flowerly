@@ -1,4 +1,5 @@
 import React from "react";
+import { useRouter } from "next/router";
 
 import style from "./style/ChattingListCard.module.css";
 
@@ -13,9 +14,14 @@ type ChattingProps = {
 };
 
 const ChattingListCard: React.FC<ChattingProps> = ({ chattingData }) => {
+  const router = useRouter();
+
   return (
     <>
-      <div className={style.cardMain}>
+      <div
+        className={style.cardMain}
+        onClick={() => router.push(`/chatting/room/${chattingData.chattingId}`)}
+      >
         <div className={style.cardTop}>
           <div className={style.opponentName}>{chattingData.opponentName}</div>
           <div className={style.time}>{chattingData.lastChattingTime}</div>

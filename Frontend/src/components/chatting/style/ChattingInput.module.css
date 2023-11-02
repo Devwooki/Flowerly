@@ -1,0 +1,55 @@
+.inputMain {
+  background-color: #ffffff;
+  max-width: 450px;
+  min-width: 330px;
+  width: 100%;
+  height: 60px;
+  /* border-radius: 20px 20px 0 0; */
+  margin: 0px auto;
+  text-align: center;
+  z-index: 30;
+  display: flex;
+  /* justify-content: space-between; */
+  align-items: center;
+}
+
+.left,
+.sendBtn {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.left {
+  width: 50px;
+}
+.sendBtn {
+  width: 45px;
+}
+
+.right {
+  box-sizing: border-box;
+  width: calc(100% - 60px);
+  height: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid var(--moregray);
+  border-radius: 25px;
+}
+
+.messageInput {
+  box-sizing: border-box;
+  padding-left: 20px;
+  height: 100%;
+  width: calc(100% - 45px);
+  border: none;
+  border-radius: 25px;
+  font-family: "NanumSquareNeoOTF-Rg";
+  font-size: 16px;
+}
+
+.messageInput:focus {
+  outline: none;
+}

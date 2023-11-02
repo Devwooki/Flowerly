@@ -1,0 +1,70 @@
+.main {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.step {
+  width: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  list-style: none;
+  padding: 0px;
+  margin: 5px;
+  position: relative;
+}
+.step::before {
+  content: "";
+  height: 2px;
+  width: 100%;
+  display: block;
+  background: var(--moregray);
+  position: absolute;
+  z-index: -1;
+}
+
+.progressBar {
+  height: 4px;
+  display: block;
+  background: var(--mint);
+  position: absolute;
+  z-index: -1;
+}
+
+.step li span {
+  width: 15px;
+  height: 15px;
+  display: flex;
+  background: #ffffff;
+  color: #999;
+  border-radius: 50px;
+  border: 1px solid var(--moregray);
+  box-shadow: 0px 0px 5px #ccc;
+}
+.step li.active span {
+  background: var(--mint);
+  color: white;
+}
+
+.text {
+  display: flex;
+  width: 95%;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+}
+/* 프로세스바 */
+.step > li:nth-child(3) {
+  padding-right: 10px; /* 원하는 간격을 여기에 설정하세요 */
+}
+.step > li:nth-child(4) {
+  padding-right: 20px; /* 원하는 간격을 여기에 설정하세요 */
+}
+.step > li:nth-child(5) {
+  padding-right: 70px; /* 원하는 간격을 여기에 설정하세요 */
+}
+
+/* 진행 텍스트 */
+.text > div:first-child {
+  margin: 5px; /* 원하는 간격을 여기에 설정하세요 */
+}

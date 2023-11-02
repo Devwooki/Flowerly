@@ -72,7 +72,7 @@ const FllySeller = () => {
                   <div className={style.selectWord}>{item}</div>
                   <div className={item != "흰색"? style.selectCheck : style.selectCheckWhite}>
                     {selected.includes(item) && (
-                      <Image src="/img/icon/check.png" width={30} height={25} alt="아이콘" />
+                      <Image src="/img/icon/check.png" width={24} height={18} alt="아이콘" />
                     )}
                   </div>
                 </div>
