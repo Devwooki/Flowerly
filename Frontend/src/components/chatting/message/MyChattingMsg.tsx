@@ -3,6 +3,7 @@ import style from "./MyChattingMsg.module.css";
 
 import ParticipationInfo from "./ParticipationInfo";
 import OrderFormMsg from "./OrderFormMsg";
+import RequestMsg from "./RequestMsg";
 
 type ChattingMsgProps = {
   message: {
@@ -25,7 +26,9 @@ const MyChattingMsg: React.FC<ChattingMsgProps> = ({ message, chattingId, modalH
       {message.type === "PARTICIPATION" ? (
         <ParticipationInfo chattingId={chattingId} modalHandler={modalHandler} />
       ) : message.type === "ORDER_FORM" ? (
-        <OrderFormMsg />
+        <OrderFormMsg modalHandler={modalHandler} />
+      ) : message.type === "ORDER_COMPLETE" ? (
+        <RequestMsg modalHandler={modalHandler} />
       ) : (
         <div className={style.contentDiv}>{message.content}</div>
       )}

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import style from "./FllyDetailModal.module.css";
+import Image from "next/image";
 
 type FllyDetailProps = {
   fllyId: number | undefined;
@@ -24,7 +25,8 @@ const FllyDetailModal: React.FC<FllyDetailProps> = ({ fllyId, modalHandler }) =>
     fllyParticiation: {
       imageUrl: "http://image-URL",
       offerPrice: 30000,
-      content: "예쁘게 해드릴게요~",
+      content:
+        "이렇게 하면 더 예쁠 것 같은데 어떠세요~? 디자인은 얼마든지 조정 가능합니다 연락주세요^^",
     },
   });
   return (
@@ -39,7 +41,13 @@ const FllyDetailModal: React.FC<FllyDetailProps> = ({ fllyId, modalHandler }) =>
                 modalHandler("FLLY", false);
               }}
             >
-              X
+              <Image
+                className={style.icon}
+                src="/img/icon/close.png"
+                width={17}
+                height={17}
+                alt="닫기 버튼"
+              />
             </div>
           </div>
           <div className={style.contents}>
@@ -92,16 +100,16 @@ const FllyDetailModal: React.FC<FllyDetailProps> = ({ fllyId, modalHandler }) =>
             </div>
             <div className={style.contentItem}>
               <div className={style.subTitle}>제안 내용</div>
-              <div>{fllyDetail.fllyParticiation.imageUrl}</div>
-              <div>{fllyDetail.fllyParticiation.offerPrice}</div>
-              <div>{fllyDetail.fllyParticiation.content}</div>
-              <div>{fllyDetail.fllyParticiation.content}</div>
-              <div>{fllyDetail.fllyParticiation.content}</div>
-              <div>{fllyDetail.fllyParticiation.content}</div>
-              <div>{fllyDetail.fllyParticiation.content}</div>
-              <div>{fllyDetail.fllyParticiation.content}</div>
-              <div>{fllyDetail.fllyParticiation.content}</div>
-              <div>{fllyDetail.fllyParticiation.content}</div>
+              <div className={style.partDiv}>
+                <div
+                  className={style.imgDiv}
+                  style={{ backgroundImage: `url(${"/test/test-flower-img.png"})` }}
+                ></div>
+                <div className={style.textDiv}>
+                  <div id={style.price}>{fllyDetail.fllyParticiation.offerPrice} 원</div>
+                  <div>{fllyDetail.fllyParticiation.content}</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
