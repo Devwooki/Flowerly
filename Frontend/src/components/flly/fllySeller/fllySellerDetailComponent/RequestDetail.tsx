@@ -32,7 +32,7 @@ const RequestDetail = ({ $fllyRequestInfo }: { $fllyRequestInfo: fllyReqeustDeat
       <div className={style.detailMainTitle}>의뢰 내용</div>
       <div className={style.detailMainBox}>
         <div>의뢰인</div>
-        {/* <div>{$fllyRequestInfo.consumer}</div> */}
+        <div>{$fllyRequestInfo.consumer}</div>
       </div>
       <div className={style.detailMainBox}>
         <div>상황</div>
@@ -81,7 +81,7 @@ const RequestDetail = ({ $fllyRequestInfo }: { $fllyRequestInfo: fllyReqeustDeat
       </div>
       <div className={style.detailMainBox}>
         <div>주소</div>
-        {/* <div>{$fllyRequestInfo.requestAddress}</div> */}
+        <div>{$fllyRequestInfo.requestAddress}</div>
       </div>
       <div className={style.detailMainBox}>
         <div>요청 사항</div>
