@@ -19,6 +19,11 @@ public class FlowerDto {
     private String engName;
     private String meaning;
 
+    @Override
+    public boolean equals(Object o) {
+        return this.flowerCode == ((Flower)o).getFlowerCode();
+    }
+
     public static FlowerDto of(Flower flower) {
         return FlowerDto.builder()
                 .flowerCode(flower.getFlowerCode())
