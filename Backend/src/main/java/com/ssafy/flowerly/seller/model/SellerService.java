@@ -125,7 +125,7 @@ public class SellerService {
         //완료되지 않은거
         Page<OrderSelectSimpleDto> oderBySelect =
                 requestRepository.findBySellerMemberIdOrderByDeliveryPickupTime(mamberId, pageable)
-                        .map(Request::toOrderSelectSimpleDto);
+                        .map(OrderRequestDto::toOrderSelectSimpleDto);
         //채택된 주문이 없을경우
         if(oderBySelect.getContent().isEmpty()){
             throw new CustomException(ErrorCode.NOT_FIND_ORDERLIST);
