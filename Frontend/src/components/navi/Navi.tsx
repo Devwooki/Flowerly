@@ -17,6 +17,8 @@ const Navi = () => {
         return "flly";
       case "/chatting":
         return "chat";
+      case "/chatting":
+        return "my";
       default:
         return "home";
     }
@@ -39,6 +41,8 @@ const Navi = () => {
       router.push("/flly");
     } else if (loc === "chat") {
       router.push("/chatting");
+    } else if (loc === "my") {
+      router.push("/signup");
     }
   };
 

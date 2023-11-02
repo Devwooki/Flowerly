@@ -45,9 +45,9 @@ const RequestDetail = ({ $fllyRequestInfo }: { $fllyRequestInfo: fllyReqeustDeat
       <div className={style.detailMainBox}>
         <div>색상</div>
         <div>
-          <span>{$fllyRequestInfo.color1}</span>
-          <span>{$fllyRequestInfo.color2}</span>
-          <span>{$fllyRequestInfo.color3}</span>
+          <span>{$fllyRequestInfo.color1},</span>
+          <span>{$fllyRequestInfo.color2},</span>
+          <span>{$fllyRequestInfo.color3} </span>
         </div>
       </div>
       <div className={style.detailMainBox}>
