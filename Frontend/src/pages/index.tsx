@@ -4,46 +4,6 @@ import Image from "next/image";
 import { useState } from "react";
 
 export default function Home() {
-  // const router = useRouter();
-  // const id = 123;
-
-  // //정적 라우팅
-  // const moveToTestPage = () => {
-  //   router.push("/testpage");
-  // };
-
-  // //동적 라우팅
-  // const moveToMyPage = (id: number) => {
-  //   router.push(`/mypage/${id}`);
-  // };
-
-  // async function callGetAddressAPI() {
-  //   const confmKey = "U01TX0FVVEgyMDIzMTAyNjE0NDMzNjExNDIxNjI="; // 여기에 승인키를 넣으세요
-  //   const countPerPage = 4; // 페이지당 결과 개수
-  //   const keyword = "탄방동"; // 검색어
-
-  //   try {
-  //     const response = await axios.get(`https://business.juso.go.kr/addrlink/addrLinkApi.do`, {
-  //       params: {
-  //         confmKey,
-  //         currentPage: 5,
-  //         countPerPage,
-  //         keyword,
-  //         resultType: "json", // JSON 형식으로 결과 요청
-  //       },
-  //     });
-
-  //     if (response.status === 200) {
-  //       console.log(response.data.results.common);
-  //       return response.data;
-  //     } else {
-  //       throw new Error(`Failed to retrieve data. Status: ${response.status}`);
-  //     }
-  //   } catch (error) {
-  //     console.error("API call error:", error);
-  //     throw error;
-  //   }
-  // }
   const [cardOrder, setCardOrder] = useState([0, 1, 2]);
 
   const cards = [
@@ -94,7 +54,7 @@ export default function Home() {
             const card = cards[order];
             return (
               <div key={card.id} className={`${style.bannerImg} ${style[`card${index + 1}`]} `}>
-                <Image src={card.src} alt={card.alt} fill />
+                <Image src={card.src} alt={card.alt} fill priority />
                 <div className={style.imgDisc}>
                   <div>{card.date}</div>
                   <div>{card.desc}</div>
@@ -106,40 +66,13 @@ export default function Home() {
           })}
         </div>
         <div className={style.btnPakage}>
-          <div className="card-nav-btn card-nav-btn-up" onClick={handleDownClick}>
-            <span className="arrow">❮</span>
+          <div onClick={handleDownClick}>
+            <span className="arrow">이전</span>
           </div>
-          <div className="card-nav-btn card-nav-btn-down" onClick={handleUpClick}>
-            <span className="arrow">❯</span>
+          <div onClick={handleUpClick}>
+            <span className="arrow">다음</span>
           </div>
         </div>
-        <div>sad</div>
-        <div>sad</div>
-        <div>sad</div>
-        <div>sad</div>
-        <div>sad</div>
-        <div>sad</div>
-        <div>sad</div>
-        <div>sad</div>
-        <div>sad</div>
-        <div>sad</div>
-        <div>sad</div>
-        <div>sad</div>
-        <div>sad</div>
-        <div>sad</div>
-        <div>sad</div>
-        <div>sad</div>
-        <div>sad</div>
-        <div>sad</div>
-        <div>sad</div>
-        <div>sad</div>
-        <div>sad</div>
-        <div>sad</div>
-        <div>sad</div>
-        <div>sad</div>
-        <div>sad</div>
-        <div>sad</div>
-        <div>sad</div>
         <div>sad</div>
         <div>sad</div>
         <div>sad</div>

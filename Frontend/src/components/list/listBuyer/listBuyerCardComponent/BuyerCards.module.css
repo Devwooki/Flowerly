@@ -72,13 +72,13 @@
 }
 
 .flowerShop {
-  padding: 5px 15px 5px 15px;
+  padding: 5px 15px 5px 5px;
   font-family: "NanumSquareNeoOTF-Lt";
   line-height: 20px;
   height: 20px;
   border-radius: 5px;
   margin-top: 3px;
-  font-size: 16px;
+  font-size: 12px;
 }
 
 .currentFlower {

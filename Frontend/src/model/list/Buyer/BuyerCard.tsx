@@ -7,3 +7,17 @@ type BuyerCard = {
   selectedColor: string[];
   shopName: string;
 };
+
+type BuyerCardStong = {
+  card: BuyerCard;
+};
+
+type BuyerCardPlus = BuyerCard & {
+  budget: number;
+  deadline: string;
+  clientName: string;
+  selectedFlower: string[];
+  orderType: string;
+  adress: string;
+  request: string;
+};

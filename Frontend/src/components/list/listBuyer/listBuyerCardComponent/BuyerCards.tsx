@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import style from "./BuyerCards.module.css";
 import ProgressBar from "./ProgressBar";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { FllylistDiscRecoil } from "@/recoil/kdmRecoil";
 
 type BuyerCardsProps = {
   card: BuyerCard;
@@ -13,6 +15,7 @@ const stateProps = ["입찰", "조율", "주문완료", "제작완료", "픽업/
 const BuyerCards = ({ card }: BuyerCardsProps) => {
   const route = useRouter();
   const stepNumber = stateProps.indexOf(card.state);
+  const setCardProps = useSetRecoilState(FllylistDiscRecoil);
 
   const posFlowerLeft = (step: number) => {
     if (step === 0) {
@@ -32,8 +35,26 @@ const BuyerCards = ({ card }: BuyerCardsProps) => {
     }
   };
 
+  // useEffect(() => {
+  //   const handleRouteChange = (url, { shallow }) => {
+  //     setCardProps(card);
+  //   };
+
+  //   route.events.on("routeChangeComplete", handleRouteChange);
+
+  //   return () => {
+  //     route.events.off("routeChangeComplete", handleRouteChange);
+  //   };
+  // }, [card]);
+
   const fllistBtn = (fllyId: number) => {
-    console.log(fllyId);
+    setCardProps(card);
+    route.push({
+      pathname: `/list/buyer/[fllyId]/`,
+      query: {
+        fllyId: fllyId,
+      },
+    });
   };
 
   return (

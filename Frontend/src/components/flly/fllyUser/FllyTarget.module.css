@@ -96,9 +96,11 @@
 }
 
 .selectWord {
-    margin-top: 50px;
-    margin-right: 10px;
+    margin: 50px 15px 0 10px;
+    margin-bottom: 20px;
     font-family: "NanumSquareNeoOTF-Bd";
+    word-break: keep-all;
+    text-align: center;
 }
 
 .btnBox {
