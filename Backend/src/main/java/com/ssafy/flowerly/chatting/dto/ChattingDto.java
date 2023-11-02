@@ -5,6 +5,7 @@ import com.ssafy.flowerly.entity.ChattingMessage;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class ChattingDto {
@@ -15,7 +16,7 @@ public class ChattingDto {
     @Builder
     public static class BasicResponse {
         private Long chattingId;
-        private LocalDateTime lastChattingTime;
+        private String lastChattingTime;
         private String lastChattingMessage;
 
         private Long opponentMemberId;
@@ -25,7 +26,7 @@ public class ChattingDto {
             return BasicResponse.builder()
                     .chattingId(chatting.getChattingId())
                     .lastChattingMessage(chatting.getLastChattingMessage())
-                    .lastChattingTime(chatting.getLastChattingTime())
+                    .lastChattingTime(chatting.getLastChattingTime().format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm")))
                     .opponentMemberId(opponentMemberId)
                     .opponentName(opponentName)
                     .build();

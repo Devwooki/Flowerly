@@ -17,6 +17,10 @@
   margin-left: 20px;
 }
 
+.participationHeader > img:hover {
+  cursor: pointer;
+}
+
 .headerTitle {
   margin-top: 30px;
   font-size: 28px;
@@ -30,7 +34,7 @@
   margin-top: 80px;
   width: 100%;
   overflow: scroll;
-  height: calc(100vh - 135px);
+  height: calc(100vh - 140px);
 }
 
 .mainImgBox {
@@ -83,6 +87,13 @@
   border-radius: 5px;
 }
 
+.mainInfoBoxMoneyBox > input::-webkit-outer-spin-button,
+.mainInfoBoxMoneyBox > input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+  padding-right: 4px;
+}
+
 .mainInfoBoxMoneyBox > div {
   height: 20px;
   line-height: 28px;
@@ -108,6 +119,7 @@
   margin: 0px auto;
   justify-content: center;
   gap: 15px;
+  padding-bottom: 50px;
 }
 
 .mainInfoBoxBtnBox > div {
@@ -123,8 +135,10 @@
 
 .cancelBtn {
   background-color: var(--sky);
+  text-align: center;
 }
 
 .submitBtn {
   background-color: var(--blue);
+  text-align: center;
 }

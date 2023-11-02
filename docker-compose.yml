@@ -15,7 +15,10 @@ services:
     # restart: always
     expose:
       - "3000"
+<<<<<<< HEAD
+=======
   
+>>>>>>> origin/Front
 
   flly_be:
     image: wjdgusaho/flowerly_be
