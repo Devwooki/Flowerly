@@ -4,6 +4,7 @@ package com.ssafy.flowerly.seller.model;
 import com.ssafy.flowerly.address.repository.DongRepository;
 import com.ssafy.flowerly.address.repository.SigunguRepository;
 import com.ssafy.flowerly.entity.*;
+import com.ssafy.flowerly.entity.type.OrderType;
 import com.ssafy.flowerly.entity.type.ProgressType;
 import com.ssafy.flowerly.entity.type.UploadType;
 import com.ssafy.flowerly.exception.CustomException;
@@ -44,22 +45,92 @@ public class SellerService {
 
 
     /*
-        의뢰 내용 API
+        플리 정보 조회 및 검증 ( 없거나 마감시간이 지났거나 취소되지 않은 플리 )
      */
-    public FllyRequestDto getRequestLetter(long fllyId) {
-        return null;
+
+    public Flly getFllyInfo(Long fllyId){
+        Flly fllyInfo = fellyRepository.findByFllyIdAndActivate(fllyId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_FLLY));
+        return fllyInfo;
     }
+
+    /*
+        유저 정보 조회 및 검증 (현재 가입된 유저중 - Role이 DELETE 아닌 사람 중)
+     */
+    public Member getMemberInfo(Long memberId, MemberRole memberRole){
+        Member member = memberRepository.findByMemberId(memberId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_MEMBER));
+        //유저가 판매자가 아니라면?
+        if(member.getRole() != memberRole){
+            throw new CustomException(ErrorCode.MEMBER_NOT_SELLER);
+        }
+        return member;
+    }
+
+    /*
+        의뢰 상세서 내용  (제안)
+     */
+    public FllyRequestDto getRequestLetter(Long fllyId) {
+
+        FllyRequestDto fllyRequest = getFllyInfo(fllyId).toFllyRequestDto();
+        //배달 일때만 주소 세팅
+        if(fllyRequest.getOrderType().equals(OrderType.DELIVERY.getTitle())) {
+            FllyDeliveryRegion fllyDelivery = fllyDeliveryRegionRepository
+                    .findByFllyFllyId(fllyId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_FLLY_DELIVERYREGION));
+            fllyRequest.setRequestAddress(fllyDelivery.getSido() + " " + fllyDelivery.getSigungu());
+        }
+
+        return fllyRequest;
+    }
+
+    /*
+       의뢰 상세서 내용 ( 제안 + 의뢰 )
+     */
+    public ParticipationRequestDto getFllyRequestInfo(Long memberId, Long fllyId){
+
+        ParticipationRequestDto result = new ParticipationRequestDto();
+        //의사 상세서 제안 가져오기
+        FllyRequestDto fllyRequestDto = getRequestLetter(fllyId);
+        result.setFllyRequestDto(fllyRequestDto);
+        //의뢰 조회
+        FllyResponeDto fllyResponeDto = fllyParticipationRepository.findByFllyFllyId(fllyId)
+                .map(FllyParticipation::toFllyResponeDto).orElseThrow();
+        result.setFllyResponeDto(fllyResponeDto);
+
+        return result;
+    }
+
+    /*
+        판매자가 해당 플리경매에 참여했는가 검증
+     */
+    public void checkSellerParticipationFlly(Long memberId, Long fllyId){
+        fllyParticipationRepository.findByFllyFllyIdAndSellerMemberId(fllyId, memberId)
+                .orElseThrow(() -> new CustomException(ErrorCode.SELLER_NOT_PARTICIPATE));
+    }
+    /*
+        판매자가 발행한 주문서가 맞는지 검증
+     */
+    public void checkSellerRequestFlly(Long memberId, Long fllyId){
+        requestRepository.findBySellerMemberIdAndFllyFllyId(memberId, fllyId)
+                .orElseThrow(() -> new CustomException(ErrorCode.SELLER_NOT_REQUEST));
+    }
+
 
     /*
         채택된 주문 리스트
      */
 
     public Page<OrderSelectSimpleDto> getOrderSelect(Long mamberId, Pageable pageable) {
-        //내꺼인지
-        //주문완료인 제작완료인지
+
+        //완료되지 않은거
         Page<OrderSelectSimpleDto> oderBySelect =
-                requestRepository.findBySellerMemberIdOrderByCreatedAt(mamberId, pageable)
+                requestRepository.findBySellerMemberIdOrderByDeliveryPickupTime(mamberId, pageable)
                         .map(Request::toOrderSelectSimpleDto);
+        //채택된 주문이 없을경우
+        if(oderBySelect.getContent().isEmpty()){
+            throw new CustomException(ErrorCode.NOT_FIND_ORDERLIST);
+        }
+
         return oderBySelect;
     }
 
@@ -69,11 +140,11 @@ public class SellerService {
     @Transactional
     public String UpdateProgressType(Long mamberId, Long fllyId) {
 
-        //내가 참여한건지 (주문서인지)
+        //내가 참여한 주문서인지 확인용
+        checkSellerRequestFlly(mamberId, fllyId);
+        //꽃 정보 받아오기
+        Flly fllyInfo = getFllyInfo(fllyId);
 
-       //주문오나료랑 제작완료 인애만 떠야함 
-
-        Flly fllyInfo = fellyRepository.findByFllyId(fllyId).orElseThrow();
         if(fllyInfo.getProgress().getTitle().equals("주문완료")){
             fllyInfo.UpdateFllyProgress(ProgressType.FINISH_MAKING);
         }
@@ -96,23 +167,12 @@ public class SellerService {
                 fllyParticipationRepository.findBySellerMemberIdParticipationDto(memberId, pageable, currentDateTime)
                         .map(FllyParticipation::toOrderParticipationDto);
 
+        if(orderParticipation.getContent().isEmpty()){
+            throw new CustomException(ErrorCode.NOT_FIND_FLLY_PARTICIPATE);
+        }
         return orderParticipation;
     }
 
-    /*
-       플리 의뢰서 상세 ( 제안 + 의뢰 )
-     */
-    public ParticipationRequestDto getFllyRequestInfo(Long memberId, Long fllyId){
-
-//        ParticipationRequestDto result = new ParticipationRequestDto();
-//        //FllyRequestDto fllyRequestDto = getRequestLetter(fllyId);
-//        result.setFllyRequestDto(fllyRequestDto);
-//        FllyResponeDto fllyResponeDto = fllyParticipationRepository.findByFllyFllyId(fllyId)
-//                .map(FllyParticipation::toFllyResponeDto).orElseThrow();
-//        result.setFllyResponeDto(fllyResponeDto);
-
-        return null;
-    }
 
     /*
         플리 참여하기
@@ -121,15 +181,9 @@ public class SellerService {
     public void sellerFllyParticipate(Long memberId, MultipartFile file, RequestFllyParticipateDto data) {
 
         //flly가 있는으면서 활성화가 되어있는가 ?
-        Flly fllyInfo = fellyRepository.findByFllyIdAndActivate(data.getFllyId())
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_FLLY));
+        Flly fllyInfo = getFllyInfo(data.getFllyId());
         //유저가 있는가 ?
-        Member member = memberRepository.findByMemberId(memberId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_MEMBER));
-        //유저가 판매자가 아니라면?
-        if(member.getRole() != MemberRole.SELLER){
-            throw new CustomException(ErrorCode.MEMBER_NOT_SELLER);
-        }
+        Member member = getMemberInfo(memberId, MemberRole.SELLER);
 
         //이미 해당 유저가 참여한 플리라면(이미 참가하신 플리입니다)
         fllyParticipationRepository
@@ -165,15 +219,8 @@ public class SellerService {
     public Page<FllyNearDto> getNearFllyDeliverylist(Long memberId, Pageable pageable) {
 
         //유저가 있는가 ? (판매자)
-        Member member = memberRepository.findByMemberId(memberId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_MEMBER));
-        //유저가 판매자가 아니라면?
-        if(member.getRole() != MemberRole.SELLER){
-            throw new CustomException(ErrorCode.MEMBER_NOT_SELLER);
-        }
+        Member member = getMemberInfo(memberId, MemberRole.SELLER);
 
-        //판매자가 배달 가능한 지역인가?
-        //1. 판매자가 설정한 배달 정보를 가져와야한다.
         /* 이런 방법도 가능하다!! 바로 DTO 만들어서 하기..
         List<AddressSimpleDto> storeDeliveryRegion = storeDeliveryRegionRepository.findBySellerMemberId(memberId)
                 .map(regions -> regions.stream()
@@ -182,6 +229,8 @@ public class SellerService {
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_SELLER_DELIVERY_REGION));
          */
 
+        //판매자가 배달 가능한 지역인가?
+        //1. 판매자가 설정한 배달 정보를 가져와야한다.
         List<StoreDeliveryRegion> storeDeliveryRegions = storeDeliveryRegionRepository.findBySellerMemberId(memberId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_SELLER_DELIVERY_REGION));
 
@@ -218,12 +267,7 @@ public class SellerService {
 
         Page<FllyNearDto> pickupAbleList = null;
         //유저가 있는가 ? (판매자)
-        Member member = memberRepository.findByMemberId(memberId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_MEMBER));
-        //유저가 판매자가 아니라면?
-        if(member.getRole() != MemberRole.SELLER){
-            throw new CustomException(ErrorCode.MEMBER_NOT_SELLER);
-        }
+        Member member = getMemberInfo(memberId, MemberRole.SELLER);
 
         //2 픽업 가능한지 찾아야한다!
         //2-1 판매자 가게의 주소

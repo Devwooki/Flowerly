@@ -39,4 +39,11 @@ public class Flower {
     private Boolean november;
     private Boolean december;
 
+    public FlowerSimpleInfoDto toFlowerSimpleInfoDto(){
+        return FlowerSimpleInfoDto.builder()
+                .flowerName(this.flowerName)
+                .meaning(this.meaning)
+                .build();
+    }
+
 }

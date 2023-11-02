@@ -33,4 +33,6 @@ public class FllyRequestDto {
     private Integer budget;
     private LocalDateTime deadline;
 
+    private String requestAddress;
+
 }
