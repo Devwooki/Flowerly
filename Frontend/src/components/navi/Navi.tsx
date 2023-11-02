@@ -5,9 +5,24 @@ import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 
 const Navi = () => {
-  const [selectedButton, setSelectedButton] = useState<string>("home"); // 현재 선택된 버튼을 저장하는 state
-
   const router = useRouter();
+
+  const determineInitialButton = () => {
+    switch (router.pathname) {
+      case "/":
+        return "home";
+      case "/list":
+        return "list";
+      case "/flly":
+        return "flly";
+      case "/chatting":
+        return "chat";
+      default:
+        return "home";
+    }
+  };
+
+  const [selectedButton, setSelectedButton] = useState<string>(determineInitialButton());
 
   // 이미지 경로를 동적으로 반환하는 helper 함수
   const getImageSrc = (baseName: string) => {
@@ -35,7 +50,7 @@ const Navi = () => {
         onClick={() => moveNavi("home")}
       >
         <div className={style.item}>
-          <Image src={getImageSrc("home")} alt="홈" width={35} height={35} />
+          <Image src={getImageSrc("home")} alt="홈" width={33} height={33} priority />
         </div>
       </motion.div>
       <motion.div
@@ -44,7 +59,7 @@ const Navi = () => {
         onClick={() => moveNavi("list")}
       >
         <div className={style.item}>
-          <Image src={getImageSrc("list")} alt="현황" width={35} height={25} />
+          <Image src={getImageSrc("list")} alt="현황" width={35} height={30} priority />
         </div>
       </motion.div>
       <motion.div
@@ -53,7 +68,7 @@ const Navi = () => {
         onClick={() => moveNavi("flly")}
       >
         <div className={style.item}>
-          <Image src={getImageSrc("flly")} alt="플리" width={40} height={40} />
+          <Image src={getImageSrc("flly")} alt="플리" width={37} height={37} priority />
         </div>
       </motion.div>
 
@@ -63,7 +78,7 @@ const Navi = () => {
         onClick={() => moveNavi("chat")}
       >
         <div className={style.item}>
-          <Image src={getImageSrc("chat")} alt="채팅" width={40} height={35} />
+          <Image src={getImageSrc("chat")} alt="채팅" width={35} height={40} priority />
         </div>
       </motion.div>
       <motion.div
@@ -72,7 +87,7 @@ const Navi = () => {
         onClick={() => moveNavi("my")}
       >
         <div className={style.item}>
-          <Image src={getImageSrc("my")} alt="마이" width={30} height={35} />
+          <Image src={getImageSrc("my")} alt="마이" width={35} height={35} priority />
         </div>
       </motion.div>
     </div>
