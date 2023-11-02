@@ -187,7 +187,7 @@ public class SellerService {
 
         //이미 해당 유저가 참여한 플리라면(이미 참가하신 플리입니다)
         fllyParticipationRepository
-                .findByFllyFllyIdAndSellerMemberId(memberId, data.getFllyId())
+                .findByFllyFllyIdAndSellerMemberId(data.getFllyId(), memberId)
                 .ifPresent(fllyParticipation -> {
                     throw new CustomException(ErrorCode.SELLER_ALREADY_PARTICIPATE);
                 });
@@ -250,7 +250,7 @@ public class SellerService {
 
         // 해당 배달지역으로 가지고있는 것을 Flly번호를 찾아온다.
         Page<FllyNearDto> deliveryAbleList = fllyDeliveryRegionRepository
-                .getSellerDeliverAbleList(deliverySido, deliverySigugun, deliveryDong, pageable)
+                .getSellerDeliverAbleList(deliverySido, deliverySigugun, deliveryDong, pageable, memberId)
                 .map(FllyDeliveryRegion::toDeliveryFllyNearDto);
 
         if(deliveryAbleList.getContent().size() <= 0){
@@ -290,7 +290,7 @@ public class SellerService {
 
             //2-2 가게의 시 군 구 와 전체 시군구 와 전체 동을 가지고 flly픽업정보에서 찾는다
             pickupAbleList =  fllyPickupRegionRepository
-                    .getSellerPickupAbleList(pickupSigugun, pickupDong, pageable)
+                    .getSellerPickupAbleList(pickupSigugun, pickupDong, pageable, memberId)
                     .map(FllyPickupRegion::toPickupFllyNearDto);
 
         }
