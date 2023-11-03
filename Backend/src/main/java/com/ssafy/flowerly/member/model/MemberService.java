@@ -10,8 +10,6 @@ import com.ssafy.flowerly.member.MemberRole;
 import com.ssafy.flowerly.seller.model.StoreDeliveryRegionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -68,13 +66,13 @@ public class MemberService {
 
         // 시도, 시군구, 동 코드 조회
 
-        Sido sido = sidoRepository.findByName(addressParts[0])
+        Sido sido = sidoRepository.findBySidoName(addressParts[0])
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_SIDO));
 
-        Sigungu sigungu = sigunguRepository.findByNameAndSido(addressParts[1], sido)
+        Sigungu sigungu = sigunguRepository.findBySigunguNameAndSido(addressParts[1], sido)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_SIGUNGU));
 
-        Dong dong = dongRepository.findByNameAndSigungu(addressParts[2], sigungu)
+        Dong dong = dongRepository.findByDongNameAndSigungu(addressParts[2], sigungu)
                 .orElseThrow(() -> new CustomException((ErrorCode.NOT_FIND_DONG)));
 
 
@@ -109,13 +107,13 @@ public class MemberService {
             Integer sigunguCode = deliveryRegion.get("sigunguCode");
             Integer dongCode = deliveryRegion.get("dongCode");
 
-            Sido deliverySido = sidoRepository.findByCode(sidoCode)
+            Sido deliverySido = sidoRepository.findBySidoCode(sidoCode)
                     .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_SIDO));
 
-            Sigungu deliverySigungu = sigunguRepository.findByCodeAndSido(sigunguCode, deliverySido)
+            Sigungu deliverySigungu = sigunguRepository.findBySigunguCodeAndSido(sigunguCode, deliverySido)
                     .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_SIGUNGU));
 
-            Dong deliveryDong = dongRepository.findByCodeAndSigungu(dongCode, deliverySigungu)
+            Dong deliveryDong = dongRepository.findByDongCodeAndSigungu(dongCode, deliverySigungu)
                     .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_DONG));
 
             StoreDeliveryRegion storeDeliveryRegion = StoreDeliveryRegion.builder()

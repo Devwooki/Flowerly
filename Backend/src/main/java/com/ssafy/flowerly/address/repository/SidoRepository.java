@@ -9,7 +9,7 @@ import java.util.Optional;
 @Repository
 public interface SidoRepository extends JpaRepository<Sido, Long> {
 
-    Optional<Sido> findByName(String name);
+    Optional<Sido> findBySidoName(String sidoName);
 
-    Optional<Sido> findByCode(Integer code);
+    Optional<Sido> findBySidoCode(Integer sidoCode);
 }

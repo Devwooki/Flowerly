@@ -15,9 +15,9 @@ import java.util.Optional;
 @Repository
 public interface SigunguRepository extends JpaRepository<Sigungu, Long > {
 
-    Optional<Sigungu> findByNameAndSido(String name, Sido sido);
+    Optional<Sigungu> findBySigunguNameAndSido(String sigunguName, Sido sido);
 
-    Optional<Sigungu> findByCodeAndSido(Integer code, Sido sido);
+    Optional<Sigungu> findBySigunguCodeAndSido(Integer sigunguCode, Sido sido);
 
     @Query(
             "Select s FROM Sigungu s " +

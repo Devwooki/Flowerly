@@ -14,9 +14,9 @@ import java.util.Optional;
 @Repository
 public interface DongRepository extends JpaRepository<Dong, Long> {
 
-    Optional<Dong> findByNameAndSigungu(String name, Sigungu sigungu);
+    Optional<Dong> findByDongNameAndSigungu(String dongName, Sigungu sigungu);
 
-    Optional<Dong> findByCodeAndSigungu(Integer code, Sigungu sigungu);
+    Optional<Dong> findByDongCodeAndSigungu(Integer dongCode, Sigungu sigungu);
 
     @Query(
             "SELECT d FROM Dong d " +
