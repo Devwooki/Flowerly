@@ -7,7 +7,7 @@ import RequestMsg from "./RequestMsg";
 
 type ChattingMsgProps = {
   message: {
-    createdAt: string;
+    sendTime: string;
     content: string;
     type: string;
   };
@@ -16,7 +16,7 @@ type ChattingMsgProps = {
 };
 
 const MyChattingMsg: React.FC<ChattingMsgProps> = ({ message, chattingId, modalHandler }) => {
-  const [time, setTime] = useState(new Date(message.createdAt));
+  const [time, setTime] = useState(new Date(message.sendTime));
 
   return (
     <div className={style.wrapper}>
