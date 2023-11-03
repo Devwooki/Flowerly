@@ -42,12 +42,11 @@
   margin-top: 6px;
   height: 25px;
   line-height: 25px;
-  /* border: 0.1px solid black; */
   color: #80858a;
-  width: 100px;
-  margin-left: 115px;
+  width: 95%;
   font-size: 14px;
   font-family: "NanumSquareNeoOTF-Rg";
+  text-align: right;
 }
 
 .cardInfoBtn > span {

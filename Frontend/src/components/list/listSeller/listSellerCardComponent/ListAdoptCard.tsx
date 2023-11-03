@@ -81,7 +81,9 @@ const ListAdoptCard = ({
                 </div>
               </div>
               <div>
-                주문서 보기<span> &gt;</span>
+                <div>
+                  주문서 보기<span> &gt;</span>
+                </div>
               </div>
             </div>
           </div>

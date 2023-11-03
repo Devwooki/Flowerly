@@ -40,11 +40,14 @@
 }
 
 .cardHeaderInfoBox > div:last-child {
-  width: 100px;
-  margin-left: 115px;
+  width: 95%;
+  height: 20px;
+  content: "";
   font-family: "NanumSquareNeoOTF-Rg";
   font-size: 16px;
   color: #80858a;
+  position: relative;
+  text-align: right;
 }
 
 .cardHeaderInfoBox > div:last-child > span {
