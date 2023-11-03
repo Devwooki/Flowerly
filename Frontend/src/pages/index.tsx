@@ -4,49 +4,17 @@ import Image from "next/image";
 import { useState } from "react";
 
 export default function Home() {
-  // const router = useRouter();
-  // const id = 123;
-
-  // //정적 라우팅
-  // const moveToTestPage = () => {
-  //   router.push("/testpage");
-  // };
-
-  // //동적 라우팅
-  // const moveToMyPage = (id: number) => {
-  //   router.push(`/mypage/${id}`);
-  // };
-
-  // async function callGetAddressAPI() {
-  //   const confmKey = "U01TX0FVVEgyMDIzMTAyNjE0NDMzNjExNDIxNjI="; // 여기에 승인키를 넣으세요
-  //   const countPerPage = 4; // 페이지당 결과 개수
-  //   const keyword = "탄방동"; // 검색어
-
-  //   try {
-  //     const response = await axios.get(`https://business.juso.go.kr/addrlink/addrLinkApi.do`, {
-  //       params: {
-  //         confmKey,
-  //         currentPage: 5,
-  //         countPerPage,
-  //         keyword,
-  //         resultType: "json", // JSON 형식으로 결과 요청
-  //       },
-  //     });
-
-  //     if (response.status === 200) {
-  //       console.log(response.data.results.common);
-  //       return response.data;
-  //     } else {
-  //       throw new Error(`Failed to retrieve data. Status: ${response.status}`);
-  //     }
-  //   } catch (error) {
-  //     console.error("API call error:", error);
-  //     throw error;
-  //   }
-  // }
   const [cardOrder, setCardOrder] = useState([0, 1, 2]);
 
-  const [cards, setCards] = useState([
+  const f1 =
+    "https://neighbrew.s3.ap-northeast-2.amazonaws.com/FlOWER/9ab5e8bb-56f9-4cff-967b-22075b73e37a010_pink_gookhwa.jpg.jpg";
+
+  const f2 =
+    "https://neighbrew.s3.ap-northeast-2.amazonaws.com/FlOWER/da3f0e9f-0c1e-45d8-ba34-86e57331687b011_yellow_gookhwa.jpg.jpg";
+
+  const f3 =
+    "https://neighbrew.s3.ap-northeast-2.amazonaws.com/FlOWER/f82c544a-7f65-4879-9293-76ceaba5a6d2069_pink_peony.jpg.jpg";
+  const cards = [
     {
       id: 1,
       src: "/img/homeBanner/164_red_phalaenopsis.jpg",
@@ -71,7 +39,7 @@ export default function Home() {
       desc: "분홍색 천일홍",
       message: "우아함, 달콤함, 치절, 애정",
     },
-  ]);
+  ];
 
   const handleUpClick = () => {
     setCardOrder([cardOrder[2], cardOrder[0], cardOrder[1]]);
@@ -82,68 +50,41 @@ export default function Home() {
   };
 
   return (
-    <div className={style.home}>
-      <div className={style.mainHeader}>
-        <div className={style.header}>플리로고</div>
-        <div className={style.title}>플리가 추천하는</div>
-        <div className={style.title}>가을의 꽃을 만나보세요</div>
-      </div>
-      <div className={style.mainBody}>
-        {cardOrder.map((order, index) => {
-          const card = cards[order];
-          return (
-            <div key={card.id} className={`${style.bannerImg} ${style[`card${index + 1}`]} `}>
-              <Image src={card.src} alt={card.alt} fill />
-              <div className={style.imgDisc}>
-                <div>{card.date}</div>
-                <div>{card.desc}</div>
-                <div className={style.divider}></div>
-                <div>{card.message}</div>
+    <>
+      <div className={style.home}>
+        <div className={style.mainHeader}>
+          <div className={style.header}>플리로고</div>
+          <div className={style.title}>플리가 추천하는</div>
+          <div className={style.title}>가을의 꽃을 만나보세요</div>
+        </div>
+        <div className={style.mainBody}>
+          {cardOrder.map((order, index) => {
+            const card = cards[order];
+            return (
+              <div key={card.id} className={`${style.bannerImg} ${style[`card${index + 1}`]} `}>
+                <Image src={card.src} alt={card.alt} fill priority />
+                <div className={style.imgDisc}>
+                  <div>{card.date}</div>
+                  <div>{card.desc}</div>
+                  <div className={style.divider}></div>
+                  <div>{card.message}</div>
+                </div>
               </div>
-            </div>
-          );
-        })}
-      </div>
-      <div className={style.btnPakage}>
-        <div className="card-nav-btn card-nav-btn-up" onClick={handleDownClick}>
-          <span className="arrow">❮</span>
+            );
+          })}
         </div>
-        <div className="card-nav-btn card-nav-btn-down" onClick={handleUpClick}>
-          <span className="arrow">❯</span>
+        <div className={style.btnPakage}>
+          <div onClick={handleDownClick}>
+            <span className="arrow">이전</span>
+          </div>
+          <div onClick={handleUpClick}>
+            <span className="arrow">다음</span>
+          </div>
         </div>
+        <Image src={f1} alt="150" width={100} height={100} />
+        <Image src={f2} alt="150" width={100} height={100} />
+        <Image src={f3} alt="150" width={100} height={100} />
       </div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-      <div>sad</div>
-    </div>
+    </>
   );
 }

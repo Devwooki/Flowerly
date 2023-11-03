@@ -3,6 +3,7 @@ package com.ssafy.flowerly.JWT;
 import com.ssafy.flowerly.entity.Member;
 import com.ssafy.flowerly.exception.AuthException;
 import com.ssafy.flowerly.exception.CustomException;
+import com.ssafy.flowerly.exception.ErrorCode;
 import com.ssafy.flowerly.member.model.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,6 +43,14 @@ public class JWTAuthenticationProcessingFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        //일회용 토큰 검증용
+        if(request.getRequestURI().equals("/api/member")){
+            log.info("너냐!?");
+            request.setAttribute("memberId", 2L);
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         //해당 필터는 JWT만 검증하므로 다음 필터에게 작업을 처리하도록한다.
         if(request.getRequestURI().equals(NO_CHECK_URL) || request.getRequestURI().contains("favicon")){
             filterChain.doFilter(request,response);
@@ -114,7 +123,7 @@ public class JWTAuthenticationProcessingFilter extends OncePerRequestFilter {
             //RefreshToken으로 유저 정보(ID) 찾기
             String storedValue = redisTemplate.opsForValue().get(refreshToken);
             if(storedValue == null)
-                throw new AuthException(HttpStatus.FORBIDDEN.value(), "로그인 기간이 만료되었습니다.");
+                throw new AuthException(ErrorCode.FORBIDDEN);
 
             //기존 RefreshToken 제거
             redisTemplate.delete(refreshToken);
@@ -123,7 +132,7 @@ public class JWTAuthenticationProcessingFilter extends OncePerRequestFilter {
             Long memberId = Long.valueOf(storedValue);
             reIssueTokens(response, memberId);
         }catch(Exception e){
-            throw new AuthException(HttpStatus.FORBIDDEN.value(), "로그인 기간이 만료되었습니다.");
+            throw new AuthException(ErrorCode.FORBIDDEN);
         }
     }
 

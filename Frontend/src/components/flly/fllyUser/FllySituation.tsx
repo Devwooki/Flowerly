@@ -1,20 +1,44 @@
-import React from "react";
+import React, { useEffect } from "react";
 import style from "./FllySituation.module.css";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { situationState } from "@/recoil/fllyRecoil";
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
-const FllySeller = () => {
+const FllySituation = () => {
+<<<<<<< Updated upstream
+  const router = useRouter();
+  const [check, setCheck] = useState<boolean>(false);
+=======
+>>>>>>> Stashed changes
   const [situation, setSituation] = useRecoilState(situationState);
   const [selected, setSelected] = useState<string>("");
-  const selectList = ["축하", "응원", "건강", "사랑", "감사", "사과", "위로", "선택안함"];
+  const selectList = ["축하", "응원", "건강", "사랑", "감사", "사과", "위로", "선택 안함"];
   const imgList = ["/img/icon/situation01.png", "/img/icon/situation02.png", "/img/icon/situation03.png", "/img/icon/situation04.png", "/img/icon/situation05.png", "/img/icon/situation06.png", "/img/icon/situation07.png", "/img/icon/situation08.png"];
   const handleSelect = (e:string) => {
     setSelected(e);
     setSituation(e);
   };
 
+  useEffect(() => {
+    setSelected(situation);
+  }, [])
+
+<<<<<<< Updated upstream
+  useEffect(() => {
+    if(situation !== "") setCheck(true);
+  }, [situation])
+
+  const handleClick = () => {
+    if(check) {
+      router.push('/flly/target');
+    }
+  }
+
+=======
+>>>>>>> Stashed changes
   return (
     <>
       <div className={style.fllyBox}>
@@ -31,15 +55,15 @@ const FllySeller = () => {
             {selectList.map((item, index) => (
               <div key={index} className={selected==item? style.selectedCard: style.selectCard} onClick={() => {handleSelect(item)}}>
                 <div className={style.selectWord}>{item}</div>
-                <Image src={imgList[index]} width={75} height={75} alt="아이콘" />
+                <Image src={imgList[index]} width={60} height={60} alt="아이콘" />
               </div>
             ))}            
           </div>
-          <div className={style.nextBtn}>다음</div>
+          <div onClick={handleClick} className={style.nextBtn}>다음</div>
         </div>
       </div>
     </>
   );
 };
 
-export default FllySeller;
+export default FllySituation;

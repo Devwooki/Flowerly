@@ -1,13 +1,10 @@
 package com.ssafy.flowerly.exception;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
+@AllArgsConstructor
 public class AuthException extends RuntimeException{
-    private int value;
-    private String message;
-    public AuthException(int value, String message) {
-        this.value = value;
-        this.message = message;
-    }
+    private ErrorCode errorCode;
 }

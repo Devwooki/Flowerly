@@ -23,6 +23,7 @@ public interface FllyParticipationRepository extends JpaRepository<FllyParticipa
 
     Optional<FllyParticipation> findByFllyFllyId(long fllyId);
 
+
     Optional<FllyParticipation> findByFllyFllyIdAndSellerMemberId(long memberId, long fllyId);
 
     @Query("select si, fp from StoreInfo si " +
@@ -30,4 +31,5 @@ public interface FllyParticipationRepository extends JpaRepository<FllyParticipa
             " where fp.flly.fllyId = : fllyId ")
     Page<Object[]> findFlistByFllyId(Pageable pageable,
                                      @Param("flly_id") Long fllyId);
+
 }

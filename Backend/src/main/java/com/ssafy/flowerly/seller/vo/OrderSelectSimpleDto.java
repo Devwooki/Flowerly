@@ -18,5 +18,6 @@ public class OrderSelectSimpleDto {
     private String deliveryPickupTime;
     private Long fllyId;
     private String progress;
+    private String imageUrl;
 
 }

@@ -6,6 +6,8 @@
 
 .contentBox {
     padding: 30px 20px;
+    height: calc(100vh - 120px);
+    overflow: scroll;
 }
 
 .progress {
@@ -57,13 +59,13 @@
 }
 
 .selectAreaBox {
-    height: 580px;
+    height: 530px;
 }
 
 .selectBox {
     margin: 50px auto;
     display: grid;
-    grid-template-columns: 180px 180px;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 45%));
     justify-content: center;
 }
 
@@ -72,10 +74,11 @@
     justify-content: center;
     align-items: center;
     padding: 10px;
-    width: 150px;
-    height: 100px;
+    min-width: 115px;
+    width: 80%;
+    height: 80px;
     border-radius: 10px;
-    margin: 10px;
+    margin: 10px auto;
     background-color: var(--gray);
 }
 
@@ -84,17 +87,20 @@
     justify-content: center;
     align-items: center;
     padding: 10px;
-    width: 150px;
-    height: 100px;
+    min-width: 115px;
+    width: 80%;
+    height: 80px;
     border-radius: 10px;
-    margin: 10px;
+    margin: 10px auto;
     background-color: rgba(135, 184, 207, 0.2);
 }
 
 .selectWord {
-    margin-top: 50px;
-    margin-right: 10px;
+    margin: 50px 15px 0 10px;
+    margin-bottom: 20px;
     font-family: "NanumSquareNeoOTF-Bd";
+    word-break: keep-all;
+    text-align: center;
 }
 
 .btnBox {
@@ -122,4 +128,8 @@
     color: var(--gray);
     text-align: center;
     font-family: "NanumSquareNeoOTF-Bd";
+}
+
+.contentBox a {
+    text-decoration-line: none;
 }

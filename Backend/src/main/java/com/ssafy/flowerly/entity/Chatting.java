@@ -25,6 +25,10 @@ public class Chatting extends BaseCreatedTimeEntity {
     private FllyParticipation fllyParticipation;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "flly_id")
+    private Flly flly;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "consumer_id")
     private Member consumer;
 

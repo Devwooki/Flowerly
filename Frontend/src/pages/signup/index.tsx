@@ -1,16 +1,27 @@
 import React from "react";
-import style from "./signup.module.css";
+import style from "./Signup.module.css";
 import { useRouter } from "next/router";
+import { useRecoilState } from "recoil";
+import { useEffect } from "react";
+import { tempTokenState } from "../../recoil/tokenRecoil";
 
 const Signup = () => {
   const router = useRouter();
+  const [tempToken, setTempToken] = useRecoilState(tempTokenState);
+
+  useEffect(() => {
+    const token = router.query.token as string;
+    if (token) {
+      setTempToken(token);
+    }
+  }, [router.query.token, setTempToken]);
 
   const onClickBuyer = () => {
     router.push("/signup/buyer");
   };
 
   const onClickSeller = () => {
-    router.push("/signup/seller/step1");
+    router.push("/signup/seller/Step1");
   };
   return (
     <div>

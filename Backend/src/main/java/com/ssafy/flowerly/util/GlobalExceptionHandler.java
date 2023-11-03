@@ -34,7 +34,7 @@ public class GlobalExceptionHandler {
     //계정 접속 예외 발생
     @ExceptionHandler(AuthException.class)
     public CustomResponse handleICustomException(AuthException e){
-        return new CustomResponse(e.getValue(), e.getMessage());
+        return new CustomResponse(e.getErrorCode().getCode(), e.getErrorCode().getMessage());
 
     }
 }

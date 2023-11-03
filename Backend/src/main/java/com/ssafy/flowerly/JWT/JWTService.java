@@ -60,6 +60,18 @@ public class JWTService {
                 .withClaim("memberId", memberId)
                 .sign(Algorithm.HMAC512(secretKey));
     }
+
+    public String createTempAccessToken(Long memberId){
+        log.info("memberInfo 전달용 임시 토큰 생성");
+        Date now = new Date();
+        Date expireDate = new Date(now.getTime() + 30000); //10초 짜리
+        return JWT.create()
+                .withSubject("AccessToken")
+                .withExpiresAt(expireDate)
+                .withClaim("memberId", memberId)
+                .sign(Algorithm.HMAC512(secretKey));
+    }
+
     public String createRefreshToken(Long memberId){
         //refreshToken은 AccessToken 재발급을 위한 Token이기에 어떠한 Claim도 가지지 않는다.
         Date now = new Date();
@@ -138,7 +150,7 @@ public class JWTService {
             DecodedJWT decodedJWT = decodeToken(token);
             return isTokenNotExpired(decodedJWT);
         }catch(Exception e){
-            throw new AuthException(HttpStatus.UNAUTHORIZED.value(), "로그인 기간이 만료되었습니다.");
+            return false;
         }
     }
 
@@ -159,7 +171,7 @@ public class JWTService {
                             .getClaim("memberId")
                             .asLong());
         }catch(Exception e){
-            throw new AuthException(HttpStatus.UNAUTHORIZED.value(), "토큰이 변조되었습니다.");
+            return Optional.empty();
         }
     }
 

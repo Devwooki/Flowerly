@@ -18,6 +18,7 @@ public class FlowerDto {
     private ColorType color;
     private String engName;
     private String meaning;
+    private String colorName;
 
     @Override
     public boolean equals(Object o) {
@@ -27,11 +28,12 @@ public class FlowerDto {
     public static FlowerDto of(Flower flower) {
         return FlowerDto.builder()
                 .flowerCode(flower.getFlowerCode())
-                .flowerName(flower.getFlowerName())
+                .flowerName(flower.getScientificName())
                 .imageUrl(flower.getImageUrl())
                 .color(flower.getColor())
                 .engName(flower.getEngName())
                 .meaning(flower.getMeaning())
+                .colorName(flower.getFlowerName())
                 .build();
     }
 }

@@ -125,7 +125,7 @@ public class SellerService {
         //완료되지 않은거
         Page<OrderSelectSimpleDto> oderBySelect =
                 requestRepository.findBySellerMemberIdOrderByDeliveryPickupTime(mamberId, pageable)
-                        .map(Request::toOrderSelectSimpleDto);
+                        .map(OrderRequestDto::toOrderSelectSimpleDto);
         //채택된 주문이 없을경우
         if(oderBySelect.getContent().isEmpty()){
             throw new CustomException(ErrorCode.NOT_FIND_ORDERLIST);
@@ -140,19 +140,21 @@ public class SellerService {
     @Transactional
     public String UpdateProgressType(Long mamberId, Long fllyId) {
 
+        String responseProgress = null;
         //내가 참여한 주문서인지 확인용
         checkSellerRequestFlly(mamberId, fllyId);
         //꽃 정보 받아오기
         Flly fllyInfo = getFllyInfo(fllyId);
 
-        if(fllyInfo.getProgress().getTitle().equals("주문완료")){
+        if(fllyInfo.getProgress() == ProgressType.FINISH_ORDER){
             fllyInfo.UpdateFllyProgress(ProgressType.FINISH_MAKING);
         }
-        if(fllyInfo.getProgress().getTitle().equals("제작완료")) {
+        else if(fllyInfo.getProgress() == ProgressType.FINISH_MAKING) {
             fllyInfo.UpdateFllyProgress(ProgressType.FINISH_DELIVERY);
         }
-        Flly updateInfo = fellyRepository.save(fllyInfo);
 
+        Flly updateInfo = fellyRepository.save(fllyInfo);
+        
         return updateInfo.getProgress().getTitle();
     }
 
@@ -187,7 +189,7 @@ public class SellerService {
 
         //이미 해당 유저가 참여한 플리라면(이미 참가하신 플리입니다)
         fllyParticipationRepository
-                .findByFllyFllyIdAndSellerMemberId(memberId, data.getFllyId())
+                .findByFllyFllyIdAndSellerMemberId(data.getFllyId(), memberId)
                 .ifPresent(fllyParticipation -> {
                     throw new CustomException(ErrorCode.SELLER_ALREADY_PARTICIPATE);
                 });
@@ -250,7 +252,7 @@ public class SellerService {
 
         // 해당 배달지역으로 가지고있는 것을 Flly번호를 찾아온다.
         Page<FllyNearDto> deliveryAbleList = fllyDeliveryRegionRepository
-                .getSellerDeliverAbleList(deliverySido, deliverySigugun, deliveryDong, pageable)
+                .getSellerDeliverAbleList(deliverySido, deliverySigugun, deliveryDong, pageable, memberId)
                 .map(FllyDeliveryRegion::toDeliveryFllyNearDto);
 
         if(deliveryAbleList.getContent().size() <= 0){
@@ -272,7 +274,7 @@ public class SellerService {
         //2 픽업 가능한지 찾아야한다!
         //2-1 판매자 가게의 주소
         //없다고 화면에 출력이 안되는게 아니기때문에 에러발생 X
-        StoreInfo store = storeInfoRepository.findBySellerMemberId(memberId);
+        StoreInfo store = storeInfoRepository.findBySellerMemberId(memberId).orElse(null);
 
         //나의 주소를 가지고 전체 값을 찾아야한다! (시를 보내 구군의 전체를 찾고 / 시구군을 보내 동에서 전체를 찾는다 )
         if(store != null){
@@ -290,7 +292,7 @@ public class SellerService {
 
             //2-2 가게의 시 군 구 와 전체 시군구 와 전체 동을 가지고 flly픽업정보에서 찾는다
             pickupAbleList =  fllyPickupRegionRepository
-                    .getSellerPickupAbleList(pickupSigugun, pickupDong, pageable)
+                    .getSellerPickupAbleList(pickupSigugun, pickupDong, pageable, memberId)
                     .map(FllyPickupRegion::toPickupFllyNearDto);
 
         }

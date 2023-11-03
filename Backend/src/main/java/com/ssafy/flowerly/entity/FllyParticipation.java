@@ -1,7 +1,6 @@
 package com.ssafy.flowerly.entity;
 
 import com.ssafy.flowerly.entity.common.BaseCreatedTimeEntity;
-import com.ssafy.flowerly.seller.buyer.dto.FlistStoreInfo;
 import com.ssafy.flowerly.seller.vo.FllyResponeDto;
 import com.ssafy.flowerly.seller.vo.OrderParticipationDto;
 import lombok.*;
