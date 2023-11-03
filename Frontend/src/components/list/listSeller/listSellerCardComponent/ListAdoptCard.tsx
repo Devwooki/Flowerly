@@ -81,7 +81,7 @@ const ListAdoptCard = ({
                 </div>
               </div>
               <div>
-                <div>
+                <div className={style.moveBtnBox}>
                   주문서 보기<span> &gt;</span>
                 </div>
               </div>
