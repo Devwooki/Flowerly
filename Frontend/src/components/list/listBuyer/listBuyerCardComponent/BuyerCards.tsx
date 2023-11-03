@@ -82,20 +82,14 @@ const BuyerCards = ({ card }: BuyerCardsProps) => {
             <div className={style.infoTitle}>대상</div>
             <div className={style.info}>{card.target}</div>
           </div>
-          <div className={style.infoTable} style={{ display: "inline-block" }}>
-            <div className={style.infoColorTable}>주요색상</div>
-            {card.selectedColor.map((color, idx) => {
-              return (
-                <div
-                  key={idx}
-                  className={`${style.info} ${style.colorfirst}`}
-                  style={{ display: "inline", marginRight: "10px" }}
-                >
-                  {color}
-                </div>
-              );
-            })}
-          </div>
+          <div className={style.infoColorTable}>주요색상</div>
+          {card.selectedColor.map((color, idx) => {
+            return (
+              <div key={idx} className={`${style.colorInfo} ${style.colorfirst}`}>
+                {color}
+              </div>
+            );
+          })}
           <div className={style.infoTable}>
             <div className={style.infoTitle}>꽃집</div>
             <div className={`${style.flowerShop}`}>{card.shopName}</div>

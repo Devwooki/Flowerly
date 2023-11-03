@@ -1,6 +1,5 @@
 import Navi from "@/components/navi/Navi";
 import "../styles/globals.css";
-import style from "../styles/app.module.css";
 import type { AppProps } from "next/app";
 import { RecoilRoot } from "recoil";
 import { useRouter } from "next/router";
@@ -17,7 +16,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <Head>
         <meta
           name="viewport"
-          content="width=device-width, initial-scale=0.9, maximum-scale=1.0, minimum-scale=0.8, user-scalable=no"
+          content="width=device-width, initial-scale=0.9, maximum-scale=1.0, user-scalable=no"
         />
       </Head>
       <ToastContainer />
