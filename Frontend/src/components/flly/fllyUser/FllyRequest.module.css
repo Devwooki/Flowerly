@@ -10,52 +10,18 @@
     overflow: scroll;
 }
 
-.progress {
-    display: flex;
-    margin-bottom: 20px;
-}
-
-.progressBar {
-    display: flex;
-    align-items: center;
-    width: 90%;
-    margin-right: 10px;
-}
-
-.progressNum {
-    font-size: 10px;
-}
-
-.barCompleted {
-    height: 4px;
-    width: 33%;
-    background-color: #87B8CF;
-}
-
-.barWating {
-    height: 4px;
-    width: 67%;
-    background-color: #F2F4F7;
-}
-
 .headerTitle {
     display: flex;
-}
-
-.stage {
-    background-color: #DEDEDE;
-    width: 24px;
-    height: 24px;
-    line-height: 24px;
-    margin-right: 8px;
-    border-radius: 50px;
-    text-align: center;
 }
 
 .guide {
     line-height: 24px;
     font-size: 20px;
     font-family: "NanumSquareNeoOTF-Bd";
+}
+
+.selectAreaBox {
+    height: 530px;
 }
 
 .selectBox {
@@ -88,7 +54,7 @@
     height: 80px;
     border-radius: 10px;
     margin: 10px auto;
-    background-color: rgba(193, 224, 223, 0.3);
+    background-color: rgba(135, 184, 207, 0.2);
 }
 
 .selectWord {
@@ -99,8 +65,24 @@
     text-align: center;
 }
 
+.btnBox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.prevBtn {
+    background-color: var(--moregray);
+    color: var(--dark);
+    width: 20px;
+    padding: 12px;
+    border-radius: 12px;
+    margin-right: 10px;
+    text-align: center;
+    font-family: "NanumSquareNeoOTF-Bd";
+}
+
 .nextBtn {
-    margin: 0 auto;
     background-color: var(--blue);   
     width: 80px;
     padding: 12px;

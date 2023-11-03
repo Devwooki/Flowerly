@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import style from "./FllyFlower.module.css";
+import style from "@/components/flly/fllyUser/FllyFlower.module.css"
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
 import { useRecoilState } from "recoil";
@@ -10,8 +10,12 @@ import { flowerState } from "@/recoil/fllyRecoil";
 import { flowerCardType } from "@/recoil/fllyRecoil";
 import Image from "next/image";
 import axios from "axios";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 const FllyFlower = () => {
+  const router = useRouter();
+  const [check, setCheck] = useState<boolean>(false);
   const situation = useRecoilValue(situationState);
   const target = useRecoilValue(targetState);
   const colors = useRecoilValue(colorState);
@@ -36,10 +40,21 @@ const FllyFlower = () => {
           setFlowers(data.data.flowers);
           setFlowersColor(data.data.flowersColor);
           setFlowersMeaning(data.data.flowersMeaning);
-          console.log("=== ",selected);
         }
         else console.log("오류 발생");
       });
+      // .catch((error) => {
+      //   if (error.response) {
+      //     // 서버 응답이 있는 경우
+      //     console.log("서버 응답 오류:", error.response.data);
+      //   } else if (error.request) {
+      //     // 요청은 보내었지만 응답이 없는 경우
+      //     console.log("서버 응답이 없음");
+      //   } else {
+      //     // 요청을 보내기 전에 오류 발생
+      //     console.error("요청 보내기 전 오류:", error.message);
+      //   }
+      // });
   };
 
   const handleSelect = (e:flowerCardType) => {
@@ -55,29 +70,33 @@ const FllyFlower = () => {
     const updatedFlowers = selectedFlowers.filter(item => item !== value);
     setSelected(updatedSelected);
     setSelcetedFlowers(updatedFlowers);
-    console.log(selected);
   }
 
   const addValue = (newValue:flowerCardType) => {
-    console.log(selected);
     const updatedSelected = [...selected, newValue.flowerCode];
     const updatedFlowers = [...selectedFlowers, newValue];
     setSelected(updatedSelected);
     setSelcetedFlowers(updatedFlowers);
-    console.log(selected);
   };
 
   useEffect(() => {
     selectedFlowers.map((value, index)=>{
       selected.push(value.flowerCode);
     })
-    console.log(selectedFlowers);
-    console.log("selected ", selected);
-  },[])
+  },[]);
 
   useEffect(() => {
     axiosHandler();
-  },[])
+  },[]);
+
+  useEffect(() => {
+    if(selectedFlowers.length !== 0) setCheck(true);
+    else setCheck(false);
+  },[selectedFlowers]);
+
+  const handleClick = () => {
+    if(check) router.push("loading")
+  }
 
   return (
     <>
@@ -141,8 +160,10 @@ const FllyFlower = () => {
             }
           </div>
           <div className={style.btnBox}>
-            <div className={style.prevBtn}>&lt;</div>
-            <div className={style.nextBtn}>다음</div>
+            <Link href="/flly/color">
+              <div className={style.prevBtn}>&lt;</div>
+            </Link>
+            <div onClick={handleClick} className={style.nextBtn}>다음</div>
           </div>
         </div>
       </div>

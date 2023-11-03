@@ -1,11 +1,16 @@
+
 import React, {useEffect} from "react";
-import style from "./FllyBouquet.module.css";
+import style from "@/components/flly/fllyUser/FllyBouquet.module.css";
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
 import { bouquetState, bouquetType } from "@/recoil/fllyRecoil";
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 const FllyBouquet = () => {
+  const router = useRouter();
+  const [check, setCheck] = useState<boolean>(false);
   const [selected, setSelected] = useState<bouquetType>();
   const [cnt, setCnt] = useState<number>(2);
   const bouquets = useRecoilValue(bouquetState);
@@ -17,6 +22,19 @@ const FllyBouquet = () => {
   useEffect(() => {
     setCnt(3-(bouquets.length/4));
   }, []);
+
+  useEffect(() => {
+    if(bouquets.length != 0)setCheck(true);
+    else setCheck(false);
+  }, [bouquets]);
+
+  const handleClick = () => {
+    if(check) router.push("request");
+  };
+
+  const handleClickAgain = () => {
+    if(cnt > 0) router.push("loading");
+  };
 
   return (
     <>
@@ -35,12 +53,14 @@ const FllyBouquet = () => {
                 </div>
               ))}
             </div>
-            <div className={style.againBtn}><Image src="/img/icon/again.png" width={40} height={40} alt="again"></Image></div>
+            <div onClick={handleClickAgain} className={style.againBtn}><Image src="/img/icon/again.png" width={40} height={40} alt="again"></Image></div>
             <div className={style.btnCount}>남은 생성 횟수 : {cnt}/3</div>
           </div>
           <div className={style.btnBox}>
-            <div className={style.prevBtn}>&lt;</div>
-            <div className={style.nextBtn}>다음</div>
+            <Link href="/flly/flower">
+              <div className={style.prevBtn}>&lt;</div>
+            </Link>
+            <div onClick={handleClick} className={style.nextBtn}>다음</div>
           </div>
         </div>
       </div>

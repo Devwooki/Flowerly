@@ -1,13 +1,18 @@
 import React, { useEffect } from "react";
-import style from "./FllyColor.module.css";
+import style from "@/components/flly/fllyUser/FllyColor.module.css"
 import { useState } from "react";
 import { useRecoilState } from "recoil";
-import { colorState } from "@/recoil/fllyRecoil";
+import { colorState, flowerState } from "@/recoil/fllyRecoil";
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 const FllyColor = () => {
+  const router = useRouter();
+  const [check, setCheck] = useState<boolean>(false);
   const [color, setColor] = useRecoilState(colorState);
   const [selected, setSelected] = useState<string[]>([]);
+  const [selectedFlowers, setSelcetedFlowers] = useRecoilState(flowerState);
   const colorNames = ["RED", "ORANGE", "PINK", "YELLOW", "BLUE", "PURPLE", "WHITE", "선택 안함"]
   const selectList = ["빨간색", "주황색", "분홍색", "노랑색", "파란색", "보라색", "흰색", "선택 안함"];
   const colorList = ["#DB4455", "#F67828", "#FFC5BF", "#FBE870", "#0489DD", "#CE92D8", "#FFFFFF", "#DADADA"];
@@ -32,7 +37,6 @@ const FllyColor = () => {
       }
     }
   };
-  console.log(color);
   
   const subValue = (value:string) => {
     const updatedSelect = selected.filter(item => item !== value);
@@ -54,8 +58,18 @@ const FllyColor = () => {
 
   useEffect(() => {
     setSelected(color);
-  })
-  
+  }, []);
+
+  useEffect(() => {
+    if(color.length !== 0) setCheck(true);
+  }, [color]);
+
+  const handleClick = () => {
+    if(check) {
+      setSelcetedFlowers([]);
+      router.push("flower");
+    }
+  };
 
   return (
     <>
@@ -85,8 +99,10 @@ const FllyColor = () => {
             </div>
             </div>
           <div className={style.btnBox}>
-            <div className={style.prevBtn}>&lt;</div>
-            <div className={style.nextBtn}>다음</div>
+            <Link href="/flly/target">
+              <div className={style.prevBtn}>&lt;</div>
+            </Link>
+            <div onClick={handleClick} className={style.nextBtn}>다음</div>
           </div>
         </div>
       </div>
