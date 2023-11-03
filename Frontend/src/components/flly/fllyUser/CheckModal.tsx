@@ -1,5 +1,5 @@
 import React from "react";
-import style from "@/components/flly/fllyUser/checkModal.module.css"
+import style from "@/components/flly/fllyUser/CheckModal.module.css"
 import { useRouter } from "next/router";
 
 interface Props {
