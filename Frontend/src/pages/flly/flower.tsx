@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import style from "./FllyFlower.module.css";
+import style from "@/components/flly/fllyUser/FllyFlower.module.css"
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
 import { useRecoilState } from "recoil";
@@ -10,8 +10,14 @@ import { flowerState } from "@/recoil/fllyRecoil";
 import { flowerCardType } from "@/recoil/fllyRecoil";
 import Image from "next/image";
 import axios from "axios";
+import { useRouter } from "next/router";
+import CheckModal from "@/components/flly/fllyUser/CheckModal";
 
 const FllyFlower = () => {
+  const [showPrevModal, setShowPrevModal] = useState<boolean>(false);
+  const [showNextModal, setShowNextModal] = useState<boolean>(false);
+  const router = useRouter();
+  const [check, setCheck] = useState<boolean>(false);
   const situation = useRecoilValue(situationState);
   const target = useRecoilValue(targetState);
   const colors = useRecoilValue(colorState);
@@ -36,10 +42,21 @@ const FllyFlower = () => {
           setFlowers(data.data.flowers);
           setFlowersColor(data.data.flowersColor);
           setFlowersMeaning(data.data.flowersMeaning);
-          console.log("=== ",selected);
         }
         else console.log("오류 발생");
       });
+      // .catch((error) => {
+      //   if (error.response) {
+      //     // 서버 응답이 있는 경우
+      //     console.log("서버 응답 오류:", error.response.data);
+      //   } else if (error.request) {
+      //     // 요청은 보내었지만 응답이 없는 경우
+      //     console.log("서버 응답이 없음");
+      //   } else {
+      //     // 요청을 보내기 전에 오류 발생
+      //     console.error("요청 보내기 전 오류:", error.message);
+      //   }
+      // });
   };
 
   const handleSelect = (e:flowerCardType) => {
@@ -55,33 +72,65 @@ const FllyFlower = () => {
     const updatedFlowers = selectedFlowers.filter(item => item !== value);
     setSelected(updatedSelected);
     setSelcetedFlowers(updatedFlowers);
-    console.log(selected);
   }
 
   const addValue = (newValue:flowerCardType) => {
-    console.log(selected);
     const updatedSelected = [...selected, newValue.flowerCode];
     const updatedFlowers = [...selectedFlowers, newValue];
     setSelected(updatedSelected);
     setSelcetedFlowers(updatedFlowers);
-    console.log(selected);
   };
 
   useEffect(() => {
     selectedFlowers.map((value, index)=>{
       selected.push(value.flowerCode);
     })
-    console.log(selectedFlowers);
-    console.log("selected ", selected);
-  },[])
+  },[]);
 
   useEffect(() => {
     axiosHandler();
-  },[])
+  },[]);
+
+  useEffect(() => {
+    if(selectedFlowers.length !== 0) setCheck(true);
+    else setCheck(false);
+  },[selectedFlowers]);
+
+  const handleClickNext = () => {
+    setShowNextModal(true);
+  }
+
+  const handleClickPrev = () => {
+    setShowPrevModal(true);
+  }
+
+  const prevBtnHandler = () => {
+    setShowPrevModal(!showPrevModal);
+  };
+
+  const nextBtnHandler = () => {
+    setShowNextModal(!showNextModal);
+  };
 
   return (
     <>
       <div className={style.fllyBox}>
+        {showPrevModal && 
+          <CheckModal
+            ModalChangeHandler={prevBtnHandler}
+            question={"이전의 선택을 변경하시겠습니까?"}
+            explain={"선택했던 꽃 초기화 후 색 선택으로 이동합니다."}
+            routerHref={"color"}
+          />
+        }
+        {showNextModal && 
+          <CheckModal
+            ModalChangeHandler={nextBtnHandler}
+            question={"꽃다발 생성을 시작하겠습니까?"}
+            explain={"선택했던 정보로 꽃다발 생성을 시작합니다."}
+            routerHref={"loading"}
+          />
+        }
         <div className={style.contentBox}>
           <div className={style.headerTitle}>
             <div className={style.guide}>원하는 꽃을 선택해주세요.</div>
@@ -141,8 +190,8 @@ const FllyFlower = () => {
             }
           </div>
           <div className={style.btnBox}>
-            <div className={style.prevBtn}>&lt;</div>
-            <div className={style.nextBtn}>다음</div>
+            <div onClick={handleClickPrev} className={style.prevBtn}>&lt;</div>
+            <div onClick={handleClickNext} className={style.nextBtn}>다음</div>
           </div>
         </div>
       </div>

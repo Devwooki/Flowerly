@@ -117,3 +117,7 @@
     text-align: center;
     font-family: "NanumSquareNeoOTF-Bd";
 }
+
+.contentBox a {
+    text-decoration-line: none;
+}

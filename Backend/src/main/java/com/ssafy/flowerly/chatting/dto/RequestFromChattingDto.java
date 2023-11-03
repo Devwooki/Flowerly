@@ -1,9 +1,13 @@
 package com.ssafy.flowerly.chatting.dto;
 
+import com.ssafy.flowerly.entity.Request;
+import com.ssafy.flowerly.entity.RequestDeliveryInfo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.time.format.DateTimeFormatter;
 
 @Getter
 @NoArgsConstructor
@@ -19,4 +23,18 @@ public class RequestFromChattingDto {
     private String recipientName;
     private String recipientPhoneNumber;
     private String address;
+
+    public void setRequestInfo(Request request) {
+        this.orderType = request.getOrderType().getTitle();
+        this.ordererName = request.getOrderName();
+        this.phoneNumber = request.getPhoneNumber();
+        this.deliveryPickupTime = request.getDeliveryPickupTime().format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm"));
+        this.requestContent = request.getRequestContent();
+    }
+
+    public void setDeliveryInfo(RequestDeliveryInfo deliveryInfo) {
+        this.recipientName = deliveryInfo.getRecipientName();
+        this.recipientPhoneNumber = deliveryInfo.getPhoneNumber();
+        this.address = deliveryInfo.getAddress();
+    }
 }

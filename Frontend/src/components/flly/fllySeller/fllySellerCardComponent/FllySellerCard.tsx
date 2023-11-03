@@ -42,26 +42,26 @@ const FllySellerCard = ({ $FllyDeliveryNear }: { $FllyDeliveryNear: FllyNearType
             <Picture
               src={imageSrc}
               onError={errImageChangHandler}
-              width={190}
-              height={190}
+              width={170}
+              height={170}
               alt="이미지"
             ></Picture>
             <div className={style.cardMainImgInfo}>{$FllyDeliveryNear.progress}중</div>
           </div>
           <div className={style.cardMainDetail}>
             <div>
-              <Image src="/img/icon/seller-flower.png" alt="꽃" width={22} height={22}></Image>
+              <Image src="/img/icon/seller-flower.png" alt="꽃" width={18} height={18}></Image>
               <span>
                 {$FllyDeliveryNear.flowerName1}, {$FllyDeliveryNear.flowerName2},{" "}
                 {$FllyDeliveryNear.flowerName3}
               </span>
             </div>
             <div>
-              <Image src="/img/icon/seller-money.png" alt="돈" width={22} height={22}></Image>
+              <Image src="/img/icon/seller-money.png" alt="돈" width={18} height={18}></Image>
               <span>{$FllyDeliveryNear.budget} 원</span>
             </div>
             <div>
-              <Image src="/img/icon/seller-time.png" alt="마감" width={22} height={22}></Image>
+              <Image src="/img/icon/seller-time.png" alt="마감" width={18} height={18}></Image>
               <span>~ {$FllyDeliveryNear.deadline}</span>
             </div>
             <div>
