@@ -1,5 +1,5 @@
 .back {
-  width: 400px;
+  width: calc(100% - 50px);
   height: 220px;
   margin: 20px auto;
   border-radius: 13px;
