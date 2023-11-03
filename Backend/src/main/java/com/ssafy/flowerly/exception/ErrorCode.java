@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ErrorCode {
     INVALID_ITEM(100, "아이템이 존재하지 않습니다."),
-
     //Auth 관련
     UNAUTHORIZED(401, "액세스 토큰이 존재하나 유효하지 않습니다."),
     FORBIDDEN(403, "로그인 정보가 없거나 만료되어 재로그인이 필요합니다."),
@@ -34,11 +33,8 @@ public enum ErrorCode {
 
     CHATTING_NOT_FOUND(-6001, "채팅 정보를 찾을 수 없습니다."),
     REQUEST_NOT_FOUND(-6002, "주문 정보를 찾을 수 없습니다."),
-<<<<<<< Updated upstream
     REQUEST_DELIVERY_NOT_FOUND(-6003, "주문 배달 정보를 찾을 수 없습니다."),
     REQUEST_ALREADY_PAID(-604, "결제 금액이 존재하는 주문은 수정할 수 없습니다."),
-=======
->>>>>>> Stashed changes
 
     INVALID_UPLOAD_FILE(-8001, "업로드한 파일을 찾을 수 없습니다."),
     INVALID_UPLOAD_TYPE(-8002, "업로드 요청 타입을 찾을 수 없습니다."),

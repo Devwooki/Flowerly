@@ -1,6 +1,4 @@
 package com.ssafy.flowerly.member.model;
-
-<<<<<<< Updated upstream
 import com.ssafy.flowerly.address.repository.DongRepository;
 import com.ssafy.flowerly.address.repository.SidoRepository;
 import com.ssafy.flowerly.address.repository.SigunguRepository;
@@ -9,54 +7,35 @@ import com.ssafy.flowerly.exception.CustomException;
 import com.ssafy.flowerly.exception.ErrorCode;
 import com.ssafy.flowerly.member.MemberRole;
 import com.ssafy.flowerly.seller.model.StoreDeliveryRegionRepository;
-=======
 import com.ssafy.flowerly.JWT.JWTService;
 import com.ssafy.flowerly.entity.Member;
 import com.ssafy.flowerly.entity.StoreImage;
 import com.ssafy.flowerly.entity.StoreInfo;
-import com.ssafy.flowerly.exception.CustomException;
-import com.ssafy.flowerly.exception.ErrorCode;
-import com.ssafy.flowerly.member.MemberRole;
-import com.ssafy.flowerly.member.vo.MemberDto;
 import com.ssafy.flowerly.member.vo.StoreInfoDto;
-import com.ssafy.flowerly.seller.buyer.dto.SellerDto;
-import com.ssafy.flowerly.seller.model.SellerService;
->>>>>>> Stashed changes
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
-<<<<<<< Updated upstream
 import java.util.List;
 import java.util.Map;
-=======
+
 import java.util.*;
->>>>>>> Stashed changes
+
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class MemberService {
 
-
     private final MemberRepository memberRepository;
-<<<<<<< Updated upstream
-
     private final StoreInfoRepository storeInfoRepository;
-
     private final SidoRepository sidoRepository;
-
     private final SigunguRepository sigunguRepository;
-
     private final DongRepository dongRepository;
-
     private final StoreDeliveryRegionRepository storeDeliveryRegionRepository;
-=======
-    private final StoreInfoRepository storeInfoRepository;
-    private final StoreInfoRepository StoreInfoRepository;
     private final JWTService jwtService;
->>>>>>> Stashed changes
+
 
     public Object getMemberInfo(Long memberId) {
         List<Object[]> object = storeInfoRepository.findBySellerInfo(2L);
