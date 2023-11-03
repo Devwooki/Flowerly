@@ -9,8 +9,8 @@
 
 html,
 body {
-  width: 450px;
-  /* min-width: 330px; */
+  max-width: 450px;
+  min-width: 330px;
   margin: 0 auto;
   padding: 0;
   -ms-overflow-style: none; /* IE, Edge */
