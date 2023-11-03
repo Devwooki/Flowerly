@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { targetState } from "@/recoil/fllyRecoil";
 import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/router";
 
 const FllyTarget = () => {

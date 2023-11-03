@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { flowerState } from "@/recoil/fllyRecoil";
 import OpenAI from "openai";
-import { bouquetState, bouquetType } from "@/recoil/fllyRecoil";
+import { bouquetsState, bouquetType } from "@/recoil/fllyRecoil";
 import { useRouter } from "next/router";
 
 const FllyLoading = () => {
@@ -20,7 +20,7 @@ const FllyLoading = () => {
   });
 
   const flowers = useRecoilValue(flowerState);
-  const [bouquets, setBouquets] = useRecoilState(bouquetState);
+  const [bouquets, setBouquets] = useRecoilState(bouquetsState);
 
   const generateOrder = async () => {
     const flowerStringArray = flowers.map((flower) => {
