@@ -1,11 +1,14 @@
 import { Html, Head, Main, NextScript } from "next/document";
-import { ToastContainer } from "react-toastify";
+import Script from "next/script";
 
 export default function Document() {
   return (
     <Html lang="en">
       <Head />
-
+      <Script
+        src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAOMAP_KEY}&libraries=services,clusterer&autoload=false`}
+        strategy="beforeInteractive"
+      />
       <body>
         <Main />
         <NextScript />

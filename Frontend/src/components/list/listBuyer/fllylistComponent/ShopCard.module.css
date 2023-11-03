@@ -41,13 +41,16 @@
 .chatAction {
   font-family: "NanumSquareNeoOTF-Rg";
   text-align: center;
-  margin: 0 55px;
+  margin: 0 auto;
   padding: 8px;
   margin-bottom: 10px;
   border-radius: 5px;
   background-color: var(--blue);
   color: white;
+  font-size: 14px;
+  max-width: 60px;
 }
 
 .responseContent {
+  font-size: 13px;
 }

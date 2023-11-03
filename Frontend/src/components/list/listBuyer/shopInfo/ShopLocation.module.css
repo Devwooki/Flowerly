@@ -1,11 +1,18 @@
 .locationMain {
   margin-top: 20px;
-  height: 310px;
+  height: 290px;
+  border: 1px solid black;
 }
 
 .mapRender {
   width: 100%;
   height: 220px;
+}
+
+.mapMarker {
+  border: 1px solid black;
+  font-family: "NanumSquareNeoOTF-Bd";
+  margin: auto;
 }
 
 .shopInfoText {

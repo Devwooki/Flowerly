@@ -25,15 +25,18 @@ const ShopCard = () => {
       </div>
       <div className={style.shopInfo}>
         <div className={style.infoTable}>
-          <Image src={"/img/icon/seller-flower.png"} alt="추천 꽃다발" width={15} height={15} />
-          <div onClick={() => moveToShop(1)}>꼬까게</div>
+          {/* <Image src={"/img/icon/seller-flower.png"} alt="가게 이름" width={15} height={15} /> */}
+          <div onClick={() => moveToShop(1)} style={{ fontSize: "16px" }}>
+            {/* <button>꼬까게</button>*/}
+            꼬까게
+          </div>
         </div>
         <div className={style.infoTable}>
-          <Image src={"/img/icon/seller-location.png"} alt="추천 꽃다발" width={10} height={15} />
-          <div>대전 유성구 학하서로 11</div>
+          <Image src={"/img/icon/seller-location.png"} alt="가게 위치" width={10} height={15} />
+          <div>대전광역시 중구 대둔산로 384 1층 나이테플라워</div>
         </div>
         <div className={style.infoTable}>
-          <Image src={"/img/icon/seller-money.png"} alt="추천 꽃다발" width={15} height={15} />
+          <Image src={"/img/icon/seller-money.png"} alt="제시 금액 " width={15} height={15} />
           <div>25,000</div>
         </div>
         <div className={style.responseContent}>{truncatedContent}</div>
