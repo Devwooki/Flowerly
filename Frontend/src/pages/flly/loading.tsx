@@ -1,12 +1,15 @@
+
 import React, { useEffect, useState } from "react";
-import style from "./FllyLoading.module.css";
+import style from "@/components/flly/fllyUser/FllyLoading.module.css";
 import Image from "next/image";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { flowerState } from "@/recoil/fllyRecoil";
 import OpenAI from "openai";
 import { bouquetState, bouquetType } from "@/recoil/fllyRecoil";
+import { useRouter } from "next/router";
 
 const FllyLoading = () => {
+  const router = useRouter();
   const [imgList, setImgList] = useState<bouquetType[]>([]);
   const [order, setOrder] = useState<string>("");
 
@@ -36,8 +39,7 @@ const FllyLoading = () => {
         n: 4,
         size: "1024x1024",
       });
-      console.log(order);
-      console.log("ㅋㅋㅋ", response);
+      console.log("dalle 생성 이미지 ", response);
       const NewImage: bouquetType[] = [];
       if (response) {
         response.data.forEach((image) => {
@@ -56,18 +58,22 @@ const FllyLoading = () => {
   };
 
   useEffect(() => {
-    console.log(imgList.length);
     if (imgList.length <= 0) {
       generateOrder();
     } else {
       setBouquets([...imgList, ...bouquets]);
-      console.log("페이지이동");
     }
   }, [imgList]);
 
   useEffect(() => {
+    console.log(order);
+    router.push("bouquet"); // 없애기
     // if(order != "") generateImage();
-  },[order])
+  },[order]);
+
+  useEffect(() => {
+    if(bouquets.length !== 0) router.push("bouquet");
+  }, [bouquets]);
 
   return (
     <>
