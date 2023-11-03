@@ -20,51 +20,6 @@
     font-family: "NanumSquareNeoOTF-Bd";
 }
 
-.selectAreaBox {
-    height: 530px;
-}
-
-.selectBox {
-    margin: 50px auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 45%));
-    justify-content: center;
-}
-
-.selectCard {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px;
-    min-width: 115px;
-    width: 80%;
-    height: 80px;
-    border-radius: 10px;
-    margin: 10px auto;
-    background-color: var(--gray);
-}
-
-.selectedCard {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px;
-    min-width: 115px;
-    width: 80%;
-    height: 80px;
-    border-radius: 10px;
-    margin: 10px auto;
-    background-color: rgba(135, 184, 207, 0.2);
-}
-
-.selectWord {
-    margin: 50px 15px 0 10px;
-    margin-bottom: 20px;
-    font-family: "NanumSquareNeoOTF-Bd";
-    word-break: keep-all;
-    text-align: center;
-}
-
 .btnBox {
     display: flex;
     align-items: center;
@@ -90,8 +45,4 @@
     color: var(--gray);
     text-align: center;
     font-family: "NanumSquareNeoOTF-Bd";
-}
-
-.contentBox a {
-    text-decoration-line: none;
 }

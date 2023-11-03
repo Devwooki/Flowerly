@@ -33,8 +33,13 @@ export const flowerState = atom({
   default: [] as flowerCardType[],
 });
 
-export const bouquetState = atom({
-  key: 'bouquetState',
+export const bouquetsState = atom({
+  key: 'bouquetsState',
   // default: [{url:""}, {url:""}] as bouquetType[],
   default: [] as bouquetType[],
+});
+
+export const bouquetState = atom({
+  key: 'bouquetState',
+  default: { url: "" } as bouquetType,
 });
