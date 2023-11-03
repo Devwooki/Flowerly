@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import style from "./ListAdoptCard.module.css";
 import Image from "next/image";
 
@@ -26,12 +26,27 @@ const ListAdoptCard = ({
   $adoptInfo,
   $index,
 }: Props) => {
-  const urlSrc = "/img/icon/flower-bouquet.png";
+  const flowerSrc = "/img/icon/flower-bouquet.png";
+  const paperSrc = "/img/icon/paper-plane.png";
 
   const btnClickHandler = () => {
     SelectIdChangeHandler($adoptInfo.fllyId, $index);
     ModalChangeHandler();
   };
+
+  const [progressState, setProgressState] = useState<string>();
+  const [progressImg, setProgressImg] = useState<string>("/img/icon/flower-bouquet.png");
+
+  useEffect(() => {
+    if ($adoptInfo.progress === "주문완료") {
+      setProgressState("제작중");
+      setProgressImg(flowerSrc);
+    }
+    if ($adoptInfo.progress === "제작완료") {
+      setProgressState("배송중");
+      setProgressImg(paperSrc);
+    }
+  }, [$adoptInfo.progress]);
 
   return (
     <>
@@ -72,8 +87,8 @@ const ListAdoptCard = ({
           </div>
           <div className={style.cardMain}>
             <div className={style.cardMainState}>
-              <Image src={urlSrc} width={16} height={16} alt="상태이미지"></Image>
-              <span>{$adoptInfo.progress}</span>
+              <Image src={progressImg} width={16} height={16} alt="상태이미지"></Image>
+              <span>{progressState}</span>
             </div>
             <div className={style.cardFinshBtn} onClick={btnClickHandler}>
               완료하기
