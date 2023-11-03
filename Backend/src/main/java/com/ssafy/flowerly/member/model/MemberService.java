@@ -1,16 +1,21 @@
 package com.ssafy.flowerly.member.model;
 
-import com.ssafy.flowerly.entity.Member;
-import com.ssafy.flowerly.entity.StoreInfo;
+import com.ssafy.flowerly.address.repository.DongRepository;
+import com.ssafy.flowerly.address.repository.SidoRepository;
+import com.ssafy.flowerly.address.repository.SigunguRepository;
+import com.ssafy.flowerly.entity.*;
 import com.ssafy.flowerly.exception.CustomException;
 import com.ssafy.flowerly.exception.ErrorCode;
 import com.ssafy.flowerly.member.MemberRole;
+import com.ssafy.flowerly.seller.model.StoreDeliveryRegionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -18,9 +23,18 @@ import java.util.Map;
 @Slf4j
 public class MemberService {
 
+
     private final MemberRepository memberRepository;
 
-    private final StoreInfoRepository StoreInfoRepository;
+    private final StoreInfoRepository storeInfoRepository;
+
+    private final SidoRepository sidoRepository;
+
+    private final SigunguRepository sigunguRepository;
+
+    private final DongRepository dongRepository;
+
+    private final StoreDeliveryRegionRepository storeDeliveryRegionRepository;
 
 
     @Transactional
@@ -43,21 +57,77 @@ public class MemberService {
 
         member.updateRole(MemberRole.SELLER);
 
+
+        Map<String, Object> sellerInput = (Map<String, Object>) data.get("sellerInput");
+
+        // 주소 분할
+        String[] addressParts = ((String) data.get("address")).split(" ");
+        if (addressParts.length < 3) {
+            throw new CustomException(ErrorCode.INVALID_ADDRESS_FORMAT);
+        }
+
+        // 시도, 시군구, 동 코드 조회
+
+        Sido sido = sidoRepository.findByName(addressParts[0])
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_SIDO));
+
+        Sigungu sigungu = sigunguRepository.findByNameAndSido(addressParts[1], sido)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_SIGUNGU));
+
+        Dong dong = dongRepository.findByNameAndSigungu(addressParts[2], sigungu)
+                .orElseThrow(() -> new CustomException((ErrorCode.NOT_FIND_DONG)));
+
+
+
         // storeinfo
-        // address에서 시군구 짤라서 코드 저장해야함
+
         StoreInfo storeInfo = StoreInfo.builder()
                 .seller(member)
-                .storeName((String) data.get("storename"))
-                .sellerName((String) data.get("sellername"))
-                .phoneNumber((String) data.get("phonenumber"))
-                .storeNumber((String) data.get("storenumber"))
-                .address((String) data.get("address"))
+                .storeName((String) sellerInput.get("storename"))
+                .sellerName((String) sellerInput.get("sellername"))
+                .phoneNumber((String) sellerInput.get("phonenumber"))
+                .storeNumber((String) sellerInput.get("storenumber"))
+                .address((String) sellerInput.get("address"))
+                .sido(sido)
+                .sigungu(sigungu)
+                .dong(dong)
                 .build();
 
-        // 배달 가능 지역 코드로 저장하기
 
 
-        StoreInfoRepository.save(storeInfo);
+
+        storeInfoRepository.save(storeInfo);
+
+
+
+        // storeDeliveryRegion 저장하기
+
+        List<Map<String, Integer>> deliveryRegions = (List<Map<String, Integer>>) data.get("deliveryRegions");
+
+        for (Map<String, Integer> deliveryRegion : deliveryRegions) {
+            Integer sidoCode = deliveryRegion.get("sidoCode");
+            Integer sigunguCode = deliveryRegion.get("sigunguCode");
+            Integer dongCode = deliveryRegion.get("dongCode");
+
+            Sido deliverySido = sidoRepository.findByCode(sidoCode)
+                    .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_SIDO));
+
+            Sigungu deliverySigungu = sigunguRepository.findByCodeAndSido(sigunguCode, deliverySido)
+                    .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_SIGUNGU));
+
+            Dong deliveryDong = dongRepository.findByCodeAndSigungu(dongCode, deliverySigungu)
+                    .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_DONG));
+
+            StoreDeliveryRegion storeDeliveryRegion = StoreDeliveryRegion.builder()
+                    .seller(member)
+                    .sido(deliverySido)
+                    .sigungu(deliverySigungu)
+                    .dong(deliveryDong)
+                    .build();
+
+            storeDeliveryRegionRepository.save(storeDeliveryRegion);
+        }
+
 
 
 
