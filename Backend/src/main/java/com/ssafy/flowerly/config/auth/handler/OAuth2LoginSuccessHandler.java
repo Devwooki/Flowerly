@@ -58,7 +58,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         response.addHeader(jwtService.getAccessHeader(), "Bearer " + accessToken);
         jwtService.sendAccessToken(response,accessToken);
 
-        response.sendRedirect("oauth2/signup?token" + accessToken); //프론트 회원가입 후 추가 정보 입력 창으로 리다이렉트
+        response.sendRedirect("oauth2/signup?token=" + accessToken); //프론트 회원가입 후 추가 정보 입력 창으로 리다이렉트
     }
 
     // 추후 과제 : 소설 로그인 시, 무조건 토큰 생성이 아닌 JWT필터링 처럼 RefreshToken 유무에 따라 다르게 처리한다.
