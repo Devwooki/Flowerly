@@ -39,13 +39,13 @@ const FllySellerCard = ({ $FllyDeliveryNear }: { $FllyDeliveryNear: FllyNearType
       <div className={style.back}>
         <div className={style.cardMain}>
           <div className={style.cardMainImgBox}>
-            <Picture
+            <Image
               src={imageSrc}
               onError={errImageChangHandler}
               width={170}
               height={170}
               alt="이미지"
-            ></Picture>
+            ></Image>
             <div className={style.cardMainImgInfo}>{$FllyDeliveryNear.progress}중</div>
           </div>
           <div className={style.cardMainDetail}>
