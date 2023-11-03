@@ -1,15 +1,57 @@
+import { useState, useEffect } from "react";
 import style from "./OrderModal.module.css";
 import Image from "next/image";
+import axios from "axios";
 
 type PcikupOrderProps = {
+  chattingId: number;
   modalHandler: Function;
   sendHandler: Function;
 };
 
-const PickupOrderModal: React.FC<PcikupOrderProps> = ({ modalHandler, sendHandler }) => {
+const PickupOrderModal: React.FC<PcikupOrderProps> = ({
+  chattingId,
+  modalHandler,
+  sendHandler,
+}) => {
+  const [orderInputs, setOrderInputs] = useState({
+    orderType: "PICKUP",
+    ordererName: "",
+    phoneNumber: "",
+    deliveryPickupTime: "2023-11-04 18:00",
+    requestContent: "",
+  });
+
+  useEffect(() => {
+    if (orderInputs.phoneNumber.length === 10) {
+      setOrderInputs((prev) => {
+        return {
+          ...prev,
+          phoneNumber: prev.phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3"),
+        };
+      });
+    }
+    if (orderInputs.phoneNumber.length === 13) {
+      setOrderInputs((prev) => {
+        return {
+          ...prev,
+          phoneNumber: prev.phoneNumber
+            .replace(/-/g, "")
+            .replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3"),
+        };
+      });
+    }
+  }, [orderInputs.phoneNumber]);
+
   const saveRequest = () => {
-    // axios 주문 내용 저장해야함
-    console.log("saveRequest");
+    // console.log("saveRequest");
+    // console.log(orderInputs);
+    axios
+      .post(`https://flower-ly.co.kr/api/chatting/request/${chattingId}`, orderInputs)
+      .then((response) => {
+        console.log(response.data.data);
+      })
+      .catch((error) => console.log(error));
   };
 
   return (
@@ -38,15 +80,33 @@ const PickupOrderModal: React.FC<PcikupOrderProps> = ({ modalHandler, sendHandle
             <div className={style.content}>
               <div className={style.contentItem}>
                 <div className={style.itemTitle}>주문자</div>
-                <input className={style.input} id={style.nameInput} />
+                <input
+                  className={style.input}
+                  id={style.nameInput}
+                  value={orderInputs.ordererName}
+                  onChange={(e) => {
+                    setOrderInputs((prev) => {
+                      return { ...prev, ordererName: e.target.value };
+                    });
+                  }}
+                />
               </div>
               <div className={style.contentItem}>
                 <div className={style.itemTitle}>연락처</div>
-                <input className={`${style.input} ${style.phoneInput}`} />
-                <div className={style.phoneDivide}>-</div>
-                <input className={`${style.input} ${style.phoneInput}`} />
-                <div className={style.phoneDivide}>-</div>
-                <input className={`${style.input} ${style.phoneInput}`} />
+                <input
+                  className={style.input}
+                  id={style.nameInput}
+                  type="text"
+                  value={orderInputs.phoneNumber}
+                  onChange={(e) => {
+                    const regex = /^[0-9\b -]{0,13}$/;
+                    if (regex.test(e.target.value)) {
+                      setOrderInputs((prev) => {
+                        return { ...prev, phoneNumber: e.target.value };
+                      });
+                    }
+                  }}
+                />
               </div>
               <div className={style.contentItem}>
                 <div className={style.itemTitle}>픽업일시</div>
@@ -62,7 +122,16 @@ const PickupOrderModal: React.FC<PcikupOrderProps> = ({ modalHandler, sendHandle
               </div>
               <div className={style.contentItem} id={style.commentDiv}>
                 <div className={style.itemTitle}>요청사항</div>
-                <textarea className={style.input} id={style.commentArea} />
+                <textarea
+                  className={style.input}
+                  id={style.commentArea}
+                  value={orderInputs.requestContent}
+                  onChange={(e) => {
+                    setOrderInputs((prev) => {
+                      return { ...prev, requestContent: e.target.value };
+                    });
+                  }}
+                />
               </div>
             </div>
           </div>

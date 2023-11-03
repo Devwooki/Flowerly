@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import style from "./ChattingRoom.module.css";
 import { useRouter } from "next/router";
+import axios from "axios";
 
 import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
@@ -17,6 +18,18 @@ type ChattingRoomProps = {
   chattingId: number;
 };
 
+type ChattingMsg = {
+  chattingId: number;
+  opponentMemberId: number;
+  opponentName: string;
+  messages: {
+    memberId: number;
+    type: string;
+    content: string;
+    sendTime: string;
+  }[];
+};
+
 const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
   const [stompClient, setStompClient] = useState<Client | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -24,45 +37,14 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
   const messageEndRef = useRef<HTMLDivElement | null>(null);
 
   // axios로 받아야 함!!
-  const [chattingMsgs, setChattingMsgs] = useState({
-    chattingId: chattingId,
-    opponentMemberId: 1,
-    // opponentMemberId: 999,
-    opponentName: "아름다운 꽃가게",
-    messages: [
-      {
-        memberId: 999,
-        createdAt: "2023-10-31 12:00",
-        content: "해당 상품에 관심을 가지고 있습니다.",
-        type: "PARTICIPATION",
-      },
-      {
-        memberId: 999,
-        createdAt: "2023-10-31 12:00",
-        content: "안녕하세요",
-        type: "TEXT",
-      },
-      {
-        memberId: 999,
-        createdAt: "2023-10-31 12:00",
-        content:
-          "올려주신 꽃으로 구매하고 싶습니다. 가나다라마마라어날ㅇ니허아런아허아ㅣㄴ러나ㅣ으라파ㅓㄹ아느라ㅣ어나픙나ㅣ러ㅏㅇ느팡니ㅓ라ㅣ느파이너라",
-        type: "TEXT",
-      },
-      {
-        memberId: 1,
-        createdAt: "2023-10-31 12:00",
-        content: "안녕하세요",
-        type: "TEXT",
-      },
-      {
-        memberId: 1,
-        createdAt: "2023-10-31 12:00",
-        content: "주문 양식 보내드릴게요!",
-        type: "TEXT",
-      },
-    ],
-  });
+  const [chattingMsgs, setChattingMsgs] = useState<ChattingMsg>();
+
+  const axiosHandler = async () => {
+    await axios.get(`https://flower-ly.co.kr/api/chatting/${chattingId}`).then((response) => {
+      // console.log(response.data.data);
+      setChattingMsgs(response.data.data);
+    });
+  };
 
   useEffect(() => {
     // SockJS와 STOMP 설정
@@ -73,6 +55,8 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
     });
 
     client.onConnect = (frame) => {
+      axiosHandler();
+
       console.log(chattingId, "Connected");
       // 특정 채팅방의 메세지를 구독
       client.subscribe(`/sub/message/${chattingId}`, (message) => {
@@ -82,12 +66,24 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
           memberId: newMsgJson.memberId,
           type: newMsgJson.type,
           content: newMsgJson.content,
-          createdAt: String(new Date()),
+          sendTime: String(new Date()),
         };
-        setChattingMsgs((prevState) => ({
-          ...prevState,
-          messages: [...prevState.messages, newMsg],
-        }));
+
+        setChattingMsgs((prevState) => {
+          if (!prevState) {
+            return {
+              chattingId: 0,
+              opponentMemberId: 0,
+              opponentName: "",
+              messages: [newMsg],
+            };
+          }
+
+          return {
+            ...prevState,
+            messages: [...prevState.messages, newMsg],
+          };
+        });
       });
     };
 
@@ -112,7 +108,7 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
   }, []);
 
   useEffect(() => {
-    messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    messageEndRef.current?.scrollIntoView({ behavior: "auto" });
   }, [chattingMsgs, menuOpen]);
 
   const moveBack = () => {
@@ -123,8 +119,7 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
     const destination = `/pub/message/${chattingId}`;
     const stompChatRequest = {
       chattingId,
-      memberId: 999,
-      // memberId: 1,
+      memberId: 1,
       type: type,
       content: content,
     };
@@ -182,26 +177,27 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
           <div className={style.backBtn} onClick={() => moveBack()}>
             &lt;
           </div>
-          <div className={style.chattingName}>{chattingMsgs.opponentName}</div>
+          <div className={style.chattingName}>{chattingMsgs && chattingMsgs.opponentName}</div>
         </div>
         <div className={menuOpen ? style.containerWithMenu : style.container} onClick={closeMenu}>
-          {chattingMsgs.messages.map((message, idx) => {
-            return message.memberId == chattingMsgs.opponentMemberId ? (
-              <YourChattingMsg
-                key={idx}
-                message={message}
-                chattingId={chattingId}
-                modalHandler={modalHandler}
-              />
-            ) : (
-              <MyChattingMsg
-                key={idx}
-                message={message}
-                chattingId={chattingId}
-                modalHandler={modalHandler}
-              />
-            );
-          })}
+          {chattingMsgs &&
+            chattingMsgs.messages.map((message, idx) => {
+              return message.memberId == chattingMsgs.opponentMemberId ? (
+                <YourChattingMsg
+                  key={idx}
+                  message={message}
+                  chattingId={chattingId}
+                  modalHandler={modalHandler}
+                />
+              ) : (
+                <MyChattingMsg
+                  key={idx}
+                  message={message}
+                  chattingId={chattingId}
+                  modalHandler={modalHandler}
+                />
+              );
+            })}
           <div ref={messageEndRef}></div> {/* 스크롤 맨아래로 설정하기 위한 빈 div */}
         </div>
         <div className={style.bottom}>
@@ -209,12 +205,20 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
           {menuOpen && <ChattingMenu sendOrderFormHandler={sendOrderForm} />}
         </div>
       </div>
-      {fllyModalState && <FllyDetailModal fllyId={fllyId} modalHandler={modalHandler} />}
+      {fllyModalState && <FllyDetailModal chattingId={chattingId} modalHandler={modalHandler} />}
       {pickupModalState && (
-        <PickupOrderModal modalHandler={modalHandler} sendHandler={sendRequestMsg} />
+        <PickupOrderModal
+          chattingId={chattingId}
+          modalHandler={modalHandler}
+          sendHandler={sendRequestMsg}
+        />
       )}
       {deliveryModalState && (
-        <DeliveryOrderModal modalHandler={modalHandler} sendHandler={sendRequestMsg} />
+        <DeliveryOrderModal
+          chattingId={chattingId}
+          modalHandler={modalHandler}
+          sendHandler={sendRequestMsg}
+        />
       )}
     </>
   );

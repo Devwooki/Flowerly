@@ -88,17 +88,14 @@ const FllySellerParticipation = () => {
       return;
     }
 
-    console.log(fileInfo);
     const formData = new FormData();
     formData.append("file", fileInfo);
-    formData.append("fllyId", fllyId + "");
+    formData.append("fllyId", fllyId.fllyId + "");
     formData.append("content", content.toString());
     formData.append("offerPrice", money);
 
-    //inputFileRef.current.files[0];
-
     axios
-      .post("https://flower-ly.co.kr/seller/flly/participate", formData, {
+      .post("https://flower-ly.co.kr/api/seller/flly/participate", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
