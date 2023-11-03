@@ -17,6 +17,10 @@ public enum ErrorCode {
     NOT_FIND_ORDERLIST(-4006, "채택된 주문을 찾을수 없습니다"),
     NOT_FIND_FLLY_PARTICIPATE(-4007, "참가하신 플리목록을 찾을수 없습니다"),
 
+    NOT_FIND_SIDO(-4008, "시도 정보를 찾을 수 없습니다"),
+    NOT_FIND_SIGUNGU(-4009, "시군구 정보를 찾을 수 없습니다."),
+    NOT_FIND_DONG(-4010, "동 정보를 찾을 수 없습니다."),
+
     SELLER_PARTICIPATE_FAIL(-5000, "플리 참여에 실패하였습니다"),
     SELLER_ALREADY_PARTICIPATE(-5001, "이미 참가하신 플리입니다"),
     SELLER_NOT_PARTICIPATE(-5003, "플리에 참가하지 않은 유저입니다"),
@@ -28,6 +32,7 @@ public enum ErrorCode {
     INVALID_UPLOAD_FILE(-8001, "업로드한 파일을 찾을 수 없습니다."),
     INVALID_UPLOAD_TYPE(-8002, "업로드 요청 타입을 찾을 수 없습니다."),
     INVALID_BASE64(-8003, "지원하지 않는 타입입니다."),
+    INVALID_ADDRESS_FORMAT(-8004,"유효하지 않은 주소 형식입니다."),
 
     INVALID_REFRESH_TOKEN(-9000, "RefreshToken을 찾을 수 없습니다."),
     INVALID_ACCESS_TOKEN(-9001, "AccessToken이 유효하지 않습니다.");
