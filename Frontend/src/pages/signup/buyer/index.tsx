@@ -5,8 +5,6 @@ import { useRecoilValue, useRecoilState } from "recoil";
 import { tempTokenState, buyerInputState } from "../../../recoil/tokenRecoil";
 import axios from "axios";
 
-// 닉네임 중복 검사 로직 추가해야함.
-
 const Buyer = () => {
   const tempToken = useRecoilValue(tempTokenState);
   const [buyerInput, setBuyerInput] = useRecoilState(buyerInputState);
@@ -21,13 +19,20 @@ const Buyer = () => {
     console.log(buyerInput);
 
     try {
-      const response = await axios.post("api/signup/buyer", {
-        tempToken: tempToken,
-        buyerInput: buyerInput,
-      });
+      const response = await axios.post(
+        "https://flower-ly.co.kr/api/member/signup/buyer",
+        buyerInput,
+        {
+          headers: {
+            Authorization: `Bearer ${tempToken}`,
+          },
+        },
+      );
 
       if (response.status === 200) {
-        router.push(`/tempToken/${tempToken}`);
+        if (tempToken) {
+          router.push(`/temp?token=${tempToken}`);
+        }
       } else {
         console.error("회원가입 실패:", response);
       }

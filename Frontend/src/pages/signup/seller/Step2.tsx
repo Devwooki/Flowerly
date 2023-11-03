@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import style from "./Step2.module.css";
 import { useRouter } from "next/router";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import {
   sellerDeliveryRegionState,
   sellerInputState,
   storeDeliveryRegionState,
+  tempTokenState,
 } from "@/recoil/tokenRecoil";
 
 interface sidoDataType {
@@ -38,6 +39,7 @@ const Step2 = () => {
     useRecoilState(storeDeliveryRegionState);
 
   const [sellerInput, setSellerInput] = useRecoilState(sellerInputState);
+  const tempToken = useRecoilValue(tempTokenState);
 
   useEffect(() => {
     const getSidoData = async () => {
@@ -145,10 +147,17 @@ const Step2 = () => {
       const response = await axios.post(
         "https://flower-ly.co.kr/api/member/signup/seller",
         signupData,
+        {
+          headers: {
+            Authorization: `Bearer ${tempToken}`,
+          },
+        },
       );
       if (response.status === 200) {
         console.log(response);
-        alert("회원가입이 완료되었습니다.");
+        if (tempToken) {
+          router.push(`/temp?token=${tempToken}`);
+        }
       }
       router.push("/");
     } catch (error) {
