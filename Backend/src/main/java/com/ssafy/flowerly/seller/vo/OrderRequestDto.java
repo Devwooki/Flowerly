@@ -8,10 +8,15 @@ import java.time.format.DateTimeFormatter;
 
 @Data
 @Getter
-@AllArgsConstructor
 public class OrderRequestDto {
     Request request;
     String imageUrl;
+
+
+    public OrderRequestDto(Request request, String imageUrl){
+        this.request = request;
+        this.imageUrl =imageUrl;
+    }
 
     public OrderSelectSimpleDto toOrderSelectSimpleDto(){
         DateTimeFormatter Timeformatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");

@@ -140,19 +140,21 @@ public class SellerService {
     @Transactional
     public String UpdateProgressType(Long mamberId, Long fllyId) {
 
+        String responseProgress = null;
         //내가 참여한 주문서인지 확인용
         checkSellerRequestFlly(mamberId, fllyId);
         //꽃 정보 받아오기
         Flly fllyInfo = getFllyInfo(fllyId);
 
-        if(fllyInfo.getProgress().getTitle().equals("주문완료")){
+        if(fllyInfo.getProgress() == ProgressType.FINISH_ORDER){
             fllyInfo.UpdateFllyProgress(ProgressType.FINISH_MAKING);
         }
-        if(fllyInfo.getProgress().getTitle().equals("제작완료")) {
+        else if(fllyInfo.getProgress() == ProgressType.FINISH_MAKING) {
             fllyInfo.UpdateFllyProgress(ProgressType.FINISH_DELIVERY);
         }
-        Flly updateInfo = fellyRepository.save(fllyInfo);
 
+        Flly updateInfo = fellyRepository.save(fllyInfo);
+        
         return updateInfo.getProgress().getTitle();
     }
 
