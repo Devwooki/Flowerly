@@ -1,5 +1,6 @@
 package com.ssafy.flowerly.seller.model;
 
+import com.ssafy.flowerly.entity.Flly;
 import com.ssafy.flowerly.entity.Request;
 import com.ssafy.flowerly.seller.vo.OrderRequestDto;
 import jdk.jfr.Registered;
@@ -19,7 +20,7 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
                     "left join Flly fl on r.flly.fllyId = fl.fllyId " +
                     "left join FllyParticipation fp on r.flly.fllyId = fp.flly.fllyId " +
                     "Where r.seller.memberId = :memberId " +
-                    " AND fl.progress != 'FINISH_DELIVERY' " +
+                    " AND (fl.progress = 'FINISH_ORDER' OR fl.progress = 'FINISH_MAKING')  " +
                     "ORDER BY r.deliveryPickupTime "
     )
     Page<OrderRequestDto> findBySellerMemberIdOrderByDeliveryPickupTime(Long memberId, Pageable pageable);
@@ -27,5 +28,5 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
 
     Optional<Request> findBySellerMemberIdAndFllyFllyId(Long memberId, Long fllyId);
 
-
+    Optional<Request> findByFlly(Flly flly);
 }
