@@ -6,7 +6,7 @@ import OrderFormMsg from "./OrderFormMsg";
 
 type ChattingMsgProps = {
   message: {
-    createdAt: string;
+    sendTime: string;
     content: string;
     type: string;
   };
@@ -15,7 +15,7 @@ type ChattingMsgProps = {
 };
 
 const YourChattingMsg: React.FC<ChattingMsgProps> = ({ message, chattingId, modalHandler }) => {
-  const [time, setTime] = useState(new Date(message.createdAt));
+  const [time, setTime] = useState(new Date(message.sendTime));
 
   return (
     <>
