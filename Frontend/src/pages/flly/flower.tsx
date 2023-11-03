@@ -10,7 +10,6 @@ import { flowerState } from "@/recoil/fllyRecoil";
 import { flowerCardType } from "@/recoil/fllyRecoil";
 import Image from "next/image";
 import axios from "axios";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import CheckModal from "@/components/flly/fllyUser/CheckModal";
 
