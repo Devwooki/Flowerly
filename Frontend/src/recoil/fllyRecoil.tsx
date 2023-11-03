@@ -10,7 +10,7 @@ export interface flowerCardType {
 }
 
 export interface bouquetType {
-  url: string | undefined;
+  url: string;
 }
 
 export const situationState = atom({
