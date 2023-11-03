@@ -78,7 +78,7 @@ public class ChattingController {
      * @param requestBody requestId, price
      * @return
      */
-    @PostMapping("/price")
+    @PostMapping("/request/price")
     public CustomResponse saveRequestPrice(@RequestBody Map<String, Object> requestBody) {
         chattingService.saveRequestInfo(
                 Long.parseLong(requestBody.get("requestId").toString()),
@@ -117,6 +117,11 @@ public class ChattingController {
         return new DataResponse<>(200, "플리 자세히 보기 조회 성공", response);
     }
 
+    /**
+     * 주문서 조회
+     * @param chattingId
+     * @return
+     */
     @GetMapping("/request/{chattingId}")
     public CustomResponse getRequestInfo(@PathVariable Long chattingId) {
         RequestFromChattingDto requestDto = chattingService.getRequestInfo(chattingId);

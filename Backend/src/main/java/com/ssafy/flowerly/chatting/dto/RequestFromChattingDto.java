@@ -20,6 +20,9 @@ public class RequestFromChattingDto {
     private String deliveryPickupTime;
     private String requestContent;
 
+    private Long requestId;
+    private Integer price;
+
     private String recipientName;
     private String recipientPhoneNumber;
     private String address;
@@ -30,6 +33,9 @@ public class RequestFromChattingDto {
         this.phoneNumber = request.getPhoneNumber();
         this.deliveryPickupTime = request.getDeliveryPickupTime().format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm"));
         this.requestContent = request.getRequestContent();
+
+        this.requestId = request.getRequestId();
+        this.price = request.getPrice();
     }
 
     public void setDeliveryInfo(RequestDeliveryInfo deliveryInfo) {
