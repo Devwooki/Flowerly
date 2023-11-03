@@ -48,3 +48,5 @@ const Temp = () => {
 
   return null;
 };
+
+export default Temp;
