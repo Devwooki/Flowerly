@@ -28,8 +28,8 @@ public interface FllyParticipationRepository extends JpaRepository<FllyParticipa
 
     @Query("select si, fp from StoreInfo si " +
             " left join fetch FllyParticipation fp on fp.seller.memberId = si.seller.memberId " +
-            " where fp.flly.fllyId = : fllyId ")
+            " where fp.flly.fllyId = :fllyId ")
     Page<Object[]> findFlistByFllyId(Pageable pageable,
-                                     @Param("flly_id") Long fllyId);
+                                     @Param("fllyId") Long fllyId);
 
 }
