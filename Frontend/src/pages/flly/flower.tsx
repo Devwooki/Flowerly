@@ -12,8 +12,11 @@ import Image from "next/image";
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import CheckModal from "@/components/flly/fllyUser/checkModal";
 
 const FllyFlower = () => {
+  const [showPrevModal, setShowPrevModal] = useState<boolean>(false);
+  const [showNextModal, setShowNextModal] = useState<boolean>(false);
   const router = useRouter();
   const [check, setCheck] = useState<boolean>(false);
   const situation = useRecoilValue(situationState);
@@ -94,13 +97,41 @@ const FllyFlower = () => {
     else setCheck(false);
   },[selectedFlowers]);
 
-  const handleClick = () => {
-    if(check) router.push("loading")
+  const handleClickNext = () => {
+    setShowNextModal(true);
   }
+
+  const handleClickPrev = () => {
+    setShowPrevModal(true);
+  }
+
+  const prevBtnHandler = () => {
+    setShowPrevModal(!showPrevModal);
+  };
+
+  const nextBtnHandler = () => {
+    setShowNextModal(!showNextModal);
+  };
 
   return (
     <>
       <div className={style.fllyBox}>
+        {showPrevModal && 
+          <CheckModal
+            ModalChangeHandler={prevBtnHandler}
+            question={"이전의 선택을 변경하시겠습니까?"}
+            explain={"선택했던 꽃 초기화 후 색 선택으로 이동합니다."}
+            routerHref={"color"}
+          />
+        }
+        {showNextModal && 
+          <CheckModal
+            ModalChangeHandler={nextBtnHandler}
+            question={"꽃다발 생성을 시작하겠습니까?"}
+            explain={"선택했던 정보로 꽃다발 생성을 시작합니다."}
+            routerHref={"loading"}
+          />
+        }
         <div className={style.contentBox}>
           <div className={style.headerTitle}>
             <div className={style.guide}>원하는 꽃을 선택해주세요.</div>
@@ -160,10 +191,8 @@ const FllyFlower = () => {
             }
           </div>
           <div className={style.btnBox}>
-            <Link href="/flly/color">
-              <div className={style.prevBtn}>&lt;</div>
-            </Link>
-            <div onClick={handleClick} className={style.nextBtn}>다음</div>
+            <div onClick={handleClickPrev} className={style.prevBtn}>&lt;</div>
+            <div onClick={handleClickNext} className={style.nextBtn}>다음</div>
           </div>
         </div>
       </div>
