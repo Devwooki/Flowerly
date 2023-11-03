@@ -55,7 +55,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 
     private void getAdditionalInfo(HttpServletResponse response, CustomOAuth2User oAuth2User) throws IOException {
         String accessToken = jwtService.createAccessToken(oAuth2User.getMemberId());
-        response.addHeader(jwtService.getAccessHeader(), "Bearer " + accessToken);
+        //response.addHeader(jwtService.getAccessHeader(), "Bearer " + accessToken);
         jwtService.sendAccessToken(response,accessToken);
 
         response.sendRedirect(redirectURL + "/signup?token=" + accessToken); //프론트 회원가입 후 추가 정보 입력 창으로 리다이렉트
