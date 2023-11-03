@@ -29,7 +29,7 @@ const ShopInfoMain = () => {
       </div>
       <div className={style.ShopInfoMain}>
         <ShopLocation shopInfo={shopInfo} />
-        <ShopImg shopImg={shopInfo.shopImg} />
+        {/* <ShopImg shopImg={shopInfo.shopImg} /> */}
         <ShopReview />
       </div>
     </div>
