@@ -135,6 +135,10 @@
     width: 100%;
 }
 
+.contentBox a {
+    text-decoration-line: none;
+}
+
 .prevBtn {
     background-color: var(--moregray);
     color: var(--dark);

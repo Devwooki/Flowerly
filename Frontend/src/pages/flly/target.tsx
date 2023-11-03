@@ -1,11 +1,15 @@
 import React, { useEffect } from "react";
-import style from "./FllyTarget.module.css";
+import style from "@/components/flly/fllyUser/FllyTarget.module.css"
 import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { targetState } from "@/recoil/fllyRecoil";
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 const FllyTarget = () => {
+  const router = useRouter();
+  const [check, setCheck] = useState<boolean>(false);
   const [target, setTarget] = useRecoilState(targetState);
   const [selected, setSelected] = useState<string>("");
   const selectList = ["친구", "연인", "부모님", "가족", "선생님", "동료", "나", "선택 안함"];
@@ -18,6 +22,14 @@ const FllyTarget = () => {
   useEffect(() => {
     setSelected(target);
   }, [])
+
+  useEffect(() => {
+    if(target !== "") setCheck(true);
+  }, [target])
+
+  const handleClick = () => {
+    if(check) router.push("color");
+  };
 
   return (
     <>
@@ -43,8 +55,10 @@ const FllyTarget = () => {
 
           </div>
           <div className={style.btnBox}>
-            <div className={style.prevBtn}>&lt;</div>
-            <div className={style.nextBtn}>다음</div>
+            <Link href="/flly">
+              <div className={style.prevBtn}>&lt;</div>
+            </Link>
+            <div onClick={handleClick} className={style.nextBtn}>다음</div>
           </div>
         </div>
       </div>
