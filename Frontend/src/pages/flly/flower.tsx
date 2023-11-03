@@ -12,7 +12,7 @@ import Image from "next/image";
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import CheckModal from "@/components/flly/fllyUser/checkModal";
+import CheckModal from "@/components/flly/fllyUser/CheckModal";
 
 const FllyFlower = () => {
   const [showPrevModal, setShowPrevModal] = useState<boolean>(false);
