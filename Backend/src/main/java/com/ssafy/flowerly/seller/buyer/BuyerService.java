@@ -5,10 +5,12 @@ import com.ssafy.flowerly.address.repository.DongRepository;
 import com.ssafy.flowerly.address.repository.SigunguRepository;
 import com.ssafy.flowerly.entity.Flly;
 import com.ssafy.flowerly.entity.FllyParticipation;
+import com.ssafy.flowerly.entity.StoreInfo;
 import com.ssafy.flowerly.exception.CustomException;
 import com.ssafy.flowerly.exception.ErrorCode;
 import com.ssafy.flowerly.member.model.MemberRepository;
 import com.ssafy.flowerly.member.model.StoreInfoRepository;
+import com.ssafy.flowerly.member.vo.StoreInfoDto;
 import com.ssafy.flowerly.s3.model.S3Service;
 import com.ssafy.flowerly.seller.model.*;
 import com.ssafy.flowerly.seller.vo.FllyRequestDto;
@@ -42,10 +44,12 @@ public class BuyerService {
     }
 
     //플리스트 찾기
-    public Page<?> getFlist(Pageable pageable, Long memberId, Long fllyId) {
-        fllyParticipationRepository.findByFllyFllyId(fllyId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_FLLY));
+    public Page<?> getFlist(Pageable pageable, Long fllyId) {
 
-        fllyParticipationRepository.findFlistByFllyId(pageable,fllyId);
-        return null;
+        return fllyParticipationRepository.findFlistByFllyId(pageable, fllyId).map(obj -> {
+            log.info("object size : {}", obj.length);
+            log.info("{} : ",obj);
+            return obj;
+        });
     }
 }

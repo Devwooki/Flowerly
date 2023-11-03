@@ -46,7 +46,6 @@ public class JWTAuthenticationProcessingFilter extends OncePerRequestFilter {
         //일회용 토큰 검증용
         if(request.getRequestURI().equals("/api/member")){
             log.info("너냐!?");
-            request.setAttribute("memberId", 2L);
             filterChain.doFilter(request, response);
             return;
         }

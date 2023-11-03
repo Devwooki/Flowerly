@@ -29,12 +29,13 @@ public class BuyerController {
 
         return new DataResponse<>(HttpStatus.OK.value(), "진행중인 flly를 반환합니다.", buyerService.getMyFlly(pageable, memberId));
     }
-    @GetMapping("/flist/{flistId}")
+    @GetMapping("/flist/{fllyId}")
     public DataResponse<?> getFilst(HttpServletRequest request,
                                     @PageableDefault(size = 6) Pageable pageable,
                                     @PathVariable Long fllyId){
+        log.info("어디서 터지니");
         //Long memberId = request.getDateHeader("memberId");
         Long memberId = 1L;
-        return new DataResponse<>(HttpStatus.OK.value(), "flly의 플리스트를 조회합니다.", buyerService.getFlist(pageable, memberId, fllyId));
+        return new DataResponse<>(HttpStatus.OK.value(), "fllyId :  "+ fllyId+" 의 플리스트를 조회합니다.", buyerService.getFlist(pageable, fllyId));
     }
 }

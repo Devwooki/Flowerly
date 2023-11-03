@@ -29,7 +29,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-    @Value("${url.test}")
+    @Value("${url.service}")
     private String redirectURL;
     private final JWTService jwtService;
     private final ObjectMapper mapper = new ObjectMapper();
