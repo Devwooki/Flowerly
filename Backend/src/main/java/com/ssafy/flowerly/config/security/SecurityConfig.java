@@ -48,24 +48,19 @@ public class SecurityConfig {
                 .and()
                 //===========URL 별 권한 옵션 =============
                 .authorizeRequests()
+                //.antMatchers("/api/member").permitAll()
                 .antMatchers("/**").permitAll()
-                .antMatchers("/api/member/dummy-token").permitAll()
-                .antMatchers("/api/s3/**").permitAll()
-                .antMatchers("/ws/**").permitAll()
-                .antMatchers("/stomp-chat/**").permitAll()
-                .antMatchers("/api/member/**").authenticated();
-//                .antMatchers(HttpMethod.GET).authenticated()
-////                .antMatchers(HttpMethod.GET).permitAll()
-//                .antMatchers(HttpMethod.POST).permitAll()
-//                .antMatchers(HttpMethod.PATCH).permitAll()
-//                .antMatchers(HttpMethod.DELETE).permitAll()
-//                .antMatchers(HttpMethod.PUT).permitAll();
+                //.antMatchers("/api/member/dummy-token").permitAll()
+                //.antMatchers("/api/s3/**").permitAll()
+                //.antMatchers("/ws/**").permitAll()
+                //.antMatchers("/stomp-chat/**").permitAll()
+                .antMatchers("/api/member/need-login").permitAll();
                 //permitAll() : 인증이 처리 되었다고 생각했기 때문
 
         //Oauth 설정
         http.oauth2Login()
-                .loginPage("https://flower-ly.co.kr/")
-                //.loginPage("http://localhost:6090")
+                //.loginPage("https://flower-ly.co.kr/api/member/need-login")    //로그인에 실패할 경우 이동시킬 url이다
+                .loginPage("http://localhost:6090/api/member/need-login")
                 .successHandler(oAuth2LoginSuccessHandler)  //성공할 경우 수행할 핸들러
                 .failureHandler(oAuth2LoginFailureHandler)  //실패할 경우 수행할 핸들러
                 .userInfoEndpoint()                         //Oauth2 정보를 가져오는데 사용할 서비스

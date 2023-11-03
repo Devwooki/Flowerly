@@ -5,8 +5,6 @@ import com.ssafy.flowerly.chatting.dto.ChattingDto;
 import com.ssafy.flowerly.chatting.dto.FllyFromChattingDto;
 import com.ssafy.flowerly.chatting.dto.RequestFromChattingDto;
 import com.ssafy.flowerly.chatting.service.ChattingService;
-import com.ssafy.flowerly.exception.CustomException;
-import com.ssafy.flowerly.exception.ErrorCode;
 import com.ssafy.flowerly.util.CustomResponse;
 import com.ssafy.flowerly.util.DataResponse;
 import lombok.RequiredArgsConstructor;
@@ -69,7 +67,10 @@ public class ChattingController {
     public CustomResponse saveRequestInfo(@PathVariable Long chattingId, @RequestBody RequestFromChattingDto requestDto) {
         Long requestId = chattingService.saveRequestInfo(requestDto, chattingId);
 
+<<<<<<< Updated upstream
         if(requestId == null) throw new CustomException(ErrorCode.REQUEST_ALREADY_PAID);
+=======
+>>>>>>> Stashed changes
         return new DataResponse<Long>(200, "주문서 저장 성공", requestId);
     }
 
@@ -78,7 +79,11 @@ public class ChattingController {
      * @param requestBody requestId, price
      * @return
      */
+<<<<<<< Updated upstream
     @PostMapping("/request/price")
+=======
+    @PostMapping("/price")
+>>>>>>> Stashed changes
     public CustomResponse saveRequestPrice(@RequestBody Map<String, Object> requestBody) {
         chattingService.saveRequestInfo(
                 Long.parseLong(requestBody.get("requestId").toString()),
@@ -100,6 +105,7 @@ public class ChattingController {
         return new DataResponse<FllyFromChattingDto.Participation>(200, "플리 참여 정보 조회 성공", fllyDto);
     }
 
+<<<<<<< Updated upstream
     /**
      * 플리 상세보기 조회
      * @param chattingId
@@ -108,10 +114,16 @@ public class ChattingController {
     @GetMapping("/flly/detail/{chattingId}")
     public CustomResponse getFllyDetailInfo(@PathVariable Long chattingId) {
         FllyFromChattingDto.Participation participationDto = chattingService.getParticipationInfo(chattingId);
+=======
+    @GetMapping("/flly/detail/{chattingId}")
+    public CustomResponse getFllyDetailInfo(@PathVariable Long chattingId) {
+        FllyFromChattingDto.Participation partipationDto = chattingService.getParticipationInfo(chattingId);
+>>>>>>> Stashed changes
         FllyFromChattingDto.FllyInfo fllyDto = chattingService.getFllyInfo(chattingId);
 
         Map<String, Object> response = new HashMap<>();
         response.put("fllyDto", fllyDto);
+<<<<<<< Updated upstream
         response.put("participationDto", participationDto);
 
         return new DataResponse<>(200, "플리 자세히 보기 조회 성공", response);
@@ -128,4 +140,10 @@ public class ChattingController {
 
         return new DataResponse<>(200, "주문서 조회 성공", requestDto);
     }
+=======
+        response.put("participationDto", partipationDto);
+
+        return new DataResponse<>(200, "플리 자세히 보기 조회 성공", response);
+    }
+>>>>>>> Stashed changes
 }

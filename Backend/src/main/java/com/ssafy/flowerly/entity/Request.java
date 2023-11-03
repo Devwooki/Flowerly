@@ -66,6 +66,7 @@ public class Request extends BaseCreatedTimeEntity {
 
     public void setRequestPrice(Integer price) {
         this.price = price;
+<<<<<<< Updated upstream
     }
 
     public void updateRequestInfo(RequestFromChattingDto requestDto) {
@@ -77,6 +78,8 @@ public class Request extends BaseCreatedTimeEntity {
         this.deliveryPickupTime = LocalDateTime.parse(requestDto.getDeliveryPickupTime(), formatter);
         this.requestContent = requestDto.getRequestContent();
         this.price = -1;
+=======
+>>>>>>> Stashed changes
     }
 
 }

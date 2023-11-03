@@ -106,6 +106,7 @@ public class ChattingService {
         Chatting chatting = chattingRepository.findById(chattingId)
                 .orElseThrow(() -> new CustomException(ErrorCode.CHATTING_NOT_FOUND));
 
+<<<<<<< Updated upstream
         Request request = null;
         Optional<Request> prevRequest = requestRepository.findByFlly(chatting.getFlly());
         if(prevRequest.isPresent()) {  // 이미 작성한 주문이 있는 경우
@@ -157,6 +158,28 @@ public class ChattingService {
                         .build();
                 requestDeliveryInfoRepository.save(deliveryInfo);
             }
+=======
+        Request request = Request.builder()
+                .flly(chatting.getFllyParticipation().getFlly())
+                .seller(chatting.getSeller())
+                .orderName(requestDto.getOrdererName())
+                .phoneNumber(requestDto.getPhoneNumber())
+                .orderType(requestDto.getOrderType().equals("DELIVERY") ? OrderType.DELIVERY : OrderType.PICKUP)
+                .deliveryPickupTime(stringToTime(requestDto.getDeliveryPickupTime()))
+                .requestContent(requestDto.getRequestContent())
+                .price(-1)
+                .build();
+        request = requestRepository.save(request);
+
+        if(requestDto.getOrderType().equals("DELIVERY")) {
+            RequestDeliveryInfo deliveryInfo = RequestDeliveryInfo.builder()
+                    .request(request)
+                    .recipientName(requestDto.getRecipientName())
+                    .phoneNumber(requestDto.getRecipientPhoneNumber())
+                    .address(requestDto.getAddress())
+                    .build();
+            requestDeliveryInfoRepository.save(deliveryInfo);
+>>>>>>> Stashed changes
         }
 
         return request.getRequestId();
@@ -186,7 +209,11 @@ public class ChattingService {
         Chatting chatting = chattingRepository.findById(chattingId)
                 .orElseThrow(() -> new CustomException(ErrorCode.CHATTING_NOT_FOUND));
 
+<<<<<<< Updated upstream
         Flly flly = chatting.getFlly();
+=======
+        Flly flly = chatting.getFllyParticipation().getFlly();
+>>>>>>> Stashed changes
         FllyFromChattingDto.FllyInfo fllyDto = FllyFromChattingDto.FllyInfo.of(flly);
         if(flly.getOrderType().equals(OrderType.DELIVERY)) {
             FllyDeliveryRegion deliveryRegion = fllyDeliveryRegionRepository.findByFlly(flly)
@@ -196,6 +223,7 @@ public class ChattingService {
 
         return fllyDto;
     }
+<<<<<<< Updated upstream
 
     public RequestFromChattingDto getRequestInfo(Long chattingId) {
         Chatting chatting = chattingRepository.findById(chattingId)
@@ -215,4 +243,6 @@ public class ChattingService {
 
         return requestFromChattingDto;
     }
+=======
+>>>>>>> Stashed changes
 }

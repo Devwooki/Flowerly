@@ -3,6 +3,7 @@ package com.ssafy.flowerly.JWT;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.ssafy.flowerly.exception.AuthException;
 import com.ssafy.flowerly.exception.CustomException;
 import com.ssafy.flowerly.exception.ErrorCode;
 import lombok.Getter;
@@ -11,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
 
@@ -58,6 +60,18 @@ public class JWTService {
                 .withClaim("memberId", memberId)
                 .sign(Algorithm.HMAC512(secretKey));
     }
+
+    public String createTempAccessToken(Long memberId){
+        log.info("memberInfo 전달용 임시 토큰 생성");
+        Date now = new Date();
+        Date expireDate = new Date(now.getTime() + 30000); //10초 짜리
+        return JWT.create()
+                .withSubject("AccessToken")
+                .withExpiresAt(expireDate)
+                .withClaim("memberId", memberId)
+                .sign(Algorithm.HMAC512(secretKey));
+    }
+
     public String createRefreshToken(Long memberId){
         //refreshToken은 AccessToken 재발급을 위한 Token이기에 어떠한 Claim도 가지지 않는다.
         Date now = new Date();
@@ -133,18 +147,21 @@ public class JWTService {
     //토큰 유효성 체크 - AccessToken, RefreshToken 모두 검증한다
     public boolean isValidToken(String token){
         try{
-            /**require : JWT검증 메소드
-             * require : 요구사항을 지정한다. 현재 코드는 암호화 알고리즘과 비밀키로 검증한다.
-             */
-            DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC512(secretKey)).build().verify(token);
-
-            //만료시간이 지났는지 체크
-            return decodedJWT.getExpiresAt().after(new Date());
+            DecodedJWT decodedJWT = decodeToken(token);
+            return isTokenNotExpired(decodedJWT);
         }catch(Exception e){
-            log.error("유효하지 않은 토큰 입니다. {}", e.getMessage());
             return false;
         }
     }
+
+    private DecodedJWT decodeToken(String token) {
+        return JWT.require(Algorithm.HMAC512(secretKey)).build().verify(token);
+    }
+
+    private boolean isTokenNotExpired(DecodedJWT decodedJWT) {
+        return decodedJWT.getExpiresAt().after(new Date());
+    }
+
 
     public Optional<Long> extractMemberId(String accessToken){
         try{
@@ -154,7 +171,6 @@ public class JWTService {
                             .getClaim("memberId")
                             .asLong());
         }catch(Exception e){
-            log.error("엑세스 토큰이 유효하지 않습니다. {}", e);
             return Optional.empty();
         }
     }

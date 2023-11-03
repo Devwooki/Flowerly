@@ -6,7 +6,11 @@ import OrderFormMsg from "./OrderFormMsg";
 
 type ChattingMsgProps = {
   message: {
+<<<<<<< Updated upstream
     sendTime: string;
+=======
+    createdAt: string;
+>>>>>>> Stashed changes
     content: string;
     type: string;
   };
@@ -15,7 +19,11 @@ type ChattingMsgProps = {
 };
 
 const YourChattingMsg: React.FC<ChattingMsgProps> = ({ message, chattingId, modalHandler }) => {
+<<<<<<< Updated upstream
   const [time, setTime] = useState(new Date(message.sendTime));
+=======
+  const [time, setTime] = useState(new Date(message.createdAt));
+>>>>>>> Stashed changes
 
   return (
     <>

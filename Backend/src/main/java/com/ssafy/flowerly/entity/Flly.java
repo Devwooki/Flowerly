@@ -2,6 +2,7 @@ package com.ssafy.flowerly.entity;
 
 import com.ssafy.flowerly.entity.common.BaseCreatedTimeEntity;
 import com.ssafy.flowerly.entity.type.*;
+import com.ssafy.flowerly.seller.buyer.dto.FllyBuyerResponseDto;
 import com.ssafy.flowerly.seller.vo.FllyRequestDto;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;

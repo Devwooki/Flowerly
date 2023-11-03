@@ -44,11 +44,14 @@
 .contentItem {
   line-height: 20px;
   display: flex;
+<<<<<<< Updated upstream
 }
 #comment {
   min-height: 60px;
 }
 #price {
+=======
+>>>>>>> Stashed changes
   align-items: center;
 }
 

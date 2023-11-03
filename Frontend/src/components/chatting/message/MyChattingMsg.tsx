@@ -7,7 +7,11 @@ import RequestMsg from "./RequestMsg";
 
 type ChattingMsgProps = {
   message: {
+<<<<<<< Updated upstream
     sendTime: string;
+=======
+    createdAt: string;
+>>>>>>> Stashed changes
     content: string;
     type: string;
   };
@@ -16,7 +20,11 @@ type ChattingMsgProps = {
 };
 
 const MyChattingMsg: React.FC<ChattingMsgProps> = ({ message, chattingId, modalHandler }) => {
+<<<<<<< Updated upstream
   const [time, setTime] = useState(new Date(message.sendTime));
+=======
+  const [time, setTime] = useState(new Date(message.createdAt));
+>>>>>>> Stashed changes
 
   return (
     <div className={style.wrapper}>

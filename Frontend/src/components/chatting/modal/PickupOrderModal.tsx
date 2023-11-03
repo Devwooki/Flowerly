@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 import { useState, useEffect } from "react";
 import style from "./OrderModal.module.css";
 import Image from "next/image";
@@ -5,10 +6,17 @@ import axios from "axios";
 
 type PcikupOrderProps = {
   chattingId: number;
+=======
+import style from "./OrderModal.module.css";
+import Image from "next/image";
+
+type PcikupOrderProps = {
+>>>>>>> Stashed changes
   modalHandler: Function;
   sendHandler: Function;
 };
 
+<<<<<<< Updated upstream
 const PickupOrderModal: React.FC<PcikupOrderProps> = ({
   chattingId,
   modalHandler,
@@ -52,6 +60,12 @@ const PickupOrderModal: React.FC<PcikupOrderProps> = ({
         console.log(response.data.data);
       })
       .catch((error) => console.log(error));
+=======
+const PickupOrderModal: React.FC<PcikupOrderProps> = ({ modalHandler, sendHandler }) => {
+  const saveRequest = () => {
+    // axios 주문 내용 저장해야함
+    console.log("saveRequest");
+>>>>>>> Stashed changes
   };
 
   return (
@@ -80,6 +94,7 @@ const PickupOrderModal: React.FC<PcikupOrderProps> = ({
             <div className={style.content}>
               <div className={style.contentItem}>
                 <div className={style.itemTitle}>주문자</div>
+<<<<<<< Updated upstream
                 <input
                   className={style.input}
                   id={style.nameInput}
@@ -107,6 +122,17 @@ const PickupOrderModal: React.FC<PcikupOrderProps> = ({
                     }
                   }}
                 />
+=======
+                <input className={style.input} id={style.nameInput} />
+              </div>
+              <div className={style.contentItem}>
+                <div className={style.itemTitle}>연락처</div>
+                <input className={`${style.input} ${style.phoneInput}`} />
+                <div className={style.phoneDivide}>-</div>
+                <input className={`${style.input} ${style.phoneInput}`} />
+                <div className={style.phoneDivide}>-</div>
+                <input className={`${style.input} ${style.phoneInput}`} />
+>>>>>>> Stashed changes
               </div>
               <div className={style.contentItem}>
                 <div className={style.itemTitle}>픽업일시</div>
@@ -122,6 +148,7 @@ const PickupOrderModal: React.FC<PcikupOrderProps> = ({
               </div>
               <div className={style.contentItem} id={style.commentDiv}>
                 <div className={style.itemTitle}>요청사항</div>
+<<<<<<< Updated upstream
                 <textarea
                   className={style.input}
                   id={style.commentArea}
@@ -132,6 +159,9 @@ const PickupOrderModal: React.FC<PcikupOrderProps> = ({
                     });
                   }}
                 />
+=======
+                <textarea className={style.input} id={style.commentArea} />
+>>>>>>> Stashed changes
               </div>
             </div>
           </div>

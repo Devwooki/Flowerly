@@ -1,5 +1,6 @@
 package com.ssafy.flowerly.member.model;
 
+<<<<<<< Updated upstream
 import com.ssafy.flowerly.address.repository.DongRepository;
 import com.ssafy.flowerly.address.repository.SidoRepository;
 import com.ssafy.flowerly.address.repository.SigunguRepository;
@@ -8,13 +9,30 @@ import com.ssafy.flowerly.exception.CustomException;
 import com.ssafy.flowerly.exception.ErrorCode;
 import com.ssafy.flowerly.member.MemberRole;
 import com.ssafy.flowerly.seller.model.StoreDeliveryRegionRepository;
+=======
+import com.ssafy.flowerly.JWT.JWTService;
+import com.ssafy.flowerly.entity.Member;
+import com.ssafy.flowerly.entity.StoreImage;
+import com.ssafy.flowerly.entity.StoreInfo;
+import com.ssafy.flowerly.exception.CustomException;
+import com.ssafy.flowerly.exception.ErrorCode;
+import com.ssafy.flowerly.member.MemberRole;
+import com.ssafy.flowerly.member.vo.MemberDto;
+import com.ssafy.flowerly.member.vo.StoreInfoDto;
+import com.ssafy.flowerly.seller.buyer.dto.SellerDto;
+import com.ssafy.flowerly.seller.model.SellerService;
+>>>>>>> Stashed changes
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+<<<<<<< Updated upstream
 import java.util.List;
 import java.util.Map;
+=======
+import java.util.*;
+>>>>>>> Stashed changes
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +41,7 @@ public class MemberService {
 
 
     private final MemberRepository memberRepository;
+<<<<<<< Updated upstream
 
     private final StoreInfoRepository storeInfoRepository;
 
@@ -33,7 +52,42 @@ public class MemberService {
     private final DongRepository dongRepository;
 
     private final StoreDeliveryRegionRepository storeDeliveryRegionRepository;
+=======
+    private final StoreInfoRepository storeInfoRepository;
+    private final StoreInfoRepository StoreInfoRepository;
+    private final JWTService jwtService;
+>>>>>>> Stashed changes
 
+    public Object getMemberInfo(Long memberId) {
+        List<Object[]> object = storeInfoRepository.findBySellerInfo(2L);
+
+        //반환값 길이가 0이면 멤버 정보가 없다는 것이다.
+        if (object.size() == 0)
+            return memberRepository.findByMemberId(memberId)
+                    .map(Member::toDto)
+                    .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_MEMBER));
+
+        StoreInfo tempInfo = (StoreInfo) object.get(0)[0];
+
+        StoreInfoDto storeInfo = StoreInfoDto.builder()
+                .storeInfoId(tempInfo.getStoreInfoId())
+                .member(tempInfo.getSeller().toDto())
+                .storeName(tempInfo.getStoreName())
+                .sellerName(tempInfo.getSellerName())
+                .storeNumber(tempInfo.getStoreNumber())
+                .phoneNumber(tempInfo.getPhoneNumber())
+                .address(tempInfo.getAddress())
+                .images(new ArrayList<>())
+                .build();
+
+        //이미지 추가
+        for (Object[] o : object) {
+            StoreImage temp = (StoreImage) o[1];
+            storeInfo.getImages().add(temp.getImageUrl());
+        }
+
+        return storeInfo;
+    }
 
     @Transactional
     public void signupBuyer(Map<String, Object> data, Long memberId) {
@@ -128,11 +182,5 @@ public class MemberService {
 
 
 
-
-
     }
-
-
-
-
 }

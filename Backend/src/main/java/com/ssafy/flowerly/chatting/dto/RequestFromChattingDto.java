@@ -1,14 +1,20 @@
 package com.ssafy.flowerly.chatting.dto;
 
+<<<<<<< Updated upstream
 import com.ssafy.flowerly.entity.Request;
 import com.ssafy.flowerly.entity.RequestDeliveryInfo;
+=======
+>>>>>>> Stashed changes
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+<<<<<<< Updated upstream
 import java.time.format.DateTimeFormatter;
 
+=======
+>>>>>>> Stashed changes
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,6 +26,7 @@ public class RequestFromChattingDto {
     private String deliveryPickupTime;
     private String requestContent;
 
+<<<<<<< Updated upstream
     private Long requestId;
     private Integer price;
 
@@ -43,4 +50,9 @@ public class RequestFromChattingDto {
         this.recipientPhoneNumber = deliveryInfo.getPhoneNumber();
         this.address = deliveryInfo.getAddress();
     }
+=======
+    private String recipientName;
+    private String recipientPhoneNumber;
+    private String address;
+>>>>>>> Stashed changes
 }

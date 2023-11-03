@@ -274,7 +274,7 @@ public class SellerService {
         //2 픽업 가능한지 찾아야한다!
         //2-1 판매자 가게의 주소
         //없다고 화면에 출력이 안되는게 아니기때문에 에러발생 X
-        StoreInfo store = storeInfoRepository.findBySellerMemberId(memberId);
+        StoreInfo store = storeInfoRepository.findBySellerMemberId(memberId).orElse(null);
 
         //나의 주소를 가지고 전체 값을 찾아야한다! (시를 보내 구군의 전체를 찾고 / 시구군을 보내 동에서 전체를 찾는다 )
         if(store != null){
