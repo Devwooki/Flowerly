@@ -158,7 +158,7 @@ const Step2 = () => {
           signupData,
           {
             headers: {
-              Authorization: "" + tempToken,
+              Authorization: `Bearer ${tempToken}`,
               "X-Request-Host": host,
               "X-Request-Path": path,
             },
