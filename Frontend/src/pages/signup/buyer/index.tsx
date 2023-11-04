@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import router, { useRouter } from "next/router";
 import style from "./Buyer.module.css";
 import { useRecoilValue, useRecoilState } from "recoil";
@@ -6,8 +6,15 @@ import { tempTokenState, buyerInputState } from "../../../recoil/tokenRecoil";
 import axios from "axios";
 
 const Buyer = () => {
+  const [path, setPath] = useState<string | null>(null);
+  const [host, setHost] = useState<string | null>(null);
   const tempToken = useRecoilValue(tempTokenState);
   const [buyerInput, setBuyerInput] = useRecoilState(buyerInputState);
+
+  useEffect(() => {
+    setPath(window.location.pathname);
+    setHost(window.location.host);
+  }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -25,6 +32,8 @@ const Buyer = () => {
         {
           headers: {
             Authorization: `Bearer ${tempToken}`,
+            "X-Request-Host": host,
+            "X-Request-Path": path,
           },
         },
       );
