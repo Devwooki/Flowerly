@@ -21,21 +21,3 @@ module.exports = {
 // };
 
 // module.exports = nextConfig;
-
-// /** @type {import('next').NextConfig} */
-// const nextConfig = {
-//   async rewrites() {
-//     return [
-//       {
-//         source: "/:path*",
-//         destination: "/:path*",
-//       },
-//       {
-//         source: "/api/v1/:path*",
-//         destination: `https://flower-ly.co.kr/api/v1/:path*`,
-//       },
-//     ];
-//   },
-// };
-
-// module.exports = nextConfig;

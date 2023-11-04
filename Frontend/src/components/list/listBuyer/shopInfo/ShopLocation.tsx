@@ -4,7 +4,7 @@ import style from "./ShopLocation.module.css";
 import { Map, MapMarker, StaticMap } from "react-kakao-maps-sdk";
 
 type ShopLocationProps = {
-  shopInfo: ShopInfo;
+  shopInfo: ShopInfoDetail;
 };
 
 const ShopLocation = ({ shopInfo }: ShopLocationProps) => {
