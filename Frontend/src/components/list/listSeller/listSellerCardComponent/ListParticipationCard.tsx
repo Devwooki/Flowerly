@@ -33,8 +33,10 @@ const ListParticipationCard = ({ $participationInfo }: Props) => {
             <div style={{ backgroundImage: `url(${$participationInfo.fllyImageUrl})` }} />
           </div>
           <div className={style.cardInfoBox}>
-            <div className={style.cardInfoBtn}>
-              자세히보기<span>&gt;</span>
+            <div className={style.cardInfoBtnBox}>
+              <div className={style.cardInfoBtn}>
+                자세히보기<span>&gt;</span>
+              </div>
             </div>
             <div className={style.cardInfo}>
               <div>

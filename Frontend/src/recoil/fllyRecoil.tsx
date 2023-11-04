@@ -7,6 +7,7 @@ export interface flowerCardType {
   color : string,
   engName : string
   meaning : string,
+  colorName : string,
 }
 
 export interface bouquetType {
@@ -41,5 +42,5 @@ export const bouquetsState = atom({
 
 export const bouquetState = atom({
   key: 'bouquetState',
-  default: { url: "" } as bouquetType,
+  default: null as bouquetType | null,
 });

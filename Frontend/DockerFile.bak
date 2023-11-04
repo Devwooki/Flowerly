@@ -1,0 +1,41 @@
+#Builder Stage
+#베이스 이미지 명시
+FROM node:18-alpine as frontend-builder
+
+#이미지안에서 어플리케이션 소스코드를 가지고 있을 디렉토리를 생성
+WORKDIR /app
+
+#Copy를 통해 컨테이너 안으로 이동시켜준다
+#Copy { 로컬에 있는 파일을 복사할 경로 } { 도커 컨테이너 내에서 파일을 복사할경로 }
+COPY package*.json ./
+
+RUN npm install
+
+# 설치한 패키지(node_modules, .next)를 /app으로 옮긴다
+COPY . .
+
+
+#next의경우 build 할떄 CMD대신 RUN이여야 빌드가된다
+RUN npm run build
+
+#EXPOSE 3000
+ 
+ #RUN Stage
+ FROM nginx:latest
+
+ # RUN rm -rf /etc/nginx/conf.d
+
+ # 현재 staticconf내부에 있는 폴더(conf.d)를 nginx로 옮긴다
+ COPY staticConf /etc/nginx
+
+ #포트
+ EXPOSE 3000
+
+ #next.js 로 build시 next 생성
+ # Docker Image를 만들기 위함으로 nginx에 들어있다고 생각하지 말자^^
+
+ # /out폴더는 어디서? next.config.js를 통해 npm run build하면 .next 폴더를 생성하는데
+ # package.json에 scripts 중 build에 next export를 추가 하게 되면 out이라는 파일이 생성되고
+ COPY --from=frontend-builder app/out /usr/share/nginx/html
+
+ CMD ["nginx", "-g", "daemon off;"]

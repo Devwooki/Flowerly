@@ -13,6 +13,7 @@ import ChattingMenu from "./ChattingMenu";
 import FllyDetailModal from "../modal/FllyDetailModal";
 import PickupOrderModal from "../modal/PickupOrderModal";
 import DeliveryOrderModal from "../modal/DeliveryOrderModal";
+import RequestModal from "../modal/RequestModal";
 
 type ChattingRoomProps = {
   chattingId: number;
@@ -152,6 +153,10 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
     sendMessage("ORDER_COMPLETE", "주문서가 도착했습니다.");
   };
 
+  const sendPaymentReqMsg = () => {
+    console.log("sendPaymentReqMsg");
+  };
+
   const [fllyModalState, setFllyModalState] = useState(false);
   const [fllyId, setFllyId] = useState<number>();
   const [pickupModalState, setPickupModalState] = useState(false);
@@ -218,6 +223,13 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
           chattingId={chattingId}
           modalHandler={modalHandler}
           sendHandler={sendRequestMsg}
+        />
+      )}
+      {requestModalState && (
+        <RequestModal
+          chattingId={chattingId}
+          modalHandler={modalHandler}
+          sendHandler={sendPaymentReqMsg}
         />
       )}
     </>
