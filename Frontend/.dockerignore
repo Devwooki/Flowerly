@@ -1,4 +1,14 @@
-.next
-.git
+# .next
+# .git
+# node_modules
+# .gitignore
+
 node_modules
+.next
+Dockerfile
+.dockerignore
+.git
 .gitignore
+*.md
+*.sh
+*.yml
