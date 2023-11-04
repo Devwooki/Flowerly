@@ -11,7 +11,7 @@ module.exports = {
     // ANOTHER_VARIABLE: process.env.ANOTHER_VARIABLE,
   },
   images: {
-    domains: ["neighbrew.s3.ap-northeast-2.amazonaws.com"],
+    domains: ["neighbrew.s3.ap-northeast-2.amazonaws.com", "localhost:3000"],
   },
 };
 
