@@ -26,6 +26,9 @@ interface dongDataType {
 }
 
 const Step2 = () => {
+  const path = window.location.pathname;
+  const host = window.location.host;
+
   const router = useRouter();
   const [sidoData, setSidoData] = useState<sidoDataType[]>([]);
   const [selectedSido, setSelectedSido] = useState<sidoDataType | null>(null);
@@ -149,7 +152,9 @@ const Step2 = () => {
         signupData,
         {
           headers: {
-            Authorization: `Bearer ${tempToken}`,
+            Authorization: "" + tempToken,
+            "X-Request-Host": host,
+            "X-Request-Path": path,
           },
         },
       );
