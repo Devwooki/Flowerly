@@ -11,6 +11,8 @@ COPY package*.json ./
 
 RUN npm install
 
+COPY . .
+
 
 #next의경우 build 할떄 CMD대신 RUN이여야 빌드가된다
 RUN npm run build
