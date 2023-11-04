@@ -1,8 +1,14 @@
 import React, { useEffect } from "react";
-import style from "@/components/flly/fllyUser/FllyRequest.module.css"
+import style from "@/components/flly/fllyUser/FllyRequest.module.css";
 import { useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { situationState, targetState, colorState, flowerState, bouquetState } from "@/recoil/fllyRecoil";
+import {
+  situationState,
+  targetState,
+  colorState,
+  flowerState,
+  bouquetState,
+} from "@/recoil/fllyRecoil";
 import Image from "next/image";
 import { useRouter } from "next/router";
 
@@ -15,19 +21,15 @@ const FllyTarget = () => {
   const bouquet = useRecoilValue(bouquetState);
   const [checkDelivery, setCheckDelivery] = useState<boolean>(true);
   const [price, setPrice] = useState<number>();
-  const colorNames = ["RED", "ORANGE", "PINK", "YELLOW", "BLUE", "PURPLE", "WHITE", "선택 안함"]
+  const colorNames = ["RED", "ORANGE", "PINK", "YELLOW", "BLUE", "PURPLE", "WHITE", "선택 안함"];
   const colorKorean = ["빨강", "주황", "분홍", "노랑", "파랑", "보라", "흰색", "선택 안함"];
   const dates = ["11.17", "11.18", "11.19"];
   const [dateIdx, setDateIdx] = useState<number>(0);
   // const [time, setTime] = useState<
 
-  const handlePrevClick = () => {
+  const handlePrevClick = () => {};
 
-  };
-
-  const handleNextClick = () => {
-
-  };
+  const handleNextClick = () => {};
 
   const handleDelivery = () => {
     setCheckDelivery(true);
@@ -37,11 +39,11 @@ const FllyTarget = () => {
     setCheckDelivery(false);
   };
 
-  const handlePrice = (e:any) => {
+  const handlePrice = (e: any) => {
     setPrice(e.target.value);
   };
 
-  const handleDate = (idx:number) => {
+  const handleDate = (idx: number) => {
     setDateIdx(idx);
   };
 
@@ -52,7 +54,12 @@ const FllyTarget = () => {
           <div className={style.headerTitle}>
             <div className={style.guide}>플리 의뢰서</div>
           </div>
-          <Image src={bouquet? bouquet.url : ""} alt="flower image" width={200} height={200}></Image>
+          <Image
+            src={bouquet ? bouquet.url : ""}
+            alt="flower image"
+            width={200}
+            height={200}
+          ></Image>
           <div className={style.requestArea}>
             <div className={style.guide}>의뢰 내용</div>
             <table className={style.requestTable}>
@@ -69,7 +76,9 @@ const FllyTarget = () => {
                 <td>
                   <ul>
                     {colors.map((item, index) => (
-                      <li key={index} className={style.colorLi}>{colorKorean[colorNames.indexOf(item)]}&nbsp;</li>
+                      <li key={index} className={style.colorLi}>
+                        {colorKorean[colorNames.indexOf(item)]}&nbsp;
+                      </li>
                     ))}
                   </ul>
                 </td>
@@ -79,7 +88,9 @@ const FllyTarget = () => {
                 <td>
                   <ul>
                     {flowers.map((item, index) => (
-                      <li key={index}>{item.flowerName}&nbsp;-&nbsp;{item.meaning}</li>
+                      <li key={index}>
+                        {item.flowerName}&nbsp;-&nbsp;{item.meaning}
+                      </li>
                     ))}
                   </ul>
                 </td>
@@ -89,34 +100,72 @@ const FllyTarget = () => {
             <table className={`${style.requestTable} ${style.second}`}>
               <tr>
                 <th>주문유형</th>
-                <td><span onClick={handleDelivery} className={checkDelivery? style.selectedBtn : style.nselectedBtn}>배달</span><span onClick={handlePickup} className={checkDelivery? style.nselectedBtn : style.selectedBtn}>픽업</span></td>
+                <td>
+                  <span
+                    onClick={handleDelivery}
+                    className={checkDelivery ? style.selectedBtn : style.nselectedBtn}
+                  >
+                    배달
+                  </span>
+                  <span
+                    onClick={handlePickup}
+                    className={checkDelivery ? style.nselectedBtn : style.selectedBtn}
+                  >
+                    픽업
+                  </span>
+                </td>
               </tr>
               <tr>
                 <th>주소</th>
-                <td><span className={style.address}>주소 검색하기</span></td>
+                <td>
+                  <span className={style.address}>주소 검색하기</span>
+                </td>
               </tr>
               <tr>
                 <th>예산</th>
-                <td><input className={style.price} type="number" placeholder="가격" value={price} onChange={handlePrice}></input>원</td>
+                <td>
+                  <input
+                    className={style.price}
+                    type="number"
+                    placeholder="가격"
+                    value={price}
+                    onChange={handlePrice}
+                  ></input>
+                  원
+                </td>
               </tr>
               <tr>
                 <th>마감 시간</th>
                 <td>
                   {dates.map((item, index) => (
-                    <span onClick={() => handleDate(index)} className={index==dateIdx? style.selectedBtn : style.nselectedBtn}>{item}</span>
+                    <span
+                      key={index}
+                      onClick={() => handleDate(index)}
+                      className={index == dateIdx ? style.selectedBtn : style.nselectedBtn}
+                    >
+                      {item}
+                    </span>
                   ))}
-                  <input type="time"/>
+                  <input type="time" />
                 </td>
               </tr>
               <tr>
-                <th>요청 사항<br/>(150자)</th>
+                <th>
+                  요청 사항
+                  <br />
+                  (150자)
+                </th>
                 <td></td>
               </tr>
             </table>
           </div>
           <div className={style.btnBox}>
-            <div onClick={handlePrevClick} className={style.prevBtn}>&lt;</div>
-            <div onClick={handleNextClick} className={style.nextBtn}>확인</div>
+            <div onClick={handlePrevClick} className={style.prevBtn}>
+              &lt;
+            </div>
+            <div onClick={handleNextClick} className={style.nextBtn}>
+              확인
+            </div>
           </div>
         </div>
       </div>
