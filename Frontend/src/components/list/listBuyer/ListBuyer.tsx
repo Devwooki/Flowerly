@@ -11,8 +11,8 @@ const ListBuyer = () => {
       img: "/img/homeBanner/164_red_phalaenopsis.jpg",
       situation: "축하",
       target: "연인",
-      selectedColor: ["분홍", "파랑", "보라"],
-      shopName: "현욱이네 꼬까게",
+      selectedColor: ["분홍색", "파랑색", "보라색"],
+      shopName: "입찰중",
     },
     {
       fllyId: 2,
@@ -20,8 +20,8 @@ const ListBuyer = () => {
       img: "/img/homeBanner/test.webp",
       situation: "사랑",
       target: "연인",
-      selectedColor: ["노랑", "파랑", "흰색"],
-      shopName: "기여니는 힘두러",
+      selectedColor: ["노랑색", "파랑색", "흰색"],
+      shopName: "입찰중",
     },
     {
       fllyId: 3,
@@ -29,7 +29,7 @@ const ListBuyer = () => {
       img: "/img/homeBanner/121_pink_gomphrena.jpg",
       situation: "선택안함",
       target: "부모님 ",
-      selectedColor: ["주황", "분홍", "노랑"],
+      selectedColor: ["주황색", "분홍색", "노랑색"],
       shopName: "현욱이네 꼬까게",
     },
     {
@@ -38,7 +38,7 @@ const ListBuyer = () => {
       img: "/img/homeBanner/121_pink_gomphrena.jpg",
       situation: "선택안함",
       target: "부모님 ",
-      selectedColor: ["주황", "분홍", "노랑"],
+      selectedColor: ["주황색", "분홍색", "노랑색"],
       shopName: "현욱이네 꼬까게",
     },
     {
@@ -47,7 +47,7 @@ const ListBuyer = () => {
       img: "/img/homeBanner/141_purple_gladiolus.jpg",
       situation: "선택안함",
       target: "부모님 ",
-      selectedColor: ["주황", "분홍", "노랑"],
+      selectedColor: ["주황색", "분홍색", "노랑색"],
       shopName: "현욱이네 꼬까게",
     },
   ];

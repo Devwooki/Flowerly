@@ -3,16 +3,25 @@ import style from "./ShopCard.module.css";
 import Image from "next/image";
 import { useRouter } from "next/router";
 
-const ShopCard = () => {
+type ShopCardProps = {
+  shopInfo: ShopInfo;
+};
+
+const ShopCard = ({ shopInfo }: ShopCardProps) => {
   const router = useRouter();
-  const originalContent =
-    "요청 사항 대로 예쁘게 만들어 드릴게요. 이렇게 하면 어떠신가요? 만들어줄께 만들어줄께 만들어줄께 만들어줄께";
-  const maxLength = 30; // 최대 길이 설정
+  const originalContent = shopInfo.recommandComment;
+  const originalAdress = shopInfo.shopLoc;
+  const maxLengthCT = 30; // 최대 길이 설정
+  const maxLengthAD = 25; // 최대 길이 설정
 
   const truncatedContent =
-    originalContent.length > maxLength
-      ? `${originalContent.substring(0, maxLength)}...`
+    originalContent.length > maxLengthCT
+      ? `${originalContent.substring(0, maxLengthCT)}...`
       : originalContent;
+  const truncatedAdress =
+    originalAdress.length > maxLengthAD
+      ? `${originalAdress.substring(0, maxLengthAD)}...`
+      : originalAdress;
 
   const moveToShop = (shopId: number) => {
     router.push({ pathname: "/list/shop/[shopId]", query: { shopId: shopId } });
@@ -21,23 +30,21 @@ const ShopCard = () => {
   return (
     <div className={style.shopCardMain}>
       <div className={style.shopFlowerImg}>
-        <Image src={"/test/test-flower-img.png"} alt="추천 꽃다발" fill />
+        <Image src={shopInfo.reImg} alt="추천 꽃다발" fill />
       </div>
       <div className={style.shopInfo}>
         <div className={style.infoTable}>
-          {/* <Image src={"/img/icon/seller-flower.png"} alt="가게 이름" width={15} height={15} /> */}
-          <div onClick={() => moveToShop(1)} style={{ fontSize: "16px" }}>
-            {/* <button>꼬까게</button>*/}
-            꼬까게
+          <div onClick={() => moveToShop(1)} className={style.shopName}>
+            {shopInfo.shopName}
           </div>
         </div>
         <div className={style.infoTable}>
           <Image src={"/img/icon/seller-location.png"} alt="가게 위치" width={10} height={15} />
-          <div>대전광역시 중구 대둔산로 384 1층 나이테플라워</div>
+          <div style={{ fontSize: "14px" }}>{truncatedAdress}</div>
         </div>
         <div className={style.infoTable}>
           <Image src={"/img/icon/seller-money.png"} alt="제시 금액 " width={15} height={15} />
-          <div>25,000</div>
+          <div>{shopInfo.recommandPrice}</div>
         </div>
         <div className={style.responseContent}>{truncatedContent}</div>
       </div>
