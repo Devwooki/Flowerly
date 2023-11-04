@@ -7,7 +7,10 @@ type ShopInfo = {
   recommandComment: string;
 };
 
-type ShopInfoDetail = ShopInfo & {
+type ShopInfoDetail = {
+  shopName: string;
+  shopLoc: string;
   shopX: number;
   shopY: number;
+  shopImg: string[];
 };
