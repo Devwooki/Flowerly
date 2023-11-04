@@ -26,8 +26,8 @@ interface dongDataType {
 }
 
 const Step2 = () => {
-  const path = window.location.pathname;
-  const host = window.location.host;
+  const [path, setPath] = useState<string | null>(null);
+  const [host, setHost] = useState<string | null>(null);
 
   const router = useRouter();
   const [sidoData, setSidoData] = useState<sidoDataType[]>([]);
@@ -73,6 +73,11 @@ const Step2 = () => {
       setSigunguData([]);
     }
   }, [selectedSigungu]);
+
+  useEffect(() => {
+    setPath(window.location.pathname);
+    setHost(window.location.host);
+  }, []);
 
   const getSigunguData = async (sidoCode: number) => {
     try {
@@ -147,24 +152,27 @@ const Step2 = () => {
       };
       console.log(signupData);
 
-      const response = await axios.post(
-        "https://flower-ly.co.kr/api/member/signup/seller",
-        signupData,
-        {
-          headers: {
-            Authorization: "" + tempToken,
-            "X-Request-Host": host,
-            "X-Request-Path": path,
+      if (host && path) {
+        const response = await axios.post(
+          "https://flower-ly.co.kr/api/member/signup/seller",
+          signupData,
+          {
+            headers: {
+              Authorization: "" + tempToken,
+              "X-Request-Host": host,
+              "X-Request-Path": path,
+            },
           },
-        },
-      );
-      if (response.status === 200) {
-        console.log(response);
-        if (tempToken) {
-          router.push(`/temp?token=${tempToken}`);
+        );
+
+        if (response.status === 200) {
+          console.log(response);
+          if (tempToken) {
+            router.push(`/temp?token=${tempToken}`);
+          }
         }
+        router.push("/");
       }
-      router.push("/");
     } catch (error) {
       console.log(error);
     }
