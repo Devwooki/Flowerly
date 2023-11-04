@@ -10,6 +10,9 @@ module.exports = {
     OPENAI_API_KEY: process.env.OPENAI_API_KEY,
     // ANOTHER_VARIABLE: process.env.ANOTHER_VARIABLE,
   },
+  images: {
+    domains: ["neighbrew.s3.ap-northeast-2.amazonaws.com"],
+  },
 };
 
 //기존 module.exports
