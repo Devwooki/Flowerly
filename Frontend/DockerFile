@@ -11,6 +11,7 @@ COPY package*.json ./
 
 RUN npm install
 
+# 설치한 패키지(node_modules, .next)를 /app으로 옮긴다
 COPY . .
 
 
@@ -18,9 +19,7 @@ COPY . .
 RUN npm run build
 
 #EXPOSE 3000
-
-#CMD ["npm", "run" ,"start"]
-
+ 
  #RUN Stage
  FROM nginx:latest
 
@@ -39,5 +38,4 @@ RUN npm run build
  # package.json에 scripts 중 build에 next export를 추가 하게 되면 out이라는 파일이 생성되고
  COPY --from=frontend-builder app/out /usr/share/nginx/html
 
- # # 컨테이너 내부 끼리 사용할 port를 허용해준다
  CMD ["nginx", "-g", "daemon off;"]
