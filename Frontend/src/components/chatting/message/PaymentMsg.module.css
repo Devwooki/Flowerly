@@ -1,0 +1,50 @@
+.mainBox {
+  box-sizing: border-box;
+  min-width: 280px;
+  max-width: 280px;
+  height: 170px;
+  background-color: #ffffff;
+  border: 1px solid var(--moregray);
+  border-radius: 5px;
+  padding: 10px 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.title {
+  width: 100%;
+  margin: 5px 0;
+  font-family: "NanumSquareNeoOTF-Bd";
+  text-align: center;
+}
+
+.infoDiv {
+  width: 100%;
+}
+
+.btnDiv {
+  /* border: 1px solid black; */
+  background-color: #ffeb00;
+  height: 35px;
+  border-radius: 30px;
+  margin-top: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.priceDiv {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+  font-family: "NanumSquareNeoOTF-Rg";
+}
+
+.sellerDiv {
+  text-align: center;
+  border-bottom: 1px solid var(--moregray);
+  padding: 5px 0;
+  font-family: "NanumSquareNeoOTF-Rg";
+}

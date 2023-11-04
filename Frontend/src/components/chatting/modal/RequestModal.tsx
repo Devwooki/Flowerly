@@ -27,12 +27,25 @@ type RequestModalProps = {
 const RequestModal: React.FC<RequestModalProps> = ({ chattingId, modalHandler, sendHandler }) => {
   // axios로 받아와야 함
   const [requestInfo, setRequestInfo] = useState<RequestInfo>();
+  const [price, setPrice] = useState<string>("");
+
   useEffect(() => {
-    // axios.get(`https://flower-ly.co.kr/api/chatting/request/${chattingId}`).then((response) => {
-    //   // console.log(response.data.data);
-    //   setRequestInfo(response.data.data);
-    // });
+    axios.get(`https://flower-ly.co.kr/api/chatting/request/${chattingId}`).then((response) => {
+      // console.log(response.data.data);
+      setRequestInfo(response.data.data);
+    });
   }, []);
+
+  const savePrice = () => {
+    // console.log(price);
+    const body = {
+      requestId: requestInfo?.requestId,
+      price: price,
+    };
+    axios.post("https://flower-ly.co.kr/api/chatting/request/price", body).then((response) => {
+      console.log(response);
+    });
+  };
 
   return (
     <>
@@ -73,10 +86,7 @@ const RequestModal: React.FC<RequestModalProps> = ({ chattingId, modalHandler, s
               </div>
               <div className={style.contentItem} id={style.commentDiv}>
                 <div className={style.itemTitle}>요청사항</div>
-                <div className={style.itemText}>
-                  {requestInfo?.requestContent} 예쁘게 부탈드립니다~ 예쁘게 부탈드립니다~ 예쁘게
-                  부탈드립니다~ 예쁘게 부탈드립니다~ 예쁘게 부탈드립니다~ 예쁘게 부탈드립니다~
-                </div>
+                <div className={style.itemText}>{requestInfo?.requestContent}</div>
               </div>
             </div>
             <div className={style.subTitle}>배송 정보</div>
@@ -100,7 +110,7 @@ const RequestModal: React.FC<RequestModalProps> = ({ chattingId, modalHandler, s
             </div>
           </div>
           <div className={style.bottom}>
-            <div>
+            <div className={style.payDiv}>
               <div className={style.payTitle}>
                 <Image
                   className={style.icon}
@@ -112,13 +122,20 @@ const RequestModal: React.FC<RequestModalProps> = ({ chattingId, modalHandler, s
                 결제 금액
               </div>
               <div>
-                <input className={style.input}></input>
+                <input
+                  type="number"
+                  className={style.input}
+                  value={price}
+                  onChange={(e) => {
+                    setPrice(e.target.value);
+                  }}
+                ></input>
               </div>
             </div>
             <button
               className={style.btn}
               onClick={() => {
-                // saveRequest();
+                savePrice();
                 sendHandler();
                 modalHandler("REQUEST", false);
               }}
