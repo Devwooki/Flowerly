@@ -2,37 +2,66 @@ import React from "react";
 import style from "./FllyInfoBox.module.css";
 import Image from "next/image";
 
-const FllyOrderBox = () => {
+interface flowerType {
+  flowerName: string;
+  meaning: string;
+}
+
+interface resultSimpleType {
+  fllyId: number;
+  requestImgUrl: string | null;
+  situation: string | null;
+  target: string | null;
+  color1: string | null;
+  color2: string | null;
+  color3: string | null;
+  flower1: flowerType;
+  flower2: flowerType;
+  flower3: flowerType;
+}
+
+const FllyOrderBox = ({
+  $requestInfo,
+  $imgUrl,
+}: {
+  $requestInfo: resultSimpleType;
+  $imgUrl: string | null | undefined;
+}) => {
   return (
     <>
       <div className={style.fllyOrderBox}>
         <div>플리 정보</div>
         <div className={style.fllyOrderMain}>
           <div className={style.imgBox}>
-            <Image src="/test/test-flower-img.png" alt="테스트" width={150} height={150}></Image>
+            {$imgUrl != null ? (
+              <Image src={$imgUrl} alt="테스트" width={150} height={150}></Image>
+            ) : (
+              <Image src="/img/etc/no-image.jpg" alt="테스트" width={150} height={150}></Image>
+            )}
           </div>
           <div className={style.infoMainBox}>
             <div>
               <div>상황</div>
-              <div>사랑</div>
+              <div>{$requestInfo.situation}</div>
             </div>
             <div>
               <div>대상</div>
-              <div>연인</div>
+              <div>{$requestInfo.target}</div>
             </div>
             <div>
               <div>색상</div>
               <div className={style.colorBox}>
-                <div>분홍</div>
-                <div>파랑</div>
+                <div>{$requestInfo.color1}</div>
+                <div>{$requestInfo.color2}</div>
+                <div>{$requestInfo.color3}</div>
               </div>
             </div>
             <div>
               <div>선택한 꽃</div>
               <div className={style.flowerBox}>
-                <div>분홍 수국</div>
-                <div>파랑 수국</div>
-                <div>보라 수국</div>
+                <div>{$requestInfo.flower1.flowerName}</div>
+                <div>{$requestInfo.flower2.flowerName}</div>
+                <div>{$requestInfo.flower3.flowerName}</div>
               </div>
             </div>
           </div>

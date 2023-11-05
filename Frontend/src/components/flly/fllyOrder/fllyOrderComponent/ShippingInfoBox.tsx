@@ -1,7 +1,13 @@
 import React from "react";
 import style from "./ShippingInfoBox.module.css";
 
-const ShippingInfoBox = () => {
+interface deliveryInfoType {
+  recipientName: string;
+  phoneNumber: string;
+  address: string;
+}
+
+const ShippingInfoBox = ({ $deliveryInfo }: { $deliveryInfo: deliveryInfoType }) => {
   return (
     <>
       <div className={style.shippingInfoBack}>
@@ -9,15 +15,15 @@ const ShippingInfoBox = () => {
         <div className={style.detailInfoBox}>
           <div className={style.detailInfo}>
             <div>받는이</div>
-            <div>김동민</div>
+            <div>{$deliveryInfo.recipientName}</div>
           </div>
           <div className={style.detailInfo}>
             <div>연락처</div>
-            <div>101</div>
+            <div>{$deliveryInfo.phoneNumber}</div>
           </div>
           <div className={style.detailInfo}>
             <div>주소</div>
-            <div>2023년 10월 19일 20: 13ㅓㅏㅘㅓㅘㅗㅇㅁ나라ㅣㄴ어리ㅏㄴ어</div>
+            <div>{$deliveryInfo.address}</div>
           </div>
         </div>
       </div>
