@@ -3,27 +3,28 @@ import style from "./YourChattingMsg.module.css";
 
 import ParticipationInfo from "./ParticipationInfo";
 import OrderFormMsg from "./OrderFormMsg";
+import RequestMsg from "./RequestMsg";
+import PaymentMsg from "./PaymentMsg";
+import ImageMsg from "./ImageMsg";
 
 type ChattingMsgProps = {
   message: {
-<<<<<<< Updated upstream
     sendTime: string;
-=======
-    createdAt: string;
->>>>>>> Stashed changes
     content: string;
     type: string;
   };
   chattingId: number;
   modalHandler: Function;
+  imageLoadHandler: Function;
 };
 
-const YourChattingMsg: React.FC<ChattingMsgProps> = ({ message, chattingId, modalHandler }) => {
-<<<<<<< Updated upstream
+const YourChattingMsg: React.FC<ChattingMsgProps> = ({
+  message,
+  chattingId,
+  modalHandler,
+  imageLoadHandler,
+}) => {
   const [time, setTime] = useState(new Date(message.sendTime));
-=======
-  const [time, setTime] = useState(new Date(message.createdAt));
->>>>>>> Stashed changes
 
   return (
     <>
@@ -32,6 +33,12 @@ const YourChattingMsg: React.FC<ChattingMsgProps> = ({ message, chattingId, moda
           <ParticipationInfo chattingId={chattingId} modalHandler={modalHandler} />
         ) : message.type === "ORDER_FORM" ? (
           <OrderFormMsg modalHandler={modalHandler} />
+        ) : message.type === "ORDER_COMPLETE" ? (
+          <RequestMsg modalHandler={modalHandler} />
+        ) : message.type === "PAYMENT_FORM" ? (
+          <PaymentMsg chattingId={chattingId} />
+        ) : message.type === "IMAGE" ? (
+          <ImageMsg imgUrl={message.content} onImageLoad={imageLoadHandler} />
         ) : (
           <div className={style.contentDiv}>{message.content}</div>
         )}

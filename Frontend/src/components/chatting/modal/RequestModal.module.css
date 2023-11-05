@@ -1,0 +1,147 @@
+.modalBg {
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.3);
+  height: 100vh;
+  width: 100vw;
+  max-width: 450px;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modalMain {
+  box-sizing: border-box;
+  position: relative; /* 'absolute'에서 'relative'로 변경 */
+  display: flex;
+  flex-direction: column; /* 자식 요소를 수직 방향으로 배열 */
+  overflow: hidden;
+  height: auto;
+  min-height: 50%;
+  max-height: 70%;
+  width: 80%;
+  background-color: white;
+  z-index: 1000;
+  border-radius: 5px;
+  /* padding: 10px 15px; */
+}
+
+.top {
+  /* position 속성 제거 */
+  height: 50px;
+  /* width: 100%; */
+  font-family: "Pretendard-Bold";
+  font-size: 20px;
+  line-height: 50px;
+  display: flex;
+  justify-content: space-between; /* 'X' 버튼과 제목을 양쪽 끝으로 배치 */
+  padding: 10px 15px 0;
+}
+
+.middle {
+  flex-grow: 1; /* 남은 공간을 모두 채우기 위해 설정 */
+  /* width: 100%; */
+  overflow-y: auto;
+  font-size: 14px;
+  padding: 0 15px;
+}
+
+.bottom {
+  height: 150px; /* 원하는 높이값으로 설정 */
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* 버튼을 중앙에 위치 */
+  align-items: center;
+  border-top: 2px dashed var(--sky);
+}
+
+.title {
+  height: 100%;
+  width: calc(100% - 30px);
+  text-align: center;
+  display: inline-block;
+}
+.closeBtn {
+  height: 100%;
+  display: inline-block;
+  position: relative;
+  right: 0;
+  width: 30px;
+  text-align: center;
+}
+
+.btn {
+  font-family: "NanumSquareNeoOTF-Bd";
+  font-size: 16px;
+  border: none;
+  height: 35px;
+  width: 120px;
+  border-radius: 5px;
+  background-color: var(--dark);
+  color: #ffffff;
+}
+
+.subTitle {
+  font-family: "NanumSquareNeoOTF-Bd";
+  font-size: 16px;
+  box-sizing: border-box;
+  padding: 10px;
+  width: 100%;
+  border-bottom: 2px solid var(--moregray);
+  margin-bottom: 10px;
+}
+
+.contentItem {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.itemTitle {
+  box-sizing: border-box;
+  min-width: 70px;
+  padding-left: 5px;
+  font-family: "NanumSquareNeoOTF-Rg";
+  line-height: 25px;
+}
+
+.itemText {
+  line-height: 25px;
+}
+
+#commentDiv {
+  flex-direction: column;
+  /* min-height: 10vh; */
+}
+#commentDiv .itemText {
+  margin-left: 5px;
+}
+
+.input {
+  box-sizing: border-box;
+  border: 1px solid var(--moregray);
+  border-radius: 5px;
+  padding: 0 10px;
+  font-family: "NanumSquareNeoOTF-Lt";
+  height: 30px;
+  margin-bottom: 8px;
+  width: 100%;
+  text-align: end;
+}
+
+.payDiv {
+  width: 70%;
+}
+.payDiv div {
+  width: 100%;
+}
+
+.payTitle {
+  font-family: "NanumSquareNeoOTF-Bd";
+  height: 25px;
+  display: flex;
+}
+
+.icon {
+  margin-right: 8px;
+}

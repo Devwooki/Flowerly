@@ -1,21 +1,14 @@
-<<<<<<< Updated upstream
 import { useState, useEffect } from "react";
 import axios from "axios";
-=======
->>>>>>> Stashed changes
 import style from "./OrderModal.module.css";
 import Image from "next/image";
 
 type DeliveryOrderProps = {
-<<<<<<< Updated upstream
   chattingId: number;
-=======
->>>>>>> Stashed changes
   modalHandler: Function;
   sendHandler: Function;
 };
 
-<<<<<<< Updated upstream
 const DeliveryOrderModal: React.FC<DeliveryOrderProps> = ({
   chattingId,
   modalHandler,
@@ -86,12 +79,6 @@ const DeliveryOrderModal: React.FC<DeliveryOrderProps> = ({
         console.log(response.data.data);
       })
       .catch((error) => console.log(error));
-=======
-const DeliveryOrderModal: React.FC<DeliveryOrderProps> = ({ modalHandler, sendHandler }) => {
-  const saveRequest = () => {
-    // axios 주문 내용 저장해야함
-    console.log("saveRequest");
->>>>>>> Stashed changes
   };
 
   return (
@@ -120,7 +107,6 @@ const DeliveryOrderModal: React.FC<DeliveryOrderProps> = ({ modalHandler, sendHa
             <div className={style.content}>
               <div className={style.contentItem}>
                 <div className={style.itemTitle}>주문자</div>
-<<<<<<< Updated upstream
                 <input
                   className={style.input}
                   id={style.nameInput}
@@ -148,17 +134,6 @@ const DeliveryOrderModal: React.FC<DeliveryOrderProps> = ({ modalHandler, sendHa
                     }
                   }}
                 />
-=======
-                <input className={style.input} id={style.nameInput} />
-              </div>
-              <div className={style.contentItem}>
-                <div className={style.itemTitle}>연락처</div>
-                <input className={`${style.input} ${style.phoneInput}`} />
-                <div className={style.phoneDivide}>-</div>
-                <input className={`${style.input} ${style.phoneInput}`} />
-                <div className={style.phoneDivide}>-</div>
-                <input className={`${style.input} ${style.phoneInput}`} />
->>>>>>> Stashed changes
               </div>
               <div className={style.contentItem}>
                 <div className={style.itemTitle}>픽업일시</div>
@@ -174,7 +149,6 @@ const DeliveryOrderModal: React.FC<DeliveryOrderProps> = ({ modalHandler, sendHa
               </div>
               <div className={style.contentItem} id={style.commentDiv}>
                 <div className={style.itemTitle}>요청사항</div>
-<<<<<<< Updated upstream
                 <textarea
                   className={style.input}
                   id={style.commentArea}
@@ -185,16 +159,12 @@ const DeliveryOrderModal: React.FC<DeliveryOrderProps> = ({ modalHandler, sendHa
                     })
                   }
                 />
-=======
-                <textarea className={style.input} id={style.commentArea} />
->>>>>>> Stashed changes
               </div>
             </div>
             <div className={style.subTitle}>배송 정보</div>
             <div className={style.content}>
               <div className={style.contentItem}>
                 <div className={style.itemTitle}>받는이</div>
-<<<<<<< Updated upstream
                 <input
                   className={style.input}
                   id={style.nameInput}
@@ -222,17 +192,6 @@ const DeliveryOrderModal: React.FC<DeliveryOrderProps> = ({ modalHandler, sendHa
                     }
                   }}
                 />
-=======
-                <input className={style.input} id={style.nameInput} />
-              </div>
-              <div className={style.contentItem}>
-                <div className={style.itemTitle}>연락처</div>
-                <input className={`${style.input} ${style.phoneInput}`} />
-                <div className={style.phoneDivide}>-</div>
-                <input className={`${style.input} ${style.phoneInput}`} />
-                <div className={style.phoneDivide}>-</div>
-                <input className={`${style.input} ${style.phoneInput}`} />
->>>>>>> Stashed changes
               </div>
               <div className={style.contentItem}>
                 <div className={style.itemTitle} id={style.addressTitle}>
@@ -242,7 +201,6 @@ const DeliveryOrderModal: React.FC<DeliveryOrderProps> = ({ modalHandler, sendHa
                   <div className={style.input} id={style.addSearch}>
                     <button>검색</button>
                   </div>
-<<<<<<< Updated upstream
                   <input
                     className={style.input}
                     placeholder="상세주소를 입력하세요."
@@ -253,9 +211,6 @@ const DeliveryOrderModal: React.FC<DeliveryOrderProps> = ({ modalHandler, sendHa
                       })
                     }
                   />
-=======
-                  <input className={style.input} placeholder="상세주소를 입력하세요."></input>
->>>>>>> Stashed changes
                 </div>
               </div>
             </div>

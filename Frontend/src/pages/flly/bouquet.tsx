@@ -26,6 +26,7 @@ const FllyBouquet = () => {
   }, [bouquets]);
 
   const handleNextClick = () => {
+    // if(bouquet !== null) setShowNextModal(true);
     setShowNextModal(true);
   };
 

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import style from "./FllySellerCard.module.css";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import Picture from "next-export-optimize-images/picture";
+//import Picture from "next-export-optimize-images/picture";
 
 interface FllyNearType {
   fllyId: number;
@@ -39,46 +39,29 @@ const FllySellerCard = ({ $FllyDeliveryNear }: { $FllyDeliveryNear: FllyNearType
       <div className={style.back}>
         <div className={style.cardMain}>
           <div className={style.cardMainImgBox}>
-            <Picture
+            <Image
               src={imageSrc}
               onError={errImageChangHandler}
-<<<<<<< Updated upstream
-              width={170}
-              height={170}
-=======
               width={190}
               height={190}
->>>>>>> Stashed changes
               alt="이미지"
-            ></Picture>
+            ></Image>
             <div className={style.cardMainImgInfo}>{$FllyDeliveryNear.progress}중</div>
           </div>
           <div className={style.cardMainDetail}>
             <div>
-<<<<<<< Updated upstream
-              <Image src="/img/icon/seller-flower.png" alt="꽃" width={18} height={18}></Image>
-=======
               <Image src="/img/icon/seller-flower.png" alt="꽃" width={22} height={22}></Image>
->>>>>>> Stashed changes
               <span>
                 {$FllyDeliveryNear.flowerName1}, {$FllyDeliveryNear.flowerName2},{" "}
                 {$FllyDeliveryNear.flowerName3}
               </span>
             </div>
             <div>
-<<<<<<< Updated upstream
-              <Image src="/img/icon/seller-money.png" alt="돈" width={18} height={18}></Image>
-              <span>{$FllyDeliveryNear.budget} 원</span>
-            </div>
-            <div>
-              <Image src="/img/icon/seller-time.png" alt="마감" width={18} height={18}></Image>
-=======
               <Image src="/img/icon/seller-money.png" alt="돈" width={22} height={22}></Image>
               <span>{$FllyDeliveryNear.budget} 원</span>
             </div>
             <div>
               <Image src="/img/icon/seller-time.png" alt="마감" width={22} height={22}></Image>
->>>>>>> Stashed changes
               <span>~ {$FllyDeliveryNear.deadline}</span>
             </div>
             <div>

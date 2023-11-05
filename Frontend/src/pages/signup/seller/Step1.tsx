@@ -90,7 +90,7 @@ const Step1 = () => {
 
   const open = useDaumPostcodePopup(scriptUrl);
   const handleComplete = (data: any) => {
-    let fullAddress = data.address;
+    let jibunAddress = data.jibunAddress;
     let extraAddress = "";
 
     if (data.addressType === "R") {
@@ -100,10 +100,10 @@ const Step1 = () => {
       if (data.buildingName !== "") {
         extraAddress += extraAddress !== "" ? `, ${data.buildingName}` : data.buildingName;
       }
-      fullAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
+      jibunAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
     }
     console.log(data);
-    setBasicAddress(fullAddress);
+    setBasicAddress(jibunAddress);
   };
 
   // 트리거 해줄 함수

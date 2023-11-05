@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import style from "./Step2.module.css";
 import { useRouter } from "next/router";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import {
   sellerDeliveryRegionState,
   sellerInputState,
   storeDeliveryRegionState,
+  tempTokenState,
 } from "@/recoil/tokenRecoil";
 
 interface sidoDataType {
@@ -25,6 +26,9 @@ interface dongDataType {
 }
 
 const Step2 = () => {
+  const [path, setPath] = useState<string | null>(null);
+  const [host, setHost] = useState<string | null>(null);
+
   const router = useRouter();
   const [sidoData, setSidoData] = useState<sidoDataType[]>([]);
   const [selectedSido, setSelectedSido] = useState<sidoDataType | null>(null);
@@ -38,6 +42,7 @@ const Step2 = () => {
     useRecoilState(storeDeliveryRegionState);
 
   const [sellerInput, setSellerInput] = useRecoilState(sellerInputState);
+  const tempToken = useRecoilValue(tempTokenState);
 
   useEffect(() => {
     const getSidoData = async () => {
@@ -68,6 +73,11 @@ const Step2 = () => {
       setSigunguData([]);
     }
   }, [selectedSigungu]);
+
+  useEffect(() => {
+    setPath(window.location.pathname);
+    setHost(window.location.host);
+  }, []);
 
   const getSigunguData = async (sidoCode: number) => {
     try {
@@ -142,15 +152,29 @@ const Step2 = () => {
       };
       console.log(signupData);
 
-      const response = await axios.post(
-        "https://flower-ly.co.kr/api/member/signup/seller",
-        signupData,
-      );
-      if (response.status === 200) {
-        console.log(response);
-        alert("회원가입이 완료되었습니다.");
+      if (host && path) {
+        const response = await axios.post(
+          "https://flower-ly.co.kr/api/member/signup/seller",
+          signupData,
+          {
+            headers: {
+              Authorization: "Bearer " + tempToken,
+              "X-Request-Host": host,
+              "X-Request-Path": path,
+            },
+          },
+        );
+
+        if (response.status === 200) {
+          console.log(response);
+          if (tempToken) {
+            console.log(response);
+            console.log(tempToken);
+            router.push(`/temp?token=${tempToken}`);
+          }
+        }
+        router.push("/");
       }
-      router.push("/");
     } catch (error) {
       console.log(error);
     }

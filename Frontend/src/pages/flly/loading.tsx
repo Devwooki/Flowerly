@@ -43,7 +43,7 @@ const FllyLoading = () => {
       const NewImage: bouquetType[] = [];
       if (response) {
         response.data.forEach((image) => {
-          NewImage.push({ url: image.url });
+          if(image.url) NewImage.push({ url: image.url });
         });
         setImgList(NewImage);
       }
