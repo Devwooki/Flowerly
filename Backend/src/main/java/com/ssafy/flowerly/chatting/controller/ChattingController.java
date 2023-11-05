@@ -128,4 +128,11 @@ public class ChattingController {
 
         return new DataResponse<>(200, "주문서 조회 성공", requestDto);
     }
+
+    @GetMapping("/price/{chattingId}")
+    public CustomResponse getPrice(@PathVariable Long chattingId) {
+        Map<String, Object> responseDto = chattingService.getPrice(chattingId);
+
+        return new DataResponse<>(200, "결제 정보 조회 성공", responseDto);
+    }
 }
