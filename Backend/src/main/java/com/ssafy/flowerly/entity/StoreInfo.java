@@ -1,9 +1,11 @@
 package com.ssafy.flowerly.entity;
 
+import com.ssafy.flowerly.member.vo.StoreInfoDto;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -47,4 +49,15 @@ public class StoreInfo {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dong_code")
     private Dong dong;
+
+    public StoreInfoDto toDto(){
+        return StoreInfoDto.builder()
+                .storeInfoId(this.storeInfoId)
+                .storeName(this.storeName)
+                .sellerName(this.sellerName)
+                .phoneNumber(this.phoneNumber)
+                .address(this.address)
+                .member(this.seller.toDto())
+                .build();
+    }
 }

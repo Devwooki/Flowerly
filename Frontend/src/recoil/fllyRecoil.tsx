@@ -34,6 +34,7 @@ export const flowerState = atom({
   default: [] as flowerCardType[],
 });
 
+<<<<<<< Updated upstream
 export const bouquetsState = atom({
   key: 'bouquetsState',
   // default: [{url:""}, {url:""}] as bouquetType[],
@@ -44,3 +45,10 @@ export const bouquetState = atom({
   key: 'bouquetState',
   default: null as bouquetType | null,
 });
+=======
+export const bouquetState = atom({
+  key: 'bouquetState',
+  // default: [{url:""}, {url:""}] as bouquetType[],
+  default: [] as bouquetType[],
+});
+>>>>>>> Stashed changes

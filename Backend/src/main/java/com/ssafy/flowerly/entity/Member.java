@@ -43,9 +43,6 @@ public class Member extends BaseTimeEntity {
 //    private LocalDateTime updateddAt;
 
     @Column(nullable = false)
-    private boolean isRemoved;
-
-    @Column(nullable = false)
     private boolean isNotification;
 
     public MemberDto toDto(){
@@ -75,7 +72,7 @@ public class Member extends BaseTimeEntity {
     }
 
     public void deleteMember(){
-        this.isRemoved = true;
+        this.role = MemberRole.DELETE;
 //        dataUpdate();
     }
     public void updateRole(MemberRole role){

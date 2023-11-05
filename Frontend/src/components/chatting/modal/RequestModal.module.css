@@ -92,6 +92,12 @@
   margin-bottom: 10px;
 }
 
+.storeNameDiv {
+  padding: 5px 5px 10px;
+  font-family: "NanumSquareNeoOTF-Bd";
+  /* font-size: 16px; */
+}
+
 .contentItem {
   display: flex;
   margin-bottom: 10px;

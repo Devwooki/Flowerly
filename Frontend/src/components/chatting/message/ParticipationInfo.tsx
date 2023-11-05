@@ -38,7 +38,7 @@ const ParticipationForm: React.FC<ParticipationFormProps> = ({ chattingId, modal
             style={{ backgroundImage: `url(${"/test/test-flower-img.png"})` }}
           ></div>
           <div className={style.contentDiv}>
-            <div className={style.contentItem} id={style.price}>
+            <div className={style.contentItem}>
               <Image
                 className={style.icon}
                 src="/img/icon/seller-money.png"
@@ -46,10 +46,13 @@ const ParticipationForm: React.FC<ParticipationFormProps> = ({ chattingId, modal
                 height={14}
                 alt="상태이미지"
               />
-              <div id={style.price}>{participationInfo?.offerPrice.toLocaleString()} 원</div>
+
+              <div id={style.price}>
+                {participationInfo && participationInfo.offerPrice.toLocaleString()} 원
+              </div>
             </div>
-            <div className={style.contentItem} id={style.comment}>
-              <div>{participationInfo?.content}</div>
+            <div className={style.contentItem}>
+              <div>{participationInfo && participationInfo.content}</div>
             </div>
           </div>
         </div>

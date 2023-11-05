@@ -1,6 +1,7 @@
 package com.ssafy.flowerly.member;
 
 import com.ssafy.flowerly.JWT.JWTService;
+import com.ssafy.flowerly.exception.ErrorCode;
 import com.ssafy.flowerly.member.model.MemberService;
 import com.ssafy.flowerly.util.CustomResponse;
 import com.ssafy.flowerly.util.DataResponse;
@@ -24,17 +25,14 @@ public class MemberController {
     private final MemberService memberService;
     private final JWTService jwtService;
 
-    @GetMapping("/jwt-test")
-    public CustomResponse jwtTest(HttpServletRequest request) {
-        log.info("jwt-test 접근 : {}", request.getRequestURI());
-        String accessToken = jwtService.extractAccessToken(request).get();
-        Long memberId = jwtService.extractMemberId(accessToken).get();
-
-        log.info("jwt-test 접근 : {} \n " +
-                "토큰 넘어오냐 : {} \n" +
-                "memberId 체크 : \n {}", request.getRequestURI(), accessToken, memberId);
-
-        return new CustomResponse(HttpStatus.OK.value(), "JWT요청 성공");
+    @GetMapping("")
+    public DataResponse<?> jwtTest(HttpServletRequest request) {
+        Long memberId = (Long) request.getAttribute("memberId");
+        return new DataResponse(HttpStatus.OK.value(), "로그인 성공!", memberService.getMemberInfo(memberId));
+    }
+    @GetMapping("/need-login")
+    public CustomResponse needLogin(HttpServletRequest request) {
+        return new CustomResponse(ErrorCode.FORBIDDEN.getCode(), ErrorCode.FORBIDDEN.getMessage());
     }
 
     @PostMapping("/login")

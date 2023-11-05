@@ -3,6 +3,12 @@ import axios from "axios";
 import style from "./OrderModal.module.css";
 import Image from "next/image";
 
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { MobileDatePicker, TimeField, LocalizationProvider } from "@mui/x-date-pickers";
+import { ThemeProvider, createTheme } from "@mui/material";
+import { Dayjs } from "dayjs";
+import "dayjs/locale/ko";
+
 type DeliveryOrderProps = {
   chattingId: number;
   modalHandler: Function;
@@ -18,12 +24,14 @@ const DeliveryOrderModal: React.FC<DeliveryOrderProps> = ({
     orderType: "DELIVERY",
     ordererName: "",
     phoneNumber: "",
-    deliveryPickupTime: "2023-11-04 18:00",
+    deliveryPickupTime: "",
     requestContent: "",
     recipientName: "",
     recipientPhoneNumber: "",
     address: "",
   });
+  const [date, setDate] = useState<Dayjs | null>(null);
+  const [time, setTime] = useState<Dayjs | null>(null);
 
   useEffect(() => {
     if (orderInputs.phoneNumber.length === 10) {
@@ -73,13 +81,57 @@ const DeliveryOrderModal: React.FC<DeliveryOrderProps> = ({
   const saveRequest = () => {
     // console.log("saveRequest");
     // console.log(orderInputs);
-    axios
-      .post(`https://flower-ly.co.kr/api/chatting/request/${chattingId}`, orderInputs)
-      .then((response) => {
-        console.log(response.data.data);
-      })
-      .catch((error) => console.log(error));
+    if (date && time) {
+      setOrderInputs((prev) => {
+        const updatedInputs = {
+          ...prev,
+          deliveryPickupTime: date.format("YYYY-MM-DD") + " " + time.format("HH:mm"),
+        };
+
+        axios
+          .post(`https://flower-ly.co.kr/api/chatting/request/${chattingId}`, updatedInputs)
+          .then((response) => {
+            console.log(response.data);
+            if (response.data.code == "200") sendHandler();
+            else if (response.data.code == "-604") alert("이미 진행중인 주문이 있습니다.");
+          })
+          .catch((error) => console.log(error));
+
+        return updatedInputs;
+      });
+    } else {
+      alert("날짜, 시간을 입력하세요.");
+    }
   };
+
+  const theme = createTheme({
+    components: {
+      MuiInputBase: {
+        styleOverrides: {
+          root: {
+            boxSizing: "border-box",
+            fontFamily: "NanumSquareNeoOTF-Lt",
+            fontSize: "14px",
+          },
+        },
+      },
+      MuiOutlinedInput: {
+        styleOverrides: {
+          root: {
+            boxSizing: "border-box",
+            borderRadius: "5px",
+            marginRight: "5px",
+          },
+          input: {
+            padding: "5px 10px",
+          },
+          notchedOutline: {
+            border: "1px solid var(--moregray)",
+          },
+        },
+      },
+    },
+  });
 
   return (
     <>
@@ -136,8 +188,8 @@ const DeliveryOrderModal: React.FC<DeliveryOrderProps> = ({
                 />
               </div>
               <div className={style.contentItem}>
-                <div className={style.itemTitle}>픽업일시</div>
-                <div className={style.input} id={style.dateInput}>
+                <div className={style.itemTitle}>배달일시</div>
+                {/* <div className={style.input} id={style.dateInput}>
                   <Image
                     className={style.icon}
                     src="/img/icon/calendar.png"
@@ -145,7 +197,26 @@ const DeliveryOrderModal: React.FC<DeliveryOrderProps> = ({
                     height={18}
                     alt="상태이미지"
                   />
-                </div>
+                </div> */}
+                <ThemeProvider theme={theme}>
+                  <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
+                    <MobileDatePicker
+                      format="YYYY-MM-DD"
+                      className={style.datePicker}
+                      sx={{
+                        width: "130px",
+                      }}
+                      value={date}
+                      onChange={setDate}
+                    />
+                    <TimeField
+                      format="HH:mm"
+                      className={style.timePicker}
+                      value={time}
+                      onChange={setTime}
+                    />
+                  </LocalizationProvider>
+                </ThemeProvider>
               </div>
               <div className={style.contentItem} id={style.commentDiv}>
                 <div className={style.itemTitle}>요청사항</div>
@@ -220,7 +291,6 @@ const DeliveryOrderModal: React.FC<DeliveryOrderProps> = ({
               className={style.btn}
               onClick={() => {
                 saveRequest();
-                sendHandler();
                 modalHandler("DELIVERY", false);
               }}
             >

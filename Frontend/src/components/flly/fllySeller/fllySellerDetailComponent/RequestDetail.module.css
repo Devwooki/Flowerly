@@ -11,7 +11,11 @@
 }
 
 .detailMainBox > div {
+<<<<<<< Updated upstream
   margin: 5px 0px;
+=======
+  margin: 8px 0px;
+>>>>>>> Stashed changes
   text-align: left;
   font-size: 16px;
   font-family: "NanumSquareNeoOTF-Rg";

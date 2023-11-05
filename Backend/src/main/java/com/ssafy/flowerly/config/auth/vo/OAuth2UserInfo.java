@@ -29,10 +29,7 @@ public abstract class OAuth2UserInfo {
                 .nickName(getNickname())
                 .email(getEmail())
                 .socialType(socialType)
-                .isRemoved(false)
                 .isNotification(false)
-//                .createdAt(now)
-//                .updateddAt(now)
                 .build();
     }
 }

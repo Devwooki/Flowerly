@@ -1,5 +1,6 @@
 package com.ssafy.flowerly.util;
 
+import com.ssafy.flowerly.exception.AuthException;
 import com.ssafy.flowerly.exception.CustomException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -27,6 +28,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(CustomException.class)
     public CustomResponse handleICustomException(CustomException e){
         return new CustomResponse(e.getErrorCode().getCode(), e.getMessage());
+
+    }
+
+    //계정 접속 예외 발생
+    @ExceptionHandler(AuthException.class)
+    public CustomResponse handleICustomException(AuthException e){
+        return new CustomResponse(e.getErrorCode().getCode(), e.getErrorCode().getMessage());
 
     }
 }

@@ -1,5 +1,6 @@
 package com.ssafy.flowerly.entity;
 
+import com.ssafy.flowerly.chatting.dto.RequestFromChattingDto;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -29,4 +30,10 @@ public class RequestDeliveryInfo {
 
     @Column(nullable = false)
     private String address;
+
+    public void updateDeliveryInfo(RequestFromChattingDto requestDto) {
+        this.recipientName = requestDto.getRecipientName();
+        this.phoneNumber = requestDto.getRecipientPhoneNumber();
+        this.address = requestDto.getAddress();
+    }
 }
