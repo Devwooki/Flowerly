@@ -1,12 +1,16 @@
-import React, { useEffect, useState } from "react";
-import style from "./style/FllySellerDetail.module.css";
+import React, { useEffect, useRef, useState } from "react";
+import style from "./style/FllyOrderDetail.module.css";
 import Image from "next/image";
 import RequestDetail from "./fllySellerDetailComponent/RequestDetail";
+import ResponseDetail from "./fllySellerDetailComponent/ResponseDetail";
 import { useParams } from "next/navigation";
 import axios from "axios";
 import { ToastErrorMessage } from "@/model/toastMessageJHM";
 import { useRouter } from "next/router";
 import { backIn } from "framer-motion";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 interface flowerInfoType {
   flowerName: string;
@@ -33,46 +37,65 @@ interface fllyReqeustDeatilType {
   consumer: string;
 }
 
-const FllySellerDetail = () => {
+interface fllyResponeType {
+  content: string;
+  fllyParticipationId: number;
+  requestImageUrl: string;
+  requestPrice: number;
+}
+
+const FllyOrderDetail = () => {
   const [fllyRequestInfo, setFllyRequestInfo] = useState<fllyReqeustDeatilType>();
+  const [fllyResponseInfo, setFllyResponseInfo] = useState<fllyResponeType>();
   const fllyId = useParams();
   const router = useRouter();
+  const backImgRef = useRef<HTMLDivElement>(null);
+  const backRef = useRef<HTMLDivElement>(null);
+  const requestImgRef = useRef<HTMLDivElement>(null);
+  const responeImgRef = useRef<HTMLDivElement>(null);
+  const [slideState, setSlideState] = useState({ activeSlide: 0, activeSlide2: 0 });
+  const [slideImgSize, setSlideImgSize] = useState<number>(2);
+  const [backWidth, setbackWidth] = useState<number>();
+
+  const settings = {
+    slide: "div",
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplaySpeed: 3000,
+    cssEase: "linear",
+    arrows: false,
+    beforeChange: (current: number, next: number) =>
+      setSlideState({ activeSlide: next, activeSlide2: current }),
+  };
 
   useEffect(() => {
-    console.log(fllyId.fllyId);
-    axios.get("https://flower-ly.co.kr/api/seller/request/" + fllyId.fllyId).then((res) => {
+    console.log(fllyId);
+    if (backRef.current) {
+      const backWidth = backRef.current.offsetWidth;
+      setbackWidth(backWidth);
+      if (backImgRef.current) {
+        backImgRef.current.style.height = backWidth + "px";
+      }
+    }
+    axios.get("https://flower-ly.co.kr/api/seller/flly/request/" + fllyId.fllyId).then((res) => {
       const rsData = res.data;
       if (rsData.code == 200) {
         console.log(res.data.data);
-        setFllyRequestInfo(rsData.data);
+        setFllyRequestInfo(rsData.data.fllyRequestDto);
+        setFllyResponseInfo(rsData.data.fllyResponeDto);
       } else {
         ToastErrorMessage(rsData.message);
       }
     });
   }, []);
 
-  const pageMoveHandelr = () => {
-    if (fllyRequestInfo) {
-      router.push(
-        {
-          pathname: "/flly/create/[fllyId]",
-          query: { fllyId: fllyRequestInfo.fllyId },
-        },
-        "/flly/create", // 이것은 브라우저 주소창에 표시될 URL입니다.
-        { shallow: true },
-      );
-    } else {
-      ToastErrorMessage("잠시후 다시 눌러주세요!");
-    }
-  };
-
   return (
     <>
-      <div className={style.detailBack}>
-        <div
-          className={style.detailHeader}
-          style={{ backgroundImage: `url(${fllyRequestInfo?.imageUrl})` }}
-        >
+      <div className={style.detailBack} ref={backRef}>
+        <div className={style.backBtn}>
           <Image
             src="/img/btn/left-btn.png"
             alt="뒤로가기"
@@ -82,21 +105,44 @@ const FllySellerDetail = () => {
               router.back();
             }}
           />
-          <Image
-            className={style.partBtn}
-            src="/img/btn/participate-btn2.png"
-            alt="참여하기"
-            width={80}
-            height={100}
-            onClick={pageMoveHandelr}
-          />
+        </div>
+        <div className={style.detailHeader} ref={backImgRef}>
+          <div className={style.headerCnt}>
+            {slideState.activeSlide + 1} / {slideImgSize}
+          </div>
+
+          <Slider {...settings} className={style.sliderBox}>
+            {fllyRequestInfo && (
+              <>
+                <div className={style.headerInfo}>의뢰 사진</div>
+                <Image
+                  src={fllyRequestInfo?.imageUrl}
+                  alt="의뢰 사진"
+                  width={backWidth}
+                  height={backWidth}
+                ></Image>
+              </>
+            )}
+            {fllyResponseInfo && (
+              <>
+                <div className={style.headerInfo}>제안 사진</div>
+                <Image
+                  src={fllyResponseInfo?.requestImageUrl}
+                  alt="제안 사진"
+                  width={backWidth}
+                  height={backWidth}
+                ></Image>
+              </>
+            )}
+          </Slider>
         </div>
         <div className={style.detailMain}>
           {fllyRequestInfo && <RequestDetail $fllyRequestInfo={fllyRequestInfo} />}
+          {fllyResponseInfo && <ResponseDetail $fllyResponseInfo={fllyResponseInfo} />}
         </div>
       </div>
     </>
   );
 };
 
-export default FllySellerDetail;
+export default FllyOrderDetail;

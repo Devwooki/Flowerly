@@ -1,7 +1,12 @@
 import React from "react";
+import FllyOrderDetail from "@/components/flly/fllySeller/FllyOrderDetail";
 
 const OrderDetail = () => {
-  return <div>OrderDetail</div>;
+  return (
+    <>
+      <FllyOrderDetail />
+    </>
+  );
 };
 
 export default OrderDetail;

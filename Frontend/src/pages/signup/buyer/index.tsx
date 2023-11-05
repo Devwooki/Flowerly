@@ -30,7 +30,7 @@ const Buyer = () => {
         buyerInput,
         {
           headers: {
-            Authorization: "Bearer " + tempToken,
+            Authorization: `Bearer ${tempToken}`,
             "X-Request-Host": host,
             "X-Request-Path": path,
           },
