@@ -169,7 +169,7 @@ const Step2 = () => {
           console.log(response);
           console.log("회원가입 성공");
           // 회원가입 성공
-          router.push("/temp");
+          router.push(`/temp?token=${tempToken}`);
         }
 
         router.push("/");

@@ -41,7 +41,7 @@ const Buyer = () => {
         if (tempToken) {
           console.log(response);
           console.log("회원가입 성공");
-          router.push("/temp");
+          router.push(`/temp?token=${tempToken}`);
         }
       } else {
         console.error("회원가입 실패:", response);
