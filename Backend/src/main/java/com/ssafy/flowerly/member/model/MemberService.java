@@ -41,11 +41,13 @@ public class MemberService {
         List<Object[]> object = storeInfoRepository.findBySellerInfo(memberId);
 
         //반환값 길이가 0이면 멤버 정보가 없다는 것이다.
-        if (object.size() == 0)
-            return memberRepository.findByMemberId(memberId)
-                    .map(Member::toDto)
-                    .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_MEMBER));
-
+        if (object.size() == 0){
+            return StoreInfoDto.builder()
+                    .member(memberRepository.findByMemberId(memberId)
+                            .map(Member::toDto)
+                            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_MEMBER)))
+                    .build();
+        }
         StoreInfo tempInfo = (StoreInfo) object.get(0)[0];
 
         StoreInfoDto storeInfo = StoreInfoDto.builder()
