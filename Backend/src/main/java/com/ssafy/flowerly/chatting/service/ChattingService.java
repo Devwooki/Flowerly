@@ -96,7 +96,8 @@ public class ChattingService {
         // 채팅방 마지막 메세지 업데이트
         Chatting chatting = chattingRepository.findById(messageDto.getChattingId())
                 .orElseThrow(() -> new CustomException(ErrorCode.CHATTING_NOT_FOUND));
-        chatting.updateChatting(message.getContent(), message.getSendTime());
+        String msgContent = message.getType().equals("IMAGE") ? "사진을 보냈습니다." : message.getContent();
+        chatting.updateChatting(msgContent, message.getSendTime());
     }
 
     @Transactional

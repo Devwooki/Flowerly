@@ -23,13 +23,10 @@ public class ChattingMessage {
     private LocalDateTime sendTime;
 
     public static ChattingMessage toEntity(StompChatRequest dto) {
-        String content = dto.getContent();
-        if(dto.getType().equals("IMAGE")) content = "사진을 보냈습니다.";
-
         return ChattingMessage.builder()
                 .chattingId(dto.getChattingId())
                 .memberId(dto.getMemberId())
-                .content(content)
+                .content(dto.getContent())
                 .type(dto.getType())
                 .sendTime(LocalDateTime.now())
                 .build();
