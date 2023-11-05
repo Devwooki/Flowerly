@@ -158,7 +158,7 @@ const Step2 = () => {
           signupData,
           {
             headers: {
-              Authorization: "Bearer " + tempToken,
+              Authorization: `Bearer ${tempToken}`,
               "X-Request-Host": host,
               "X-Request-Path": path,
             },
@@ -169,10 +169,7 @@ const Step2 = () => {
           console.log(response);
           console.log("회원가입 성공");
           // 회원가입 성공
-          if (tempToken) {
-            router.push(`/temp?token=${tempToken}`);
-            return;
-          }
+          router.push("/temp");
         }
 
         router.push("/");
