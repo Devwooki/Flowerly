@@ -37,14 +37,25 @@ interface fllyReqeustDeatilType {
   consumer: string;
 }
 
+interface fllyResponeType {
+  content: string;
+  fllyParticipationId: number;
+  requestImageUrl: string;
+  requestPrice: number;
+}
+
 const FllyOrderDetail = () => {
   const [fllyRequestInfo, setFllyRequestInfo] = useState<fllyReqeustDeatilType>();
+  const [fllyResponseInfo, setFllyResponseInfo] = useState<fllyResponeType>();
   const fllyId = useParams();
   const router = useRouter();
   const backImgRef = useRef<HTMLDivElement>(null);
   const backRef = useRef<HTMLDivElement>(null);
+  const requestImgRef = useRef<HTMLDivElement>(null);
+  const responeImgRef = useRef<HTMLDivElement>(null);
   const [slideState, setSlideState] = useState({ activeSlide: 0, activeSlide2: 0 });
   const [slideImgSize, setSlideImgSize] = useState<number>(2);
+  const [backWidth, setbackWidth] = useState<number>();
 
   const settings = {
     slide: "div",
@@ -64,6 +75,7 @@ const FllyOrderDetail = () => {
     console.log(fllyId);
     if (backRef.current) {
       const backWidth = backRef.current.offsetWidth;
+      setbackWidth(backWidth);
       if (backImgRef.current) {
         backImgRef.current.style.height = backWidth + "px";
       }
@@ -72,7 +84,8 @@ const FllyOrderDetail = () => {
       const rsData = res.data;
       if (rsData.code == 200) {
         console.log(res.data.data);
-        setFllyRequestInfo(rsData.data);
+        setFllyRequestInfo(rsData.data.fllyRequestDto);
+        setFllyResponseInfo(rsData.data.fllyResponeDto);
       } else {
         ToastErrorMessage(rsData.message);
       }
@@ -97,14 +110,35 @@ const FllyOrderDetail = () => {
           <div className={style.headerCnt}>
             {slideState.activeSlide + 1} / {slideImgSize}
           </div>
+
           <Slider {...settings} className={style.sliderBox}>
-            <div style={{ backgroundImage: `url(/test/test-flower-img.png)` }}></div>
-            <div style={{ backgroundImage: `url(/test/vertical.jpg)` }}></div>
+            {fllyRequestInfo && (
+              <>
+                <div className={style.headerInfo}>의뢰 사진</div>
+                <Image
+                  src={fllyRequestInfo?.imageUrl}
+                  alt="의뢰 사진"
+                  width={backWidth}
+                  height={backWidth}
+                ></Image>
+              </>
+            )}
+            {fllyResponseInfo && (
+              <>
+                <div className={style.headerInfo}>제안 사진</div>
+                <Image
+                  src={fllyResponseInfo?.requestImageUrl}
+                  alt="제안 사진"
+                  width={backWidth}
+                  height={backWidth}
+                ></Image>
+              </>
+            )}
           </Slider>
         </div>
         <div className={style.detailMain}>
           {fllyRequestInfo && <RequestDetail $fllyRequestInfo={fllyRequestInfo} />}
-          {fllyRequestInfo && <ResponseDetail />}
+          {fllyResponseInfo && <ResponseDetail $fllyResponseInfo={fllyResponseInfo} />}
         </div>
       </div>
     </>
