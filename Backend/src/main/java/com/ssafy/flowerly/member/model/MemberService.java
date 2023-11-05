@@ -38,7 +38,7 @@ public class MemberService {
 
 
     public Object getMemberInfo(Long memberId) {
-        List<Object[]> object = storeInfoRepository.findBySellerInfo(2L);
+        List<Object[]> object = storeInfoRepository.findBySellerInfo(memberId);
 
         //반환값 길이가 0이면 멤버 정보가 없다는 것이다.
         if (object.size() == 0)
