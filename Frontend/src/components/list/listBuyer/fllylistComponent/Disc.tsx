@@ -18,7 +18,7 @@ const Disc = ({ card }: DiscProps) => {
   return (
     <div className={style.discMain}>
       <div className={style.discMainShortUp}>
-        <Image src={card.img} alt="시안 이미지" width={120} height={120}></Image>
+        <Image src={card.img} alt="시안 이미지" width={120} height={120} priority></Image>
         <div className={style.discText}>
           <div className={style.discTable}>
             <div>예산</div>
