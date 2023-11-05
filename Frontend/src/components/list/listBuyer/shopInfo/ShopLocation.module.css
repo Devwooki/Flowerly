@@ -1,7 +1,6 @@
 .locationMain {
-  margin-top: 20px;
+  background-color: white;
   height: 305px;
-  border: 1px solid black;
 }
 
 .mapRender {
@@ -10,7 +9,6 @@
 }
 
 .mapMarker {
-  border: 1px solid black;
   font-family: "NanumSquareNeoOTF-Bd";
   margin: auto;
 }
