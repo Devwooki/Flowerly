@@ -1,0 +1,35 @@
+.paymentInfoBack {
+  padding: 5px 10px 50px 10px;
+  overflow: hidden;
+}
+
+.detailTitle {
+  height: 25px;
+  line-height: 25px;
+  font-size: 18px;
+  font-family: "NanumSquareNeoOTF-Bd";
+  padding: 10px;
+  color: var(--blue);
+}
+
+.detailInfoBox {
+  padding: 5px 10px;
+}
+
+.detailInfo {
+  display: flex;
+  justify-content: space-between;
+}
+
+.detailInfo > div:nth-child(1) {
+  font-family: "NanumSquareNeoOTF-Bd";
+  font-size: 16px;
+}
+
+.detailInfo > div:nth-child(2) {
+  font-size: 16px;
+}
+
+.detailInfo > div:nth-child(2) > span {
+  margin-left: 8px;
+}

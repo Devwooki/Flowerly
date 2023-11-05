@@ -1,0 +1,60 @@
+.orderInfoBack {
+  padding: 5px 10px 15px 10px;
+  overflow: hidden;
+}
+
+.detailTitle {
+  height: 25px;
+  line-height: 25px;
+  font-size: 18px;
+  font-family: "NanumSquareNeoOTF-Bd";
+  padding: 10px;
+  color: var(--blue);
+}
+
+.detailInfoBox {
+  padding: 0px 10px;
+  /* border: 1px solid black; */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.detailInfoBox > div:nth-child(1) {
+  font-family: "NanumSquareNeoOTF-Bd";
+  font-size: 18px;
+}
+
+.detailInfo {
+  display: flex;
+}
+
+.detailInfo > div:nth-child(1) {
+  width: 100px;
+  font-family: "NanumSquareNeoOTF-Bd";
+  font-size: 16px;
+}
+
+.detailInfo > div:nth-child(2) {
+  font-size: 16px;
+}
+
+.requestInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.bar {
+  border: 0.5px solid var(--moregray);
+  margin: 5px 0px;
+}
+
+.requestInfo > div:nth-child(1) {
+  font-family: "NanumSquareNeoOTF-Bd";
+  font-size: 16px;
+}
+
+.requestInfo > div:nth-child(2) {
+  font-size: 14px;
+}
