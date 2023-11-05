@@ -212,7 +212,7 @@
     margin-top: 6px;
     height: 25px;
     line-height: 25px;
-    color: #80858a;
+    color: var(--blue);
     width: 100px;
     font-size: 14px;
     font-family: "NanumSquareNeoOTF-Rg";
