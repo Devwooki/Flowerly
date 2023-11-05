@@ -3,6 +3,7 @@ package com.ssafy.flowerly.seller.model;
 
 import com.ssafy.flowerly.address.repository.DongRepository;
 import com.ssafy.flowerly.address.repository.SigunguRepository;
+import com.ssafy.flowerly.chatting.repository.RequestDeliveryInfoRepository;
 import com.ssafy.flowerly.entity.*;
 import com.ssafy.flowerly.entity.type.OrderType;
 import com.ssafy.flowerly.entity.type.ProgressType;
@@ -43,6 +44,7 @@ public class SellerService {
     private final DongRepository dongRepository;
     private final SigunguRepository sigunguRepository;
     private final FllyPickupRegionRepository fllyPickupRegionRepository;
+    private final RequestDeliveryInfoRepository requestDeliveryInfoRepository;
     private final S3Service s3Service;
 
 
@@ -322,10 +324,18 @@ public class SellerService {
         String responseUrl = fllyParticipationRepository.findByFllyFllyId(fllyId).orElseThrow(
                 () -> new CustomException(ErrorCode.NOT_FIND_FLLY_PARTICIPATE)).getImageUrl();
 
+        FllyDeliveryInfoDto deliveryInfo = null;
+
+        if(fllyOrderInfo.getOrderType().equals(OrderType.DELIVERY.getTitle())) {
+            deliveryInfo = requestDeliveryInfoRepository
+                    .findByRequestRequestId(fllyOrderInfo.getRequestId())
+                    .orElseThrow(() -> new CustomException(ErrorCode.REQUEST_DELIVERY_NOT_FOUND)).toFllyDeliveryInfoDto();
+        }
         fllyOrderInfo.setResponseImgUrl(responseUrl);
 
         result.put("reqestInfo", fllyRequest);
         result.put("orderInfo", fllyOrderInfo);
+        result.put("deliveryInfo",deliveryInfo);
 
         return result;
     }

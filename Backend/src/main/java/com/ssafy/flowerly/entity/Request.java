@@ -93,6 +93,7 @@ public class Request extends BaseCreatedTimeEntity {
                 .progress(this.getFlly().getProgress().getTitle())
                 .responseContent(this.requestContent)
                 .price(this.price)
+                .createTime(super.getCreatedAt().format(Timeformatter))
                 .build();
     }
 }
