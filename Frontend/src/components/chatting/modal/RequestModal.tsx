@@ -31,7 +31,7 @@ const RequestModal: React.FC<RequestModalProps> = ({ chattingId, modalHandler, s
 
   useEffect(() => {
     axios.get(`https://flower-ly.co.kr/api/chatting/request/${chattingId}`).then((response) => {
-      // console.log(response.data.data);
+      console.log(response.data.data);
       setRequestInfo(response.data.data);
     });
   }, []);
@@ -71,7 +71,7 @@ const RequestModal: React.FC<RequestModalProps> = ({ chattingId, modalHandler, s
           <div className={style.middle}>
             <div className={style.subTitle}>주문 정보</div>
             <div className={style.content}>
-              <div>{requestInfo?.storeName}</div>
+              <div className={style.storeNameDiv}>{requestInfo?.storeName}</div>
               <div className={style.contentItem}>
                 <div className={style.itemTitle}>주문자</div>
                 <div className={style.itemText}>{requestInfo?.ordererName}</div>
@@ -81,7 +81,7 @@ const RequestModal: React.FC<RequestModalProps> = ({ chattingId, modalHandler, s
                 <div className={style.itemText}>{requestInfo?.phoneNumber}</div>
               </div>
               <div className={style.contentItem}>
-                <div className={style.itemTitle}>픽업일시</div>
+                <div className={style.itemTitle}>{requestInfo?.orderType}일시</div>
                 <div className={style.itemText}>{requestInfo?.deliveryPickupTime}</div>
               </div>
               <div className={style.contentItem} id={style.commentDiv}>
@@ -89,25 +89,29 @@ const RequestModal: React.FC<RequestModalProps> = ({ chattingId, modalHandler, s
                 <div className={style.itemText}>{requestInfo?.requestContent}</div>
               </div>
             </div>
-            <div className={style.subTitle}>배송 정보</div>
-            <div className={style.content}>
-              <div className={style.contentItem}>
-                <div className={style.itemTitle}>받는이</div>
-                <div className={style.itemText}>{requestInfo?.recipientName}</div>
-              </div>
-              <div className={style.contentItem}>
-                <div className={style.itemTitle}>연락처</div>
-                <div className={style.itemText}>{requestInfo?.recipientPhoneNumber}</div>
-              </div>
-              <div className={style.contentItem}>
-                <div className={style.itemTitle} id={style.addressTitle}>
-                  주소
+            {requestInfo?.orderType === "배달" && (
+              <>
+                <div className={style.subTitle}>배송 정보</div>
+                <div className={style.content}>
+                  <div className={style.contentItem}>
+                    <div className={style.itemTitle}>받는이</div>
+                    <div className={style.itemText}>{requestInfo?.recipientName}</div>
+                  </div>
+                  <div className={style.contentItem}>
+                    <div className={style.itemTitle}>연락처</div>
+                    <div className={style.itemText}>{requestInfo?.recipientPhoneNumber}</div>
+                  </div>
+                  <div className={style.contentItem}>
+                    <div className={style.itemTitle} id={style.addressTitle}>
+                      주소
+                    </div>
+                    <div id={style.addressInput}>
+                      <div className={style.itemText}>{requestInfo?.address}</div>
+                    </div>
+                  </div>
                 </div>
-                <div id={style.addressInput}>
-                  <div className={style.itemText}>{requestInfo?.address}</div>
-                </div>
-              </div>
-            </div>
+              </>
+            )}
           </div>
           <div className={style.bottom}>
             <div className={style.payDiv}>
