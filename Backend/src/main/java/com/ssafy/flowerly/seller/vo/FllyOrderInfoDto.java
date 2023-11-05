@@ -20,5 +20,6 @@ public class FllyOrderInfoDto {
     private String responseImgUrl;
     private String responseContent;
     private Integer price;
+    private String createTime;
 
 }
