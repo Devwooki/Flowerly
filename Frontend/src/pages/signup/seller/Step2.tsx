@@ -158,7 +158,7 @@ const Step2 = () => {
           signupData,
           {
             headers: {
-              Authorization: `Bearer ${tempToken}`,
+              Authorization: "Bearer " + tempToken,
               "X-Request-Host": host,
               "X-Request-Path": path,
             },
@@ -168,6 +168,8 @@ const Step2 = () => {
         if (response.status === 200) {
           console.log(response);
           if (tempToken) {
+            console.log(response);
+            console.log(tempToken);
             router.push(`/temp?token=${tempToken}`);
           }
         }

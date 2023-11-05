@@ -31,7 +31,7 @@ const Buyer = () => {
         buyerInput,
         {
           headers: {
-            Authorization: `Bearer ${tempToken}`,
+            Authorization: "Bearer " + tempToken,
             "X-Request-Host": host,
             "X-Request-Path": path,
           },
@@ -40,6 +40,7 @@ const Buyer = () => {
 
       if (response.status === 200) {
         if (tempToken) {
+          console.log(response);
           router.push(`/temp?token=${tempToken}`);
         }
       } else {
