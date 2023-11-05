@@ -43,29 +43,8 @@ public class MemberService {
                 .map(Member::toDto)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_MEMBER));
 
-        List<Object[]> object = storeInfoRepository.findBySellerInfo(memberId);
-        //반환값 길이가 0이면 멤버 정보가 없다는 것이다.
-        if (object.size() != 0){
-            StoreInfo tempInfo = (StoreInfo) object.get(0)[0];
-            memberInfo.setStore(StoreInfoDto.builder()
-                    .storeInfoId(tempInfo.getStoreInfoId())
-                    .member(tempInfo.getSeller().toDto())
-                    .storeName(tempInfo.getStoreName())
-                    .sellerName(tempInfo.getSellerName())
-                    .storeNumber(tempInfo.getStoreNumber())
-                    .phoneNumber(tempInfo.getPhoneNumber())
-                    .address(tempInfo.getAddress())
-                    .images(new ArrayList<>())
-                    .build());
-
-            //이미지 추가
-            for (Object[] o : object) {
-                StoreImage temp = (StoreImage) o[1];
-                memberInfo.getStore().getImages().add(temp.getImageUrl());
-            }
-        }
-
-
+        //상점 정보가 있으면 값을 넣고 없으면 null을 넣는더.
+        memberInfo.setStore(getStoreInfo(memberId));
         return memberInfo;
     }
 
@@ -94,7 +73,8 @@ public class MemberService {
         Map<String, Object> sellerInput = (Map<String, Object>) data.get("sellerInput");
 
         // 주소 분할
-        String[] addressParts = ((String) data.get("address")).split(" ");
+        //String[] addressParts = ((String) data.get("address")).split(" ");
+        String[] addressParts = ((String) sellerInput.get("address")).split(" ");
         if (addressParts.length < 3) {
             throw new CustomException(ErrorCode.INVALID_ADDRESS_FORMAT);
         }
@@ -125,8 +105,6 @@ public class MemberService {
                 .sigungu(sigungu)
                 .dong(dong)
                 .build();
-
-
 
 
         storeInfoRepository.save(storeInfo);
@@ -163,5 +141,25 @@ public class MemberService {
 
 
 
+    }
+
+
+    private StoreInfoDto getStoreInfo(Long memberId){
+        List<Object[]> object = storeInfoRepository.findBySellerInfo(memberId);
+        //반환값 길이가 0이면 멤버 정보가 없다는 것이다.
+        if (object.size() != 0){
+            StoreInfo tempInfo = (StoreInfo) object.get(0)[0];
+
+            StoreInfoDto storeInfoDto = tempInfo.toDto();
+            storeInfoDto.setImages(new ArrayList<>());
+
+            //이미지 추가
+            for (Object[] o : object) {
+                StoreImage temp = (StoreImage) o[1];
+                storeInfoDto.getImages().add(temp.getImageUrl());
+            }
+            return storeInfoDto;
+        }
+        return null;
     }
 }

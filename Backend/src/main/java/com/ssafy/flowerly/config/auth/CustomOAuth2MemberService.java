@@ -91,7 +91,7 @@ public class CustomOAuth2MemberService implements OAuth2UserService<OAuth2UserRe
                 //이메일이나 닉네임이 바뀔경우 업데이트 해주는 것
                 .map(m -> {
                     log.info("유저 정보가 있내");
-                    return memberRepository.save(m.updateNicknameAndMail(oAuth2UserInfo.getNickname(), oAuth2UserInfo.getEmail()));
+                    return memberRepository.save(m.updateMail(oAuth2UserInfo.getEmail()));
                 })//업데이트 하는 것
                 //유저 정보가 없으면 생성한다.
                 .orElseGet(()-> {

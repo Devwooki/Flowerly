@@ -55,10 +55,10 @@ public class Member extends BaseTimeEntity {
                 .build();
     }
 
-    public Member updateNicknameAndMail(String nickname, String email){
-        this.nickName = nickname;
+    public Member updateMail(String email){
         this.email = email;
 //        dataUpdate();
+        System.out.println(this);
         return this;
     }
 //    private void dataUpdate(){
