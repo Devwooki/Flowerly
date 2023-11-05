@@ -44,9 +44,9 @@ public class MemberService {
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_MEMBER));
 
         List<Object[]> object = storeInfoRepository.findBySellerInfo(memberId);
-        StoreInfo tempInfo = (StoreInfo) object.get(0)[0];
         //반환값 길이가 0이면 멤버 정보가 없다는 것이다.
         if (object.size() != 0){
+            StoreInfo tempInfo = (StoreInfo) object.get(0)[0];
             memberInfo.setStore(StoreInfoDto.builder()
                     .storeInfoId(tempInfo.getStoreInfoId())
                     .member(tempInfo.getSeller().toDto())
