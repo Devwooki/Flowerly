@@ -1,0 +1,33 @@
+.responseBack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.detailMainTitle {
+  font-size: 28px;
+  text-align: left;
+  font-family: "Pretendard-Bold";
+  margin-bottom: 10px;
+}
+
+.detailMainBox {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.detailInfo {
+  width: 100;
+  display: flex;
+  /* border: 1px, solid, red; */
+}
+
+.detailInfo > div:nth-child(1) {
+  width: 120px;
+  color: #757575;
+}
+
+.detailInfo > div:nth-child(2) {
+  width: calc(100% - 140px);
+}

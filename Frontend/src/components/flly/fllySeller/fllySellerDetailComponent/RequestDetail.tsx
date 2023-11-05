@@ -79,10 +79,12 @@ const RequestDetail = ({ $fllyRequestInfo }: { $fllyRequestInfo: fllyReqeustDeat
         <div>주문 유형</div>
         <div>{$fllyRequestInfo.orderType}</div>
       </div>
-      <div className={style.detailMainBox}>
-        <div>주소</div>
-        <div>{$fllyRequestInfo.requestAddress}</div>
-      </div>
+      {$fllyRequestInfo.orderType === "배달" && (
+        <div className={style.detailMainBox}>
+          <div>주소</div>
+          <div>{$fllyRequestInfo.requestAddress}</div>
+        </div>
+      )}
       <div className={style.detailMainBox}>
         <div>요청 사항</div>
         <div>{$fllyRequestInfo.requestContent}</div>

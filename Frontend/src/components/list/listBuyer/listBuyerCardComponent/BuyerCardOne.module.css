@@ -1,3 +1,133 @@
 .cardBox {
-  border: 1px solid black;
+  margin: 20px;
+  border-radius: 20px;
+  padding: 10px;
+  font-size: 16px;
+  box-shadow: 0 0 2px #a7a7a7;
+  background-color: var(--gray);
+  padding-top: 10px;
+}
+
+.cardImgBox {
+  position: relative;
+  width: auto;
+  max-width: 350px;
+  margin: 0 auto;
+  margin-top: 10px;
+  padding-top: 90%;
+  /* border: 1px solid black; */
+}
+
+.cardImgBox img {
+  border-radius: 10px;
+}
+
+.InfoTextHeader {
+  font-family: "NanumSquareNeoOTF-Bd";
+  padding-bottom: 10px;
+  padding-left: 10px;
+  margin-right: 10px;
+}
+.infoTable {
+  display: flex;
+  margin-bottom: 5px;
+  margin-left: 5px;
+  font-size: 14px;
+  /* border: 1px solid black; */
+}
+
+.infoColorTable {
+  font-family: "NanumSquareNeoOTF-Bd";
+  margin-left: 10px;
+  font-size: 14px;
+  position: relative;
+  display: flex;
+}
+
+.infoColorTable div:nth-child(2) {
+  margin-left: 10px;
+}
+
+@media (max-width: 374px) {
+  .infoColorTable {
+    display: block;
+  }
+  .colorInfo {
+    margin-top: 8px;
+    margin-bottom: 5px;
+  }
+}
+
+.infoTitle {
+  /* border: 1px solid black; */
+  font-family: "NanumSquareNeoOTF-Bd";
+  padding: 5px;
+  line-height: 25px;
+  margin-right: 30px;
+}
+
+.infoText {
+  padding: 20px;
+  /* border: 1px solid black; */
+}
+
+.info {
+  padding: 5px 12px;
+  background-color: var(--moregray);
+  font-family: "NanumSquareNeoOTF-Rg";
+  line-height: 15px;
+  border-radius: 5px;
+  height: 15px;
+  margin-top: 5px;
+}
+.colorInfo {
+  height: 15px;
+  padding: 5px 12px;
+  background-color: var(--moregray);
+  font-family: "NanumSquareNeoOTF-Rg";
+  line-height: 15px;
+  border-radius: 5px;
+  display: inline-block;
+  font-size: 14px;
+  margin-left: 0.3rem;
+}
+
+.flowerShop {
+  padding: 3px 8px;
+  font-family: "NanumSquareNeoOTF-Rg";
+  line-height: 20px;
+  height: 20px;
+  border-radius: 5px;
+  margin: 0 auto;
+  margin-top: 5px;
+  font-size: 14px;
+  /* background-color: white; */
+  /* border: 1px solid var(--dark); */
+}
+
+.currentFlower {
+  top: 10px;
+}
+
+.cardBtn {
+  text-align: center;
+  margin: 10px 5px;
+}
+
+.cardBtn > button {
+  padding: 8px 20px;
+  border-style: none;
+  border-radius: 5px;
+  color: white;
+  box-shadow: 0 0 4px #d5d5d5;
+}
+
+.fllistBtn {
+  margin-right: 15px;
+  background-color: var(--blue);
+}
+
+.cancelBtn {
+  margin-right: 15px;
+  background-color: var(--mint);
 }

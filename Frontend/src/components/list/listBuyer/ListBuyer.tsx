@@ -4,7 +4,7 @@ import BuyerCardOne from "./listBuyerCardComponent/BuyerCardOne";
 import BuyerCards from "./listBuyerCardComponent/BuyerCards";
 
 const ListBuyer = () => {
-  const procesingCard: BuyerCard[] = [
+  const procesingCards: BuyerCard[] = [
     {
       fllyId: 1,
       state: "입찰",
@@ -47,8 +47,19 @@ const ListBuyer = () => {
       img: "/img/homeBanner/141_purple_gladiolus.jpg",
       situation: "선택안함",
       target: "부모님 ",
-      selectedColor: ["주황색", "분홍색", "노랑색"],
+      selectedColor: ["선택안함"],
       shopName: "현욱이네 꼬까게",
+    },
+  ];
+  const procesingCard: BuyerCard[] = [
+    {
+      fllyId: 1,
+      state: "입찰",
+      img: "/img/homeBanner/164_red_phalaenopsis.jpg",
+      situation: "축하",
+      target: "연인",
+      selectedColor: ["분홍색", "파랑색", "보라색"],
+      shopName: "입찰중",
     },
   ];
 
@@ -59,9 +70,10 @@ const ListBuyer = () => {
       </div>
       <div className={style.ListBuyerMain}>
         {procesingCard.length === 1 ? (
+          // {procesingCards.length === 1 ? (
           <BuyerCardOne card={procesingCard[0]} />
         ) : (
-          procesingCard.map((card, idx) => <BuyerCards card={card} key={idx} />)
+          procesingCards.map((card, idx) => <BuyerCards card={card} key={idx} />)
         )}
       </div>
     </div>

@@ -2,11 +2,6 @@ import React from "react";
 import style from "./ShopReview.module.css";
 
 const ShopReview = () => {
-  type review = {
-    userName: string;
-    reviewTime: string;
-    reviewContent: string;
-  };
   const reviewList = [
     { userName: "닉네임이요", reviewTime: "2022.9.02", reviewContent: "꽃다발 너무예뻐요" },
     { userName: "김동민", reviewTime: "2022.12.18", reviewContent: "잘 받았습니다" },

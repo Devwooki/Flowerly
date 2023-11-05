@@ -1,7 +1,7 @@
 import React from "react";
 import style from "./PaymentInfoBox.module.css";
 
-const PaymentInfoBox = () => {
+const PaymentInfoBox = ({ $orderPrice }: { $orderPrice: number }) => {
   return (
     <>
       <div className={style.paymentInfoBack}>
@@ -10,7 +10,7 @@ const PaymentInfoBox = () => {
           <div className={style.detailInfo}>
             <div>결제금액</div>
             <div>
-              33000
+              {$orderPrice}
               <span>원</span>
             </div>
           </div>

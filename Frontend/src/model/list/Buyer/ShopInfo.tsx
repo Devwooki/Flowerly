@@ -20,3 +20,9 @@ type markerlist = {
   };
   content: string;
 };
+
+type review = {
+  userName: string;
+  reviewTime: string;
+  reviewContent: string;
+};

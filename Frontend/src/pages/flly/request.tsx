@@ -23,9 +23,17 @@ const FllyTarget = () => {
   const [price, setPrice] = useState<number>();
   const colorNames = ["RED", "ORANGE", "PINK", "YELLOW", "BLUE", "PURPLE", "WHITE", "선택 안함"];
   const colorKorean = ["빨강", "주황", "분홍", "노랑", "파랑", "보라", "흰색", "선택 안함"];
-  const dates = ["11.17", "11.18", "11.19"];
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [oneDayLater, setOneDayLater] = useState(new Date());
+  const [twoDaysLater, setTwoDaysLater] = useState(new Date());
+  // const dates = ["11.17", "11.18", "11.19"];
+  const [dates, setDates] = useState([] as string[]);
   const [dateIdx, setDateIdx] = useState<number>(0);
-  // const [time, setTime] = useState<
+  const [time, setTime] = useState<string>("")
+  const [requestText, setRequestText] = useState<string>();
+  const [dateTime, setDateTime] = useState<Date | null>(null);
+  
+  // 날짜와 시간 합치기
 
   const handlePrevClick = () => {};
 
@@ -45,7 +53,55 @@ const FllyTarget = () => {
 
   const handleDate = (idx: number) => {
     setDateIdx(idx);
+    const time = new Date();
+    
+    if(idx == 0) {
+      time.setMonth(currentDate.getMonth());
+      time.setDate(currentDate.getDate());
+    } else if(idx == 1) {
+      time.setMonth(oneDayLater.getMonth());
+      time.setDate(oneDayLater.getDate());
+    } else if(idx == 2) {
+      time.setMonth(twoDaysLater.getMonth());
+      time.setDate(twoDaysLater.getDate());
+    }
   };
+
+  const handleText = (e: any) => {
+    setRequestText(e.target.value);
+  }
+
+  const handleTimeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setTime(event.target.value);
+
+    const timeParts = event.target.value.split(':');
+    if (timeParts.length === 2) {
+      const hours = parseInt(timeParts[0]);
+      const minutes = parseInt(timeParts[1]);
+      if (!isNaN(hours) && !isNaN(minutes)) {
+        const time = new Date();
+        time.setHours(hours);
+        time.setMinutes(minutes);
+        setDateTime(time);
+        console.log(dateTime);
+      }
+    }
+  };
+
+  useEffect(() => {
+    const currentDate = new Date();
+    setCurrentDate(currentDate);
+    const oneDayLater = new Date(currentDate);
+    oneDayLater.setDate(currentDate.getDate() + 1);
+    setOneDayLater(oneDayLater);
+    const twoDaysLater = new Date(currentDate);
+    twoDaysLater.setDate(currentDate.getDate() + 2);
+    setTwoDaysLater(twoDaysLater);
+  }, []);
+
+  useEffect(() => {
+    setDates([`${currentDate.getMonth()+1}.${currentDate.getDate()}`, `${oneDayLater.getMonth()+1}.${oneDayLater.getDate()}`, `${twoDaysLater.getMonth()+1}.${twoDaysLater.getDate()}`]);
+  }, [currentDate, oneDayLater, twoDaysLater]);
 
   return (
     <>
@@ -146,7 +202,7 @@ const FllyTarget = () => {
                       {item}
                     </span>
                   ))}
-                  <input type="time" />
+                  <input type="time" value={time} onChange={handleTimeChange} />
                 </td>
               </tr>
               <tr>
@@ -155,7 +211,7 @@ const FllyTarget = () => {
                   <br />
                   (150자)
                 </th>
-                <td></td>
+                <td><textarea maxLength={150} value={requestText} onChange={handleText}/><div className={style.textCount}>{requestText?.length}/150자</div></td>
               </tr>
             </table>
           </div>

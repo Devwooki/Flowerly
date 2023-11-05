@@ -5,7 +5,7 @@ import FllySituation from "@/components/flly/fllyUser/FllySituation";
 <<<<<<< Updated upstream
 
 const FllyMain = () => {
-  const [userType, setUserType] = useState<string>("seller");
+  const [userType, setUserType] = useState<string>("buyer");
 
   return (
     <>{(userType !== "seller" && <FllySituation />) || (userType === "seller" && <FllySeller />)}</>
