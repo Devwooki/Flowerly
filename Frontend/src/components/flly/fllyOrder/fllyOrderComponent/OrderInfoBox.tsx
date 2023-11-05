@@ -12,6 +12,7 @@ interface orderInfoType {
   responseImgUrl: string | null;
   responseContent: string;
   price: number;
+  createTime: string;
 }
 
 const OrderInfoBox = ({ $orderInfo }: { $orderInfo: orderInfoType }) => {
@@ -31,7 +32,7 @@ const OrderInfoBox = ({ $orderInfo }: { $orderInfo: orderInfoType }) => {
           </div>
           <div className={style.detailInfo}>
             <div>주문일시</div>
-            <div></div>
+            <div>{$orderInfo.createTime}</div>
           </div>
           <div className={style.bar} />
           <div className={style.detailInfo}>

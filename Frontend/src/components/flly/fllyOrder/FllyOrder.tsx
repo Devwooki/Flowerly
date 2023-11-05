@@ -38,6 +38,7 @@ interface orderInfoType {
   responseImgUrl: string | null;
   responseContent: string;
   price: number;
+  createTime: string;
 }
 
 interface deliveryInfoType {
