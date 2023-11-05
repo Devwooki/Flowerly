@@ -71,8 +71,9 @@ public class SellerService {
         의뢰 상세서 내용  (제안)
      */
     public FllyRequestDto getRequestLetter(Long fllyId) {
-
-        FllyRequestDto fllyRequest = getFllyInfo(fllyId).toFllyRequestDto();
+        //여기선 flly 검증 x
+        FllyRequestDto fllyRequest = fellyRepository.findByFllyId(fllyId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_FLLY)).toFllyRequestDto();
         //배달 일때만 주소 세팅
         if(fllyRequest.getOrderType().equals(OrderType.DELIVERY.getTitle())) {
             FllyDeliveryRegion fllyDelivery = fllyDeliveryRegionRepository
@@ -92,7 +93,7 @@ public class SellerService {
         //의사 상세서 제안 가져오기
         FllyRequestDto fllyRequestDto = getRequestLetter(fllyId);
         result.setFllyRequestDto(fllyRequestDto);
-        //의뢰 조회
+        //의뢰 조회 (여기선 검증을하면안되다! )
         FllyResponeDto fllyResponeDto = fllyParticipationRepository.findByFllyFllyId(fllyId)
                 .map(FllyParticipation::toFllyResponeDto).orElseThrow();
         result.setFllyResponeDto(fllyResponeDto);
