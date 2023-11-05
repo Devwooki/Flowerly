@@ -19,7 +19,6 @@ const Buyer = () => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setBuyerInput({ ...buyerInput, [name]: value });
-    console.log(buyerInput);
   };
 
   const handleComplete = async () => {
@@ -41,6 +40,7 @@ const Buyer = () => {
       if (response.status === 200) {
         if (tempToken) {
           console.log(response);
+          console.log("회원가입 성공");
           router.push(`/temp?token=${tempToken}`);
         }
       } else {
