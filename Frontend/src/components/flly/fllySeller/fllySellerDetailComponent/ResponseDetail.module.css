@@ -20,7 +20,7 @@
 .detailInfo {
   width: 100;
   display: flex;
-  border: 1px, solid, red;
+  /* border: 1px, solid, red; */
 }
 
 .detailInfo > div:nth-child(1) {

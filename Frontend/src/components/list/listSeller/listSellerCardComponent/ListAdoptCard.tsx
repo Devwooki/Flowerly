@@ -56,7 +56,7 @@ const ListAdoptCard = ({
     if ($adoptInfo) {
       router.push(
         {
-          pathname: "/flly/order/detail/[fllyId]",
+          pathname: "/flly/order/sheet/[fllyId]",
           query: { fllyId: $adoptInfo.fllyId },
         },
         "/flly/detail", // 이것은 브라우저 주소창에 표시될 URL입니다.
