@@ -5,7 +5,7 @@
   font-size: 16px;
   box-shadow: 0 0 2px #a7a7a7;
   background-color: var(--gray);
-  padding-top: 0;
+  padding-top: 10px;
 }
 
 .cardInfo {
@@ -63,6 +63,7 @@
   height: 15px;
   margin-top: 5px;
 }
+
 .colorInfo {
   height: 15px;
   padding: 5px 12px;
@@ -73,6 +74,16 @@
   display: inline-block;
   font-size: 14px;
   margin: 0 5px 0 0;
+  color: black;
+}
+
+@media (max-width: 426px) {
+  .colorInfo {
+    background-color: currentColor;
+    border-radius: 100%;
+    width: 10px;
+    height: 20px;
+  }
 }
 
 .flowerShop {
