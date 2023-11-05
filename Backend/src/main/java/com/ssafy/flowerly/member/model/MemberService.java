@@ -81,6 +81,7 @@ public class MemberService {
         memberRepository.save(member);
     }
 
+    @Transactional    
     public void signupSeller(Map<String, Object> data, Long memberId) {
 
         Member member = memberRepository.findByMemberId(memberId)
