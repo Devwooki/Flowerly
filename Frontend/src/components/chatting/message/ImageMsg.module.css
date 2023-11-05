@@ -1,0 +1,11 @@
+.mainBox {
+  box-sizing: border-box;
+  min-width: 240px;
+  max-width: 240px;
+  /* height: 240px; */
+  border: 1px solid var(--moregray);
+  border-radius: 5px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
