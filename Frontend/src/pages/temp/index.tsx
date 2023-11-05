@@ -13,10 +13,10 @@ const Temp = () => {
   const { token } = router.query as { token: string };
 
   useEffect(() => {
-    if (token) {
+    if (token && host && path) {
       getMemberinfo(token);
     }
-  }, [token]);
+  }, [token, host, path]);
 
   useEffect(() => {
     setPath(window.location.pathname);
@@ -43,7 +43,7 @@ const Temp = () => {
 
           localStorage.setItem("accessToken", token);
 
-          router.replace(router.pathname);
+          router.replace("/");
 
           router.push("/");
           console.log("로그인 성공");
