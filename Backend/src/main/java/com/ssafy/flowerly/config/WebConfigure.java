@@ -21,8 +21,8 @@ public class WebConfigure implements WebMvcConfigurer {
         registry.addInterceptor(authInterceptor)
                 .order(0) //가장 첫 번째 순서로 수행한다
                 .addPathPatterns("/api/member/signup/seller")
-                .addPathPatterns("/api/member/signup/buyer");
-                //.addPathPatterns("/api/member"); // "/temp"에서 접근할 때, 인터셉터를 거치게한다.
+                .addPathPatterns("/api/member/signup/buyer")
+                .addPathPatterns("/api/member"); // "/temp"에서 접근할 때, 인터셉터를 거치게한다.
 
     }
     @Override

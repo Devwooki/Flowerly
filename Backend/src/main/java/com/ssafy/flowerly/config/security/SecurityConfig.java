@@ -50,6 +50,8 @@ public class SecurityConfig {
                 .authorizeRequests()
                 //.antMatchers("/api/member").permitAll()
                 .antMatchers("/**").permitAll()
+                .antMatchers("/api/member").authenticated()
+                .antMatchers("/api/member/signup/**").authenticated()
                 //.antMatchers("/api/member/dummy-token").permitAll()
                 //.antMatchers("/api/s3/**").permitAll()
                 //.antMatchers("/ws/**").permitAll()
