@@ -4,6 +4,7 @@ import com.ssafy.flowerly.entity.common.BaseCreatedTimeEntity;
 import com.ssafy.flowerly.entity.type.*;
 import com.ssafy.flowerly.seller.buyer.dto.FllyBuyerResponseDto;
 import com.ssafy.flowerly.seller.vo.FllyRequestDto;
+import com.ssafy.flowerly.seller.vo.FllyRequestSimpleDto;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -105,4 +106,18 @@ public class Flly extends BaseCreatedTimeEntity {
         this.progress = progress;
     }
 
+    public FllyRequestSimpleDto toFllyRequestSimpleDto(){
+
+        return FllyRequestSimpleDto.builder()
+                .fllyId(this.fllyId)
+                .situation(this.target != null ? this.situation.toString() : null)
+                .target(this.target != null ? this.target.toString() : null)
+                .color1(this.color1 != null ? this.color1.getTitle() : null)
+                .color2(this.color2 != null ? this.color2.getTitle() : null)
+                .color3(this.color3 != null ? this.color3.getTitle() : null)
+                .flower1(this.flower1 != null ? this.flower1.toFlowerSimpleInfoDto() : null)
+                .flower2(this.flower2 != null ?this.flower2.toFlowerSimpleInfoDto() : null)
+                .flower3(this.flower3 != null ?this.flower3.toFlowerSimpleInfoDto() : null)
+                .build();
+    }
 }

@@ -3,6 +3,7 @@ package com.ssafy.flowerly.entity;
 import com.ssafy.flowerly.chatting.dto.RequestFromChattingDto;
 import com.ssafy.flowerly.entity.common.BaseCreatedTimeEntity;
 import com.ssafy.flowerly.entity.type.OrderType;
+import com.ssafy.flowerly.seller.vo.FllyOrderInfoDto;
 import com.ssafy.flowerly.seller.vo.OrderSelectSimpleDto;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
@@ -79,4 +80,19 @@ public class Request extends BaseCreatedTimeEntity {
         this.price = -1;
     }
 
+    public FllyOrderInfoDto toFllyOrderInfoDto(){
+        DateTimeFormatter Timeformatter = DateTimeFormatter.ofPattern("yyyy년MM월dd일 HH시mm분");
+
+        return FllyOrderInfoDto.builder()
+                .requestId(this.requestId)
+                .orderName(this.orderName)
+                .phoneNumber(this.phoneNumber)
+                .orderType(this.orderType.getTitle())
+                .deliveryPickupTime(this.deliveryPickupTime != null ? this.deliveryPickupTime.format(Timeformatter) : null)
+                .fllyId(this.getFlly().getFllyId())
+                .progress(this.getFlly().getProgress().getTitle())
+                .responseContent(this.requestContent)
+                .price(this.price)
+                .build();
+    }
 }
