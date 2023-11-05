@@ -49,7 +49,7 @@
     margin-top: 6px;
     height: 25px;
     line-height: 25px;
-    color: #80858a;
+    color: var(--blue);
     width: 90px;
     font-size: 12px;
     font-family: "NanumSquareNeoOTF-Rg";

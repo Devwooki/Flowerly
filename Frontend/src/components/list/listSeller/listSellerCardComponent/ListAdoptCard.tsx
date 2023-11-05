@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import style from "./ListAdoptCard.module.css";
 import Image from "next/image";
+import { useRouter } from "next/router";
+import { ToastErrorMessage } from "@/model/toastMessageJHM";
 
 interface adoptType {
   requestId: number;
@@ -36,8 +38,10 @@ const ListAdoptCard = ({
 
   const [progressState, setProgressState] = useState<string>();
   const [progressImg, setProgressImg] = useState<string>("/img/icon/flower-bouquet.png");
+  const router = useRouter();
 
   useEffect(() => {
+    console.log($adoptInfo.fllyId);
     if ($adoptInfo.progress === "주문완료") {
       setProgressState("제작중");
       setProgressImg(flowerSrc);
@@ -47,6 +51,21 @@ const ListAdoptCard = ({
       setProgressImg(paperSrc);
     }
   }, [$adoptInfo.progress]);
+
+  const pageMoveHandelr = () => {
+    if ($adoptInfo) {
+      router.push(
+        {
+          pathname: "/flly/order/detail/[fllyId]",
+          query: { fllyId: $adoptInfo.fllyId },
+        },
+        "/flly/detail", // 이것은 브라우저 주소창에 표시될 URL입니다.
+        { shallow: true },
+      );
+    } else {
+      ToastErrorMessage("잠시후 다시 눌러주세요!");
+    }
+  };
 
   return (
     <>
@@ -81,7 +100,7 @@ const ListAdoptCard = ({
                 </div>
               </div>
               <div>
-                <div className={style.moveBtnBox}>
+                <div className={style.moveBtnBox} onClick={pageMoveHandelr}>
                   주문서 보기<span> &gt;</span>
                 </div>
               </div>
