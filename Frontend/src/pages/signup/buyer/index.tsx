@@ -30,7 +30,7 @@ const Buyer = () => {
         buyerInput,
         {
           headers: {
-            Authorization: "Bearer " + tempToken,
+            Authorization: `Bearer ${tempToken}`,
             "X-Request-Host": host,
             "X-Request-Path": path,
           },
@@ -41,7 +41,7 @@ const Buyer = () => {
         if (tempToken) {
           console.log(response);
           console.log("회원가입 성공");
-          router.push(`/temp?token=${tempToken}`);
+          router.push("/temp");
         }
       } else {
         console.error("회원가입 실패:", response);
