@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import style from "./ParticipationInfo.module.css";
 import Image from "next/image";
-import FllyDetailModal from "../modal/FllyDetailModal";
 
 type ParticipationFormProps = {
   chattingId: number;
@@ -18,8 +17,7 @@ type Participation = {
 
 const ParticipationForm: React.FC<ParticipationFormProps> = ({ chattingId, modalHandler }) => {
   const [participationInfo, setParticipationInfo] = useState<Participation | null>(null);
-  const [detailOpened, setDetailOpened] = useState(false);
-  // axios로 fllyInfo 불러오기
+
   useEffect(() => {
     axios.get(`https://flower-ly.co.kr/api/chatting/flly/${chattingId}`).then((response) => {
       setParticipationInfo(response.data.data);
@@ -48,12 +46,10 @@ const ParticipationForm: React.FC<ParticipationFormProps> = ({ chattingId, modal
                 height={14}
                 alt="상태이미지"
               />
-              <div id={style.price}>
-                {participationInfo && participationInfo.offerPrice.toLocaleString()} 원
-              </div>
+              <div id={style.price}>{participationInfo?.offerPrice.toLocaleString()} 원</div>
             </div>
             <div className={style.contentItem} id={style.comment}>
-              <div>{participationInfo && participationInfo.content}</div>
+              <div>{participationInfo?.content}</div>
             </div>
           </div>
         </div>

@@ -35,3 +35,7 @@
   font-family: "NanumSquareNeoOTF-Rg";
   font-size: 14px;
 }
+
+.imgInput {
+  display: none;
+}

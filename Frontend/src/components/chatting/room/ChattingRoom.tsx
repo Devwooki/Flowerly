@@ -112,6 +112,10 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
     messageEndRef.current?.scrollIntoView({ behavior: "auto" });
   }, [chattingMsgs, menuOpen]);
 
+  const imageLoadHandler = () => {
+    messageEndRef.current?.scrollIntoView({ behavior: "auto" });
+  };
+
   const moveBack = () => {
     route.back();
   };
@@ -132,31 +136,33 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
     }
   };
 
-  const sendTextMessage = (content: string) => {
-    sendMessage("TEXT", content);
-  };
-
-  const changeMenuOpen = () => {
-    // console.log(menuOpen);
-    setMenuOpen(!menuOpen);
-  };
-
   const closeMenu = () => {
     if (menuOpen) changeMenuOpen();
   };
 
+  // 타입별 메세지 전송 관련
+  const sendTextMessage = (content: string) => {
+    sendMessage("TEXT", content);
+  };
+  const changeMenuOpen = () => {
+    // console.log(menuOpen);
+    setMenuOpen(!menuOpen);
+  };
   const sendOrderForm = () => {
     sendMessage("ORDER_FORM", "주문 유형을 선택해주세요.");
   };
-
   const sendRequestMsg = () => {
     sendMessage("ORDER_COMPLETE", "주문서가 도착했습니다.");
   };
-
   const sendPaymentReqMsg = () => {
-    console.log("sendPaymentReqMsg");
+    // console.log("sendPaymentReqMsg");
+    sendMessage("PAYMENT_FORM", "결제를 요청하였습니다.");
+  };
+  const sendImageMsg = (imgUrl: string) => {
+    sendMessage("IMAGE", imgUrl);
   };
 
+  // 모달 상태 관련
   const [fllyModalState, setFllyModalState] = useState(false);
   const [fllyId, setFllyId] = useState<number>();
   const [pickupModalState, setPickupModalState] = useState(false);
@@ -193,6 +199,7 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
                   message={message}
                   chattingId={chattingId}
                   modalHandler={modalHandler}
+                  imageLoadHandler={imageLoadHandler}
                 />
               ) : (
                 <MyChattingMsg
@@ -200,6 +207,7 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
                   message={message}
                   chattingId={chattingId}
                   modalHandler={modalHandler}
+                  imageLoadHandler={imageLoadHandler}
                 />
               );
             })}
@@ -207,7 +215,9 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
         </div>
         <div className={style.bottom}>
           <ChattingInput sendHandler={sendTextMessage} menuHandler={changeMenuOpen} />
-          {menuOpen && <ChattingMenu sendOrderFormHandler={sendOrderForm} />}
+          {menuOpen && (
+            <ChattingMenu sendOrderFormHandler={sendOrderForm} sendImgHandler={sendImageMsg} />
+          )}
         </div>
       </div>
       {fllyModalState && <FllyDetailModal chattingId={chattingId} modalHandler={modalHandler} />}
