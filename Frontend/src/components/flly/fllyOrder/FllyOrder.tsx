@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import style from "./style/FllyOrder.module.css";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -6,9 +6,67 @@ import FllyInfoBox from "./fllyOrderComponent/FllyInfoBox";
 import OrderInfoBox from "./fllyOrderComponent/OrderInfoBox";
 import ShippingInfoBox from "./fllyOrderComponent/ShippingInfoBox";
 import PaymentInfoBox from "./fllyOrderComponent/PaymentInfoBox";
+import axios from "axios";
+import { useParams } from "next/navigation";
+
+interface flowerType {
+  flowerName: string;
+  meaning: string;
+}
+
+interface resultSimpleType {
+  fllyId: number;
+  requestImgUrl: string | null;
+  situation: string | null;
+  target: string | null;
+  color1: string | null;
+  color2: string | null;
+  color3: string | null;
+  flower1: flowerType;
+  flower2: flowerType;
+  flower3: flowerType;
+}
+
+interface orderInfoType {
+  requestId: number;
+  orderName: string;
+  phoneNumber: string;
+  orderType: string;
+  deliveryPickupTime: string;
+  fllyId: number;
+  progress: string;
+  responseImgUrl: string | null;
+  responseContent: string;
+  price: number;
+  createTime: string;
+}
+
+interface deliveryInfoType {
+  recipientName: string;
+  phoneNumber: string;
+  address: string;
+}
 
 const FllyOrder = () => {
   const router = useRouter();
+  const fllyId = useParams();
+  const [requestInfo, setRequestInfo] = useState<resultSimpleType>();
+  const [orderInfo, setOrderInfo] = useState<orderInfoType>();
+  const [deliverInfo, setDeliverInfo] = useState<deliveryInfoType>();
+  //나중에 바뀔거
+  const [memberType, setMemberType] = useState<string>("seller");
+
+  useEffect(() => {
+    axios.get(`https://flower-ly.co.kr/api//seller/flly/order/` + fllyId.fllyId).then((res) => {
+      console.log(res);
+      const rData = res.data;
+      if (rData.code === 200) {
+        setRequestInfo(rData.data.reqestInfo);
+        setOrderInfo(rData.data.orderInfo);
+        setDeliverInfo(rData.data.deliverInfo);
+      }
+    });
+  }, []);
 
   return (
     <>
@@ -27,18 +85,31 @@ const FllyOrder = () => {
           <div className={style.headerTitle}>플리 주문서</div>
         </div>
         <div className={style.infoBox}>
-          <div className={style.fllyInfoBox}>
-            <FllyInfoBox />
-          </div>
-          <div className={style.oderInfoBox}>
-            <OrderInfoBox />
-          </div>
-          <div className={style.shippingInfoBox}>
-            <ShippingInfoBox />
-          </div>
-          <div className={style.paymentInfoBox}>
-            <PaymentInfoBox />
-          </div>
+          {requestInfo && (
+            <div className={style.fllyInfoBox}>
+              <FllyInfoBox
+                $requestInfo={requestInfo}
+                $imgUrl={
+                  memberType === "seller" ? requestInfo.requestImgUrl : orderInfo?.responseImgUrl
+                }
+              />
+            </div>
+          )}
+          {orderInfo && (
+            <>
+              <div className={style.oderInfoBox}>
+                <OrderInfoBox $orderInfo={orderInfo} />
+              </div>
+              {orderInfo?.orderType === "배달" && deliverInfo && (
+                <div className={style.shippingInfoBox}>
+                  <ShippingInfoBox $deliveryInfo={deliverInfo} />
+                </div>
+              )}
+              <div className={style.paymentInfoBox}>
+                <PaymentInfoBox $orderPrice={orderInfo.price} />
+              </div>
+            </>
+          )}
         </div>
       </div>
     </>
