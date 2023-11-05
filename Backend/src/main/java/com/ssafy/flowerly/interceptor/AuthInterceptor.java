@@ -2,6 +2,7 @@ package com.ssafy.flowerly.interceptor;
 
 import com.ssafy.flowerly.JWT.JWTService;
 import com.ssafy.flowerly.exception.AuthException;
+import com.ssafy.flowerly.exception.CustomException;
 import com.ssafy.flowerly.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +27,9 @@ public class AuthInterceptor implements HandlerInterceptor {
         //request를 보낸 대상의 end-point가 /temp가 아니면 예외 발생
         log.info("{}", request.getRequestURI());
         log.info("{}, {} ",prevPath, prevHost);
+
+        if(prevHost == null || prevPath == null)
+            throw new CustomException(ErrorCode.INVALID_ACCESS);
 
         if(!(prevPath.startsWith("/temp") || prevPath.startsWith("/signup"))
         && !(prevHost.equals("localhost:6090") || prevHost.startsWith("flower-ly.co.kr")))
