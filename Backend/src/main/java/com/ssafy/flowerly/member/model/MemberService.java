@@ -6,6 +6,7 @@ import com.ssafy.flowerly.entity.*;
 import com.ssafy.flowerly.exception.CustomException;
 import com.ssafy.flowerly.exception.ErrorCode;
 import com.ssafy.flowerly.member.MemberRole;
+import com.ssafy.flowerly.member.vo.MemberDto;
 import com.ssafy.flowerly.seller.model.StoreDeliveryRegionRepository;
 import com.ssafy.flowerly.JWT.JWTService;
 import com.ssafy.flowerly.entity.Member;
@@ -37,37 +38,34 @@ public class MemberService {
     private final JWTService jwtService;
 
 
-    public Object getMemberInfo(Long memberId) {
+    public MemberDto getMemberInfo(Long memberId) {
+        MemberDto memberInfo = memberRepository.findByMemberId(memberId)
+                .map(Member::toDto)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_MEMBER));
+
         List<Object[]> object = storeInfoRepository.findBySellerInfo(memberId);
-
-        //반환값 길이가 0이면 멤버 정보가 없다는 것이다.
-        if (object.size() == 0){
-            return StoreInfoDto.builder()
-                    .member(memberRepository.findByMemberId(memberId)
-                            .map(Member::toDto)
-                            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_MEMBER)))
-                    .build();
-        }
         StoreInfo tempInfo = (StoreInfo) object.get(0)[0];
-
-        StoreInfoDto storeInfo = StoreInfoDto.builder()
-                .storeInfoId(tempInfo.getStoreInfoId())
-                .member(tempInfo.getSeller().toDto())
-                .storeName(tempInfo.getStoreName())
-                .sellerName(tempInfo.getSellerName())
-                .storeNumber(tempInfo.getStoreNumber())
-                .phoneNumber(tempInfo.getPhoneNumber())
-                .address(tempInfo.getAddress())
-                .images(new ArrayList<>())
-                .build();
+        //반환값 길이가 0이면 멤버 정보가 없다는 것이다.
+        if (object.size() != 0){
+            memberInfo.setStore(StoreInfoDto.builder()
+                    .storeInfoId(tempInfo.getStoreInfoId())
+                    .member(tempInfo.getSeller().toDto())
+                    .storeName(tempInfo.getStoreName())
+                    .sellerName(tempInfo.getSellerName())
+                    .storeNumber(tempInfo.getStoreNumber())
+                    .phoneNumber(tempInfo.getPhoneNumber())
+                    .address(tempInfo.getAddress())
+                    .images(new ArrayList<>())
+                    .build());
+        }
 
         //이미지 추가
         for (Object[] o : object) {
             StoreImage temp = (StoreImage) o[1];
-            storeInfo.getImages().add(temp.getImageUrl());
+            memberInfo.getStore().getImages().add(temp.getImageUrl());
         }
 
-        return storeInfo;
+        return memberInfo;
     }
 
     @Transactional
