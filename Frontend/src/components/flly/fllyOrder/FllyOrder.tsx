@@ -57,7 +57,7 @@ const FllyOrder = () => {
   const [memberType, setMemberType] = useState<string>("seller");
 
   useEffect(() => {
-    axios.get(`https://flower-ly.co.kr/api//seller/flly/order/` + fllyId.fllyId).then((res) => {
+    axios.get(`https://flower-ly.co.kr/api/seller/flly/order/` + fllyId.fllyId).then((res) => {
       console.log(res);
       const rData = res.data;
       if (rData.code === 200) {
