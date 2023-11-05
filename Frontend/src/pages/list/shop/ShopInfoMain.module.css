@@ -3,10 +3,7 @@
 }
 .ShopInfoHeader {
   background-color: white;
-  width: 100%;
-  height: 40px;
-  text-align: left;
-  z-index: 10;
+  margin-bottom: 15px;
 }
 .headerTitle {
   margin-left: 40px;
@@ -19,4 +16,5 @@
   width: 100%;
   height: calc(100vh - 130px);
   overflow: scroll;
+  background-color: var(--moregray);
 }

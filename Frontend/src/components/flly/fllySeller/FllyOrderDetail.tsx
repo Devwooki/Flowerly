@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import style from "./style/FllyInfo.module.css";
+import style from "./style/FllySellerDetail.module.css";
 import Image from "next/image";
-// import RequestDetail from "./fllySellerDetailComponent/RequestDetail";
+import RequestDetail from "./fllySellerDetailComponent/RequestDetail";
 import { useParams } from "next/navigation";
 import axios from "axios";
 import { ToastErrorMessage } from "@/model/toastMessageJHM";
@@ -92,7 +92,7 @@ const FllySellerDetail = () => {
           />
         </div>
         <div className={style.detailMain}>
-          {/* {fllyRequestInfo && <RequestDetail $fllyRequestInfo={fllyRequestInfo} />} */}
+          {fllyRequestInfo && <RequestDetail $fllyRequestInfo={fllyRequestInfo} />}
         </div>
       </div>
     </>

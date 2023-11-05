@@ -1,4 +1,39 @@
-.shopReview {
-  border: 1px solid black;
-  height: 150px;
+.reviewMain {
+  /* border: 1px solid black; */
+  margin-top: 12px;
+  background-color: white;
+  padding: 15px;
+}
+
+.reviewTitle {
+  font-size: 16px;
+  font-family: "NanumSquareNeoOTF-Bd";
+  margin-bottom: 15px;
+}
+
+.review {
+  margin-top: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--moregray);
+}
+
+.reviewUser {
+  display: flex;
+  font-family: "NanumSquareNeoOTF-Rg";
+  color: var(--dark);
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+.userName {
+  margin-right: 8px;
+}
+
+.reviewContent {
+  font-family: "NanumSquareNeoOTF-Bd";
+  font-size: 14px;
+}
+
+.review:last-child {
+  border: none;
 }

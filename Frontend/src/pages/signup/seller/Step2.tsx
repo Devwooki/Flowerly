@@ -167,16 +167,18 @@ const Step2 = () => {
 
         if (response.status === 200) {
           console.log(response);
+          console.log("회원가입 성공");
+          // 회원가입 성공
           if (tempToken) {
-            console.log(response);
-            console.log(tempToken);
             router.push(`/temp?token=${tempToken}`);
+            return;
           }
         }
+
         router.push("/");
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 

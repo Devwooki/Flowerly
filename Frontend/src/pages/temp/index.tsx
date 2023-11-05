@@ -13,15 +13,17 @@ const Temp = () => {
   const { token } = router.query as { token: string };
 
   useEffect(() => {
+    if (!path && !host) {
+      setPath(window.location.pathname);
+      setHost(window.location.host);
+    }
+  }, [path, host]);
+
+  useEffect(() => {
     if (token && host && path) {
       getMemberinfo(token);
     }
   }, [token, host, path]);
-
-  useEffect(() => {
-    setPath(window.location.pathname);
-    setHost(window.location.host);
-  }, []);
 
   const getMemberinfo = async (token: string) => {
     axios
@@ -45,7 +47,6 @@ const Temp = () => {
 
           router.replace("/");
 
-          router.push("/");
           console.log("로그인 성공");
           console.log(response.data.data);
           console.log(token);
