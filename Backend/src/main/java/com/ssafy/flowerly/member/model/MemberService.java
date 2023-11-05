@@ -57,13 +57,14 @@ public class MemberService {
                     .address(tempInfo.getAddress())
                     .images(new ArrayList<>())
                     .build());
+
+            //이미지 추가
+            for (Object[] o : object) {
+                StoreImage temp = (StoreImage) o[1];
+                memberInfo.getStore().getImages().add(temp.getImageUrl());
+            }
         }
 
-        //이미지 추가
-        for (Object[] o : object) {
-            StoreImage temp = (StoreImage) o[1];
-            memberInfo.getStore().getImages().add(temp.getImageUrl());
-        }
 
         return memberInfo;
     }
