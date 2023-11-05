@@ -2,7 +2,7 @@
   position: absolute;
   background-color: var(--gray);
   width: 100%;
-  max-width: 430px;
+  max-width: 450px;
   height: 100vh;
   display: flex;
   flex-direction: column;

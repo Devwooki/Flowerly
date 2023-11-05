@@ -12,8 +12,12 @@ type BuyerCardStong = {
   card: BuyerCard;
 };
 
-type BuyerCardPlus = BuyerCard & {
-  budget: number;
+type BuyerCardPlus = {
+  state: string;
+  img: string;
+  situation: string;
+  selectedColor: string[];
+  budget: string;
   deadline: string;
   clientName: string;
   selectedFlower: string[];

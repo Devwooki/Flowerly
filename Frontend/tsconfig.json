@@ -21,8 +21,9 @@
       "@styles/*": ["styles/*"],
       "@public/*": ["../public/*"]
     },
-    "baseUrl": "./src"
+    "baseUrl": "./src",
+    "types": ["kakao.maps.d.ts"]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
   "exclude": ["node_modules"]
 }
