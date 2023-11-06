@@ -1,7 +1,12 @@
+import MypageSetting from "@/components/mypage/MypageSetting";
 import React from "react";
 
 const Setting = () => {
-  return <div> Setting</div>;
+  return (
+    <>
+      <MypageSetting />
+    </>
+  );
 };
 
 export default Setting;
