@@ -2,13 +2,13 @@ import React, {useEffect} from "react";
 import style from "./FllyBouquet.module.css";
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
-import { bouquetState, bouquetType } from "@/recoil/fllyRecoil";
+import { bouquetsState, bouquetType } from "@/recoil/fllyRecoil";
 import Image from "next/image";
 
 const FllyBouquet = () => {
   const [selected, setSelected] = useState<bouquetType>();
   const [cnt, setCnt] = useState<number>(2);
-  const bouquets = useRecoilValue(bouquetState);
+  const bouquets = useRecoilValue(bouquetsState);
 
   const handleSelect = (e:bouquetType) => {
     setSelected(e);
