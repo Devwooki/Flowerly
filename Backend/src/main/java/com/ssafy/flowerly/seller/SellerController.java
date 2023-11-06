@@ -146,5 +146,15 @@ public class SellerController {
         return result;
     }
 
+    @GetMapping("/flly/order/{fllyId}")
+    public DataResponse<Map<String,Object>> getFllyOrder(HttpServletRequest request, @PathVariable("fllyId") long fllyId){
+
+        Long memberId = Long.valueOf(2);
+        Map<String, Object> order = sellerService.getFllyOrder(memberId, fllyId);
+
+        DataResponse<Map<String,Object>> result = new DataResponse<>(200, "주문서 반환 성공", order);
+
+        return result;
+    }
 
 }

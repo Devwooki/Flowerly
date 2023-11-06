@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import style from "./ChattingList.module.css";
+import style from "./style/ChattingList.module.css";
 
 import axios from "axios";
 

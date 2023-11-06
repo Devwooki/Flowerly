@@ -36,12 +36,12 @@ public class S3Service {
     public List<FileInfo> upload(MultipartFile[] mFiles, UploadType uploadType) {
         return Arrays.stream(mFiles)
                 .filter(mFile -> mFile.getSize() > 0)
-                .map(mFile -> multiPartToFileInfo(mFile, uploadType))
+                .map(mFile -> multiPartToFileInfoAndResize(mFile, uploadType))
                 .collect(Collectors.toList());
     }
 
     public String uploadOneImage(MultipartFile uploadImg, UploadType uploadType) {
-        FileInfo temp = multiPartToFileInfo(uploadImg, uploadType);
+        FileInfo temp = multiPartToFileInfoAndResize(uploadImg, uploadType);
         s3Repository.save(temp);
         return temp.getUploadFileUrl();
     }
@@ -75,7 +75,7 @@ public class S3Service {
         }
     }
 
-    private FileInfo multiPartToFileInfo(MultipartFile uploadImg, UploadType uploadType) {
+    private FileInfo multiPartToFileInfoAndResize(MultipartFile uploadImg, UploadType uploadType) {
         try {
             String uploadFileName = getUUIDFileName(Objects.requireNonNull(uploadImg.getOriginalFilename()));
             String fileFormat = Objects.requireNonNull(uploadImg.getContentType()).substring(uploadImg.getContentType().lastIndexOf("/") + 1); //파일 확장자명 추출

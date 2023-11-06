@@ -14,6 +14,8 @@ import java.time.format.DateTimeFormatter;
 @AllArgsConstructor
 @Builder
 public class RequestFromChattingDto {
+    private String storeName;
+
     private String orderType;
     private String ordererName;
     private String phoneNumber;
@@ -27,7 +29,9 @@ public class RequestFromChattingDto {
     private String recipientPhoneNumber;
     private String address;
 
-    public void setRequestInfo(Request request) {
+    public void setRequestInfo(Request request, String storeName) {
+        this.storeName = storeName;
+
         this.orderType = request.getOrderType().getTitle();
         this.ordererName = request.getOrderName();
         this.phoneNumber = request.getPhoneNumber();

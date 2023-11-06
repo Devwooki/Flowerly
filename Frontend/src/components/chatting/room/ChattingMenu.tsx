@@ -1,7 +1,8 @@
 import { useRef, useCallback } from "react";
 import axios from "axios";
-import style from "./ChattingMenu.module.css";
+import style from "./style/ChattingMenu.module.css";
 import Image from "next/image";
+import imageCompression from "browser-image-compression";
 
 type ChattingMenuProps = {
   sendOrderFormHandler: Function;
@@ -11,31 +12,41 @@ type ChattingMenuProps = {
 const ChattingMenu: React.FC<ChattingMenuProps> = ({ sendOrderFormHandler, sendImgHandler }) => {
   const inputFileRef = useRef<HTMLInputElement>(null);
 
-  const uploadImage = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+  const uploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) {
       return;
     }
 
-    const formData = {
-      image: e.target.files[0],
+    const image = e.target.files[0];
+    const options = {
+      maxSizeMB: 0.2,
+      maxWidthOrHeight: 1920,
+      useWebWorker: true,
     };
 
-    axios
-      .post("https://flower-ly.co.kr/api/s3/upload/chat", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((response) => {
-        // console.log(response.data);
-        if (response.data.code == 200) {
-          sendImgHandler(response.data.data);
-        } else {
-          alert("이미지 전송에 실패하였습니다.");
-        }
-      })
-      .catch((error) => console.log(error));
-  }, []);
+    try {
+      const formData = {
+        image: await imageCompression(image, options),
+      };
+      axios
+        .post("https://flower-ly.co.kr/api/s3/upload/chat", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((response) => {
+          // console.log(response.data);
+          if (response.data.code == 200) {
+            sendImgHandler(response.data.data);
+          } else {
+            alert("이미지 전송에 실패하였습니다.");
+          }
+        })
+        .catch((error) => console.log(error));
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   //이미지버튼 클릭시 발생 핸들러
   const imgInputClickHandler = () => {

@@ -32,7 +32,7 @@ public class AuthInterceptor implements HandlerInterceptor {
             throw new CustomException(ErrorCode.INVALID_ACCESS);
 
         if(!(prevPath.startsWith("/temp") || prevPath.startsWith("/signup"))
-        && !(prevHost.equals("localhost:6090") || prevHost.startsWith("flower-ly.co.kr")))
+        && !(prevHost.equals("localhost:3000") || prevHost.startsWith("flower-ly.co.kr")))
             throw new AuthException(ErrorCode.INVALID_ACCESS);
 
         Long memberId =jwtService.extractAccessToken(request)

@@ -12,6 +12,9 @@ import com.ssafy.flowerly.member.model.MemberRepository;
 import com.ssafy.flowerly.member.model.StoreInfoRepository;
 import com.ssafy.flowerly.member.vo.StoreInfoDto;
 import com.ssafy.flowerly.s3.model.S3Service;
+import com.ssafy.flowerly.seller.buyer.dto.BuyerFlly;
+import com.ssafy.flowerly.seller.buyer.dto.Flist;
+import com.ssafy.flowerly.seller.buyer.dto.FllyParticipateResponseDto;
 import com.ssafy.flowerly.seller.model.*;
 import com.ssafy.flowerly.seller.vo.FllyRequestDto;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +22,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -44,12 +51,19 @@ public class BuyerService {
     }
 
     //플리스트 찾기
-    public Page<?> getFlist(Pageable pageable, Long fllyId) {
+    public BuyerFlly getFlist(Pageable pageable, Long fllyId) {
+        return new BuyerFlly(getFllyResponseDto(fllyId),
+                getParticipants(pageable, fllyId));
+    }
 
-        return fllyParticipationRepository.findFlistByFllyId(pageable, fllyId).map(obj -> {
-            log.info("object size : {}", obj.length);
-            log.info("{} : ",obj);
-            return obj;
-        });
+    public Page<Flist> getParticipants(Pageable pageable, Long fllyId){
+        return fllyParticipationRepository.findFlistByFllyId(pageable, fllyId)
+                .map(obj -> new Flist(((FllyParticipation) obj[1]).toResponseDto(), ((StoreInfo) obj[0]).toDto()));
+    }
+
+    private FllyRequestDto getFllyResponseDto(Long fllyId){
+        return fllyRepository.findByFllyIdAndActivate(fllyId)
+                .map(Flly::toFllyRequestDto)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_FLLY));
     }
 }

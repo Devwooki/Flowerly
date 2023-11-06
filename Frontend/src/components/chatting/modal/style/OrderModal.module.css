@@ -1,6 +1,8 @@
 .modalBg {
   position: fixed;
   background-color: rgba(0, 0, 0, 0.3);
+  left: 0;
+  top: 0;
   height: 100vh;
   width: 100vw;
   max-width: 450px;
@@ -108,19 +110,13 @@
   border-radius: 5px;
   padding: 0 10px;
   font-family: "NanumSquareNeoOTF-Lt";
+  height: 30px;
 }
 
 #nameInput {
   width: calc(100% - 70px);
 }
-.phoneInput {
-  width: 60px;
-}
-.phoneDivide {
-  height: 30px;
-  line-height: 30px;
-  font-family: "NanumSquareNeoOTF-Rg";
-}
+
 #dateInput {
   width: calc(100% - 70px);
   display: flex;
@@ -139,6 +135,7 @@
 }
 
 #addressInput {
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   width: calc(100% - 70px);
@@ -147,19 +144,25 @@
 #addressInput .input {
   height: 30px;
   margin-bottom: 5px;
+  width: 100%;
 }
 
 #addSearch {
   padding-right: 0;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
   width: 100%;
 }
 #addSearch button {
+  box-sizing: border-box;
   font-family: "NanumSquareNeoOTF-Rg";
   border: none;
   background-color: var(--moregray);
-  width: 50px;
+  min-width: 55px;
+  color: black;
+  height: 100%;
+  font-size: 14px;
 }
 
 .datePicker {
@@ -177,4 +180,15 @@
   border: 1px solid var(--moregray);
   width: 30%;
   font-family: "NanumSquareNeoOTF-Lt";
+}
+
+.addressModalBg {
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.5);
+  left: 0;
+  top: 0;
+  height: 100vh;
+  width: 100vw;
+  max-width: 450px;
+  z-index: 200;
 }

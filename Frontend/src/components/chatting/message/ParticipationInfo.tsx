@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import style from "./ParticipationInfo.module.css";
+import style from "./style/ParticipationInfo.module.css";
 import Image from "next/image";
 
 type ParticipationFormProps = {

@@ -44,7 +44,7 @@ public class MemberController {
     public CustomResponse signupBuyer(HttpServletRequest request,
                                  @RequestBody Map<String, Object> data){
 
-        Long memberId = Long.valueOf(request.getHeader(jwtService.getAccessHeader()));
+        Long memberId = (Long) request.getAttribute("memberId");
         memberService.signupBuyer(data, memberId);
 
         return new CustomResponse(HttpStatus.OK.value(), "요청 성공");
@@ -54,7 +54,7 @@ public class MemberController {
     public CustomResponse signupSeller(HttpServletRequest request,
                                  @RequestBody Map<String, Object> data){
 
-        Long memberId = Long.valueOf(request.getHeader(jwtService.getAccessHeader()));
+        Long memberId = (Long) request.getAttribute("memberId");
         memberService.signupSeller(data, memberId);
 
         return new CustomResponse(HttpStatus.OK.value(), "요청 성공");
@@ -63,11 +63,12 @@ public class MemberController {
     @GetMapping("/logout")
     public CustomResponse logOut(HttpServletRequest request, HttpServletResponse response){
         log.info("로그아웃 시작");
-        Long memberId = Long.valueOf(request.getHeader(jwtService.getAccessHeader()));
+
+        //멤버 아이디 꺼내고, refreshToken 찾아 redis에서 제거한다. 카카오 로그아웃도 시킨다.
         String refreshToken = jwtService.extractRefreshToken(request).orElseGet(null);
+        Long memberId = (Long) request.getAttribute("memberId");
 
         jwtService.sendDeleteToken(request, response);
-
         return new CustomResponse(200, "logout");
     }
 
