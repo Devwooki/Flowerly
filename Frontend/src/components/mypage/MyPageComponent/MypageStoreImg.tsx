@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import style from "./MypageStoreImg.module.css";
+import style from "./style/MypageStoreImg.module.css";
 import Image from "next/image";
 
 const MypageStoreImg = () => {

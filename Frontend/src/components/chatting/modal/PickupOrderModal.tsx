@@ -8,6 +8,7 @@ import { MobileDatePicker, TimeField, LocalizationProvider } from "@mui/x-date-p
 import { ThemeProvider, createTheme } from "@mui/material";
 import { Dayjs } from "dayjs";
 import "dayjs/locale/ko";
+import { ToastErrorMessage } from "@/model/toastMessageJHM";
 
 type PcikupOrderProps = {
   chattingId: number;
@@ -66,14 +67,15 @@ const PickupOrderModal: React.FC<PcikupOrderProps> = ({
           .then((response) => {
             console.log(response.data);
             if (response.data.code == "200") sendHandler();
-            else if (response.data.code == "-604") alert("이미 진행중인 주문이 있습니다.");
+            else if (response.data.code == "-604")
+              ToastErrorMessage("이미 진행중인 주문이 있습니다.");
           })
           .catch((error) => console.log(error));
 
         return updatedInputs;
       });
     } else {
-      alert("날짜, 시간을 입력하세요.");
+      ToastErrorMessage("날짜, 시간을 입력하세요.");
     }
   };
 

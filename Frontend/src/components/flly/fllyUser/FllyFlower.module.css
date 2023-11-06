@@ -135,13 +135,6 @@
     width: 100%;
 }
 
-<<<<<<< Updated upstream
-.contentBox a {
-    text-decoration-line: none;
-}
-
-=======
->>>>>>> Stashed changes
 .prevBtn {
     background-color: var(--moregray);
     color: var(--dark);

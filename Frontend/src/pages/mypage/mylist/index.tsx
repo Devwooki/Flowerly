@@ -1,7 +1,12 @@
 import React from "react";
+import MypagefllyList from "@/components/mypage/MypagefllyList";
 
 const MyList = () => {
-  return <div>index</div>;
+  return (
+    <>
+      <MypagefllyList />
+    </>
+  );
 };
 
 export default MyList;

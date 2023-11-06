@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import style from "./MypageName.module.css";
+import style from "./style/MypageName.module.css";
 
 const MypageName = () => {
   //나중에 리코일~!!
