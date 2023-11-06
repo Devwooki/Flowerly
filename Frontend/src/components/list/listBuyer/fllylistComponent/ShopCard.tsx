@@ -1,14 +1,17 @@
 import React, { useState } from "react";
+import style from "./ShopCard.module.css";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import ShopModal from "./ShopModal";
-import { AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 type ShopCardProps = {
   shopInfo: ShopInfo;
 };
 
 const ShopCard = ({ shopInfo }: ShopCardProps) => {
+  console.log("zz", shopInfo.shopId);
+
   const router = useRouter();
   const originalContent = shopInfo.recommandComment;
   const originalAdress = shopInfo.shopLoc;
@@ -30,30 +33,40 @@ const ShopCard = ({ shopInfo }: ShopCardProps) => {
     router.push({ pathname: "/list/shop/[shopId]", query: { shopId: shopId } });
   };
 
+  const modalState = () => {
+    setModal((pre) => !pre);
+  };
+
   return (
-    <div className="shopCardMain" onClick={() => setModal((pre) => !pre)}>
-      <div className="shopFlowerImg">
-        <Image src={shopInfo.reImg} alt="추천 꽃다발" fill />
-      </div>
-      <div className="shopInfo">
-        <div className="infoTable">
-          <div onClick={(e) => moveToShop(1, e)} className="shopName">
-            {shopInfo.shopName}
+    <>
+      <motion.div
+        layoutId={`shopCardMain-${shopInfo.shopId}`}
+        className={style.shopCardMain}
+        onClick={() => setModal((pre) => !pre)}
+      >
+        <motion.div className={style.shopFlowerImg} layoutId={`shopFlowerImg-${shopInfo.shopId}`}>
+          <Image src={shopInfo.reImg} alt="추천 꽃다발" fill />
+        </motion.div>
+        <motion.div className={style.shopInfo} layoutId={`shopInfo-${shopInfo.shopId}`}>
+          <div className={style.infoTable}>
+            <div onClick={(e) => moveToShop(1, e)} className={style.shopName}>
+              {shopInfo.shopName}
+            </div>
           </div>
-        </div>
-        <div className="infoTable">
-          <Image src={"/img/icon/seller-location.png"} alt="가게 위치" width={10} height={15} />
-          <div style={{ fontSize: "14px" }}>{truncatedAdress}</div>
-        </div>
-        <div className="infoTable">
-          <Image src={"/img/icon/seller-money.png"} alt="제시 금액 " width={15} height={15} />
-          <div>{shopInfo.recommandPrice}</div>
-        </div>
-        <div className="responseContent">{truncatedContent}</div>
-      </div>
-      <div className="chatAction">채팅하기</div>
-      <AnimatePresence>{modal && <ShopModal shopInfo={shopInfo} />}</AnimatePresence>
-    </div>
+          <div className={style.infoTable}>
+            <Image src={"/img/icon/seller-location.png"} alt="가게 위치" width={10} height={15} />
+            <div style={{ fontSize: "14px" }}>{truncatedAdress}</div>
+          </div>
+          <div className={style.infoTable}>
+            <Image src={"/img/icon/seller-money.png"} alt="제시 금액 " width={15} height={15} />
+            <div>{shopInfo.recommandPrice}</div>
+          </div>
+          <div className={style.responseContent}>{truncatedContent}</div>
+        </motion.div>
+        <div className={style.chatAction}>채팅하기</div>
+      </motion.div>
+      {modal && <ShopModal modal={modalState} shopInfo={shopInfo} shopId={shopInfo.shopId} />}
+    </>
   );
 };
 

@@ -1,7 +1,5 @@
-import { log } from "console";
 import style from "./ProgressBar.module.css";
 import React, { useEffect, useState } from "react";
-import Image from "next/image";
 
 interface ProgressBarProps {
   currentStep: number;

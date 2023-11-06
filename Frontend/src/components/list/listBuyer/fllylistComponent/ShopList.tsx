@@ -10,8 +10,8 @@ type ShopListProps = {
 const ShopList = ({ shopList }: ShopListProps) => {
   return (
     <div className={style.shopListMain}>
-      {shopList.map((shopInfo, idx) => (
-        <ShopCard shopInfo={shopInfo} key={shopInfo.shopId + shopInfo.reImg + idx} />
+      {shopList.map((shopInfo) => (
+        <ShopCard shopInfo={shopInfo} key={shopInfo.shopId + shopInfo.reImg} />
       ))}
     </div>
   );
