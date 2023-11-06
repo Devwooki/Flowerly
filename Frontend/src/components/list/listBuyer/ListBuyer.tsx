@@ -54,7 +54,7 @@ const ListBuyer = () => {
   const procesingCard: BuyerCard[] = [
     {
       fllyId: 1,
-      state: "입찰",
+      state: "조율",
       img: "/img/homeBanner/164_red_phalaenopsis.jpg",
       situation: "축하",
       target: "연인",

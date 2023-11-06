@@ -37,10 +37,19 @@
 
 .infoColorTable {
   font-family: "NanumSquareNeoOTF-Bd";
-  margin-bottom: 5px;
   margin-left: 10px;
   font-size: 14px;
 }
+
+.infoColorTable div:first-child {
+  margin-bottom: 10px;
+}
+
+/* @media (max-width: 426px) {
+  .infoColorTable {
+    display: flex;
+  }
+} */
 
 .infoTitle {
   /* border: 1px solid black; */
@@ -48,10 +57,6 @@
   padding: 5px;
   line-height: 25px;
   margin-right: 5px;
-}
-
-.InfoText > div:nth-child(5) {
-  margin-left: 10px;
 }
 
 .info {
@@ -67,7 +72,6 @@
 .colorInfo {
   height: 15px;
   padding: 5px 12px;
-  background-color: var(--moregray);
   font-family: "NanumSquareNeoOTF-Rg";
   line-height: 15px;
   border-radius: 5px;
@@ -75,13 +79,16 @@
   font-size: 14px;
   margin: 0 5px 0 0;
   color: black;
+  width: 27px;
+  background-color: var(--moregray);
+  /* display: inline; */
 }
 
 @media (max-width: 426px) {
   .colorInfo {
     background-color: currentColor;
     border-radius: 100%;
-    width: 10px;
+    width: 5px;
     height: 20px;
   }
 }
@@ -124,4 +131,9 @@
 .cancelBtn {
   margin-right: 15px;
   background-color: var(--mint);
+}
+
+.fllistBtnClose {
+  margin-right: 15px;
+  background-color: var(--moregray);
 }

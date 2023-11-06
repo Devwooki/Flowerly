@@ -30,7 +30,7 @@
 
 .discTable div:nth-child(2) {
   display: inline-block;
-  background-color: var(--sky);
+  background-color: #cfe0ee;
   padding: 5px 15px;
   border-radius: 5px;
   margin: 5px 0 10px 0;
