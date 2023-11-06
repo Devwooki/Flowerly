@@ -24,18 +24,25 @@ public class BuyerController {
     @GetMapping("/my-flly")
     public DataResponse<?> getMyFlly(HttpServletRequest request,
                                      @PageableDefault(size = 6) Pageable pageable){
-        //Long memberId = request.getDateHeader("memberId");
         Long memberId = 1L;
-
         return new DataResponse<>(HttpStatus.OK.value(), "진행중인 flly를 반환합니다.", buyerService.getMyFlly(pageable, memberId));
     }
     @GetMapping("/flist/{fllyId}")
     public DataResponse<?> getFilst(HttpServletRequest request,
+                                    @PathVariable Long fllyId){
+        Long memberId = request.getDateHeader("memberId");
+        return new DataResponse<>(HttpStatus.OK.value(), "fllyId :  "+ fllyId+" 의 플리스트를 조회합니다.", buyerService.getFlist(Pageable.ofSize(6), fllyId));
+    }
+
+    @GetMapping("/flistPage/{fllyId}")
+    public DataResponse<?> getFilstPage(HttpServletRequest request,
                                     @PageableDefault(size = 6) Pageable pageable,
                                     @PathVariable Long fllyId){
-        log.info("어디서 터지니");
-        //Long memberId = request.getDateHeader("memberId");
-        Long memberId = 1L;
-        return new DataResponse<>(HttpStatus.OK.value(), "fllyId :  "+ fllyId+" 의 플리스트를 조회합니다.", buyerService.getFlist(pageable, fllyId));
+
+        Long memberId = request.getDateHeader("memberId");
+        return new DataResponse<>(HttpStatus.OK.value(), fllyId+" 의 "+ pageable.getOffset() + "페이지 플리스트 조회합니다.", buyerService.getParticipants(Pageable.ofSize(6), fllyId));
     }
+
+
+
 }

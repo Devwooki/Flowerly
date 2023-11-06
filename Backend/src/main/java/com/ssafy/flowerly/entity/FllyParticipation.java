@@ -1,8 +1,10 @@
 package com.ssafy.flowerly.entity;
 
 import com.ssafy.flowerly.entity.common.BaseCreatedTimeEntity;
+import com.ssafy.flowerly.seller.buyer.dto.FllyParticipateResponseDto;
 import com.ssafy.flowerly.seller.vo.FllyResponeDto;
 import com.ssafy.flowerly.seller.vo.OrderParticipationDto;
+import com.ssafy.flowerly.seller.vo.RequestFllyParticipateDto;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -77,5 +79,14 @@ public class FllyParticipation extends BaseCreatedTimeEntity {
         this.content = content;
         this.seller = seller;
         this.flly = flly;
+    }
+
+    public FllyParticipateResponseDto toResponseDto(){
+        return FllyParticipateResponseDto.builder()
+                .fllyParticipationId(this.fllyParticipationId)
+                .offerPrice(this.offerPrice)
+                .imageUrl(this.imageUrl)
+                .content(this.content)
+                .build();
     }
 }

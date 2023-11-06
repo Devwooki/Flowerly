@@ -8,5 +8,7 @@ import java.util.Optional;
 
 public interface RequestDeliveryInfoRepository extends JpaRepository<RequestDeliveryInfo, Long> {
     Optional<RequestDeliveryInfo> findByRequest(Request request);
+
+    Optional<RequestDeliveryInfo> findByRequestRequestId(Long requestId);
 }
 
