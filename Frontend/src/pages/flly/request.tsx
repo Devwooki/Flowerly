@@ -30,7 +30,7 @@ const FllyTarget = () => {
   const [dates, setDates] = useState([] as string[]);
   const [dateIdx, setDateIdx] = useState<number>(0);
   const [time, setTime] = useState<string>("")
-  const [requestText, setRequestText] = useState<string>();
+  const [requestText, setRequestText] = useState<string>("");
   const [dateTime, setDateTime] = useState<Date | null>(null);
   
   // 날짜와 시간 합치기
