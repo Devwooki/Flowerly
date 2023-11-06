@@ -35,7 +35,7 @@ const Step1 = () => {
   const handleNext = () => {
     // input 모두 입력 되었는지 확인하는 로직 추가
     if (isAllDataFilled() && isStoreNumberValid) {
-      router.push("/signup/seller/Step2");
+      router.push("/signup/seller/step2");
     } else {
       alert("모든 정보를 입력해주세요");
     }
@@ -112,7 +112,7 @@ const Step1 = () => {
   };
 
   useEffect(() => {
-    const finalAddress = `${basicAddress} ${detailAddress}`;
+    const finalAddress = `${basicAddress}T${detailAddress}`;
     setSellerInput((prevSellerInput) => ({ ...prevSellerInput, address: finalAddress }));
   }, [basicAddress, detailAddress, setSellerInput]);
 
