@@ -116,9 +116,10 @@ public class MemberService {
         List<Map<String, Object>> deliveryRegions = (List<Map<String, Object>>) data.get("deliveryRegions");
 
         for (Map<String, Object> deliveryRegion : deliveryRegions) {
-            Long sidoCode = (Long)deliveryRegion.get("sidoCode");
-            Long sigunguCode = (Long)deliveryRegion.get("sigunguCode");
-            Long dongCode = (Long)deliveryRegion.get("dongCode");
+            Long sidoCode = ((Number)deliveryRegion.get("sidoCode")).longValue();
+            Long sigunguCode = ((Number)deliveryRegion.get("sigunguCode")).longValue();
+            Long dongCode = ((Number)deliveryRegion.get("dongCode")).longValue();
+
 
             Sido deliverySido = sidoRepository.findBySidoCode(sidoCode)
                     .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_SIDO));
