@@ -120,11 +120,11 @@ const BuyerCards = ({ card }: BuyerCardsProps) => {
                 key={idx}
                 className={`${style.colorInfo} ${style.colorfirst}`}
                 style={{
-                  color: isClient && window.innerWidth <= 426 ? rgbColor : "black",
-                  backgroundColor: isClient && window.innerWidth <= 426 ? "" : rgbColor,
+                  color: isClient && windowWidth <= 426 ? rgbColor : "black",
+                  backgroundColor: isClient && windowWidth <= 426 ? "" : rgbColor,
                 }}
               >
-                {window.innerWidth <= 426 ? "" : color}
+                {windowWidth <= 426 ? "" : color}
               </div>
             );
           })}

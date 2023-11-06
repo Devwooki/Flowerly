@@ -78,7 +78,7 @@ const BuyerCardOne = ({ card }: BuyerCardOneProps) => {
             <div className={style.info}>{card.target}</div>
           </div>
           <div className={style.infoColorTable}>
-            <div>주요색상</div>
+            <div className={style.infoColorTitle}>주요색상</div>
             {card.selectedColor.map((color, idx) => {
               return (
                 <div key={idx} className={`${style.colorInfo} ${style.colorfirst}`}>

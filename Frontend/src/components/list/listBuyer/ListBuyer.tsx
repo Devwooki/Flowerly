@@ -69,8 +69,8 @@ const ListBuyer = () => {
         <div className={style.headerTitle}>진행중인 플리</div>
       </div>
       <div className={style.ListBuyerMain}>
-        {procesingCard.length === 1 ? (
-          // {procesingCards.length === 1 ? (
+        {/* {procesingCard.length === 1 ? ( */}
+        {procesingCards.length === 1 ? (
           <BuyerCardOne card={procesingCard[0]} />
         ) : (
           procesingCards.map((card, idx) => <BuyerCards card={card} key={idx} />)
