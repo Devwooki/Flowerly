@@ -4,6 +4,7 @@ import com.ssafy.flowerly.entity.Flower;
 import com.ssafy.flowerly.entity.type.ColorType;
 import com.ssafy.flowerly.entity.type.SituationType;
 import com.ssafy.flowerly.entity.type.TargetType;
+import com.ssafy.flowerly.flly.dto.FllyDto;
 import com.ssafy.flowerly.flly.dto.FlowerDto;
 import com.ssafy.flowerly.flly.dto.FlowerRequestDto;
 import com.ssafy.flowerly.flly.repository.FlowerRepository;
@@ -88,5 +89,8 @@ public class FlowerService {
         }
 
         return lists;
+    }
+
+    public void saveFllyRequest(FllyDto fllyDto) {
     }
 }
