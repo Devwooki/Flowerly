@@ -40,6 +40,12 @@ export interface flowerCardType {
   colorName : string,
 }
 
+export interface deliveryAddressType {
+  sido: string;
+  sigungu: string;
+  dong: string;
+}
+
 export const situationState = atom({
   key: "situationState",
   default: "",
@@ -69,4 +75,13 @@ export const bouquetsState = atom({
 export const bouquetState = atom({
   key: 'bouquetState',
   default: null as bouquetType | null,
+});
+
+export const deliveryAddressState = atom<deliveryAddressType>({
+  key: "sellerAddressState",
+  default: {
+    sido: "",
+    sigungu: "",
+    dong: "",
+  },
 });
