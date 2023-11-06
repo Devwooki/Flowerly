@@ -93,7 +93,7 @@ const ListParticipationCard = ({ $participationInfo }: Props) => {
             </div>
           </div>
         </div>
-        <div className={style.footerBox}>입찰중</div>
+        <div className={style.footerBox}>이거 넣어야함</div>
       </div>
     </>
   );
