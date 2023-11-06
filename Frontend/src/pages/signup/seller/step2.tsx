@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import style from "./Step2.module.css";
+import style from "./step2.module.css";
 import { useRouter } from "next/router";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
