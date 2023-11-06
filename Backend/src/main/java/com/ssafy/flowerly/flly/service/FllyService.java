@@ -26,7 +26,6 @@ public class FllyService {
         responseData.put("store", memberService.getStoreInfo(sellerId) );
         responseData.put("review", reviewRepository.findReviewsBySeller_MemberIdAndIsRemovedFalse(pageable, sellerId).map(Review::toDetailDto));
         return responseData;
-
     }
 
 

@@ -4,6 +4,7 @@ import com.ssafy.flowerly.flly.dto.FlowerDto;
 import com.ssafy.flowerly.flly.dto.FlowerRequestDto;
 import com.ssafy.flowerly.flly.service.FllyService;
 import com.ssafy.flowerly.flly.service.FlowerService;
+import com.ssafy.flowerly.review.service.ReviewService;
 import com.ssafy.flowerly.util.CustomResponse;
 import com.ssafy.flowerly.util.DataResponse;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,7 @@ public class FllyController {
 
     private final FlowerService flowerService;
     private final FllyService fllyService;
-
+    private final ReviewService reviewService;
     /**
      * 꽃 목록 조회 API
      * @param flowerRequest 사용자의 선택 정보
