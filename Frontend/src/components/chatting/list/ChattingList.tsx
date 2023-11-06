@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import style from "./style/ChattingList.module.css";
-
 import axios from "axios";
+import Image from "next/image";
 
 import ChattingListCard from "./ChattingListCard";
 
@@ -31,6 +31,27 @@ const ChattingList = () => {
     <>
       <div className={style.header}>
         <div className={style.headerTitle}>플리 채팅</div>
+        <div className={style.searchDiv}>
+          <Image
+            className={style.onlyIcon}
+            src="/img/btn/search-btn.png"
+            width={22}
+            height={22}
+            alt="상태이미지"
+          />
+        </div>
+        {/* <div className={style.searchDiv}>
+          <div className={style.right}>
+            <input />
+            <Image
+              className={style.inputIcon}
+              src="/img/btn/search-btn.png"
+              width={22}
+              height={22}
+              alt="상태이미지"
+            />
+          </div>
+        </div> */}
       </div>
       <div className={style.container}>
         {chattings.map((chatting, idx) => {
