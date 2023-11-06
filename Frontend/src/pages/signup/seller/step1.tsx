@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import style from "./Step1.module.css";
+import style from "./step1.module.css";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { useRecoilState } from "recoil";

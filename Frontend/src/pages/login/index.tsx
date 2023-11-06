@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import style from "./Login.module.css";
+import style from "./login.module.css";
 const Login = () => {
   return (
     <div className={style.headLogo}>
