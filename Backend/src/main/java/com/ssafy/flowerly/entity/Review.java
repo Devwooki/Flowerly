@@ -39,9 +39,9 @@ public class Review extends BaseTimeEntity {
 
     public ReviewDetailDto toDetailDto(){
         return ReviewDetailDto.builder()
-                .writer(this.consumer.getNickName())
+                .consumerNickName(this.consumer.getNickName())
                 .content(this.content)
-                .writetime(this.getCreatedAt())
+                .createdAt(this.getCreatedAt())
                 .build();
     }
 }

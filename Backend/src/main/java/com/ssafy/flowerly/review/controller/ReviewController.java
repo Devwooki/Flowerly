@@ -1,4 +1,4 @@
-package com.ssafy.flowerly.review;
+package com.ssafy.flowerly.review.controller;
 
 import com.ssafy.flowerly.review.service.ReviewService;
 import com.ssafy.flowerly.util.DataResponse;
@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/api/review")
 @RequiredArgsConstructor
 public class ReviewController {
+
     private final ReviewService reviewService;
     @GetMapping("/store-review/{sellerId}")
     public DataResponse<?> getReview(HttpServletRequest request,
@@ -23,4 +24,7 @@ public class ReviewController {
                                      @PathVariable Long sellerId){
         return new DataResponse<>(HttpStatus.SC_OK, "리뷰를 반환합니다. page : " + pageable.getOffset(),  reviewService.getReviewBysellerId(pageable, sellerId));
     }
+
+
+
 }
