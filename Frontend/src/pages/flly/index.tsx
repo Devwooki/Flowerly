@@ -8,6 +8,7 @@ const FllyMain = () => {
 
   return (
     <>{(userType !== "seller" && <FllySituation />) || (userType === "seller" && <FllySeller />)}</>
+
   );
 };
 

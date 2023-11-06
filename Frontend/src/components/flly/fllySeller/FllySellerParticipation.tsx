@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { ToastErrorMessage, ToastSuccessMessage } from "@/model/toastMessageJHM";
 import axios from "axios";
+import imageCompression from "browser-image-compression";
 
 const FllySellerParticipation = () => {
   const [userImgSrc, setUserImgSrc] = useState<string>();
@@ -34,7 +35,7 @@ const FllySellerParticipation = () => {
     const imgValue = e.target.value;
 
     if (!imgValue.match(fileForm)) {
-      //   ToastErrorMessage("이미지 파일만 업로드 가능");
+      ToastErrorMessage("이미지 파일만 업로드 가능");
       return;
     }
 
@@ -74,8 +75,19 @@ const FllySellerParticipation = () => {
     setContent(e.target.value);
   };
 
-  const submitHandler = () => {
-    if (!fileInfo) {
+  const submitHandler = async () => {
+    const options = {
+      maxSizeMB: 0.2,
+      maxWidthOrHeight: 1920,
+      useWebWorker: true,
+    };
+
+    let redirectFile = null;
+    if (fileInfo) {
+      redirectFile = await imageCompression(fileInfo, options);
+    }
+
+    if (!redirectFile) {
       ToastErrorMessage("예시 꽃다발 사진을 올려주세요!");
       return;
     }
@@ -89,7 +101,7 @@ const FllySellerParticipation = () => {
     }
 
     const formData = new FormData();
-    formData.append("file", fileInfo);
+    formData.append("file", redirectFile);
     formData.append("fllyId", fllyId.fllyId + "");
     formData.append("content", content.toString());
     formData.append("offerPrice", money);

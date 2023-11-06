@@ -18,6 +18,7 @@ public class FlowerDto {
     private ColorType color;
     private String engName;
     private String meaning;
+    private String colorName;
 
     @Override
     public boolean equals(Object o) {
@@ -32,6 +33,7 @@ public class FlowerDto {
                 .color(flower.getColor())
                 .engName(flower.getEngName())
                 .meaning(flower.getMeaning())
+                .colorName(flower.getFlowerName())
                 .build();
     }
 }

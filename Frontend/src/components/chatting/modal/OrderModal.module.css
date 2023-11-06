@@ -95,7 +95,7 @@
 
 .itemTitle {
   box-sizing: border-box;
-  width: 70px;
+  min-width: 70px;
   height: 30px;
   padding-left: 5px;
   font-family: "NanumSquareNeoOTF-Rg";
@@ -160,4 +160,21 @@
   border: none;
   background-color: var(--moregray);
   width: 50px;
+}
+
+.datePicker {
+  box-sizing: border-box;
+  padding: 5px;
+  border: 1px solid var(--moregray);
+  width: calc(70% - 80px);
+  height: 30px;
+  margin-right: 10px;
+  font-family: "NanumSquareNeoOTF-Lt";
+}
+.timePicker {
+  box-sizing: border-box;
+  padding: 5px;
+  border: 1px solid var(--moregray);
+  width: 30%;
+  font-family: "NanumSquareNeoOTF-Lt";
 }
