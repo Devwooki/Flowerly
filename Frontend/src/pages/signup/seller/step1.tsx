@@ -114,6 +114,7 @@ const Step1 = () => {
   useEffect(() => {
     const finalAddress = `${basicAddress}T${detailAddress}`;
     setSellerInput((prevSellerInput) => ({ ...prevSellerInput, address: finalAddress }));
+    console.log(finalAddress);
   }, [basicAddress, detailAddress, setSellerInput]);
 
   return (
