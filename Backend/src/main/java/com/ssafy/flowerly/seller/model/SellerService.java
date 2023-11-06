@@ -98,7 +98,7 @@ public class SellerService {
         FllyRequestDto fllyRequestDto = getRequestLetter(fllyId);
         result.setFllyRequestDto(fllyRequestDto);
         //의뢰 조회 (여기선 검증을하면안되다! )
-        FllyResponeDto fllyResponeDto = fllyParticipationRepository.findByFllyFllyId(fllyId)
+        FllyResponeDto fllyResponeDto = fllyParticipationRepository.findByFllyFllyIdAndSellerMemberId(fllyId, memberId)
                 .map(FllyParticipation::toFllyResponeDto).orElseThrow();
         result.setFllyResponeDto(fllyResponeDto);
 
@@ -321,7 +321,7 @@ public class SellerService {
         FllyOrderInfoDto fllyOrderInfo = requestRepository.findBySellerMemberIdAndFllyFllyId(memberId, fllyId)
                 .orElseThrow(() -> new CustomException(ErrorCode.SELLER_NOT_REQUEST)).toFllyOrderInfoDto();
 
-        String responseUrl = fllyParticipationRepository.findByFllyFllyId(fllyId).orElseThrow(
+        String responseUrl = fllyParticipationRepository.findByFllyFllyIdAndSellerMemberId(fllyId, memberId).orElseThrow(
                 () -> new CustomException(ErrorCode.NOT_FIND_FLLY_PARTICIPATE)).getImageUrl();
 
         FllyDeliveryInfoDto deliveryInfo = null;

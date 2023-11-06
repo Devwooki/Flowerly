@@ -1,6 +1,7 @@
 package com.ssafy.flowerly.entity;
 
 import com.ssafy.flowerly.entity.common.BaseTimeEntity;
+import com.ssafy.flowerly.review.dtos.ReviewDetailDto;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -35,4 +36,12 @@ public class Review extends BaseTimeEntity {
 
     @Column(nullable = false)
     private Boolean isRemoved;
+
+    public ReviewDetailDto toDetailDto(){
+        return ReviewDetailDto.builder()
+                .writer(this.consumer.getNickName())
+                .content(this.content)
+                .writetime(this.getCreatedAt())
+                .build();
+    }
 }

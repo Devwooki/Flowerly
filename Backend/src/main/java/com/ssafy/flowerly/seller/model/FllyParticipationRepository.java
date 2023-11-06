@@ -21,7 +21,7 @@ public interface FllyParticipationRepository extends JpaRepository<FllyParticipa
                     " AND fy.deadline > :currentDateTime AND fy.isCanceled = false ")
     Page<FllyParticipation> findBySellerMemberIdParticipationDto(Long memberId, Pageable pageable, LocalDateTime currentDateTime);
 
-    Optional<FllyParticipation> findByFllyFllyId(long fllyId);
+//    Optional<FllyParticipation> findByFllyFllyIdAndSellerMemberId(long fllyId, long memberId);
 
 
     Optional<FllyParticipation> findByFllyFllyIdAndSellerMemberId(long memberId, long fllyId);

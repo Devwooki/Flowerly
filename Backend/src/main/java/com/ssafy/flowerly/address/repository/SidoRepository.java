@@ -11,5 +11,5 @@ public interface SidoRepository extends JpaRepository<Sido, Long> {
 
     Optional<Sido> findBySidoName(String sidoName);
 
-    Optional<Sido> findBySidoCode(Integer sidoCode);
+    Optional<Sido> findBySidoCode(Long sidoCode);
 }
