@@ -47,7 +47,7 @@
 .infoColorTable div:nth-child(2) {
   margin-left: 10px;
 }
-
+/* 
 @media (max-width: 374px) {
   .infoColorTable {
     display: block;
@@ -56,7 +56,7 @@
     margin-top: 8px;
     margin-bottom: 5px;
   }
-}
+} */
 
 .infoTitle {
   /* border: 1px solid black; */
@@ -80,16 +80,29 @@
   height: 15px;
   margin-top: 5px;
 }
+
 .colorInfo {
   height: 15px;
   padding: 5px 12px;
-  background-color: var(--moregray);
   font-family: "NanumSquareNeoOTF-Rg";
   line-height: 15px;
   border-radius: 5px;
   display: inline-block;
   font-size: 14px;
-  margin-left: 0.3rem;
+  margin: 0 5px 0 0;
+  color: currentColor;
+  width: 27px;
+  /* background-color: var(--moregray); */
+  /* display: inline; */
+}
+
+@media (max-width: 426px) {
+  .colorInfo {
+    background-color: currentColor;
+    border-radius: 100%;
+    width: 5px;
+    height: 20px;
+  }
 }
 
 .flowerShop {
@@ -130,4 +143,9 @@
 .cancelBtn {
   margin-right: 15px;
   background-color: var(--mint);
+}
+
+.fllistBtnClose {
+  margin-right: 15px;
+  background-color: var(--moregray);
 }
