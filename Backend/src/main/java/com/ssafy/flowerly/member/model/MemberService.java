@@ -94,7 +94,7 @@ public class MemberService {
         Map<String, Object> sellerInput = (Map<String, Object>) data.get("sellerInput");
 
         // 주소 분할
-        String[] addressParts = ((String) data.get("address")).split(" ");
+        String[] addressParts = ((String) sellerInput.get("address")).split(" ");
         if (addressParts.length < 3) {
             throw new CustomException(ErrorCode.INVALID_ADDRESS_FORMAT);
         }
