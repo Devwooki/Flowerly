@@ -17,7 +17,7 @@ public interface SigunguRepository extends JpaRepository<Sigungu, Long > {
 
     Optional<Sigungu> findBySigunguNameAndSido(String sigunguName, Sido sido);
 
-    Optional<Sigungu> findBySigunguCodeAndSido(Integer sigunguCode, Sido sido);
+    Optional<Sigungu> findBySigunguCodeAndSido(Long sigunguCode, Sido sido);
 
     @Query(
             "Select s FROM Sigungu s " +
