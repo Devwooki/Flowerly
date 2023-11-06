@@ -49,6 +49,7 @@ const Step2 = () => {
       try {
         const response = await axios.get("https://flower-ly.co.kr/api/address/sido");
         setSidoData(response.data.data);
+        console.log(response);
       } catch (error) {
         console.error(error);
       }
@@ -77,6 +78,7 @@ const Step2 = () => {
   useEffect(() => {
     setPath(window.location.pathname);
     setHost(window.location.host);
+    console.log(path, host);
   }, []);
 
   const getSigunguData = async (sidoCode: number) => {
@@ -202,11 +204,12 @@ const Step2 = () => {
         <div className={style.sidoDropDown}>
           <select onChange={handleSidoChange}>
             <option value="">지역을 선택해주세요</option>
-            {sidoData.map((sido) => (
-              <option key={sido.sidoCode} value={sido.sidoCode}>
-                {sido.sidoName}
-              </option>
-            ))}
+            {sidoData &&
+              sidoData.map((sido) => (
+                <option key={sido.sidoCode} value={sido.sidoCode}>
+                  {sido.sidoName}
+                </option>
+              ))}
           </select>
         </div>
 
