@@ -1,0 +1,94 @@
+.checkBack {
+    background-color: rgba(37, 37, 37, 0.2);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 20;
+    display: flex;
+    text-align: center;
+  }
+  
+  .modalBack {
+    /* width: calc(100% - 100px); */
+    width: 300px;
+    height: 208px;
+    background-color: white;
+    margin: auto;
+    border-radius: 10px;
+    padding: 32px 20px;
+  }
+
+  .modalBack input::placeholder {
+    color: var(--dark);
+  }
+
+  .title {
+    font-family: "NanumSquareNeoOTF-Bd";
+    word-break: keep-all;
+    text-align: left;
+  }
+
+  .search {
+    display: flex;
+    align-items: center;
+  }
+
+  .search input {
+    width: 186px;
+    color: var(--dark);
+  }
+
+  .textBack {
+    margin: 10px 0 0;
+    font-family: "NanumSquareNeoOTF-Rg";
+    font-size: 12px;
+    background-color: #F8F9F9;
+    padding: 6px 12px;
+    border-radius: 4px;
+    border: none;
+    word-break: keep-all;
+    height: 24px;
+    display: flex;
+    align-items: center;
+  }
+
+  .textColor {
+    color: var(--dark);
+  }
+  
+  .findBtn {
+    margin: 10px 0 0 8px;
+    background-color: var(--dark);
+    width: 80px;
+    border-radius: 5px;
+    height: 36px;
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
+    color: white;
+    font-family: "NanumSquareNeoOTF-Bd";
+  }
+
+  .modalBack > input {
+    width: 276px;
+  }
+  
+  .modalBtnBox {
+    margin-top: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  .modalBtnBox div {
+    background-color: var(--dark);
+    width: 120px;
+    border-radius: 5px;
+    line-height: 40px;
+    height: 40px;
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
+    color: white;
+    font-family: "NanumSquareNeoOTF-Bd";
+  }
+  
