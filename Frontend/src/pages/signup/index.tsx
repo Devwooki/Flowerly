@@ -21,7 +21,7 @@ const Signup = () => {
   };
 
   const onClickSeller = () => {
-    router.push("/signup/seller/Step1");
+    router.push("/signup/seller/step1");
   };
   return (
     <div>

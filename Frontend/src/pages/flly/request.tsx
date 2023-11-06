@@ -8,9 +8,13 @@ import {
   colorState,
   flowerState,
   bouquetState,
+  regionState,
+  regionType
 } from "@/recoil/fllyRecoil";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import DeliveryModal from "@/components/flly/fllyUser/DeliveryModal";
+import PickupModal from "@/components/flly/fllyUser/PickupModal";
 
 const FllyTarget = () => {
   const router = useRouter();
@@ -26,12 +30,33 @@ const FllyTarget = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [oneDayLater, setOneDayLater] = useState(new Date());
   const [twoDaysLater, setTwoDaysLater] = useState(new Date());
-  // const dates = ["11.17", "11.18", "11.19"];
   const [dates, setDates] = useState([] as string[]);
   const [dateIdx, setDateIdx] = useState<number>(0);
   const [time, setTime] = useState<string>("")
   const [requestText, setRequestText] = useState<string>("");
-  const [dateTime, setDateTime] = useState<Date | null>(null);
+  const [dateTime, setDateTime] = useState<Date>(new Date());
+  const [showDelieveryModal, setShowDelieveryModal] = useState<boolean>(false);
+  const [showPickupModal, setShowPickupModal] = useState<boolean>(false);
+  const [basicAddress, setBasicAddress] = useState("");
+  const [detailAddress, setDetailAddress] = useState("");
+  const [pickupList, setPickupList] = useState<string[]>([]);
+  const [pickupCodeList, setPickupCodeList] = useRecoilState<regionType[]>(regionState);
+
+  const handleBasicAddressUpdate = (newAddress:string) => {
+    setBasicAddress(newAddress);
+  }
+
+  const handleDetailAddresUpdate = (newAddress:string) => {
+    setDetailAddress(newAddress);
+  }
+
+  const deliveryModalHandler = () => {
+    setShowDelieveryModal(!showDelieveryModal);
+  }
+
+  const pickupModalHandler = () => {
+    setShowPickupModal(!showPickupModal);
+  }
   
   // 날짜와 시간 합치기
 
@@ -56,15 +81,21 @@ const FllyTarget = () => {
     const time = new Date();
     
     if(idx == 0) {
+      time.setFullYear(currentDate.getFullYear());
       time.setMonth(currentDate.getMonth());
       time.setDate(currentDate.getDate());
     } else if(idx == 1) {
+      time.setFullYear(oneDayLater.getFullYear());
       time.setMonth(oneDayLater.getMonth());
       time.setDate(oneDayLater.getDate());
     } else if(idx == 2) {
+      time.setFullYear(twoDaysLater.getFullYear());
       time.setMonth(twoDaysLater.getMonth());
       time.setDate(twoDaysLater.getDate());
     }
+
+    setDateTime(time);
+    setTime("");
   };
 
   const handleText = (e: any) => {
@@ -80,11 +111,22 @@ const FllyTarget = () => {
       const minutes = parseInt(timeParts[1]);
       if (!isNaN(hours) && !isNaN(minutes)) {
         const time = new Date();
+        time.setFullYear(dateTime.getFullYear());
+        time.setMonth(dateTime.getMonth());
+        time.setDate(dateTime.getDate());
         time.setHours(hours);
         time.setMinutes(minutes);
         setDateTime(time);
-        console.log(dateTime);
+        console.log(time);
       }
+    }
+  };
+
+  const handleAdress = () => {
+    if(checkDelivery) {
+      setShowDelieveryModal(true);
+    } else {
+      setShowPickupModal(true);
     }
   };
 
@@ -106,18 +148,36 @@ const FllyTarget = () => {
   return (
     <>
       <div className={style.fllyBox}>
+        {showDelieveryModal && 
+        <DeliveryModal
+          ModalChangeHandler={deliveryModalHandler}
+          UpdateBasicAddress={handleBasicAddressUpdate}
+          initialAddress={basicAddress}
+          initialDetailAddress={detailAddress}
+          UpdateDetailAddress={handleDetailAddresUpdate}
+        />}
+        {showPickupModal && 
+        <PickupModal
+          ModalChangeHandler={pickupModalHandler}
+          pickupCodeList={pickupCodeList}
+          setPickupCodeList={setPickupCodeList}
+          pickupList={pickupList}
+          setPickupList={setPickupList}
+        />}
         <div className={style.contentBox}>
           <div className={style.headerTitle}>
             <div className={style.guide}>플리 의뢰서</div>
           </div>
-          <Image
-            src={bouquet ? bouquet.url : ""}
-            alt="flower image"
-            width={200}
-            height={200}
-          ></Image>
+          <div className={style.imageBox}>
+            <Image
+              src={bouquet ? bouquet.url : "/img/homeBanner/121_pink_gomphrena.jpg"}
+              alt="flower image"
+              width={320}
+              height={320}
+            ></Image>
+          </div>
           <div className={style.requestArea}>
-            <div className={style.guide}>의뢰 내용</div>
+            {/* <div className={style.guide}>의뢰 내용</div> */}
             <table className={style.requestTable}>
               <tr>
                 <th>이벤트 상황</th>
@@ -174,7 +234,7 @@ const FllyTarget = () => {
               <tr>
                 <th>주소</th>
                 <td>
-                  <span className={style.address}>주소 검색하기</span>
+                  <span onClick={handleAdress} className={style.address}><Image src="/img/icon/search.png" alt="icon" height={16} width={16}/>&nbsp;주소 설정하기</span>
                 </td>
               </tr>
               <tr>
@@ -211,7 +271,7 @@ const FllyTarget = () => {
                   <br />
                   (150자)
                 </th>
-                <td><textarea maxLength={150} value={requestText} onChange={handleText}/><div className={style.textCount}>{requestText?.length}/150자</div></td>
+                <td><textarea maxLength={149} value={requestText} onChange={handleText}/><div className={style.textCount}>{requestText?.length}/150자</div></td>
               </tr>
             </table>
           </div>

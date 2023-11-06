@@ -1,4 +1,4 @@
-import style from "./RequestMsg.module.css";
+import style from "./style/RequestMsg.module.css";
 
 type RequestMsgProps = {
   modalHandler: Function;

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import style from "./OrderModal.module.css";
+import style from "./style/OrderModal.module.css";
 import Image from "next/image";
 
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -9,10 +9,20 @@ import { ThemeProvider, createTheme } from "@mui/material";
 import { Dayjs } from "dayjs";
 import "dayjs/locale/ko";
 
+import DaumPostcode from "react-daum-postcode";
+import { ToastErrorMessage } from "@/model/toastMessageJHM";
+
 type DeliveryOrderProps = {
   chattingId: number;
   modalHandler: Function;
   sendHandler: Function;
+};
+
+type AddressData = {
+  address: string;
+  addressType: string;
+  bname: string;
+  buildingName: string;
 };
 
 const DeliveryOrderModal: React.FC<DeliveryOrderProps> = ({
@@ -32,6 +42,8 @@ const DeliveryOrderModal: React.FC<DeliveryOrderProps> = ({
   });
   const [date, setDate] = useState<Dayjs | null>(null);
   const [time, setTime] = useState<Dayjs | null>(null);
+  const [baseAddress, setBaseAddress] = useState("");
+  const [deatilAddress, setDetailAddress] = useState("");
 
   useEffect(() => {
     if (orderInputs.phoneNumber.length === 10) {
@@ -80,20 +92,22 @@ const DeliveryOrderModal: React.FC<DeliveryOrderProps> = ({
 
   const saveRequest = () => {
     // console.log("saveRequest");
-    // console.log(orderInputs);
     if (date && time) {
       setOrderInputs((prev) => {
         const updatedInputs = {
           ...prev,
           deliveryPickupTime: date.format("YYYY-MM-DD") + " " + time.format("HH:mm"),
+          address: baseAddress.trim() + " " + deatilAddress.trim(),
         };
+        // console.log(updatedInputs);
 
         axios
           .post(`https://flower-ly.co.kr/api/chatting/request/${chattingId}`, updatedInputs)
           .then((response) => {
             console.log(response.data);
             if (response.data.code == "200") sendHandler();
-            else if (response.data.code == "-604") alert("이미 진행중인 주문이 있습니다.");
+            else if (response.data.code == "-604")
+              ToastErrorMessage("이미 진행중인 주문이 있습니다.");
           })
           .catch((error) => console.log(error));
 
@@ -133,8 +147,40 @@ const DeliveryOrderModal: React.FC<DeliveryOrderProps> = ({
     },
   });
 
+  const [addressModal, setAddressModal] = useState<Boolean>(false);
+  const handleComplete = (data: AddressData) => {
+    console.log(data.address);
+    setBaseAddress(data.address);
+    setAddressModal(false);
+  };
+
   return (
     <>
+      {addressModal && (
+        <div
+          className={style.addressModalBg}
+          onClick={() => {
+            setAddressModal(false);
+          }}
+        >
+          <DaumPostcode
+            onComplete={handleComplete}
+            autoClose
+            style={{
+              margin: "0 auto",
+              zIndex: 9999,
+              width: "90%",
+              height: "60vh",
+              display: "fixed",
+              top: "20vh",
+              left: "5%",
+              position: "absolute",
+              color: "black",
+              borderRadius: "10px",
+            }}
+          />
+        </div>
+      )}
       <div className={style.modalBg}>
         <div className={style.modalMain}>
           <div className={style.top}>
@@ -270,17 +316,22 @@ const DeliveryOrderModal: React.FC<DeliveryOrderProps> = ({
                 </div>
                 <div id={style.addressInput}>
                   <div className={style.input} id={style.addSearch}>
-                    <button>검색</button>
+                    <div>{baseAddress}</div>
+                    <button
+                      onClick={() => {
+                        setAddressModal(true);
+                      }}
+                    >
+                      검색
+                    </button>
                   </div>
                   <input
                     className={style.input}
                     placeholder="상세주소를 입력하세요."
-                    value={orderInputs.address}
-                    onChange={(e) =>
-                      setOrderInputs((prev) => {
-                        return { ...prev, address: e.target.value };
-                      })
-                    }
+                    value={deatilAddress}
+                    onChange={(e) => {
+                      setDetailAddress(e.target.value);
+                    }}
                   />
                 </div>
               </div>

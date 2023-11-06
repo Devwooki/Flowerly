@@ -5,6 +5,8 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { useSetRecoilState } from "recoil";
 import { FllylistDiscRecoil } from "@/recoil/kdmRecoil";
+import { ToastErrorMessage } from "@/model/toastMessageJHM";
+import Cancel from "./Cancel";
 
 type BuyerCardsProps = {
   card: BuyerCard;
@@ -13,11 +15,43 @@ type BuyerCardsProps = {
 const stateProps = ["입찰", "조율", "주문완료", "제작완료", "픽업/배달완료"];
 
 const BuyerCards = ({ card }: BuyerCardsProps) => {
+  const [cancelModal, setCancelModal] = useState(false); // 취소 모달
   const isClient = typeof window !== "undefined";
-
+  const [windowWidth, setWindowWidth] = useState<number>(0);
   const route = useRouter();
   const stepNumber = stateProps.indexOf(card.state);
   const setCardProps = useSetRecoilState(FllylistDiscRecoil);
+
+  const buttomBtnCmd = (stepNumber: number) => {
+    switch (stepNumber) {
+      case 0:
+      case 1:
+        return (
+          <div className={style.cardBtn}>
+            <button className={style.fllistBtn} onClick={() => fllistBtn(card.fllyId)}>
+              플리스트
+            </button>
+            <button className={style.cancelBtn} onClick={() => handleCancel()}>
+              취소하기
+            </button>
+          </div>
+        );
+      default:
+        return (
+          <div className={style.cardBtn}>
+            <button
+              className={style.fllistBtnClose}
+              onClick={() => ToastErrorMessage("주문 이후에는 플리스트가 비활성화됩니다.")}
+            >
+              플리스트
+            </button>
+            <button className={style.cancelBtn} onClick={() => pageMoveHandelr()}>
+              주문서보기
+            </button>
+          </div>
+        );
+    }
+  };
 
   const posFlowerLeft = (step: number) => {
     if (step === 0) {
@@ -40,21 +74,78 @@ const BuyerCards = ({ card }: BuyerCardsProps) => {
   const mapColorNameToRGB = (colorName: string) => {
     switch (colorName) {
       case "빨간색":
-        return "rgb(219,68,85)";
+        return "#DB4455";
       case "주황색":
-        return "rgb(255,165,0)";
+        return "#F67828";
       case "분홍색":
-        return "rgb(255,192,203)";
+        return "#FFC5BF";
       case "노랑색":
-        return "rgb(251,232,112)";
+        return "#FBE870";
       case "파랑색":
-        return "rgb(4,137,221)";
+        return "#0489DD";
       case "보라색":
-        return "rgb(206,146,216)";
+        return "#CE92D8";
       case "흰색":
-        return "rgb(255,255,255)";
+        return "#ffffff";
+      case "선택안함":
+        return "rgba(255, 255, 255, 0)";
       default:
-        return "black"; // 만약 매핑되지 않는 경우 원래 문자열 반환
+        return "rgba(255, 255, 255, 0)"; // 만약 매핑되지 않는 경우 원래 문자열 반환
+    }
+  };
+  const mapFlowerColor = (colorName: string) => {
+    switch (colorName) {
+      case "빨간색":
+        return "redFlower";
+      case "주황색":
+        return "orangeFlower";
+      case "분홍색":
+        return "pinkFlower";
+      case "노랑색":
+        return "yellowFlower";
+      case "파랑색":
+        return "bleFlower";
+      case "보라색":
+        return "purpleFlower";
+      case "흰색":
+        return "whiteFlower";
+      default:
+        return "noneFlower"; // 만약 매핑되지 않는 경우 원래 문자열 반환
+    }
+  };
+  const mapFlowerText = (colorName: string) => {
+    switch (colorName) {
+      case "빨간색":
+        return "빨간";
+      case "주황색":
+        return "주황";
+      case "분홍색":
+        return "분홍";
+      case "노랑색":
+        return "노랑";
+      case "파랑색":
+        return "파랑";
+      case "보라색":
+        return "보라";
+      case "흰색":
+        return "흰색";
+      default:
+        return "없음"; // 만약 매핑되지 않는 경우 원래 문자열 반환
+    }
+  };
+
+  const pageMoveHandelr = () => {
+    if (card.fllyId) {
+      route.push(
+        {
+          pathname: "/flly/order/sheet/[fllyId]",
+          query: { fllyId: card.fllyId },
+        },
+        "/flly/detail", // 이것은 브라우저 주소창에 표시될 URL입니다.
+        { shallow: true },
+      );
+    } else {
+      ToastErrorMessage("잠시후 다시 눌러주세요!");
     }
   };
 
@@ -68,7 +159,9 @@ const BuyerCards = ({ card }: BuyerCardsProps) => {
     });
   };
 
-  const [windowWidth, setWindowWidth] = useState<number>(0);
+  const handleCancel = () => {
+    setCancelModal((pre) => !pre);
+  };
 
   useEffect(() => {
     if (isClient) {
@@ -112,36 +205,41 @@ const BuyerCards = ({ card }: BuyerCardsProps) => {
             <div className={style.infoTitle}>대상</div>
             <div className={style.info}>{card.target}</div>
           </div>
-          <div className={style.infoColorTable}>주요색상</div>
-          {card.selectedColor.map((color, idx) => {
-            const rgbColor = mapColorNameToRGB(color);
-            return (
-              <div
-                key={idx}
-                className={`${style.colorInfo} ${style.colorfirst}`}
-                style={{
-                  color: isClient && window.innerWidth <= 426 ? rgbColor : "black",
-                  backgroundColor: isClient && window.innerWidth <= 426 ? "" : rgbColor,
-                }}
-              >
-                {window.innerWidth <= 426 ? "" : color}
-              </div>
-            );
-          })}
+          <div className={style.infoColorTable}>
+            <div>주요색상</div>
+            {card.selectedColor.map((color, idx) => {
+              const rgbColor = mapColorNameToRGB(color);
+              return (
+                <div
+                  key={idx}
+                  className={`${style.colorInfo} ${style.colorfirst}`}
+                  style={{
+                    color: isClient && windowWidth <= 426 ? rgbColor : "black",
+                    backgroundColor: isClient && windowWidth <= 426 ? rgbColor : "",
+                    // backgroundColor: isClient && windowWidth <= 426 ? "" : "var(--moregray)",
+                  }}
+                >
+                  {windowWidth <= 426 ? "" : mapFlowerText(color)}
+                  {/* {windowWidth <= 426 ? "" : ""} */}
+                </div>
+                // <Image
+                //   src={`/img/flowerColor/${mapFlowerColor(color)}.png`}
+                //   alt="꽃 색상"
+                //   width={40}
+                //   height={40}
+                //   key={idx}
+                // />
+              );
+            })}
+          </div>
           <div className={style.infoTable}>
             <div className={style.infoTitle}>꽃집</div>
             <div className={`${style.flowerShop}`}>{card.shopName}</div>
           </div>
         </div>
       </div>
-      <div className={style.cardBtn}>
-        <button className={style.fllistBtn} onClick={() => fllistBtn(card.fllyId)}>
-          플리스트
-        </button>
-        <button className={style.cancelBtn} onClick={() => console.log("취소")}>
-          취소하기
-        </button>
-      </div>
+      {buttomBtnCmd(stepNumber)}
+      {cancelModal && <Cancel onCancel={handleCancel} />}
     </div>
   );
 };
