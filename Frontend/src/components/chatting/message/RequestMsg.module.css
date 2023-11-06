@@ -1,6 +1,7 @@
 .mainBox {
   box-sizing: border-box;
-  width: 280px;
+  min-width: 280px;
+  max-width: 280px;
   height: 120px;
   background-color: #ffffff;
   border: 1px solid var(--moregray);

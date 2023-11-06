@@ -1,7 +1,9 @@
 package com.ssafy.flowerly.entity;
 
+import com.ssafy.flowerly.chatting.dto.RequestFromChattingDto;
 import com.ssafy.flowerly.entity.common.BaseCreatedTimeEntity;
 import com.ssafy.flowerly.entity.type.OrderType;
+import com.ssafy.flowerly.seller.vo.FllyOrderInfoDto;
 import com.ssafy.flowerly.seller.vo.OrderSelectSimpleDto;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
@@ -50,21 +52,48 @@ public class Request extends BaseCreatedTimeEntity {
     private Integer price;
 
 
-    public OrderSelectSimpleDto toOrderSelectSimpleDto(){
-        DateTimeFormatter Timeformatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        return OrderSelectSimpleDto.builder()
-                .requestId(this.requestId)
-                .fllyId(this.getFlly().getFllyId())
-                .orderName(this.orderName)
-                .phoneNumber(this.phoneNumber)
-                .orderType(this.orderType.getTitle())
-                .deliveryPickupTime(this.deliveryPickupTime != null ? this.deliveryPickupTime.format(Timeformatter) : null)
-                .progress(this.getFlly().getProgress().getTitle())
-                .build();
-    }
+//    public OrderSelectSimpleDto toOrderSelectSimpleDto(){
+//        DateTimeFormatter Timeformatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+//        return OrderSelectSimpleDto.builder()
+//                .requestId(this.requestId)
+//                .fllyId(this.getFlly().getFllyId())
+//                .orderName(this.orderName)
+//                .phoneNumber(this.phoneNumber)
+//                .orderType(this.orderType.getTitle())
+//                .deliveryPickupTime(this.deliveryPickupTime != null ? this.deliveryPickupTime.format(Timeformatter) : null)
+//                .progress(this.getFlly().getProgress().getTitle())
+//                .build();
+//    }
 
     public void setRequestPrice(Integer price) {
         this.price = price;
     }
 
+    public void updateRequestInfo(RequestFromChattingDto requestDto) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+        this.orderName = requestDto.getOrdererName();
+        this.phoneNumber = requestDto.getPhoneNumber();
+        this.orderType = requestDto.getOrderType().equals("DELIVERY") ? OrderType.DELIVERY : OrderType.PICKUP;
+        this.deliveryPickupTime = LocalDateTime.parse(requestDto.getDeliveryPickupTime(), formatter);
+        this.requestContent = requestDto.getRequestContent();
+        this.price = -1;
+    }
+
+    public FllyOrderInfoDto toFllyOrderInfoDto(){
+        DateTimeFormatter Timeformatter = DateTimeFormatter.ofPattern("yyyy년MM월dd일 HH시mm분");
+
+        return FllyOrderInfoDto.builder()
+                .requestId(this.requestId)
+                .orderName(this.orderName)
+                .phoneNumber(this.phoneNumber)
+                .orderType(this.orderType.getTitle())
+                .deliveryPickupTime(this.deliveryPickupTime != null ? this.deliveryPickupTime.format(Timeformatter) : null)
+                .fllyId(this.getFlly().getFllyId())
+                .progress(this.getFlly().getProgress().getTitle())
+                .responseContent(this.requestContent)
+                .price(this.price)
+                .createTime(super.getCreatedAt().format(Timeformatter))
+                .build();
+    }
 }

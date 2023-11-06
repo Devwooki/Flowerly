@@ -4,14 +4,17 @@ import Disc from "./Disc";
 import style from "./Disc.module.css";
 
 type FllyListMainProps = {
-  card: BuyerCard;
+  card: BuyerCardPlus;
+  shopList: ShopInfo[];
 };
 
-const FllyListMain = ({ card }: FllyListMainProps) => {
+const FllyListMain = ({ card, shopList }: FllyListMainProps) => {
+  console.log(card);
+
   return (
     <div className={style.fllyListMain}>
       <Disc card={card} />
-      <ShopList />
+      <ShopList shopList={shopList} />
     </div>
   );
 };

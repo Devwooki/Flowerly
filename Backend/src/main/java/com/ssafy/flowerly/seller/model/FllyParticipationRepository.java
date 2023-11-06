@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -22,5 +23,13 @@ public interface FllyParticipationRepository extends JpaRepository<FllyParticipa
 
     Optional<FllyParticipation> findByFllyFllyId(long fllyId);
 
-    Optional<FllyParticipation> findByFllyFllyIdAndSellerMemberId(long fllyId, long memberId);
+
+    Optional<FllyParticipation> findByFllyFllyIdAndSellerMemberId(long memberId, long fllyId);
+
+    @Query("select si, fp from FllyParticipation fp " +
+            " left join fetch StoreInfo si on fp.seller.memberId = si.seller.memberId " +
+            " where fp.flly.fllyId = :fllyId ")
+    Page<Object[]> findFlistByFllyId(Pageable pageable,
+                                     @Param("fllyId") Long fllyId);
+
 }

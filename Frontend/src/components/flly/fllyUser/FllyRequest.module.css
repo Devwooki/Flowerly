@@ -1,0 +1,132 @@
+.fllyBox {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.contentBox {
+    padding: 30px 20px;
+    height: calc(100vh - 120px);
+    overflow: scroll;
+}
+
+.headerTitle {
+    display: flex;
+}
+
+.guide {
+    line-height: 24px;
+    font-size: 20px;
+    font-family: "NanumSquareNeoOTF-Bd";
+}
+
+.requestArea {
+    padding: 10px 12px;
+}
+
+.requestTable {
+    padding: 10px 0;
+    border-spacing: 4px;
+    width: 100%;
+
+}
+
+.requestTable ul {
+    padding: 0; 
+    margin: 0; 
+}
+
+.requestTable li {
+    list-style: none;
+    padding: 0; 
+    margin: 0;
+    line-height: 1.5;
+}
+
+.requestTable th {
+    width: 90px;
+    text-align: left;
+    vertical-align: top;
+    font-weight: normal;
+    font-family: "NanumSquareNeoOTF-Rg";
+    color: #757575;
+}
+
+.requestTable td {
+    text-align: left;
+    vertical-align: top;
+    font-family: "NanumSquareNeoOTF-Rg";
+}
+
+.colorLi {
+    display: inline;
+}
+
+.line {
+    height: 1px;
+    background-color: #CAC4D0;
+}
+
+.second {
+    line-height: 2;
+}
+
+.second input {
+    padding: 2px 4px;
+    font-family: "NanumSquareNeoOTF-Rg";
+}
+
+.selectedBtn {
+    padding: 6px 16px;
+    margin: 0 6px 0 0;
+    border-radius: 5px;
+    box-shadow: inset 5px 5px 8px -5px #6e6e6e;
+    background-color: #E8EAED;
+}
+
+.nselectedBtn {
+    padding: 6px 16px;
+    margin: 0 6px 0 0;
+    border-radius: 5px;
+    box-shadow: 5px 5px 8px -5px #333;
+}
+
+.address {
+    background-color: #D9D9D9;
+    border-radius: 4px;
+    padding: 6px 16px 6px 12px;
+    color: var(--dark);
+}
+
+.price {
+    width: 100px;
+    margin-right: 4px;
+    text-align: right;
+}
+
+.btnBox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.prevBtn {
+    background-color: var(--moregray);
+    color: var(--dark);
+    width: 20px;
+    padding: 12px;
+    border-radius: 12px;
+    margin-right: 10px;
+    text-align: center;
+    font-family: "NanumSquareNeoOTF-Bd";
+}
+
+.nextBtn {
+    background-color: var(--blue);   
+    width: 80px;
+    padding: 12px;
+    border-radius: 16px;
+    color: var(--gray);
+    text-align: center;
+    font-family: "NanumSquareNeoOTF-Bd";
+}

@@ -1,112 +1,258 @@
-.cardBack {
-  width: calc(100% - 50px);
-  margin: 20px auto;
-  height: 220px;
-  border-radius: 15px;
-  background-color: var(--gray);
+@media screen and (max-width: 400px) {
+  .cardBack {
+    min-width: 310px;
+    width: calc(100% - 50px);
+    margin: 20px auto;
+    height: 170px;
+    border-radius: 15px;
+    background-color: var(--gray);
+  }
+
+  .cardHeader {
+    width: 100%;
+    display: flex;
+    overflow: hidden;
+    border-bottom: 1px solid #e6e6e6;
+  }
+
+  .cardHeader > div {
+    justify-content: center;
+    display: flex;
+  }
+
+  .cardHeaderImg {
+    width: 130px;
+    height: 130px;
+  }
+
+  .cardHeaderImg > div {
+    width: 110px;
+    height: 110px;
+    margin: 10px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 10px;
+  }
+
+  .cardHeaderInfoBox {
+    display: flex;
+
+    flex-direction: column;
+    width: calc(100% - 10px);
+    height: 130px;
+  }
+
+  .cardHeaderInfoBox > div:last-child {
+    width: 100%;
+    height: 25px;
+    line-height: 35px;
+    content: "";
+    font-family: "NanumSquareNeoOTF-Rg";
+    font-size: 12px;
+    color: var(--blue);
+    position: relative;
+    display: flex;
+    flex-direction: row-reverse;
+  }
+
+  .moveBtnBox {
+    width: 85px;
+  }
+
+  .cardHeaderInfoBox > div:last-child > span {
+    font-size: 10px;
+    /* margin-left: 10px; */
+  }
+
+  .cardHeaderInfo {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    gap: 5px;
+  }
+
+  .cardHeaderInfo > div {
+    display: flex;
+    gap: 14px;
+    font-size: 12px;
+    font-family: "NanumSquareNeoOTF-Rg";
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    /* padding: 10px; */
+  }
+
+  .cardHeaderInfo > div > img {
+    width: 13px;
+    height: 13px;
+  }
+
+  .cardMain {
+    display: flex;
+    gap: 10px;
+    padding: 5px;
+  }
+
+  .cardMainState {
+    display: flex;
+    width: 80px;
+    height: 25px;
+    line-height: 25px;
+    font-size: 10px;
+    background-color: white;
+    border-radius: 8px;
+    justify-content: center;
+    gap: 5px;
+  }
+
+  .cardMainState > img {
+    margin: auto 0px;
+    width: 12px;
+    height: 12px;
+  }
+
+  .cardMainState > span {
+    text-align: center;
+  }
+
+  .cardFinshBtn {
+    text-align: center;
+    height: 25px;
+    line-height: 25px;
+    width: 70px;
+    background-color: var(--sky);
+    border-radius: 8px;
+    font-size: 10px;
+    font-family: "NanumSquareNeoOTF-Bd";
+    color: white;
+    box-shadow: 0px 0px 5px rgb(0, 0, 0, 0.25);
+  }
 }
 
-.cardHeader {
-  width: 100%;
-  display: flex;
-  overflow: hidden;
-  border-bottom: 1px solid #e6e6e6;
-}
+/* 기본 화면 */
+@media screen and (min-width: 401px) {
+  .cardBack {
+    width: calc(100% - 50px);
+    margin: 20px auto;
+    height: 220px;
+    border-radius: 15px;
+    background-color: var(--gray);
+  }
 
-.cardHeader > div {
-  justify-content: center;
-  display: flex;
-}
+  .cardHeader {
+    width: 100%;
+    display: flex;
+    overflow: hidden;
+    border-bottom: 1px solid #e6e6e6;
+  }
 
-.cardHeaderImg {
-  width: 170px;
-  height: 170px;
-}
+  .cardHeader > div {
+    justify-content: center;
+    display: flex;
+  }
 
-.cardHeaderImg > div {
-  width: 150px;
-  height: 150px;
-  margin: 10px;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  border-radius: 10px;
-}
+  .cardHeaderImg {
+    width: 170px;
+    height: 170px;
+  }
 
-.cardHeaderInfoBox {
-  display: flex;
-  flex-direction: column;
-  width: calc(100% - 180px);
-}
+  .cardHeaderImg > div {
+    width: 150px;
+    height: 150px;
+    margin: 10px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 10px;
+  }
 
-.cardHeaderInfoBox > div:last-child {
-  width: 100px;
-  margin-left: 115px;
-  font-family: "NanumSquareNeoOTF-Rg";
-  font-size: 16px;
-  color: #80858a;
-}
+  .cardHeaderInfoBox {
+    display: flex;
+    flex-direction: column;
+    width: calc(100% - 180px);
+  }
 
-.cardHeaderInfoBox > div:last-child > span {
-  font-size: 14px;
-  margin-left: 4px;
-}
+  .cardHeaderInfoBox > div:last-child {
+    width: 100%;
+    height: 25px;
+    line-height: 35px;
+    content: "";
+    font-family: "NanumSquareNeoOTF-Rg";
+    font-size: 14px;
+    color: var(--blue);
+    position: relative;
+    display: flex;
+    flex-direction: row-reverse;
+  }
 
-.cardHeaderInfo {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  padding: 10px;
-  gap: 10px;
-}
+  .moveBtnBox {
+    width: 90px;
+  }
 
-.cardHeaderInfo > div {
-  display: flex;
-  gap: 15px;
-  font-size: 14px;
-  font-family: "NanumSquareNeoOTF-Rg";
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  .cardHeaderInfoBox > div:last-child > span {
+    font-size: 12px;
+    /* margin-left: 10px; */
+  }
 
-  /* padding: 10px; */
-}
+  .cardHeaderInfo {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    gap: 10px;
+  }
 
-.cardMain {
-  display: flex;
-  gap: 10px;
-  padding: 10px;
-}
+  .cardHeaderInfo > div {
+    display: flex;
+    gap: 15px;
+    font-size: 14px;
+    font-family: "NanumSquareNeoOTF-Rg";
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
-.cardMainState {
-  display: flex;
-  width: 90px;
-  height: 30px;
-  line-height: 30px;
-  font-size: 14px;
-  background-color: white;
-  border-radius: 8px;
-  justify-content: center;
-  gap: 5px;
-}
+    /* padding: 10px; */
+  }
 
-.cardMainState > img {
-  margin: auto 0px;
-}
+  .cardMain {
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+  }
 
-.cardMainState > span {
-  text-align: center;
-}
+  .cardMainState {
+    display: flex;
+    width: 90px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 14px;
+    background-color: white;
+    border-radius: 8px;
+    justify-content: center;
+    gap: 5px;
+  }
 
-.cardFinshBtn {
-  text-align: center;
-  height: 30px;
-  line-height: 30px;
-  width: 85px;
-  background-color: var(--sky);
-  border-radius: 8px;
-  font-size: 14px;
-  font-family: "NanumSquareNeoOTF-Bd";
-  color: white;
-  box-shadow: 0px 0px 5px rgb(0, 0, 0, 0.25);
+  .cardMainState > img {
+    margin: auto 0px;
+  }
+
+  .cardMainState > span {
+    text-align: center;
+  }
+
+  .cardFinshBtn {
+    text-align: center;
+    height: 30px;
+    line-height: 30px;
+    width: 85px;
+    background-color: var(--sky);
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: "NanumSquareNeoOTF-Bd";
+    color: white;
+    box-shadow: 0px 0px 5px rgb(0, 0, 0, 0.25);
+  }
 }

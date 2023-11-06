@@ -88,6 +88,16 @@ const FllySellerParticipation = () => {
       return;
     }
 
+<<<<<<< Updated upstream
+    const formData = new FormData();
+    formData.append("file", fileInfo);
+    formData.append("fllyId", fllyId.fllyId + "");
+    formData.append("content", content.toString());
+    formData.append("offerPrice", money);
+
+    axios
+      .post("https://flower-ly.co.kr/api/seller/flly/participate", formData, {
+=======
     console.log(fileInfo);
     const formData = new FormData();
     formData.append("file", fileInfo);
@@ -99,6 +109,7 @@ const FllySellerParticipation = () => {
 
     axios
       .post("https://flower-ly.co.kr/seller/flly/participate", formData, {
+>>>>>>> Stashed changes
         headers: {
           "Content-Type": "multipart/form-data",
         },

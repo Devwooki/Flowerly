@@ -7,10 +7,11 @@ export interface flowerCardType {
   color : string,
   engName : string
   meaning : string,
+  colorName : string,
 }
 
 export interface bouquetType {
-  url: string | undefined;
+  url: string;
 }
 
 export const situationState = atom({
@@ -33,8 +34,21 @@ export const flowerState = atom({
   default: [] as flowerCardType[],
 });
 
+<<<<<<< Updated upstream
+export const bouquetsState = atom({
+  key: 'bouquetsState',
+  // default: [{url:""}, {url:""}] as bouquetType[],
+  default: [] as bouquetType[],
+});
+
+export const bouquetState = atom({
+  key: 'bouquetState',
+  default: null as bouquetType | null,
+});
+=======
 export const bouquetState = atom({
   key: 'bouquetState',
   // default: [{url:""}, {url:""}] as bouquetType[],
   default: [] as bouquetType[],
 });
+>>>>>>> Stashed changes

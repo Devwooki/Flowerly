@@ -1,6 +1,7 @@
 .mainBox {
   box-sizing: border-box;
-  width: 280px;
+  min-width: 280px;
+  max-width: 280px;
   height: 220px;
   background-color: #ffffff;
   border: 1px solid var(--moregray);
@@ -44,6 +45,11 @@
 .contentItem {
   line-height: 20px;
   display: flex;
+}
+#comment {
+  min-height: 60px;
+}
+#price {
   align-items: center;
 }
 

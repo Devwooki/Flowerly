@@ -5,6 +5,8 @@ import com.ssafy.flowerly.chatting.dto.ChattingDto;
 import com.ssafy.flowerly.chatting.dto.FllyFromChattingDto;
 import com.ssafy.flowerly.chatting.dto.RequestFromChattingDto;
 import com.ssafy.flowerly.chatting.service.ChattingService;
+import com.ssafy.flowerly.exception.CustomException;
+import com.ssafy.flowerly.exception.ErrorCode;
 import com.ssafy.flowerly.util.CustomResponse;
 import com.ssafy.flowerly.util.DataResponse;
 import lombok.RequiredArgsConstructor;
@@ -67,6 +69,7 @@ public class ChattingController {
     public CustomResponse saveRequestInfo(@PathVariable Long chattingId, @RequestBody RequestFromChattingDto requestDto) {
         Long requestId = chattingService.saveRequestInfo(requestDto, chattingId);
 
+        if(requestId == null) throw new CustomException(ErrorCode.REQUEST_ALREADY_PAID);
         return new DataResponse<Long>(200, "주문서 저장 성공", requestId);
     }
 
@@ -75,7 +78,7 @@ public class ChattingController {
      * @param requestBody requestId, price
      * @return
      */
-    @PostMapping("/price")
+    @PostMapping("/request/price")
     public CustomResponse saveRequestPrice(@RequestBody Map<String, Object> requestBody) {
         chattingService.saveRequestInfo(
                 Long.parseLong(requestBody.get("requestId").toString()),
@@ -97,15 +100,39 @@ public class ChattingController {
         return new DataResponse<FllyFromChattingDto.Participation>(200, "플리 참여 정보 조회 성공", fllyDto);
     }
 
+    /**
+     * 플리 상세보기 조회
+     * @param chattingId
+     * @return participationDto, fllyDto
+     */
     @GetMapping("/flly/detail/{chattingId}")
     public CustomResponse getFllyDetailInfo(@PathVariable Long chattingId) {
-        FllyFromChattingDto.Participation partipationDto = chattingService.getParticipationInfo(chattingId);
+        FllyFromChattingDto.Participation participationDto = chattingService.getParticipationInfo(chattingId);
         FllyFromChattingDto.FllyInfo fllyDto = chattingService.getFllyInfo(chattingId);
 
         Map<String, Object> response = new HashMap<>();
         response.put("fllyDto", fllyDto);
-        response.put("participationDto", partipationDto);
+        response.put("participationDto", participationDto);
 
         return new DataResponse<>(200, "플리 자세히 보기 조회 성공", response);
+    }
+
+    /**
+     * 주문서 조회
+     * @param chattingId
+     * @return
+     */
+    @GetMapping("/request/{chattingId}")
+    public CustomResponse getRequestInfo(@PathVariable Long chattingId) {
+        RequestFromChattingDto requestDto = chattingService.getRequestInfo(chattingId);
+
+        return new DataResponse<>(200, "주문서 조회 성공", requestDto);
+    }
+
+    @GetMapping("/price/{chattingId}")
+    public CustomResponse getPrice(@PathVariable Long chattingId) {
+        Map<String, Object> responseDto = chattingService.getPrice(chattingId);
+
+        return new DataResponse<>(200, "결제 정보 조회 성공", responseDto);
     }
 }

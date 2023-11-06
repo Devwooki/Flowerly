@@ -1,139 +1,310 @@
-.cardBack {
-  width: calc(100% - 50px);
-  margin: 20px auto;
-  height: 380px;
-  border-radius: 15px;
-  background-color: var(--gray);
-  overflow: hidden;
+@media screen and (max-width: 400px) {
+  .cardBack {
+    width: calc(100% - 50px);
+    margin: 20px auto;
+    height: 312px;
+    border-radius: 15px;
+    background-color: var(--gray);
+    overflow: hidden;
+    text-align: center;
+  }
+
+  /* 요청 박스 */
+
+  .requestBox {
+    display: flex;
+    width: 100%;
+    border-bottom: 2px solid var(--moregray);
+  }
+
+  .imageBox {
+    width: 140px;
+    height: 140px;
+  }
+
+  .imageBox > div {
+    width: 120px;
+    height: 120px;
+    margin: 10px;
+    border-radius: 10px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  .cardInfoBox {
+    display: flex;
+    flex-direction: column;
+    width: calc(100% - 145px);
+    /* border: 0.1px solid black; */
+  }
+
+  .cardInfoBtnBox {
+    width: 100%;
+    display: flex;
+    flex-direction: row-reverse;
+  }
+
+  .cardInfoBtn {
+    margin-top: 6px;
+    height: 25px;
+    line-height: 25px;
+    color: #80858a;
+    width: 90px;
+    font-size: 12px;
+    font-family: "NanumSquareNeoOTF-Rg";
+    /* text-align: right; */
+    /* border: 1px solid black; */
+  }
+
+  .cardInfoBtn > span {
+    font-size: 12px;
+    margin-left: 5px;
+  }
+
+  .cardInfo {
+    /* border: 0.1px solid black; */
+    height: calc(100% - 50px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .cardInfo > div {
+    display: flex;
+    width: calc(100% - 5px);
+    height: 20px;
+    line-height: 22px;
+    margin: 0px auto;
+    gap: 10px;
+    font-size: 12px;
+    font-family: "NanumSquareNeoOTF-Rg";
+    /* border: 1px solid black; */
+  }
+
+  .cardInfo > div > img {
+    /* border: 1px solid black; */
+    width: 15px;
+    height: 15px;
+    margin-top: 3px;
+  }
+
+  .cardInfo > div > div {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* 응답 박스  */
+  .responseBox {
+    display: flex;
+    width: 100%;
+  }
+
+  .cardResponseBox {
+    display: flex;
+    flex-direction: column;
+    width: calc(100% - 172px);
+
+    justify-content: center;
+  }
+
+  .cardResponseInfo {
+    display: flex;
+    /* border: 0.1px solid red; */
+    width: calc(100% - 5px);
+    margin: 0px auto;
+    height: 20px;
+    line-height: 22px;
+    gap: 10px;
+    font-size: 12px;
+    font-family: "NanumSquareNeoOTF-Rg";
+  }
+
+  .cardResponseInfo > div {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .cardResponseInfo > img {
+    width: 15px;
+    height: 15px;
+    margin-top: 3px;
+  }
+
+  .responseText {
+    text-align: left;
+    white-space: normal;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    height: 75px;
+    width: calc(100% - 5px);
+    padding: 5px;
+    margin: 7px auto 0px auto;
+    overflow: hidden;
+    font-family: "NanumSquareNeoOTF-Rg";
+    font-size: 12px;
+  }
+
+  /* 하단 상태 */
+  .footerBox {
+    width: 100%;
+    height: 30px;
+    background-color: var(--sky);
+    font-size: 16px;
+    font-family: "NanumSquareNeoOTF-Bd";
+    line-height: 30px;
+  }
 }
 
-/* 요청 박스 */
+@media screen and (min-width: 400px) {
+  .cardBack {
+    width: calc(100% - 50px);
+    margin: 20px auto;
+    height: 380px;
+    border-radius: 15px;
+    background-color: var(--gray);
+    overflow: hidden;
+    text-align: center;
+  }
 
-.requestBox {
-  display: flex;
-  width: 100%;
-  border-bottom: 2px solid var(--moregray);
-}
+  /* 요청 박스 */
 
-.imageBox {
-  width: 170px;
-  height: 170px;
-}
+  .requestBox {
+    display: flex;
+    width: 100%;
+    border-bottom: 2px solid var(--moregray);
+  }
 
-.imageBox > div {
-  width: 150px;
-  height: 150px;
-  margin: 10px;
-  border-radius: 10px;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
+  .imageBox {
+    width: 170px;
+    height: 170px;
+  }
 
-.cardInfoBox {
-  display: flex;
-  flex-direction: column;
-  width: calc(100% - 172px);
-  /* border: 0.1px solid black; */
-}
+  .imageBox > div {
+    width: 150px;
+    height: 150px;
+    margin: 10px;
+    border-radius: 10px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
 
-.cardInfoBtn {
-  margin-top: 6px;
-  height: 25px;
-  line-height: 25px;
-  /* border: 0.1px solid black; */
-  color: #80858a;
-  width: 100px;
-  margin-left: 115px;
-  font-size: 14px;
-  font-family: "NanumSquareNeoOTF-Rg";
-}
+  .cardInfoBox {
+    display: flex;
+    flex-direction: column;
+    width: calc(100% - 172px);
+    /* border: 0.1px solid black; */
+  }
 
-.cardInfoBtn > span {
-  font-size: 14px;
-  margin-left: 10px;
-}
+  .cardInfoBtnBox {
+    width: 100%;
+    display: flex;
+    flex-direction: row-reverse;
+  }
 
-.cardInfo {
-  /* border: 0.1px solid black; */
-  height: calc(100% - 50px);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 18px;
-  width: 100%;
-}
+  .cardInfoBtn {
+    margin-top: 6px;
+    height: 25px;
+    line-height: 25px;
+    color: #80858a;
+    width: 100px;
+    font-size: 14px;
+    font-family: "NanumSquareNeoOTF-Rg";
+    margin-right: 5px;
+  }
 
-.cardInfo > div {
-  display: flex;
-  width: calc(100% - 25px);
-  height: 20px;
-  line-height: 22px;
-  margin: 0px auto;
-  gap: 15px;
-  font-size: 14px;
-  font-family: "NanumSquareNeoOTF-Rg";
-}
+  .cardInfoBtn > span {
+    font-size: 14px;
+    margin-left: 10px;
+  }
 
-.cardInfo > div > div {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+  .cardInfo {
+    /* border: 0.1px solid black; */
+    height: calc(100% - 50px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 18px;
+    width: 100%;
+  }
 
-/* 응답 박스  */
-.responseBox {
-  display: flex;
-  width: 100%;
-}
+  .cardInfo > div {
+    display: flex;
+    width: calc(100% - 25px);
+    height: 20px;
+    line-height: 22px;
+    margin: 0px auto;
+    gap: 15px;
+    font-size: 14px;
+    font-family: "NanumSquareNeoOTF-Rg";
+  }
 
-.cardResponseBox {
-  display: flex;
-  flex-direction: column;
-  width: calc(100% - 172px);
+  .cardInfo > div > div {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 
-  justify-content: center;
-}
+  /* 응답 박스  */
+  .responseBox {
+    display: flex;
+    width: 100%;
+  }
 
-.cardResponseInfo {
-  display: flex;
-  /* border: 0.1px solid red; */
-  width: calc(100% - 25px);
-  margin: 0px auto;
-  height: 20px;
-  line-height: 22px;
-  gap: 15px;
-  font-size: 14px;
-  font-family: "NanumSquareNeoOTF-Rg";
-}
+  .cardResponseBox {
+    display: flex;
+    flex-direction: column;
+    width: calc(100% - 172px);
 
-.cardResponseInfo > div {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+    justify-content: center;
+  }
 
-.responseText {
-  text-align: left;
-  white-space: normal;
-  display: -webkit-box;
-  -webkit-line-clamp: 4;
-  -webkit-box-orient: vertical;
-  height: 75px;
-  width: calc(100% - 30px);
-  padding: 5px;
-  margin: 7px auto 0px auto;
-  overflow: hidden;
-  font-family: "NanumSquareNeoOTF-Rg";
-  font-size: 16px;
-}
+  .cardResponseInfo {
+    display: flex;
+    /* border: 0.1px solid red; */
+    width: calc(100% - 25px);
+    margin: 0px auto;
+    height: 20px;
+    line-height: 22px;
+    gap: 15px;
+    font-size: 14px;
+    font-family: "NanumSquareNeoOTF-Rg";
+  }
 
-/* 하단 상태 */
-.footerBox {
-  width: 100%;
-  height: 38px;
-  background-color: var(--sky);
-  font-size: 20px;
-  font-family: "NanumSquareNeoOTF-Bd";
-  line-height: 38px;
+  .cardResponseInfo > div {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .responseText {
+    text-align: left;
+    white-space: normal;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    height: 75px;
+    width: calc(100% - 30px);
+    padding: 5px;
+    margin: 7px auto 0px auto;
+    overflow: hidden;
+    font-family: "NanumSquareNeoOTF-Rg";
+    font-size: 16px;
+  }
+
+  /* 하단 상태 */
+  .footerBox {
+    width: 100%;
+    height: 38px;
+    background-color: var(--sky);
+    font-size: 20px;
+    font-family: "NanumSquareNeoOTF-Bd";
+    line-height: 38px;
+  }
 }

@@ -2,17 +2,16 @@ import React from "react";
 import style from "./ShopList.module.css";
 import ShopCard from "./ShopCard";
 
-const ShopList = () => {
+type ShopListProps = {
+  shopList: ShopInfo[];
+};
+
+const ShopList = ({ shopList }: ShopListProps) => {
   return (
     <div className={style.shopListMain}>
-      <ShopCard />
-      <ShopCard />
-      <ShopCard />
-      <ShopCard />
-      <ShopCard />
-      <ShopCard />
-      <ShopCard />
-      <ShopCard />
+      {shopList.map((shopInfo) => (
+        <ShopCard shopInfo={shopInfo} key={shopInfo.shopId} />
+      ))}
     </div>
   );
 };

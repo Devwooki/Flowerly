@@ -18,14 +18,14 @@ const ChattingList = () => {
 
   const axiosHandler = () => {
     axios.get(`https://flower-ly.co.kr/api/chatting`).then((response) => {
-      // console.log(response.data.data);
+      console.log(response.data);
       setChattings(response.data.data);
     });
   };
 
   useEffect(() => {
     axiosHandler();
-  }, [chattings]);
+  }, []);
 
   return (
     <>

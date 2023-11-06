@@ -1,65 +1,188 @@
-.back {
-  width: 400px;
-  height: 220px;
-  margin: 20px auto;
-  border-radius: 13px;
-  background-color: #ffffff;
-  overflow: hidden;
-  box-shadow: 0px 0px 4px rgb(0, 0, 0, 0.25);
+@media screen and (max-width: 401px) {
+  .back {
+    width: calc(100% - 40px);
+    height: 175px;
+    margin: 20px auto;
+    border-radius: 13px;
+    background-color: #ffffff;
+    overflow: hidden;
+    box-shadow: 0px 0px 4px rgb(0, 0, 0, 0.25);
+  }
+
+  .cardMain {
+    height: calc(100% - 30px);
+    display: flex;
+  }
+
+  .cardMainImgBox {
+    /* height: 100%; */
+    width: 145px;
+    height: 145px;
+    position: relative;
+  }
+
+  .cardMainImgBox > img {
+    width: 145px;
+    height: 145px;
+    object-position: center;
+    object-fit: cover;
+  }
+
+  .cardMainImgInfo {
+    position: absolute;
+    height: 35px;
+    text-align: center;
+    line-height: 35px;
+    width: 100%;
+    font-size: 14px;
+    font-family: "NanumSquareNeoOTF-Bd";
+    background-color: rgb(193, 224, 224, 0.8);
+    bottom: 0px;
+  }
+
+  .cardMainDetail {
+    /* border: 0.1px solid black; */
+    width: calc(100% - 140px);
+    margin-top: 3px;
+    height: 140px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 2px;
+  }
+
+  .cardMainDetail > div {
+    width: calc(100% - 10px);
+    height: 23px;
+    margin: 4px 3px;
+    display: flex;
+  }
+
+  .cardMainDetail > div:nth-child(4) {
+    height: 40px;
+  }
+
+  .cardMainDetail > div:nth-child(4) > button {
+    background-color: var(--mint);
+    height: 30px;
+    margin: 3px auto;
+    width: 90px;
+    border-radius: 5px;
+    border: 0px;
+    font-size: 14px;
+    font-family: "NanumSquareNeoOTF-Bd";
+    color: var(--dark);
+  }
+
+  .cardMainDetail > div > img {
+    padding: 5px 3px;
+    width: 15px;
+    height: 15px;
+  }
+
+  .cardMainDetail > div > span {
+    width: calc(100% - 35px);
+    margin-left: 3px;
+    font-size: 12px;
+    line-height: 25px;
+    text-align: start;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-family: "NanumSquareNeoOTF-Rg";
+  }
+
+  .cardfooter {
+    line-height: 32px;
+    height: 30px;
+    text-align: center;
+    background-color: #f7f8f9;
+    font-size: 16px;
+    font-family: "NanumSquareNeoOTF-Rg";
+  }
 }
 
-.cardMain {
-  height: calc(100% - 30px);
-  display: flex;
-}
+@media screen and (min-width: 400px) {
+  .back {
+    width: calc(100% - 40px);
+    height: 200px;
+    margin: 20px auto;
+    border-radius: 13px;
+    background-color: #ffffff;
+    overflow: hidden;
+    box-shadow: 0px 0px 4px rgb(0, 0, 0, 0.25);
+  }
 
+<<<<<<< HEAD
 .cardMainImgBox {
+<<<<<<< Updated upstream
+  /* height: 100%; */
+  width: 170px;
+  height: 170px;
+=======
   height: 100%;
   width: 190px;
+>>>>>>> Stashed changes
   position: relative;
 }
+=======
+  .cardMain {
+    height: calc(100% - 30px);
+    display: flex;
+  }
+>>>>>>> 1b0c2bb327c6b29f3250b44681fed8dc68866363
 
-.cardMainImgBox > img {
-  object-position: center;
-  object-fit: cover;
-}
+  .cardMainImgBox {
+    /* height: 100%; */
+    width: 170px;
+    height: 170px;
+    position: relative;
+  }
 
-.cardMainImgInfo {
-  position: absolute;
-  height: 35px;
-  text-align: center;
-  line-height: 35px;
-  width: 100%;
-  font-size: 20px;
-  font-family: "NanumSquareNeoOTF-Bd";
-  background-color: rgb(193, 224, 224, 0.8);
-  bottom: 0px;
-}
+  .cardMainImgBox > img {
+    object-position: center;
+    object-fit: cover;
+  }
 
-.cardMainDetail {
-  width: calc(100% - 190px);
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding-top: 2px;
-}
+  .cardMainImgInfo {
+    position: absolute;
+    height: 35px;
+    text-align: center;
+    line-height: 35px;
+    width: 100%;
+    font-size: 16px;
+    font-family: "NanumSquareNeoOTF-Bd";
+    background-color: rgb(193, 224, 224, 0.8);
+    bottom: 0px;
+  }
 
-.cardMainDetail > div {
-  width: calc(100% - 10px);
-  height: 27px;
-  margin: 5px 5px;
-  display: flex;
-}
+  .cardMainDetail {
+    /* border: 0.1px solid black; */
+    width: calc(100% - 170px);
+    margin-top: 5px;
+    height: 160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 2px;
+  }
 
-.cardMainDetail > div:nth-child(4) {
-  height: 40px;
-}
+  .cardMainDetail > div {
+    width: calc(100% - 10px);
+    height: 23px;
+    margin: 5px 3px;
+    display: flex;
+  }
 
+<<<<<<< HEAD
 .cardMainDetail > div:nth-child(4) > button {
   background-color: var(--mint);
   height: 40px;
+<<<<<<< Updated upstream
+  margin: 2px auto;
+=======
   margin: 0px auto;
+>>>>>>> Stashed changes
   width: 100px;
   border-radius: 5px;
   border: 0px;
@@ -67,28 +190,46 @@
   font-family: "NanumSquareNeoOTF-Bd";
   color: var(--dark);
 }
+=======
+  .cardMainDetail > div:nth-child(4) {
+    height: 40px;
+  }
+>>>>>>> 1b0c2bb327c6b29f3250b44681fed8dc68866363
 
-.cardMainDetail > div > img {
-  padding: 2px 5px;
-}
+  .cardMainDetail > div:nth-child(4) > button {
+    background-color: var(--mint);
+    height: 40px;
+    margin: 2px auto;
+    width: 100px;
+    border-radius: 5px;
+    border: 0px;
+    font-size: 16px;
+    font-family: "NanumSquareNeoOTF-Bd";
+    color: var(--dark);
+  }
 
-.cardMainDetail > div > span {
-  width: calc(100% - 35px);
-  margin-left: 3px;
-  font-size: 16px;
-  line-height: 25px;
-  text-align: start;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-family: "NanumSquareNeoOTF-Rg";
-}
+  .cardMainDetail > div > img {
+    padding: 2px 5px;
+  }
 
-.cardfooter {
-  line-height: 32px;
-  height: 30px;
-  text-align: center;
-  background-color: #f7f8f9;
-  font-size: 16px;
-  font-family: "NanumSquareNeoOTF-Rg";
+  .cardMainDetail > div > span {
+    width: calc(100% - 35px);
+    margin-left: 3px;
+    font-size: 14px;
+    line-height: 25px;
+    text-align: start;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-family: "NanumSquareNeoOTF-Rg";
+  }
+
+  .cardfooter {
+    line-height: 32px;
+    height: 30px;
+    text-align: center;
+    background-color: #f7f8f9;
+    font-size: 16px;
+    font-family: "NanumSquareNeoOTF-Rg";
+  }
 }

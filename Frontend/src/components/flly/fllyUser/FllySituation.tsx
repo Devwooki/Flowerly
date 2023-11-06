@@ -4,8 +4,15 @@ import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { situationState } from "@/recoil/fllyRecoil";
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 const FllySituation = () => {
+<<<<<<< Updated upstream
+  const router = useRouter();
+  const [check, setCheck] = useState<boolean>(false);
+=======
+>>>>>>> Stashed changes
   const [situation, setSituation] = useRecoilState(situationState);
   const [selected, setSelected] = useState<string>("");
   const selectList = ["축하", "응원", "건강", "사랑", "감사", "사과", "위로", "선택 안함"];
@@ -19,6 +26,19 @@ const FllySituation = () => {
     setSelected(situation);
   }, [])
 
+<<<<<<< Updated upstream
+  useEffect(() => {
+    if(situation !== "") setCheck(true);
+  }, [situation])
+
+  const handleClick = () => {
+    if(check) {
+      router.push('/flly/target');
+    }
+  }
+
+=======
+>>>>>>> Stashed changes
   return (
     <>
       <div className={style.fllyBox}>
@@ -39,7 +59,7 @@ const FllySituation = () => {
               </div>
             ))}            
           </div>
-          <div className={style.nextBtn}>다음</div>
+          <div onClick={handleClick} className={style.nextBtn}>다음</div>
         </div>
       </div>
     </>

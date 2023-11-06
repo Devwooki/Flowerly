@@ -3,6 +3,7 @@ package com.ssafy.flowerly.seller.model;
 
 import com.ssafy.flowerly.address.repository.DongRepository;
 import com.ssafy.flowerly.address.repository.SigunguRepository;
+import com.ssafy.flowerly.chatting.repository.RequestDeliveryInfoRepository;
 import com.ssafy.flowerly.entity.*;
 import com.ssafy.flowerly.entity.type.OrderType;
 import com.ssafy.flowerly.entity.type.ProgressType;
@@ -24,7 +25,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -41,6 +44,7 @@ public class SellerService {
     private final DongRepository dongRepository;
     private final SigunguRepository sigunguRepository;
     private final FllyPickupRegionRepository fllyPickupRegionRepository;
+    private final RequestDeliveryInfoRepository requestDeliveryInfoRepository;
     private final S3Service s3Service;
 
 
@@ -71,8 +75,9 @@ public class SellerService {
         의뢰 상세서 내용  (제안)
      */
     public FllyRequestDto getRequestLetter(Long fllyId) {
-
-        FllyRequestDto fllyRequest = getFllyInfo(fllyId).toFllyRequestDto();
+        //여기선 flly 검증 x
+        FllyRequestDto fllyRequest = fellyRepository.findByFllyId(fllyId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_FLLY)).toFllyRequestDto();
         //배달 일때만 주소 세팅
         if(fllyRequest.getOrderType().equals(OrderType.DELIVERY.getTitle())) {
             FllyDeliveryRegion fllyDelivery = fllyDeliveryRegionRepository
@@ -92,7 +97,7 @@ public class SellerService {
         //의사 상세서 제안 가져오기
         FllyRequestDto fllyRequestDto = getRequestLetter(fllyId);
         result.setFllyRequestDto(fllyRequestDto);
-        //의뢰 조회
+        //의뢰 조회 (여기선 검증을하면안되다! )
         FllyResponeDto fllyResponeDto = fllyParticipationRepository.findByFllyFllyId(fllyId)
                 .map(FllyParticipation::toFllyResponeDto).orElseThrow();
         result.setFllyResponeDto(fllyResponeDto);
@@ -125,7 +130,7 @@ public class SellerService {
         //완료되지 않은거
         Page<OrderSelectSimpleDto> oderBySelect =
                 requestRepository.findBySellerMemberIdOrderByDeliveryPickupTime(mamberId, pageable)
-                        .map(Request::toOrderSelectSimpleDto);
+                        .map(OrderRequestDto::toOrderSelectSimpleDto);
         //채택된 주문이 없을경우
         if(oderBySelect.getContent().isEmpty()){
             throw new CustomException(ErrorCode.NOT_FIND_ORDERLIST);
@@ -140,19 +145,21 @@ public class SellerService {
     @Transactional
     public String UpdateProgressType(Long mamberId, Long fllyId) {
 
+        String responseProgress = null;
         //내가 참여한 주문서인지 확인용
         checkSellerRequestFlly(mamberId, fllyId);
         //꽃 정보 받아오기
         Flly fllyInfo = getFllyInfo(fllyId);
 
-        if(fllyInfo.getProgress().getTitle().equals("주문완료")){
+        if(fllyInfo.getProgress() == ProgressType.FINISH_ORDER){
             fllyInfo.UpdateFllyProgress(ProgressType.FINISH_MAKING);
         }
-        if(fllyInfo.getProgress().getTitle().equals("제작완료")) {
+        else if(fllyInfo.getProgress() == ProgressType.FINISH_MAKING) {
             fllyInfo.UpdateFllyProgress(ProgressType.FINISH_DELIVERY);
         }
-        Flly updateInfo = fellyRepository.save(fllyInfo);
 
+        Flly updateInfo = fellyRepository.save(fllyInfo);
+        
         return updateInfo.getProgress().getTitle();
     }
 
@@ -272,7 +279,7 @@ public class SellerService {
         //2 픽업 가능한지 찾아야한다!
         //2-1 판매자 가게의 주소
         //없다고 화면에 출력이 안되는게 아니기때문에 에러발생 X
-        StoreInfo store = storeInfoRepository.findBySellerMemberId(memberId);
+        StoreInfo store = storeInfoRepository.findBySellerMemberId(memberId).orElse(null);
 
         //나의 주소를 가지고 전체 값을 찾아야한다! (시를 보내 구군의 전체를 찾고 / 시구군을 보내 동에서 전체를 찾는다 )
         if(store != null){
@@ -299,5 +306,37 @@ public class SellerService {
             throw new CustomException(ErrorCode.NOT_SELLER_SEARCH_NEAR);
         }
         return pickupAbleList;
+    }
+
+
+    /*
+        플리 주문서 보기
+     */
+    public Map<String, Object> getFllyOrder(Long memberId, Long fllyId){
+
+        Map<String, Object> result = new HashMap<>();
+        FllyRequestSimpleDto fllyRequest = fellyRepository.findByFllyId(fllyId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_FLLY)).toFllyRequestSimpleDto();
+
+        FllyOrderInfoDto fllyOrderInfo = requestRepository.findBySellerMemberIdAndFllyFllyId(memberId, fllyId)
+                .orElseThrow(() -> new CustomException(ErrorCode.SELLER_NOT_REQUEST)).toFllyOrderInfoDto();
+
+        String responseUrl = fllyParticipationRepository.findByFllyFllyId(fllyId).orElseThrow(
+                () -> new CustomException(ErrorCode.NOT_FIND_FLLY_PARTICIPATE)).getImageUrl();
+
+        FllyDeliveryInfoDto deliveryInfo = null;
+
+        if(fllyOrderInfo.getOrderType().equals(OrderType.DELIVERY.getTitle())) {
+            deliveryInfo = requestDeliveryInfoRepository
+                    .findByRequestRequestId(fllyOrderInfo.getRequestId())
+                    .orElseThrow(() -> new CustomException(ErrorCode.REQUEST_DELIVERY_NOT_FOUND)).toFllyDeliveryInfoDto();
+        }
+        fllyOrderInfo.setResponseImgUrl(responseUrl);
+
+        result.put("reqestInfo", fllyRequest);
+        result.put("orderInfo", fllyOrderInfo);
+        result.put("deliveryInfo",deliveryInfo);
+
+        return result;
     }
 }

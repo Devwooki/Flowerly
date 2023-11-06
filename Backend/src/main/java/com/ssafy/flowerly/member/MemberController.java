@@ -1,6 +1,7 @@
 package com.ssafy.flowerly.member;
 
 import com.ssafy.flowerly.JWT.JWTService;
+import com.ssafy.flowerly.exception.ErrorCode;
 import com.ssafy.flowerly.member.model.MemberService;
 import com.ssafy.flowerly.util.CustomResponse;
 import com.ssafy.flowerly.util.DataResponse;
@@ -24,17 +25,14 @@ public class MemberController {
     private final MemberService memberService;
     private final JWTService jwtService;
 
-    @GetMapping("/jwt-test")
-    public CustomResponse jwtTest(HttpServletRequest request) {
-        log.info("jwt-test 접근 : {}", request.getRequestURI());
-        String accessToken = jwtService.extractAccessToken(request).get();
-        Long memberId = jwtService.extractMemberId(accessToken).get();
-
-        log.info("jwt-test 접근 : {} \n " +
-                "토큰 넘어오냐 : {} \n" +
-                "memberId 체크 : \n {}", request.getRequestURI(), accessToken, memberId);
-
-        return new CustomResponse(HttpStatus.OK.value(), "JWT요청 성공");
+    @GetMapping("")
+    public DataResponse<?> jwtTest(HttpServletRequest request) {
+        Long memberId = (Long) request.getAttribute("memberId");
+        return new DataResponse(HttpStatus.OK.value(), "로그인 성공!", memberService.getMemberInfo(memberId));
+    }
+    @GetMapping("/need-login")
+    public CustomResponse needLogin(HttpServletRequest request) {
+        return new CustomResponse(ErrorCode.FORBIDDEN.getCode(), ErrorCode.FORBIDDEN.getMessage());
     }
 
     @PostMapping("/login")
@@ -46,7 +44,7 @@ public class MemberController {
     public CustomResponse signupBuyer(HttpServletRequest request,
                                  @RequestBody Map<String, Object> data){
 
-        Long memberId = Long.valueOf(request.getHeader(jwtService.getAccessHeader()));
+        Long memberId = (Long) request.getAttribute("memberId");
         memberService.signupBuyer(data, memberId);
 
         return new CustomResponse(HttpStatus.OK.value(), "요청 성공");
@@ -56,7 +54,7 @@ public class MemberController {
     public CustomResponse signupSeller(HttpServletRequest request,
                                  @RequestBody Map<String, Object> data){
 
-        Long memberId = Long.valueOf(request.getHeader(jwtService.getAccessHeader()));
+        Long memberId = (Long) request.getAttribute("memberId");
         memberService.signupSeller(data, memberId);
 
         return new CustomResponse(HttpStatus.OK.value(), "요청 성공");
@@ -65,11 +63,12 @@ public class MemberController {
     @GetMapping("/logout")
     public CustomResponse logOut(HttpServletRequest request, HttpServletResponse response){
         log.info("로그아웃 시작");
-        Long memberId = Long.valueOf(request.getHeader(jwtService.getAccessHeader()));
+
+        //멤버 아이디 꺼내고, refreshToken 찾아 redis에서 제거한다. 카카오 로그아웃도 시킨다.
         String refreshToken = jwtService.extractRefreshToken(request).orElseGet(null);
+        Long memberId = (Long) request.getAttribute("memberId");
 
         jwtService.sendDeleteToken(request, response);
-
         return new CustomResponse(200, "logout");
     }
 

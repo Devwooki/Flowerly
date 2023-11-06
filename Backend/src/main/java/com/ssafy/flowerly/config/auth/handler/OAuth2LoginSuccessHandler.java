@@ -29,7 +29,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-    @Value("${url.service}")
+    @Value("${url.test}")
     private String redirectURL;
     private final JWTService jwtService;
     private final ObjectMapper mapper = new ObjectMapper();
@@ -55,16 +55,16 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 
     private void getAdditionalInfo(HttpServletResponse response, CustomOAuth2User oAuth2User) throws IOException {
         String accessToken = jwtService.createAccessToken(oAuth2User.getMemberId());
-        response.addHeader(jwtService.getAccessHeader(), "Bearer " + accessToken);
+        //response.addHeader(jwtService.getAccessHeader(), "Bearer " + accessToken);
         jwtService.sendAccessToken(response,accessToken);
 
-        response.sendRedirect("oauth2/signup?token" + accessToken); //프론트 회원가입 후 추가 정보 입력 창으로 리다이렉트
+        response.sendRedirect(redirectURL + "/signup?token=" + accessToken); //프론트 회원가입 후 추가 정보 입력 창으로 리다이렉트
     }
 
     // 추후 과제 : 소설 로그인 시, 무조건 토큰 생성이 아닌 JWT필터링 처럼 RefreshToken 유무에 따라 다르게 처리한다.
     private void loginSuccess(HttpServletResponse response, CustomOAuth2User oAuth2User) throws IOException {
         log.info("로그인 성공!");
-        String accessToken = jwtService.createAccessToken(oAuth2User.getMemberId());
+        String accessToken = jwtService.createTempAccessToken(oAuth2User.getMemberId());
         jwtService.sendAccessToken(response,accessToken);
         //jwtService.sendAccessTokenAndRefreshToken(response, accessToken, null);
 

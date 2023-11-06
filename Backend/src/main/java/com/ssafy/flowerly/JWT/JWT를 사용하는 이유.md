@@ -65,3 +65,10 @@
 2. OAuth2 Filter 단에서 직접 커스텀한 OAuth2 Service의 "loadUser"메소드가 실행된다.
 3. 로그인을 성공하게 되면 Success Handler의 "onAuthenticationSuccess" 메소드가 실행된다.
 4. Success Handler에서 최초 로그인 확인 및 JWT 생성 및 응답 과정이 실행된다.
+
+## Security 접근 순서
+JWTFilter / JWTService (Security FilterChain 체인을 요한다)
+<br>
+-> CustomOAuth2 
+<br> 
+-> 성공 SuccessHandler / 실패 FailHandler

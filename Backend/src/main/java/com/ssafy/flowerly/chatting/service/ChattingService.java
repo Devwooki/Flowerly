@@ -19,8 +19,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -96,8 +95,9 @@ public class ChattingService {
 
         // 채팅방 마지막 메세지 업데이트
         Chatting chatting = chattingRepository.findById(messageDto.getChattingId())
-                            .orElseThrow(() -> new CustomException(ErrorCode.CHATTING_NOT_FOUND));
-        chatting.updateChatting(message.getContent(), message.getSendTime());
+                .orElseThrow(() -> new CustomException(ErrorCode.CHATTING_NOT_FOUND));
+        String msgContent = message.getType().equals("IMAGE") ? "사진을 보냈습니다." : message.getContent();
+        chatting.updateChatting(msgContent, message.getSendTime());
     }
 
     @Transactional
@@ -105,26 +105,57 @@ public class ChattingService {
         Chatting chatting = chattingRepository.findById(chattingId)
                 .orElseThrow(() -> new CustomException(ErrorCode.CHATTING_NOT_FOUND));
 
-        Request request = Request.builder()
-                .flly(chatting.getFllyParticipation().getFlly())
-                .seller(chatting.getSeller())
-                .orderName(requestDto.getOrdererName())
-                .phoneNumber(requestDto.getPhoneNumber())
-                .orderType(requestDto.getOrderType().equals("DELIVERY") ? OrderType.DELIVERY : OrderType.PICKUP)
-                .deliveryPickupTime(stringToTime(requestDto.getDeliveryPickupTime()))
-                .requestContent(requestDto.getRequestContent())
-                .price(-1)
-                .build();
-        request = requestRepository.save(request);
+        Request request = null;
+        Optional<Request> prevRequest = requestRepository.findByFlly(chatting.getFlly());
+        if(prevRequest.isPresent()) {  // 이미 작성한 주문이 있는 경우
+            request = prevRequest.get();
 
-        if(requestDto.getOrderType().equals("DELIVERY")) {
-            RequestDeliveryInfo deliveryInfo = RequestDeliveryInfo.builder()
-                    .request(request)
-                    .recipientName(requestDto.getRecipientName())
-                    .phoneNumber(requestDto.getRecipientPhoneNumber())
-                    .address(requestDto.getAddress())
+            if(request.getPrice() != -1) {  // 금액이 설정된 주문은 업데이트 불가
+                return null;
+            }
+
+            if(request.getOrderType().equals(OrderType.DELIVERY)) { // 이전 주문이 배달이었던 경우
+                RequestDeliveryInfo deliveryInfo = requestDeliveryInfoRepository.findByRequest(request)
+                        .orElseThrow(() -> new CustomException(ErrorCode.REQUEST_DELIVERY_NOT_FOUND));
+
+                if(requestDto.getOrderType().equals("PICKUP")) {  // 새로운 주문이 픽업인 경우 - 배달 정보 삭제
+                    requestDeliveryInfoRepository.delete(deliveryInfo);
+                } else {  // 새로운 주문이 배달인 경우 - 배달 정보 덮어쓰기
+                    deliveryInfo.updateDeliveryInfo(requestDto);
+                }
+            } else if(requestDto.getOrderType().equals("DELIVERY")) {
+                RequestDeliveryInfo deliveryInfo = RequestDeliveryInfo.builder()
+                        .request(request)
+                        .recipientName(requestDto.getRecipientName())
+                        .phoneNumber(requestDto.getRecipientPhoneNumber())
+                        .address(requestDto.getAddress())
+                        .build();
+                requestDeliveryInfoRepository.save(deliveryInfo);
+            }
+
+            request.updateRequestInfo(requestDto);  // 주문 정보 업데이트
+        } else {  // 새로운 주문인 경우
+            request = Request.builder()
+                    .flly(chatting.getFlly())
+                    .seller(chatting.getSeller())
+                    .orderName(requestDto.getOrdererName())
+                    .phoneNumber(requestDto.getPhoneNumber())
+                    .orderType(requestDto.getOrderType().equals("DELIVERY") ? OrderType.DELIVERY : OrderType.PICKUP)
+                    .deliveryPickupTime(stringToTime(requestDto.getDeliveryPickupTime()))
+                    .requestContent(requestDto.getRequestContent())
+                    .price(-1)
                     .build();
-            requestDeliveryInfoRepository.save(deliveryInfo);
+            request = requestRepository.save(request);
+
+            if(requestDto.getOrderType().equals("DELIVERY")) {
+                RequestDeliveryInfo deliveryInfo = RequestDeliveryInfo.builder()
+                        .request(request)
+                        .recipientName(requestDto.getRecipientName())
+                        .phoneNumber(requestDto.getRecipientPhoneNumber())
+                        .address(requestDto.getAddress())
+                        .build();
+                requestDeliveryInfoRepository.save(deliveryInfo);
+            }
         }
 
         return request.getRequestId();
@@ -154,7 +185,7 @@ public class ChattingService {
         Chatting chatting = chattingRepository.findById(chattingId)
                 .orElseThrow(() -> new CustomException(ErrorCode.CHATTING_NOT_FOUND));
 
-        Flly flly = chatting.getFllyParticipation().getFlly();
+        Flly flly = chatting.getFlly();
         FllyFromChattingDto.FllyInfo fllyDto = FllyFromChattingDto.FllyInfo.of(flly);
         if(flly.getOrderType().equals(OrderType.DELIVERY)) {
             FllyDeliveryRegion deliveryRegion = fllyDeliveryRegionRepository.findByFlly(flly)
@@ -164,4 +195,40 @@ public class ChattingService {
 
         return fllyDto;
     }
+
+    public RequestFromChattingDto getRequestInfo(Long chattingId) {
+        Chatting chatting = chattingRepository.findById(chattingId)
+                .orElseThrow(() -> new CustomException(ErrorCode.CHATTING_NOT_FOUND));
+
+        RequestFromChattingDto requestFromChattingDto = new RequestFromChattingDto();
+
+        Request request = requestRepository.findByFlly(chatting.getFlly())
+                .orElseThrow(() -> new CustomException(ErrorCode.REQUEST_NOT_FOUND));
+        String storeName = storeInfoRepository.findStoreName(request.getSeller());
+        requestFromChattingDto.setRequestInfo(request, storeName);
+
+        if(request.getOrderType().equals(OrderType.DELIVERY)) {
+            RequestDeliveryInfo deliveryInfo = requestDeliveryInfoRepository.findByRequest(request)
+                    .orElseThrow(() -> new CustomException(ErrorCode.REQUEST_DELIVERY_NOT_FOUND));
+            requestFromChattingDto.setDeliveryInfo(deliveryInfo);
+        }
+
+        return requestFromChattingDto;
+    }
+
+    public Map<String, Object> getPrice(Long chattingId) {
+        Map<String, Object> responseDto = new HashMap<>();
+
+        Chatting chatting = chattingRepository.findById(chattingId)
+                .orElseThrow(() -> new CustomException(ErrorCode.CHATTING_NOT_FOUND));
+        Request request = requestRepository.findByFlly(chatting.getFlly())
+                .orElseThrow(() -> new CustomException(ErrorCode.REQUEST_NOT_FOUND));
+
+        responseDto.put("requestId", request.getRequestId());
+        responseDto.put("sellerName", storeInfoRepository.findStoreName(request.getSeller()));
+        responseDto.put("price", request.getPrice());
+
+        return responseDto;
+    }
 }
+
