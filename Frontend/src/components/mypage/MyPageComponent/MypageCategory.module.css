@@ -1,21 +1,29 @@
 .categoryContainer {
-  width: 300px;
-  height: 100px;
-  background-color: rgba(229, 233, 234, 0.3);
+  width: calc(100% - 50px);
+  height: 150px;
+  margin: 20px auto;
+  background-color: rgba(210, 210, 210, 0.3);
   border-radius: 10px;
   display: flex;
   justify-content: space-around;
-  padding: 16px;
+}
+
+.cateoryInfoContainer {
+  margin: auto auto;
 }
 
 .iconWithText {
+  margin: auto 0px;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
+  gap: 4px;
 }
 
 .iconText {
   font-size: 14px;
   margin-top: 10px;
+  color: var(--dark);
+  font-family: "NanumSquareNeoOTF-Bd";
 }
