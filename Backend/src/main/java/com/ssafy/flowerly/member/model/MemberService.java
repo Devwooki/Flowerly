@@ -72,23 +72,22 @@ public class MemberService {
 
         Map<String, Object> sellerInput = (Map<String, Object>) data.get("sellerInput");
 
-        // 주소 분할
-        //String[] addressParts = ((String) data.get("address")).split(" ");
+        Map<String, Object> sellerAddress = (Map<String, Object>) data.get("sellerAddress");
 
-        String[] addressParts = ((String) sellerInput.get("address")).split(" ");
-        if (addressParts.length < 3) {
-            throw new CustomException(ErrorCode.INVALID_ADDRESS_FORMAT);
-        }
+        String sidoName = (String) sellerAddress.get("sido");
+        String sigunguName = (String) sellerAddress.get("sigungu");
+        String dongName = (String) sellerAddress.get("dong");
+
 
         // 시도, 시군구, 동 코드 조회
 
-        Sido sido = sidoRepository.findBySidoName(addressParts[0])
+        Sido sido = sidoRepository.findBySidoName(sidoName)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_SIDO));
 
-        Sigungu sigungu = sigunguRepository.findBySigunguNameAndSido(addressParts[1], sido)
+        Sigungu sigungu = sigunguRepository.findBySigunguNameAndSido(sigunguName, sido)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_SIGUNGU));
 
-        Dong dong = dongRepository.findByDongNameAndSigungu(addressParts[2], sigungu)
+        Dong dong = dongRepository.findByDongNameAndSigungu(dongName, sigungu)
                 .orElseThrow(() -> new CustomException((ErrorCode.NOT_FIND_DONG)));
 
 
