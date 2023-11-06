@@ -5,7 +5,7 @@ import { RecoilRoot } from "recoil";
 import { useRouter } from "next/router";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Head from "next/head";
+import "../styles/shopCard.scss";
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
