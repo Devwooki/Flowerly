@@ -6,15 +6,23 @@ import com.ssafy.flowerly.member.vo.StoreInfoDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 @RequiredArgsConstructor
 public class FllyService {
     private final StoreInfoRepository storeInfoRepository;
 
-    public StoreInfoDto getStoreInfo(Long storeId){
-        return storeInfoRepository.findById(storeId)
-                .map(StoreInfo::toDto)
-                .orElseThrow();
+    public Map<String, Object> getStoreDetail(Long storeId){
+        Map<String, Object> responseData = new HashMap<>();
+
+
+        return null;
+
+//        return storeInfoRepository.findById(storeId)
+//                .map(StoreInfo::toDto)
+//                .orElseThrow();
     }
 
 

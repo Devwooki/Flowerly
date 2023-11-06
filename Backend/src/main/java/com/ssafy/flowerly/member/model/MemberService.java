@@ -139,28 +139,30 @@ public class MemberService {
 
             storeDeliveryRegionRepository.save(storeDeliveryRegion);
         }
-
-
-
     }
-
 
     private StoreInfoDto getStoreInfo(Long memberId){
         List<Object[]> object = storeInfoRepository.findBySellerInfo(memberId);
         //반환값 길이가 0이면 멤버 정보가 없다는 것이다.
-        if (object.size() != 0){
-            StoreInfo tempInfo = (StoreInfo) object.get(0)[0];
-
-            StoreInfoDto storeInfoDto = tempInfo.toDto();
-            storeInfoDto.setImages(new ArrayList<>());
-
+        if (!object.isEmpty()){
+            StoreInfoDto storeInfoDto = extractStoreInfoDto(object);
+            List<String> images = new ArrayList<>();
             //이미지 추가
             for (Object[] o : object) {
-                StoreImage temp = (StoreImage) o[1];
-                storeInfoDto.getImages().add(temp.getImageUrl());
+                if(o[1] == null) break;
+                storeInfoDto.getImages().add(extractImageUrl(o));
             }
+            storeInfoDto.setImages(images);
             return storeInfoDto;
         }
         return null;
+    }
+
+    private StoreInfoDto extractStoreInfoDto(List<Object[]> object){
+        return ((StoreInfo) object.get(0)[0]).toDto();
+    }
+
+    private String extractImageUrl(Object[] o){
+        return ((StoreImage) o[1]).getImageUrl();
     }
 }

@@ -52,7 +52,7 @@ public class StoreInfo {
 
     public StoreInfoDto toDto(){
         return StoreInfoDto.builder()
-                .storeInfoId(this.storeInfoId)
+                .storeInfoId(this.seller.getMemberId())
                 .storeName(this.storeName)
                 .sellerName(this.sellerName)
                 .phoneNumber(this.phoneNumber)
