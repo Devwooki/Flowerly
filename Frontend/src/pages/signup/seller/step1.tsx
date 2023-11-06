@@ -3,7 +3,7 @@ import style from "./step1.module.css";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { useRecoilState } from "recoil";
-import { sellerInputState } from "@/recoil/tokenRecoil";
+import { sellerInputState, sellerAddressState } from "@/recoil/tokenRecoil";
 import { useDaumPostcodePopup } from "react-daum-postcode";
 
 const Step1 = () => {
@@ -13,6 +13,7 @@ const Step1 = () => {
   const [sellerInput, setSellerInput] = useRecoilState(sellerInputState);
   const [basicAddress, setBasicAddress] = useState("");
   const [detailAddress, setDetailAddress] = useState("");
+  const [sellerAddress, setSellerAddress] = useRecoilState(sellerAddressState);
   const [isStoreNumberValid, setIsStoreNumberValid] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -90,7 +91,7 @@ const Step1 = () => {
 
   const open = useDaumPostcodePopup(scriptUrl);
   const handleComplete = (data: any) => {
-    let jibunAddress = data.jibunAddress;
+    let roadAddress = data.roadAddress;
     let extraAddress = "";
 
     if (data.addressType === "R") {
@@ -100,10 +101,16 @@ const Step1 = () => {
       if (data.buildingName !== "") {
         extraAddress += extraAddress !== "" ? `, ${data.buildingName}` : data.buildingName;
       }
-      jibunAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
+      roadAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
     }
     console.log(data);
-    setBasicAddress(jibunAddress);
+    setBasicAddress(roadAddress);
+
+    setSellerAddress({
+      sido: data.sido,
+      sigungu: data.sigungu,
+      dong: data.bname,
+    });
   };
 
   // 트리거 해줄 함수

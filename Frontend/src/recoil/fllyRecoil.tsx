@@ -1,5 +1,35 @@
 import { atom } from "recoil";
 
+export interface sidoDataType {
+  sidoCode: number;
+  sidoName: string;
+}
+
+export interface sigunguDataType {
+  sigunguCode: number;
+  sigunguName: string;
+}
+
+export interface dongDataType {
+  dongCode: number;
+  dongName: string;
+}
+
+export interface regionType {
+  sidoCode: number;
+  sigunguCode: number;
+  dongCode: number;
+}
+
+export const regionState = atom<regionType[]>({
+  key: "regionState",
+  default: [],
+});
+
+export interface bouquetType {
+  url: string;
+}
+
 export interface flowerCardType {
   flowerCode : number,
   imageUrl:  string,
@@ -8,10 +38,6 @@ export interface flowerCardType {
   engName : string
   meaning : string,
   colorName : string,
-}
-
-export interface bouquetType {
-  url: string;
 }
 
 export const situationState = atom({

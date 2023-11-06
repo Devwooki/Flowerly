@@ -1,13 +1,11 @@
-import MypageCategory from "@/components/mypage/MypageCategory";
+import Mypage from "@/components/mypage/Mypage";
 import React from "react";
 
 const MyPage = () => {
   return (
     <>
-      <div>마이페이지</div>
-
       <div>
-        <MypageCategory />
+        <Mypage />
       </div>
     </>
   );

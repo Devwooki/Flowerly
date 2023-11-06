@@ -54,7 +54,7 @@ const ListBuyer = () => {
   const procesingCard: BuyerCard[] = [
     {
       fllyId: 1,
-      state: "입찰",
+      state: "조율",
       img: "/img/homeBanner/164_red_phalaenopsis.jpg",
       situation: "축하",
       target: "연인",
@@ -69,8 +69,8 @@ const ListBuyer = () => {
         <div className={style.headerTitle}>진행중인 플리</div>
       </div>
       <div className={style.ListBuyerMain}>
-        {procesingCard.length === 1 ? (
-          // {procesingCards.length === 1 ? (
+        {/* {procesingCard.length === 1 ? ( */}
+        {procesingCards.length === 1 ? (
           <BuyerCardOne card={procesingCard[0]} />
         ) : (
           procesingCards.map((card, idx) => <BuyerCards card={card} key={idx} />)

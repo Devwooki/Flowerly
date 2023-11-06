@@ -8,6 +8,12 @@ export interface sellerInputType {
   address: string;
 }
 
+export interface sellerAddressType {
+  sido: string;
+  sigungu: string;
+  dong: string;
+}
+
 export interface buyerInputType {
   nickname: string;
 }
@@ -48,5 +54,14 @@ export const sellerInputState = atom<sellerInputType>({
     phonenumber: "",
     storenumber: "",
     address: "",
+  },
+});
+
+export const sellerAddressState = atom<sellerAddressType>({
+  key: "sellerAddressState",
+  default: {
+    sido: "",
+    sigungu: "",
+    dong: "",
   },
 });
