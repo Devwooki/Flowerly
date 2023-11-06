@@ -65,9 +65,9 @@ public class FllyController {
 //        return new DataResponse<>(200, "색상 꽃 리스트 조회 성공 " + flowerList.size(), flowerList);
 //    }
 
-    @GetMapping("/store/{storeId}")
+    @GetMapping("/store/{sellerId}")
     public DataResponse<?> getStoreInfo(HttpServletRequest request,
-                                        @PathVariable Long storeId){
-        return new DataResponse<>(HttpStatus.SC_OK, "가게 정보를 반환합니다",  fllyService.getStoreInfo(storeId));
+                                        @PathVariable Long sellerId){
+        return new DataResponse<>(HttpStatus.SC_OK, "가게 정보를 반환합니다",  fllyService.getStoreDetail(sellerId));
     }
 }
