@@ -57,6 +57,7 @@
     text-align: left;
     vertical-align: top;
     font-family: "NanumSquareNeoOTF-Rg";
+    word-break: keep-all;
 }
 
 .colorLi {
@@ -137,6 +138,7 @@
     height: 100px;
     width: 100%;
     font-family: "NanumSquareNeoOTF-Rg";
+    margin-top: 2px;
 }
 
 .textCount {
