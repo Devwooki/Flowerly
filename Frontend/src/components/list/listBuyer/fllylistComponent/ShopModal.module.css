@@ -4,7 +4,7 @@
   left: 0;
   width: 100%; /* 전체 너비를 차지하도록 설정 */
   height: 96vh; /* 뷰포트 높이와 동일하게 설정 */
-  background-color: rgba(194, 194, 194, 0.4);
+  background-color: rgba(0, 0, 0, 0.3);
   z-index: 1;
   /* 자식 요소를 중앙으로 정렬하기 위해 flex 사용 */
   display: flex;

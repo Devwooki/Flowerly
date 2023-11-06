@@ -3,6 +3,7 @@ import style from "./ShopCard.module.css";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import ShopModal from "./ShopModal";
+import { AnimatePresence } from "framer-motion";
 
 type ShopCardProps = {
   shopInfo: ShopInfo;
@@ -52,7 +53,7 @@ const ShopCard = ({ shopInfo }: ShopCardProps) => {
         <div className={style.responseContent}>{truncatedContent}</div>
       </div>
       <div className={style.chatAction}>채팅하기</div>
-      {modal && <ShopModal shopInfo={shopInfo} />}
+      <AnimatePresence>{modal && <ShopModal shopInfo={shopInfo} />}</AnimatePresence>
     </div>
   );
 };

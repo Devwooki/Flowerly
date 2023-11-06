@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import style from "./ShopModal.module.css";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { log } from "console";
+import { motion } from "framer-motion";
 
 type ShopModalProps = {
   shopInfo: ShopInfo;
@@ -16,9 +16,22 @@ const ShopModal = ({ shopInfo }: ShopModalProps) => {
     router.push({ pathname: "/list/shop/[shopId]", query: { shopId: shopId } });
   };
 
+  const modalVariants = {
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: { opacity: 1, scale: 1 },
+    exit: { opacity: 0, scale: 0.95 },
+  };
+
   return (
-    <div className={style.modalMain}>
-      <div className={style.shopCardMain}>
+    <motion.div className={`${style.modalMain}`} exit="exit" variants={modalVariants}>
+      <motion.div
+        className={`${style.shopCardMain}`}
+        layout
+        initial="hidden"
+        animate="visible"
+        exit="exit"
+        variants={modalVariants}
+      >
         <div className={style.shopFlowerImg}>
           <Image src={shopInfo.reImg} alt="추천 꽃다발" fill />
         </div>
@@ -39,8 +52,8 @@ const ShopModal = ({ shopInfo }: ShopModalProps) => {
           <div className={style.responseContent}>{shopInfo.recommandComment}</div>
         </div>
         <div className={style.chatAction}>채팅하기</div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
 

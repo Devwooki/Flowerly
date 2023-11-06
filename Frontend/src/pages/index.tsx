@@ -61,7 +61,9 @@ export default function Home() {
             const card = cards[order];
             return (
               <div key={card.id} className={`${style.bannerImg} ${style[`card${index + 1}`]} `}>
-                <Image src={card.src} alt={card.alt} fill priority />
+                <div className={`${style.imgDiv}`}>
+                  <Image src={card.src} alt={card.alt} fill />
+                </div>
                 <div className={style.imgDisc}>
                   <div>{card.date}</div>
                   <div>{card.desc}</div>

@@ -7,6 +7,7 @@ import { useSetRecoilState } from "recoil";
 import { FllylistDiscRecoil } from "@/recoil/kdmRecoil";
 import { ToastErrorMessage } from "@/model/toastMessageJHM";
 import Cancel from "./Cancel";
+import { AnimatePresence } from "framer-motion";
 
 type BuyerCardsProps = {
   card: BuyerCard;
@@ -239,7 +240,7 @@ const BuyerCards = ({ card }: BuyerCardsProps) => {
         </div>
       </div>
       {buttomBtnCmd(stepNumber)}
-      {cancelModal && <Cancel onCancel={handleCancel} />}
+      <AnimatePresence>{cancelModal && <Cancel onCancel={handleCancel} />}</AnimatePresence>
     </div>
   );
 };

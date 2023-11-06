@@ -180,7 +180,6 @@ const BuyerCardOne = ({ card }: BuyerCardOneProps) => {
             src="https://neighbrew.s3.ap-northeast-2.amazonaws.com/FlOWER/f82c544a-7f65-4879-9293-76ceaba5a6d2069_pink_peony.jpg.jpg"
             alt="꽃 이미지"
             fill
-            priority
           />
         </div>
         <div className={style.infoText}>
