@@ -174,10 +174,10 @@ const Step2 = () => {
           console.log(response);
           console.log("회원가입 성공");
           // 회원가입 성공
-          // router.push(`/temp?token=${tempToken}`);
+          router.push(`/temp?token=${tempToken}`);
         }
 
-        // router.push("/");
+        router.push("/");
       }
     } catch (error) {
       console.error(error);
