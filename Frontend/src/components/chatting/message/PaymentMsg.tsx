@@ -17,14 +17,9 @@ const PaymentMsg: React.FC<PaymentMsgProps> = ({ chattingId }) => {
   const [paymentInfo, setPaymentInfo] = useState<PaymentInfo>();
 
   useEffect(() => {
-    // axios.get(`https://flower-ly.co.kr/api/chatting/price/${chattingId}`).then((response) => {
-    //   console.log(response);
-    //   setPaymentInfo(response.data.data);
-    // });
-    setPaymentInfo({
-      requestId: 1,
-      sellerName: "아름다운 꽃집",
-      price: 30000,
+    axios.get(`https://flower-ly.co.kr/api/chatting/price/${chattingId}`).then((response) => {
+      console.log(response);
+      setPaymentInfo(response.data.data);
     });
   }, []);
 

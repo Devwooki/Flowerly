@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import router, { useRouter } from "next/router";
-import style from "./Buyer.module.css";
+import style from "./buyer.module.css";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { tempTokenState, buyerInputState } from "../../../recoil/tokenRecoil";
 import axios from "axios";
@@ -19,7 +19,6 @@ const Buyer = () => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setBuyerInput({ ...buyerInput, [name]: value });
-    console.log(buyerInput);
   };
 
   const handleComplete = async () => {
@@ -31,7 +30,7 @@ const Buyer = () => {
         buyerInput,
         {
           headers: {
-            Authorization: "Bearer " + tempToken,
+            Authorization: `Bearer ${tempToken}`,
             "X-Request-Host": host,
             "X-Request-Path": path,
           },
@@ -41,6 +40,7 @@ const Buyer = () => {
       if (response.status === 200) {
         if (tempToken) {
           console.log(response);
+          console.log("회원가입 성공");
           router.push(`/temp?token=${tempToken}`);
         }
       } else {

@@ -1,0 +1,63 @@
+.fllyOrderBox {
+  /* border: 1px solid black; */
+  display: flex;
+  flex-direction: column;
+  padding: 0px 10px;
+}
+
+.fllyOrderBox > div:nth-child(1) {
+  height: 30px;
+  line-height: 40px;
+  font-size: 18px;
+  padding: 5px;
+  margin-left: 5px;
+  font-family: "NanumSquareNeoOTF-Bd";
+  color: var(--blue);
+}
+
+.fllyOrderMain {
+  display: flex;
+}
+
+.imgBox {
+  width: 170px;
+  height: 170px;
+}
+
+.imgBox > img {
+  padding: 10px;
+  border-radius: 25px;
+}
+
+.infoMainBox {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  /* border: 1px solid black; */
+  margin-top: 10px;
+  width: calc(100% - 170px);
+  height: 155px;
+  overflow: hidden;
+}
+
+.infoMainBox > div {
+  display: flex;
+}
+
+.infoMainBox > div > div:nth-child(1) {
+  width: 90px;
+  font-size: 16px;
+  font-family: "NanumSquareNeoOTF-Bd";
+}
+
+.colorBox {
+  display: flex;
+  gap: 5px;
+}
+
+.flowerBox {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}

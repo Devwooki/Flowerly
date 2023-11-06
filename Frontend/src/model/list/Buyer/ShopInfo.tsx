@@ -10,7 +10,19 @@ type ShopInfo = {
 type ShopInfoDetail = {
   shopName: string;
   shopLoc: string;
-  shopX: number;
-  shopY: number;
   shopImg: string[];
+};
+
+type markerlist = {
+  position: {
+    lat: number;
+    lng: number;
+  };
+  content: string;
+};
+
+type review = {
+  userName: string;
+  reviewTime: string;
+  reviewContent: string;
 };

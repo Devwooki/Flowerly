@@ -1,0 +1,78 @@
+.modalMain {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%; /* 전체 너비를 차지하도록 설정 */
+  height: 96vh; /* 뷰포트 높이와 동일하게 설정 */
+  background-color: rgba(194, 194, 194, 0.4);
+  z-index: 1;
+  /* 자식 요소를 중앙으로 정렬하기 위해 flex 사용 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: -30px;
+}
+
+.shopCardMain {
+  max-width: 300px;
+  width: 80%;
+  border-radius: 15px;
+  box-shadow: 0 0 4px rgb(218, 218, 218, 0.5);
+  background-color: white;
+  font-size: 14px;
+}
+
+.shopFlowerImg {
+  position: relative;
+  width: 100%;
+  padding-top: 95%;
+}
+
+.shopFlowerImg img {
+  border-radius: 15px 15px 0 0;
+}
+
+.shopName {
+  font-size: 20px;
+  font-family: "NanumSquareNeoOTF-Bd";
+}
+
+.shopInfo {
+  padding: 15px 15px 5px 15px;
+  font-family: "NanumSquareNeoOTF-Rg";
+}
+
+.shopInfo .infoTable:nth-child(2) {
+  margin-left: 2px;
+}
+
+.shopInfo .infoTable:nth-child(2) img {
+  margin-right: 8px;
+}
+
+.infoTable {
+  display: flex;
+  margin-bottom: 5px;
+  font-size: 16px;
+}
+
+.infoTable img {
+  margin-right: 5px;
+}
+
+.chatAction {
+  font-family: "NanumSquareNeoOTF-Rg";
+  text-align: center;
+  margin: 0 auto;
+  padding: 8px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  background-color: var(--blue);
+  color: white;
+  font-size: 14px;
+  max-width: 60px;
+}
+
+.responseContent {
+  font-size: 14px;
+}

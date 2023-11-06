@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import style from "./Step2.module.css";
+import style from "./step2.module.css";
 import { useRouter } from "next/router";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
@@ -158,7 +158,7 @@ const Step2 = () => {
           signupData,
           {
             headers: {
-              Authorization: "Bearer " + tempToken,
+              Authorization: `Bearer ${tempToken}`,
               "X-Request-Host": host,
               "X-Request-Path": path,
             },
@@ -167,16 +167,15 @@ const Step2 = () => {
 
         if (response.status === 200) {
           console.log(response);
-          if (tempToken) {
-            console.log(response);
-            console.log(tempToken);
-            router.push(`/temp?token=${tempToken}`);
-          }
+          console.log("회원가입 성공");
+          // 회원가입 성공
+          router.push(`/temp?token=${tempToken}`);
         }
+
         router.push("/");
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 

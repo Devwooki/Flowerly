@@ -37,6 +37,12 @@
 .infoTable {
   display: flex;
   margin-bottom: 5px;
+  /* border: 1px solid black; */
+  overflow: hidden;
+}
+
+.shopInfo .infoTable:nth-child(2) {
+  height: 35px;
 }
 
 .infoTable img {
@@ -58,4 +64,6 @@
 
 .responseContent {
   font-size: 13px;
+  height: 32px;
+  overflow: hidden;
 }
