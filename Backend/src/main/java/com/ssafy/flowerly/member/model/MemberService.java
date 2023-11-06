@@ -113,12 +113,12 @@ public class MemberService {
 
         // storeDeliveryRegion 저장하기
 
-        List<Map<String, Long>> deliveryRegions = (List<Map<String, Long>>) data.get("deliveryRegions");
+        List<Map<String, Object>> deliveryRegions = (List<Map<String, Object>>) data.get("deliveryRegions");
 
-        for (Map<String, Long> deliveryRegion : deliveryRegions) {
-            Long sidoCode = deliveryRegion.get("sidoCode");
-            Long sigunguCode = deliveryRegion.get("sigunguCode");
-            Long dongCode = deliveryRegion.get("dongCode");
+        for (Map<String, Object> deliveryRegion : deliveryRegions) {
+            Long sidoCode = (Long)deliveryRegion.get("sidoCode");
+            Long sigunguCode = (Long)deliveryRegion.get("sigunguCode");
+            Long dongCode = (Long)deliveryRegion.get("dongCode");
 
             Sido deliverySido = sidoRepository.findBySidoCode(sidoCode)
                     .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_SIDO));
