@@ -1,5 +1,5 @@
 import React from "react";
-import style from "./Signup.module.css";
+import style from "./signup.module.css";
 import { useRouter } from "next/router";
 import { useRecoilState } from "recoil";
 import { useEffect } from "react";
