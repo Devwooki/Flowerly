@@ -8,6 +8,7 @@ import {
   sellerInputState,
   storeDeliveryRegionState,
   tempTokenState,
+  sellerAddressState,
 } from "@/recoil/tokenRecoil";
 
 interface sidoDataType {
@@ -42,6 +43,7 @@ const Step2 = () => {
     useRecoilState(storeDeliveryRegionState);
 
   const [sellerInput, setSellerInput] = useRecoilState(sellerInputState);
+  const [sellerAddress, setSellerAddress] = useRecoilState(sellerAddressState);
   const tempToken = useRecoilValue(tempTokenState);
 
   useEffect(() => {
@@ -79,7 +81,7 @@ const Step2 = () => {
     setPath(window.location.pathname);
     setHost(window.location.host);
     console.log(path, host);
-  }, []);
+  }, [path, host]);
 
   const getSigunguData = async (sidoCode: number) => {
     try {
@@ -151,6 +153,7 @@ const Step2 = () => {
       const signupData = {
         sellerInput,
         deliveryRegions: deliveryRegionCodeList,
+        sellerAddress: sellerAddress,
       };
       console.log(signupData);
 
@@ -171,10 +174,10 @@ const Step2 = () => {
           console.log(response);
           console.log("회원가입 성공");
           // 회원가입 성공
-          router.push(`/temp?token=${tempToken}`);
+          // router.push(`/temp?token=${tempToken}`);
         }
 
-        router.push("/");
+        // router.push("/");
       }
     } catch (error) {
       console.error(error);
