@@ -1,4 +1,4 @@
-import style from "./OrderFormMsg.module.css";
+import style from "./style/OrderFormMsg.module.css";
 
 type OrderFormProps = {
   modalHandler: Function;

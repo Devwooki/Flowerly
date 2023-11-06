@@ -1,5 +1,5 @@
 import { useState } from "react";
-import style from "./ChattingInput.module.css";
+import style from "./style/ChattingInput.module.css";
 import Image from "next/image";
 
 type ChattingInputProps = {

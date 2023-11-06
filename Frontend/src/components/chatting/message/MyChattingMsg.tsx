@@ -1,5 +1,5 @@
 import { useState } from "react";
-import style from "./MyChattingMsg.module.css";
+import style from "./style/MyChattingMsg.module.css";
 
 import ParticipationInfo from "./ParticipationInfo";
 import OrderFormMsg from "./OrderFormMsg";
@@ -40,7 +40,11 @@ const MyChattingMsg: React.FC<ChattingMsgProps> = ({
       ) : message.type === "PAYMENT_FORM" ? (
         <PaymentMsg chattingId={chattingId} />
       ) : message.type === "IMAGE" ? (
-        <ImageMsg imgUrl={message.content} onImageLoad={imageLoadHandler} />
+        <ImageMsg
+          imgUrl={message.content}
+          onImageLoad={imageLoadHandler}
+          modalHandler={modalHandler}
+        />
       ) : (
         <div className={style.contentDiv}>{message.content}</div>
       )}

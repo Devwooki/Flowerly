@@ -1,6 +1,8 @@
 .modalBg {
   position: fixed;
   background-color: rgba(0, 0, 0, 0.3);
+  left: 0;
+  top: 0;
   height: 100vh;
   width: 100vw;
   max-width: 450px;
@@ -148,7 +150,8 @@
 #addSearch {
   padding-right: 0;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
   width: 100%;
 }
 #addSearch button {
@@ -156,7 +159,7 @@
   font-family: "NanumSquareNeoOTF-Rg";
   border: none;
   background-color: var(--moregray);
-  width: 55px;
+  min-width: 55px;
   color: black;
   height: 100%;
   font-size: 14px;
@@ -177,4 +180,15 @@
   border: 1px solid var(--moregray);
   width: 30%;
   font-family: "NanumSquareNeoOTF-Lt";
+}
+
+.addressModalBg {
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.5);
+  left: 0;
+  top: 0;
+  height: 100vh;
+  width: 100vw;
+  max-width: 450px;
+  z-index: 200;
 }

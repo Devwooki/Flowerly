@@ -1,5 +1,5 @@
 import { useState } from "react";
-import style from "./YourChattingMsg.module.css";
+import style from "./style/YourChattingMsg.module.css";
 
 import ParticipationInfo from "./ParticipationInfo";
 import OrderFormMsg from "./OrderFormMsg";

@@ -1,6 +1,6 @@
 import { useRef, useCallback } from "react";
 import axios from "axios";
-import style from "./ChattingMenu.module.css";
+import style from "./style/ChattingMenu.module.css";
 import Image from "next/image";
 import imageCompression from "browser-image-compression";
 

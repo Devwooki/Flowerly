@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import style from "./OrderModal.module.css";
+import style from "./style/OrderModal.module.css";
 import Image from "next/image";
 import axios from "axios";
 
