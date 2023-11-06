@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import style from "@/components/flly/fllyUser/FllyRequest.module.css";
+import styleModal from "@/components/flly/fllyUser/CheckModal.module.css";
 import { useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
@@ -9,12 +10,15 @@ import {
   flowerState,
   bouquetState,
   regionState,
-  regionType
+  regionType,
+  deliveryAddressType
 } from "@/recoil/fllyRecoil";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import DeliveryModal from "@/components/flly/fllyUser/DeliveryModal";
 import PickupModal from "@/components/flly/fllyUser/PickupModal";
+import CheckModal from "@/components/flly/fllyUser/CheckModal";
+import axios from "axios";
 
 const FllyTarget = () => {
   const router = useRouter();
@@ -39,8 +43,15 @@ const FllyTarget = () => {
   const [showPickupModal, setShowPickupModal] = useState<boolean>(false);
   const [basicAddress, setBasicAddress] = useState("");
   const [detailAddress, setDetailAddress] = useState("");
+  const [addressCode, setAddressCode] = useState<deliveryAddressType>({
+    sido: "",
+    sigungu: "",
+    dong: "",
+  });
   const [pickupList, setPickupList] = useState<string[]>([]);
   const [pickupCodeList, setPickupCodeList] = useRecoilState<regionType[]>(regionState);
+  const [showPrevModal, setShowPrevModal] = useState<boolean>(false);
+  const [showNextModal, setShowNextModal] = useState<boolean>(false);
 
   const handleBasicAddressUpdate = (newAddress:string) => {
     setBasicAddress(newAddress);
@@ -58,11 +69,23 @@ const FllyTarget = () => {
     setShowPickupModal(!showPickupModal);
   }
   
-  // 날짜와 시간 합치기
+  const handleClickPrev = () => {
+    setShowPrevModal(true);
+  }
 
-  const handlePrevClick = () => {};
+  const handleClickNext = () => {
 
-  const handleNextClick = () => {};
+    setShowNextModal(true);
+  }
+
+
+  const prevBtnHandler = () => {
+    setShowPrevModal(!showPrevModal);
+  };
+
+  const nextBtnHandler = () => {
+    setShowNextModal(!showNextModal);
+  };
 
   const handleDelivery = () => {
     setCheckDelivery(true);
@@ -130,6 +153,72 @@ const FllyTarget = () => {
     }
   };
 
+  const NotClickEventHandler = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+  };
+
+  const submitBtn = () => {
+    axios
+      // .post(`https://flower-ly.co.kr/api/flly/request`, {
+      .post(`https://localhost:6090/api/flly/request`, {
+        "situation" : [situation == "선택 안함"? null : situation],
+        "target" : [target == "선택 안함"? null : target],
+        "colors": colors.includes("선택 안함")? null : colors,
+        "flowers": flowers,
+        "orderType": checkDelivery? "DELIVERY": "PICKUP",
+        "delivery": addressCode,
+        "pickup": pickupCodeList,
+        "deadline": dateTime,
+        "requestContent": requestText,
+        "imageUrl": bouquet?.url,
+        "budget": price,
+      })
+      .then((res:any) => {
+        console.log(res.data);
+        const data = res.data;
+        if (data.code === 200) {
+          router.push("/");
+        }
+        else console.log("오류 발생");
+      });
+    // 요청 성공시 페이지 이동
+    console.log(situation, target, colors);
+    if(checkDelivery && basicAddress==="") {
+      
+    } else if(!checkDelivery && pickupCodeList.length===0) {
+
+    } else {
+      if(price == undefined) {
+      } else {
+        if(time === "") {
+
+        } else {
+          axios
+          .post(`https://flower-ly.co.kr/api/flly/request`, {
+            "situation" : [situation == "선택 안함"? null : situation],
+            "target" : [target == "선택 안함"? null : target],
+            "colors": colors.includes("선택 안함")? null : colors,
+            "flowers": flowers,
+            "basicAddress": basicAddress,
+            "detailAddress": detailAddress,
+            "pickup": pickupCodeList,
+            "datetime": dateTime,
+            "comment": requestText,
+            "image": bouquet?.url
+          })
+          .then((res:any) => {
+            console.log(res.data);
+            const data = res.data;
+            if (data.code === 200) {
+              router.push("/");
+            }
+            else console.log("오류 발생");
+          });
+        }
+      }
+    }
+  };
+
   useEffect(() => {
     const currentDate = new Date();
     setCurrentDate(currentDate);
@@ -155,6 +244,7 @@ const FllyTarget = () => {
           initialAddress={basicAddress}
           initialDetailAddress={detailAddress}
           UpdateDetailAddress={handleDetailAddresUpdate}
+          setAddressCode={setAddressCode}
         />}
         {showPickupModal && 
         <PickupModal
@@ -164,6 +254,26 @@ const FllyTarget = () => {
           pickupList={pickupList}
           setPickupList={setPickupList}
         />}
+        {showPrevModal && 
+        <CheckModal
+          ModalChangeHandler={prevBtnHandler}
+          question={"꽃다발 선택 페이지로 이동하시겠습니까?"}
+          explain={"입력했던 정보는 모두 사라집니다."}
+          routerHref={"flower"}
+        />
+        }
+        {showNextModal && 
+          <div className={styleModal.checkBack} onClick={nextBtnHandler}>
+            <div className={styleModal.modalBack} onClick={NotClickEventHandler}>
+              <div className={styleModal.question}>플리 의뢰서 작성을 완료하시겠습니까?</div>
+              <div className={styleModal.explain}>페이지가 이동합니다.</div>
+              <div className={styleModal.modalBtnBox}>
+                <div onClick={nextBtnHandler}>취소</div>
+                <div onClick={submitBtn}>확인</div>
+              </div>
+            </div>
+          </div>
+        }
         <div className={style.contentBox}>
           <div className={style.headerTitle}>
             <div className={style.guide}>플리 의뢰서</div>
@@ -276,12 +386,8 @@ const FllyTarget = () => {
             </table>
           </div>
           <div className={style.btnBox}>
-            <div onClick={handlePrevClick} className={style.prevBtn}>
-              &lt;
-            </div>
-            <div onClick={handleNextClick} className={style.nextBtn}>
-              확인
-            </div>
+            <div onClick={handleClickPrev} className={style.prevBtn}>&lt;</div>
+            <div onClick={handleClickNext} className={style.nextBtn}>확인</div>
           </div>
         </div>
       </div>
