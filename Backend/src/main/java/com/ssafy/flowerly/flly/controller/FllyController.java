@@ -9,6 +9,7 @@ import com.ssafy.flowerly.util.DataResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpStatus;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -67,7 +68,8 @@ public class FllyController {
 
     @GetMapping("/store/{sellerId}")
     public DataResponse<?> getStoreInfo(HttpServletRequest request,
+                                        Pageable pageable,
                                         @PathVariable Long sellerId){
-        return new DataResponse<>(HttpStatus.SC_OK, "가게 정보를 반환합니다",  fllyService.getStoreDetail(sellerId));
+        return new DataResponse<>(HttpStatus.SC_OK, "가게 정보를 반환합니다",  fllyService.getStoreDetail(pageable, sellerId));
     }
 }

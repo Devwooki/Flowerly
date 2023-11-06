@@ -146,11 +146,12 @@ public class MemberService {
         //반환값 길이가 0이면 멤버 정보가 없다는 것이다.
         if (!object.isEmpty()){
             StoreInfoDto storeInfoDto = extractStoreInfoDto(object);
+
             List<String> images = new ArrayList<>();
             //이미지 추가
             for (Object[] o : object) {
                 if(o[1] == null) break;
-                storeInfoDto.getImages().add(extractImageUrl(o));
+                images.add(extractImageUrl(o));
             }
             storeInfoDto.setImages(images);
             return storeInfoDto;
