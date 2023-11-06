@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import style from "./FllyDetailModal.module.css";
+import style from "./style/FllyDetailModal.module.css";
 import Image from "next/image";
 import axios from "axios";
 

@@ -19,9 +19,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -98,7 +96,8 @@ public class ChattingService {
         // 채팅방 마지막 메세지 업데이트
         Chatting chatting = chattingRepository.findById(messageDto.getChattingId())
                 .orElseThrow(() -> new CustomException(ErrorCode.CHATTING_NOT_FOUND));
-        chatting.updateChatting(message.getContent(), message.getSendTime());
+        String msgContent = message.getType().equals("IMAGE") ? "사진을 보냈습니다." : message.getContent();
+        chatting.updateChatting(msgContent, message.getSendTime());
     }
 
     @Transactional
@@ -205,7 +204,8 @@ public class ChattingService {
 
         Request request = requestRepository.findByFlly(chatting.getFlly())
                 .orElseThrow(() -> new CustomException(ErrorCode.REQUEST_NOT_FOUND));
-        requestFromChattingDto.setRequestInfo(request);
+        String storeName = storeInfoRepository.findStoreName(request.getSeller());
+        requestFromChattingDto.setRequestInfo(request, storeName);
 
         if(request.getOrderType().equals(OrderType.DELIVERY)) {
             RequestDeliveryInfo deliveryInfo = requestDeliveryInfoRepository.findByRequest(request)
@@ -214,6 +214,21 @@ public class ChattingService {
         }
 
         return requestFromChattingDto;
+    }
+
+    public Map<String, Object> getPrice(Long chattingId) {
+        Map<String, Object> responseDto = new HashMap<>();
+
+        Chatting chatting = chattingRepository.findById(chattingId)
+                .orElseThrow(() -> new CustomException(ErrorCode.CHATTING_NOT_FOUND));
+        Request request = requestRepository.findByFlly(chatting.getFlly())
+                .orElseThrow(() -> new CustomException(ErrorCode.REQUEST_NOT_FOUND));
+
+        responseDto.put("requestId", request.getRequestId());
+        responseDto.put("sellerName", storeInfoRepository.findStoreName(request.getSeller()));
+        responseDto.put("price", request.getPrice());
+
+        return responseDto;
     }
 }
 

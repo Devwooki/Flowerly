@@ -57,7 +57,6 @@ public class StoreInfo {
                 .sellerName(this.sellerName)
                 .phoneNumber(this.phoneNumber)
                 .address(this.address)
-                .member(this.seller.toDto())
                 .build();
     }
 }

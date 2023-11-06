@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import style from "./ChattingRoom.module.css";
+import style from "./style/ChattingRoom.module.css";
 import { useRouter } from "next/router";
 import axios from "axios";
 
@@ -14,6 +14,7 @@ import FllyDetailModal from "../modal/FllyDetailModal";
 import PickupOrderModal from "../modal/PickupOrderModal";
 import DeliveryOrderModal from "../modal/DeliveryOrderModal";
 import RequestModal from "../modal/RequestModal";
+import ImageModal from "../modal/ImageModal";
 
 type ChattingRoomProps = {
   chattingId: number;
@@ -164,13 +165,14 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
 
   // 모달 상태 관련
   const [fllyModalState, setFllyModalState] = useState(false);
-  const [fllyId, setFllyId] = useState<number>();
   const [pickupModalState, setPickupModalState] = useState(false);
   const [deliveryModalState, setDeliveryModalState] = useState(false);
   const [requestModalState, setRequestModalState] = useState(false);
-  const modalHandler = (modalType: string, state: boolean, data: number) => {
+  const [imageModalState, setImageModalState] = useState(false);
+  const [imgUrl, setImgUrl] = useState<string>();
+
+  const modalHandler = (modalType: string, state: boolean, data: string) => {
     if (modalType == "FLLY") {
-      setFllyId(data);
       setFllyModalState(state);
     } else if (modalType == "PICKUP") {
       setPickupModalState(state);
@@ -178,6 +180,9 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
       setDeliveryModalState(state);
     } else if (modalType == "REQUEST") {
       setRequestModalState(state);
+    } else if (modalType == "IMAGE") {
+      setImageModalState(state);
+      setImgUrl(data);
     }
   };
 
@@ -242,6 +247,7 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
           sendHandler={sendPaymentReqMsg}
         />
       )}
+      {imageModalState && <ImageModal modalHandler={modalHandler} imgUrl={imgUrl} />}
     </>
   );
 };

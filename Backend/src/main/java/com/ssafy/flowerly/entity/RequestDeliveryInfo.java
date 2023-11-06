@@ -1,6 +1,7 @@
 package com.ssafy.flowerly.entity;
 
 import com.ssafy.flowerly.chatting.dto.RequestFromChattingDto;
+import com.ssafy.flowerly.seller.vo.FllyDeliveryInfoDto;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -35,5 +36,13 @@ public class RequestDeliveryInfo {
         this.recipientName = requestDto.getRecipientName();
         this.phoneNumber = requestDto.getRecipientPhoneNumber();
         this.address = requestDto.getAddress();
+    }
+
+    public FllyDeliveryInfoDto toFllyDeliveryInfoDto(){
+        return FllyDeliveryInfoDto.builder()
+                .recipientName(this.recipientName)
+                .phoneNumber(this.phoneNumber)
+                .address(this.address)
+                .build();
     }
 }

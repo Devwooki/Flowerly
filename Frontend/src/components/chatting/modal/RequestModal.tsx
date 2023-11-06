@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-import style from "./RequestModal.module.css";
+import style from "./style/RequestModal.module.css";
 import Image from "next/image";
 import axios from "axios";
 

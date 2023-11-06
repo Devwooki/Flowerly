@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
-import style from "./login.module.css";
-const Login = () => {
+import style from "./fllylogin.module.css";
+const FllyLogin = () => {
   return (
     <div className={style.headLogo}>
       <div className={style.imgLogo}>
@@ -16,4 +16,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default FllyLogin;

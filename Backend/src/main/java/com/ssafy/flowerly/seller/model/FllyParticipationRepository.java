@@ -26,8 +26,8 @@ public interface FllyParticipationRepository extends JpaRepository<FllyParticipa
 
     Optional<FllyParticipation> findByFllyFllyIdAndSellerMemberId(long memberId, long fllyId);
 
-    @Query("select si, fp from StoreInfo si " +
-            " left join fetch FllyParticipation fp on fp.seller.memberId = si.seller.memberId " +
+    @Query("select si, fp from FllyParticipation fp " +
+            " left join fetch StoreInfo si on fp.seller.memberId = si.seller.memberId " +
             " where fp.flly.fllyId = :fllyId ")
     Page<Object[]> findFlistByFllyId(Pageable pageable,
                                      @Param("fllyId") Long fllyId);
