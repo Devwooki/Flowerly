@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { flowerState } from "@/recoil/fllyRecoil";
 import OpenAI from "openai";
-import { bouquetState, bouquetType } from "@/recoil/fllyRecoil";
+import { bouquetsState, bouquetType } from "@/recoil/fllyRecoil";
 
 const FllyLoading = () => {
   const [imgList, setImgList] = useState<bouquetType[]>([]);
@@ -17,7 +17,7 @@ const FllyLoading = () => {
   });
 
   const flowers = useRecoilValue(flowerState);
-  const [bouquets, setBouquets] = useRecoilState(bouquetState);
+  const [bouquets, setBouquets] = useRecoilState(bouquetsState);
 
   const generateOrder = async () => {
     const flowerStringArray = flowers.map((flower) => {
@@ -41,7 +41,7 @@ const FllyLoading = () => {
       const NewImage: bouquetType[] = [];
       if (response) {
         response.data.forEach((image) => {
-          NewImage.push({ url: image.url });
+          if(image.url) NewImage.push({ url: image.url });
         });
         setImgList(NewImage);
       }
