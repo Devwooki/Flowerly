@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import style from "./ShopCard.module.css";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import ShopModal from "./ShopModal";
@@ -31,27 +32,27 @@ const ShopCard = ({ shopInfo }: ShopCardProps) => {
   };
 
   return (
-    <div className="shopCardMain" onClick={() => setModal((pre) => !pre)}>
-      <div className="shopFlowerImg">
+    <div className={style.shopCardMain} onClick={() => setModal((pre) => !pre)}>
+      <div className={style.shopFlowerImg}>
         <Image src={shopInfo.reImg} alt="추천 꽃다발" fill />
       </div>
-      <div className="shopInfo">
-        <div className="infoTable">
-          <div onClick={(e) => moveToShop(1, e)} className="shopName">
+      <div className={style.shopInfo}>
+        <div className={style.infoTable}>
+          <div onClick={(e) => moveToShop(1, e)} className={style.shopName}>
             {shopInfo.shopName}
           </div>
         </div>
-        <div className="infoTable">
+        <div className={style.infoTable}>
           <Image src={"/img/icon/seller-location.png"} alt="가게 위치" width={10} height={15} />
           <div style={{ fontSize: "14px" }}>{truncatedAdress}</div>
         </div>
-        <div className="infoTable">
+        <div className={style.infoTable}>
           <Image src={"/img/icon/seller-money.png"} alt="제시 금액 " width={15} height={15} />
           <div>{shopInfo.recommandPrice}</div>
         </div>
-        <div className="responseContent">{truncatedContent}</div>
+        <div className={style.responseContent}>{truncatedContent}</div>
       </div>
-      <div className="chatAction">채팅하기</div>
+      <div className={style.chatAction}>채팅하기</div>
       <AnimatePresence>{modal && <ShopModal shopInfo={shopInfo} />}</AnimatePresence>
     </div>
   );
