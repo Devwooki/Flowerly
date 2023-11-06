@@ -1,12 +1,33 @@
+.wrapper {
+  position: relative;
+  min-width: calc(100% - 30px);
+}
+
 .cardMain {
+  position: absolute;
   box-sizing: border-box;
-  width: calc(100% - 30px);
+  min-width: 100%;
   height: 70px;
   border-radius: 8px;
   background-color: #f7f8f9;
-  padding: 10px 15px;
   margin-bottom: 10px;
   /* font-family: "NanumSquareNeoOTF-Rg"; */
+  display: flex;
+}
+
+.contentDiv {
+  padding: 10px 15px;
+  width: 100%;
+}
+
+.exitDiv {
+  min-width: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--mint);
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
 }
 
 .cardTop {
@@ -25,4 +46,13 @@
 
 .time {
   font-size: 12px;
+}
+
+#underDiv {
+  position: relative;
+  z-index: -1;
+}
+
+#upperDiv {
+  transition: left 0.3s ease;
 }
