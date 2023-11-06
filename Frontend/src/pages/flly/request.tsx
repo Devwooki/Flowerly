@@ -31,7 +31,7 @@ const FllyTarget = () => {
   const [dateIdx, setDateIdx] = useState<number>(0);
   const [time, setTime] = useState<string>("")
   const [requestText, setRequestText] = useState<string>("");
-  const [dateTime, setDateTime] = useState<Date | null>(null);
+  const [dateTime, setDateTime] = useState<Date>(new Date());
   
   // 날짜와 시간 합치기
 
@@ -56,15 +56,21 @@ const FllyTarget = () => {
     const time = new Date();
     
     if(idx == 0) {
+      time.setFullYear(currentDate.getFullYear());
       time.setMonth(currentDate.getMonth());
       time.setDate(currentDate.getDate());
     } else if(idx == 1) {
+      time.setFullYear(oneDayLater.getFullYear());
       time.setMonth(oneDayLater.getMonth());
       time.setDate(oneDayLater.getDate());
     } else if(idx == 2) {
+      time.setFullYear(twoDaysLater.getFullYear());
       time.setMonth(twoDaysLater.getMonth());
       time.setDate(twoDaysLater.getDate());
     }
+
+    setDateTime(time);
+    setTime("");
   };
 
   const handleText = (e: any) => {
@@ -80,10 +86,13 @@ const FllyTarget = () => {
       const minutes = parseInt(timeParts[1]);
       if (!isNaN(hours) && !isNaN(minutes)) {
         const time = new Date();
+        time.setFullYear(dateTime.getFullYear());
+        time.setMonth(dateTime.getMonth());
+        time.setDate(dateTime.getDate());
         time.setHours(hours);
         time.setMinutes(minutes);
         setDateTime(time);
-        console.log(dateTime);
+        console.log(time);
       }
     }
   };
@@ -211,7 +220,7 @@ const FllyTarget = () => {
                   <br />
                   (150자)
                 </th>
-                <td><textarea maxLength={150} value={requestText} onChange={handleText}/><div className={style.textCount}>{requestText?.length}/150자</div></td>
+                <td><textarea maxLength={149} value={requestText} onChange={handleText}/><div className={style.textCount}>{requestText?.length}/150자</div></td>
               </tr>
             </table>
           </div>
