@@ -13,6 +13,7 @@ public enum ErrorCode {
     NOT_AVAILABLE(404, "데이터가 접근불가능하거나 삭제가 되었습니다."),
     INVALID_ACCESS(403, "비정상적인 접근입니다."),
 
+
     NOT_FIND_MEMBER(-4000, "유저 정보를 찾을 수 없습니다"),
     NOT_FIND_FLLY(-4001, "플리 정보를 찾을 수 없습니다."),
     NOT_SELLER_DELIVERY_REGION(-4002, "배달 가능 지역을 설정해주세요"),
@@ -40,11 +41,14 @@ public enum ErrorCode {
     INVALID_UPLOAD_TYPE(-8002, "업로드 요청 타입을 찾을 수 없습니다."),
     INVALID_BASE64(-8003, "지원하지 않는 타입입니다."),
     INVALID_ADDRESS_FORMAT(-8004,"유효하지 않은 주소 형식입니다."),
+    INVALID_IMAGE_URL(-8005, "이미지 URL이 유효하지 않습니다."),
+    IOException(-8006, "이미지 URL Encoding중 에러가 발생했습니다."),
 
     INVALID_REFRESH_TOKEN(-9000, "RefreshToken을 찾을 수 없습니다."),
     INVALID_ACCESS_TOKEN(-9001, "AccessToken이 유효하지 않습니다."),
 
     FLOWER_NOT_FOUND(-5100, "해당 꽃을 찾을 수 없습니다.");
+
 
     private final int code;
     private final String message;
