@@ -42,6 +42,7 @@ public class ChattingDto {
         private Long chattingId;
         private Long opponentMemberId;
         private String opponentName;
+        private String lastId;
         private List<ChattingMessageDto.Response> messages;
     }
 
