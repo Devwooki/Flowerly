@@ -160,9 +160,9 @@ const FllyTarget = () => {
   const submitBtn = () => {
     axios
       // .post(`https://flower-ly.co.kr/api/flly/request`, {
-      .post(`https://localhost:6090/api/flly/request`, {
-        "situation" : [situation == "선택 안함"? null : situation],
-        "target" : [target == "선택 안함"? null : target],
+      .post(`http://localhost:6090/api/flly/request`, {
+        "situation" : situation == "선택 안함"? null : situation,
+        "target" : target == "선택 안함"? null : target,
         "colors": colors.includes("선택 안함")? null : colors,
         "flowers": flowers,
         "orderType": checkDelivery? "DELIVERY": "PICKUP",
@@ -173,7 +173,7 @@ const FllyTarget = () => {
         "imageUrl": bouquet?.url,
         "budget": price,
       })
-      .then((res:any) => {
+      .then((res) => {
         console.log(res.data);
         const data = res.data;
         if (data.code === 200) {
