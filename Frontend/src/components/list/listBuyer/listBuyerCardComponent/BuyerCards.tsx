@@ -7,6 +7,7 @@ import { useSetRecoilState } from "recoil";
 import { FllylistDiscRecoil } from "@/recoil/kdmRecoil";
 import { ToastErrorMessage } from "@/model/toastMessageJHM";
 import Cancel from "./Cancel";
+import { AnimatePresence, motion } from "framer-motion";
 
 type BuyerCardsProps = {
   card: BuyerCard;
@@ -181,66 +182,68 @@ const BuyerCards = ({ card }: BuyerCardsProps) => {
   }, [isClient]);
 
   return (
-    <div className={style.cardBox}>
-      <div style={{ height: "30px" }}>
-        <Image
-          src="/img/icon/currentFlower.png"
-          alt="현재상태"
-          width={40}
-          height={40}
-          className={style.currentFlower}
-          style={{ marginLeft: posFlowerLeft(stepNumber) }}
-        />
-      </div>
-      <ProgressBar currentStep={stepNumber} />
-      <div className={style.cardInfo}>
-        <Image src={card.img} alt="꽃 이미지" width={150} height={150} />
-        <div className={style.InfoText}>
-          <div className={style.infoTitle}>상품정보</div>
-          <div className={style.infoTable}>
-            <div className={style.infoTitle}>상황</div>
-            <div className={style.info}>{card.situation}</div>
-          </div>
-          <div className={style.infoTable}>
-            <div className={style.infoTitle}>대상</div>
-            <div className={style.info}>{card.target}</div>
-          </div>
-          <div className={style.infoColorTable}>
-            <div>주요색상</div>
-            {card.selectedColor.map((color, idx) => {
-              const rgbColor = mapColorNameToRGB(color);
-              return (
-                <div
-                  key={idx}
-                  className={`${style.colorInfo} ${style.colorfirst}`}
-                  style={{
-                    color: isClient && windowWidth <= 426 ? rgbColor : "black",
-                    backgroundColor: isClient && windowWidth <= 426 ? rgbColor : "",
-                    // backgroundColor: isClient && windowWidth <= 426 ? "" : "var(--moregray)",
-                  }}
-                >
-                  {windowWidth <= 426 ? "" : mapFlowerText(color)}
-                  {/* {windowWidth <= 426 ? "" : ""} */}
-                </div>
-                // <Image
-                //   src={`/img/flowerColor/${mapFlowerColor(color)}.png`}
-                //   alt="꽃 색상"
-                //   width={40}
-                //   height={40}
-                //   key={idx}
-                // />
-              );
-            })}
-          </div>
-          <div className={style.infoTable}>
-            <div className={style.infoTitle}>꽃집</div>
-            <div className={`${style.flowerShop}`}>{card.shopName}</div>
+    <>
+      <motion.div className={style.cardBox} layoutId={`cardBox-${card.fllyId}`}>
+        <div style={{ height: "30px" }}>
+          <Image
+            src="/img/icon/currentFlower.png"
+            alt="현재상태"
+            width={40}
+            height={40}
+            className={style.currentFlower}
+            style={{ marginLeft: posFlowerLeft(stepNumber) }}
+          />
+        </div>
+        <ProgressBar currentStep={stepNumber} />
+        <div className={style.cardInfo}>
+          <Image src={card.img} alt="꽃 이미지" width={150} height={150} />
+          <div className={style.InfoText}>
+            <div className={style.infoTitle}>상품정보</div>
+            <div className={style.infoTable}>
+              <div className={style.infoTitle}>상황</div>
+              <div className={style.info}>{card.situation}</div>
+            </div>
+            <div className={style.infoTable}>
+              <div className={style.infoTitle}>대상</div>
+              <div className={style.info}>{card.target}</div>
+            </div>
+            <div className={style.infoColorTable}>
+              <div>주요색상</div>
+              {card.selectedColor.map((color, idx) => {
+                const rgbColor = mapColorNameToRGB(color);
+                return (
+                  <div
+                    key={idx}
+                    className={`${style.colorInfo} ${style.colorfirst}`}
+                    style={{
+                      color: isClient && windowWidth <= 426 ? rgbColor : "black",
+                      backgroundColor: isClient && windowWidth <= 426 ? rgbColor : "",
+                      // backgroundColor: isClient && windowWidth <= 426 ? "" : "var(--moregray)",
+                    }}
+                  >
+                    {windowWidth <= 426 ? "" : mapFlowerText(color)}
+                    {/* {windowWidth <= 426 ? "" : ""} */}
+                  </div>
+                  // <Image
+                  //   src={`/img/flowerColor/${mapFlowerColor(color)}.png`}
+                  //   alt="꽃 색상"
+                  //   width={40}
+                  //   height={40}
+                  //   key={idx}
+                  // />
+                );
+              })}
+            </div>
+            <div className={style.infoTable}>
+              <div className={style.infoTitle}>꽃집</div>
+              <div className={`${style.flowerShop}`}>{card.shopName}</div>
+            </div>
           </div>
         </div>
-      </div>
-      {buttomBtnCmd(stepNumber)}
-      {cancelModal && <Cancel onCancel={handleCancel} />}
-    </div>
+        {buttomBtnCmd(stepNumber)}
+      </motion.div>
+      <AnimatePresence>{cancelModal && <Cancel onCancel={handleCancel} />}</AnimatePresence>
+    </>
   );
 };
 

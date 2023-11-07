@@ -26,46 +26,26 @@
 }
 
 .mainBody {
-  position: relative;
-  height: 60vh;
+  padding-top: 25px;
+  height: calc(100vh - 220px);
   margin-top: 20px;
-  overflow: hidden;
+  overflow: scroll;
 }
 
 .bannerImg {
-  /* border: 1px solid black; */
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  max-width: 450px;
-  width: 85%;
-  height: 60vh;
-  max-height: 600px;
-  transition: transform 0.5s, opacity 0.8s;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.7);
+  position: relative;
+  border-radius: 40px;
+  margin-bottom: 30px;
+}
+
+.imgDiv {
+  object-fit: cover;
+  width: 100px;
+  padding-top: 140%;
   border-radius: 40px;
 }
 
-.card1 {
-  z-index: 3;
-  transform: translateX(-50%) translateY(-50%);
-  opacity: 1; /* 첫 번째 카드만 기본적으로 보이게 합니다. */
-}
-
-.card2 {
-  z-index: 2;
-  transform: translateX(-50%) translateY(-50%) rotate(2deg);
-  opacity: 1; /* 두 번째 카드도 기본적으로 보이게 합니다. */
-}
-
-.card3 {
-  z-index: 1;
-  transform: translateX(-50%) translateY(-50%) rotate(4deg);
-}
-
-.bannerImg > img {
-  position: relative !important;
-  object-fit: cover;
+.imgDiv img {
   border-radius: 40px;
 }
 
@@ -76,19 +56,13 @@
 }
 .imgDisc {
   width: 100%;
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0),
-    rgba(0, 0, 0, 0.4) 60%,
-    rgba(0, 0, 0, 0.2) 80%,
-    rgba(0, 0, 0, 0)
-  );
   font-family: "NanumSquareNeoOTF-Rg";
   position: absolute;
   bottom: 0;
   color: white;
   padding: 40px 0 60px 0;
-  border-radius: 40px;
+  border-radius: 0 0 40px 40px;
+  background-color: #00000030;
 }
 
 .imgDisc div {

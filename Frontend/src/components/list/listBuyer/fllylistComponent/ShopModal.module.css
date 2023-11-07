@@ -2,11 +2,10 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%; /* 전체 너비를 차지하도록 설정 */
-  height: 96vh; /* 뷰포트 높이와 동일하게 설정 */
-  background-color: rgba(194, 194, 194, 0.4);
-  z-index: 1;
-  /* 자식 요소를 중앙으로 정렬하기 위해 flex 사용 */
+  width: 100%;
+  height: 96vh;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 10;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -64,13 +63,14 @@
   font-family: "NanumSquareNeoOTF-Rg";
   text-align: center;
   margin: 0 auto;
-  padding: 8px;
-  margin-bottom: 10px;
+  padding: 10px;
+  margin-bottom: 30px;
+  margin-top: 20px;
   border-radius: 5px;
   background-color: var(--blue);
   color: white;
-  font-size: 14px;
-  max-width: 60px;
+  font-size: 16px;
+  max-width: 100px;
 }
 
 .responseContent {

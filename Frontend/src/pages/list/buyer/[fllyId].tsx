@@ -1,6 +1,6 @@
 import style from "./fllyId.module.css";
 import FllyListMain from "@/components/list/listBuyer/fllylistComponent/FllyListMain";
-import { useState } from "react";
+import { motion } from "framer-motion";
 
 const FllyList = () => {
   const BuyerCardPlus = {
@@ -63,7 +63,7 @@ const FllyList = () => {
     {
       reImg:
         "https://neighbrew.s3.ap-northeast-2.amazonaws.com/FlOWER/9ab5e8bb-56f9-4cff-967b-22075b73e37a010_pink_gookhwa.jpg.jpg",
-      shopId: 1,
+      shopId: 5,
       shopName: "꼬까게",
       shopLoc: "대전광역시 중구 대둔산로 384 1층 나이테플라워",
       recommandPrice: "25,000",
@@ -73,7 +73,7 @@ const FllyList = () => {
     {
       reImg:
         "https://neighbrew.s3.ap-northeast-2.amazonaws.com/FlOWER/da3f0e9f-0c1e-45d8-ba34-86e57331687b011_yellow_gookhwa.jpg.jpg",
-      shopId: 2,
+      shopId: 6,
       shopName: "꽃채운 시루",
       shopLoc: "대전광역시 동구 우암로 216",
       recommandPrice: "18,000",
@@ -82,7 +82,7 @@ const FllyList = () => {
     {
       reImg:
         "https://neighbrew.s3.ap-northeast-2.amazonaws.com/FlOWER/f82c544a-7f65-4879-9293-76ceaba5a6d2069_pink_peony.jpg.jpg",
-      shopId: 3,
+      shopId: 7,
       shopName: "나이테플라워",
       shopLoc: "대전광역시 중구 대둔산로 384",
       recommandPrice: "32,000",
@@ -91,7 +91,7 @@ const FllyList = () => {
     },
     {
       reImg: "/test/test-flower-img.png",
-      shopId: 4,
+      shopId: 8,
       shopName: "플로스유화",
       shopLoc: "대전광역시 서구 둔산북로 22 둔산라이프종합상가 121호",
       recommandPrice: "55,000",
@@ -101,14 +101,14 @@ const FllyList = () => {
   ];
 
   return (
-    <div className={style.ListBuyerBack}>
+    <motion.div className={style.ListBuyerBack}>
       <div className={style.ListBuyerHeader}>
         <div className={style.headerTitle}>플리스트</div>
       </div>
       <div className={style.ListBuyerMain}>
         {BuyerCardPlus && <FllyListMain card={BuyerCardPlus} shopList={shopList} />}
       </div>
-    </div>
+    </motion.div>
   );
 };
 
