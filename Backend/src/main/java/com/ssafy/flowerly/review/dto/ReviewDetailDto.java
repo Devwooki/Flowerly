@@ -1,4 +1,4 @@
-package com.ssafy.flowerly.review.dtos;
+package com.ssafy.flowerly.review.dto;
 
 import lombok.*;
 
