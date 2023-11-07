@@ -42,8 +42,11 @@ public class Chatting extends BaseCreatedTimeEntity {
     private String lastChattingMessage;
     private LocalDateTime lastChattingTime;
 
-    @Column(nullable = false)
-    private boolean isRemoved;
+    @Column(nullable = false, columnDefinition = "boolean default false")
+    private boolean isRemovedConsumer;
+
+    @Column(nullable = false, columnDefinition = "boolean default false")
+    private boolean isRemovedSeller;
 
     public void updateChatting(String chattingMessage, Date chattingTime) {
         ZonedDateTime zdt = chattingTime.toInstant().atZone(ZoneId.of("Asia/Seoul"));

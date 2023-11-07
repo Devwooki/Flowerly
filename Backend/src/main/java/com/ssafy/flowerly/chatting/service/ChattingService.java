@@ -39,7 +39,7 @@ public class ChattingService {
         List<ChattingDto.BasicResponse> chattingDtoList = new ArrayList<>();
 
         if(member.getRole().equals(MemberRole.USER)) {  // 소비자 입장인 경우
-            chattingList = chattingRepository.findAllByConsumerAndIsRemovedFalse(member);
+            chattingList = chattingRepository.findAllByConsumerAndIsRemovedConsumerFalse(member);
 
             for(Chatting chatting : chattingList) {
                 Member opponent = chatting.getSeller();
@@ -48,7 +48,7 @@ public class ChattingService {
                 chattingDtoList.add(chattingDto);
             }
         } else if(member.getRole().equals(MemberRole.SELLER)) {  // 판매자 입장인 경우
-            chattingList = chattingRepository.findAllBySellerAndIsRemovedFalse(member);
+            chattingList = chattingRepository.findAllBySellerAndIsRemovedSellerFalse(member);
 
             for(Chatting chatting : chattingList) {
                 Member opponent = chatting.getConsumer();
