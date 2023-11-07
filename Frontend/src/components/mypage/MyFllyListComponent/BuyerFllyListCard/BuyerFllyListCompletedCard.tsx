@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import style from "./BuyerFllyListCompletedCard.module.css";
 
-const BuyerFllyListCompletedCard = () => {
-  const [riviewState, setRiviewState] = useState<Boolean>(true);
+const BuyerFllyListCompletedCard = ({ ModalChangeHandler }: { ModalChangeHandler: () => void }) => {
+  const [riviewState, setRiviewState] = useState<Boolean>(false);
   return (
     <>
       <div className={style.cardBack}>
@@ -32,7 +32,7 @@ const BuyerFllyListCompletedCard = () => {
               <div>리뷰 작성 완료</div>
             </div>
           ) : (
-            <div className={style.OrderFooterFalse}>
+            <div className={style.OrderFooterFalse} onClick={ModalChangeHandler}>
               <div>리뷰 작성</div>
             </div>
           )}

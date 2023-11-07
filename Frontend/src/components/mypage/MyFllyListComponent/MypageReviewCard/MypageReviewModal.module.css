@@ -12,49 +12,69 @@
 
 .modalBack {
   width: calc(100% - 60px);
-  height: 200px;
+  height: 500px;
   background-color: white;
   margin: auto;
   border-radius: 10px;
 }
 
-.modalBack > div:nth-child(1) {
-  margin-top: 60px;
-  font-family: "NanumSquareNeoOTF-Bd";
-  font-size: 16px;
+.modalMain {
+  width: calc(100% - 40px);
+  margin: 30px auto 0px auto;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
-.modalBack > div:nth-child(2) {
-  margin-top: 5px;
+.modalMain > div:nth-child(1) {
+  font-family: "NanumSquareNeoOTF-Bd";
+  font-size: 20px;
+}
+
+.modalMain > div:nth-child(2) {
   font-family: "NanumSquareNeoOTF-Rg";
-  font-size: 16px;
+  font-size: 14px;
   color: #757575;
 }
 
+.modalTextBox {
+  width: calc(100% - 70px);
+  border-radius: 5px;
+  border: 2px solid var(--moregray);
+  margin: 20px auto;
+  height: 190px;
+  resize: none;
+  font-family: "NanumSquareNeoOTF-Lt";
+  padding: 10px;
+}
+
 .modalBtnBox {
-  margin-top: 20px;
   width: 100%;
   display: flex;
-  justify-content: center;
-  gap: 20px;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .modalBtnBox > div {
-  width: 80px;
-  line-height: 40px;
-  height: 40px;
-  border-radius: 10px;
+  width: calc(100% - 50px);
+  margin: 0px auto;
+  line-height: 50px;
+  height: 50px;
+  border-radius: 5px;
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
-  color: white;
   font-family: "NanumSquareNeoOTF-Bd";
 }
 
 .modalBtnBox > div:nth-child(1) {
-  background-color: var(--sky);
+  background-color: var(--dark);
+  color: white;
 }
 
 .modalBtnBox > div:nth-child(2) {
-  background-color: var(--blue);
+  background-color: white;
+  border: 1px solid var(--moregray);
+  color: var(--dark);
 }
 
 /* @media screen and (max-width: 380px) {
