@@ -14,12 +14,16 @@ import com.ssafy.flowerly.member.model.StoreInfoRepository;
 import com.ssafy.flowerly.seller.model.FllyDeliveryRegionRepository;
 import com.ssafy.flowerly.seller.model.RequestRepository;
 import lombok.RequiredArgsConstructor;
+import org.bson.types.ObjectId;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -62,7 +66,7 @@ public class ChattingService {
         return chattingDtoList;
     }
 
-    public ChattingDto.RoomResponse getChattingMessageList(Long memberId, Long chattingId) {
+    public ChattingDto.RoomResponse getChattingMessageList(Long memberId, Long chattingId, String lastId, int size) {
         Member member = memberRepository.findByMemberId(memberId).orElseThrow();
         Chatting chatting = chattingRepository.findById(chattingId).orElseThrow();
 
@@ -78,13 +82,21 @@ public class ChattingService {
             opponentName = opponent.getNickName();
         }
 
-        List<ChattingMessage> messages = chattingMessageRepository.findAllByChattingIdOrderBySendTime(chatting.getChattingId());
+        ObjectId objectId = lastId != null ? new ObjectId(lastId) : null;
+        PageRequest pageRequest = PageRequest.of(0, size, Sort.Direction. DESC, "sendTime");
+        List<ChattingMessage> messages = null;
+        if(objectId != null)
+            messages = chattingMessageRepository.findChattingMessagesByIdBeforeAndChattingId(objectId, chattingId, pageRequest).getContent();
+        else
+            messages = chattingMessageRepository.findAllByChattingId(chattingId, pageRequest).getContent();
+
+        List<ChattingMessage> sortedMessages = messages.stream().sorted(Comparator.comparing(ChattingMessage::getSendTime)).collect(Collectors.toList());
         List<ChattingMessageDto.Response> messageDtos = new ArrayList<>();
-        for(ChattingMessage message : messages) {
+        for(ChattingMessage message : sortedMessages) {
             messageDtos.add(ChattingMessageDto.Response.of(message));
         }
 
-        return new ChattingDto.RoomResponse(chattingId, opponentMemberId, opponentName, messageDtos);
+        return new ChattingDto.RoomResponse(chattingId, opponentMemberId, opponentName,  sortedMessages.get(0).getId(), messageDtos);
     }
 
     @Transactional
@@ -229,6 +241,14 @@ public class ChattingService {
         responseDto.put("price", request.getPrice());
 
         return responseDto;
+    }
+
+    @Transactional
+    public void exitChatting(Long chattingId, Long memberId) {
+        Chatting chatting = chattingRepository.findById(chattingId)
+                .orElseThrow(() -> new CustomException(ErrorCode.CHATTING_NOT_FOUND));
+        Member member = memberRepository.findByMemberId(memberId).orElseThrow();
+        chatting.deleteChatting(member.getRole());
     }
 }
 
