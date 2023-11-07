@@ -1,7 +1,7 @@
 package com.ssafy.flowerly.chatting.controller;
 
-import com.ssafy.flowerly.JWT.JWTService;
 import com.ssafy.flowerly.chatting.dto.ChattingDto;
+import com.ssafy.flowerly.chatting.dto.ChattingMessageDto;
 import com.ssafy.flowerly.chatting.dto.FllyFromChattingDto;
 import com.ssafy.flowerly.chatting.dto.RequestFromChattingDto;
 import com.ssafy.flowerly.chatting.service.ChattingService;
@@ -52,14 +52,18 @@ public class ChattingController {
             HttpServletRequest request,
             @PathVariable Long chattingId,
             @RequestParam(required = false) String lastId,
-            @RequestParam(defaultValue = "50") int size) {
+            @RequestParam(defaultValue = "50") Integer size) {
         log.info(chattingId + "번 채팅방 조회");
 //        Long memberId = (Long) request.getAttribute("memberId");
         Long memberId = 1L;
 
-        ChattingDto.RoomResponse chattingRoom = chattingService.getChattingMessageList(memberId, chattingId, lastId, size);
-
-        return new DataResponse<>(200, "채팅방 메세지 조회 성공", chattingRoom);
+        if(lastId == null) {
+            ChattingDto.RoomResponse chattingRoom = chattingService.getChattingRoomInfoNMessages(memberId, chattingId, size);
+            return new DataResponse<>(200, "채팅방 메세지 조회 성공", chattingRoom);
+        } else {
+            Map<String, Object> messages = chattingService.getChattingMessages(chattingId, lastId, size);
+            return new DataResponse<>(200, "채팅방 메세지 조회 성공", messages);
+        }
     }
 
     /**
