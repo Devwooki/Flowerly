@@ -42,7 +42,9 @@ public enum ErrorCode {
     INVALID_ADDRESS_FORMAT(-8004,"유효하지 않은 주소 형식입니다."),
 
     INVALID_REFRESH_TOKEN(-9000, "RefreshToken을 찾을 수 없습니다."),
-    INVALID_ACCESS_TOKEN(-9001, "AccessToken이 유효하지 않습니다.");
+    INVALID_ACCESS_TOKEN(-9001, "AccessToken이 유효하지 않습니다."),
+
+    FLOWER_NOT_FOUND(-5100, "해당 꽃을 찾을 수 없습니다.");
 
     private final int code;
     private final String message;
