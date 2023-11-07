@@ -188,7 +188,7 @@ const FllyTarget = () => {
               console.log(res.data);
               const data = res.data;
               if (data.code === 200) {
-                // router.push("/");
+                router.push("/");
               }
               else console.log("오류 발생");
             });

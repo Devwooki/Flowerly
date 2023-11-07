@@ -67,12 +67,11 @@ const FllyLoading = () => {
 
   useEffect(() => {
     console.log(order);
-    router.push("bouquet"); // 없애기
     // if(order != "") generateImage();
   },[order]);
 
   useEffect(() => {
-    if(bouquets.length !== 0) router.push("bouquet");
+    if(imgList.length !== 0) router.push("bouquet");
   }, [bouquets]);
 
   return (
