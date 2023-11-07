@@ -91,12 +91,12 @@
     /* border: 1px solid black; */
   }
 
-  .OrderFooter {
+  .OrderFooterTrue {
     height: 30px;
     width: 100%;
   }
 
-  .OrderFooter > div {
+  .OrderFooterTrue > div {
     width: calc(100% - 30px);
     height: 25px;
     line-height: 25px;
@@ -104,6 +104,25 @@
     margin: 0px auto;
     border-radius: 5px;
     background-color: var(--moregray);
+    font-size: 12px;
+    color: var(--dark);
+    font-family: "NanumSquareNeoOTF-Bd";
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .OrderFooterFalse {
+    height: 30px;
+    width: 100%;
+  }
+
+  .OrderFooterFalse > div {
+    width: calc(100% - 30px);
+    height: 25px;
+    line-height: 25px;
+    text-align: center;
+    margin: 0px auto;
+    border-radius: 5px;
+    background-color: var(--mint);
     font-size: 12px;
     color: var(--dark);
     font-family: "NanumSquareNeoOTF-Bd";
@@ -204,12 +223,12 @@
     /* border: 1px solid black; */
   }
 
-  .OrderFooter {
+  .OrderFooterTrue {
     height: 30px;
     width: 100%;
   }
 
-  .OrderFooter > div {
+  .OrderFooterTrue > div {
     width: calc(100% - 30px);
     height: 20px;
     line-height: 20px;
@@ -219,6 +238,25 @@
     background-color: var(--moregray);
     font-size: 10px;
     color: var(--dark);
+    font-family: "NanumSquareNeoOTF-Bd";
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .OrderFooterFalse {
+    height: 30px;
+    width: 100%;
+  }
+
+  .OrderFooterFalse > div {
+    width: calc(100% - 30px);
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    margin: 0px auto;
+    border-radius: 5px;
+    background-color: var(--moregray);
+    font-size: 10px;
+    color: var(--mint);
     font-family: "NanumSquareNeoOTF-Bd";
     box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
   }

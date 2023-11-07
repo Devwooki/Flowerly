@@ -35,7 +35,7 @@ const ListParticipationCard = ({ $participationInfo }: Props) => {
           pathname: "/flly/order/detail/[fllyId]",
           query: { fllyId: $participationInfo.fllyId },
         },
-        "/flly/detail", // 이것은 브라우저 주소창에 표시될 URL입니다.
+        "/flly/order/detail", // 이것은 브라우저 주소창에 표시될 URL입니다.
         { shallow: true },
       );
     } else {
