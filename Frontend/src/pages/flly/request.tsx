@@ -158,31 +158,6 @@ const FllyTarget = () => {
   };
 
   const submitBtn = () => {
-    axios
-      // .post(`https://flower-ly.co.kr/api/flly/request`, {
-      .post(`http://localhost:6090/api/flly/request`, {
-        "situation" : situation == "선택 안함"? null : situation,
-        "target" : target == "선택 안함"? null : target,
-        "colors": colors.includes("선택 안함")? null : colors,
-        "flowers": flowers,
-        "orderType": checkDelivery? "DELIVERY": "PICKUP",
-        "delivery": addressCode,
-        "pickup": pickupCodeList,
-        "deadline": dateTime,
-        "requestContent": requestText,
-        "imageUrl": bouquet?.url,
-        "budget": price,
-      })
-      .then((res) => {
-        console.log(res.data);
-        const data = res.data;
-        if (data.code === 200) {
-          router.push("/");
-        }
-        else console.log("오류 발생");
-      });
-    // 요청 성공시 페이지 이동
-    console.log(situation, target, colors);
     if(checkDelivery && basicAddress==="") {
       
     } else if(!checkDelivery && pickupCodeList.length===0) {
@@ -194,26 +169,29 @@ const FllyTarget = () => {
 
         } else {
           axios
-          .post(`https://flower-ly.co.kr/api/flly/request`, {
-            "situation" : [situation == "선택 안함"? null : situation],
-            "target" : [target == "선택 안함"? null : target],
-            "colors": colors.includes("선택 안함")? null : colors,
-            "flowers": flowers,
-            "basicAddress": basicAddress,
-            "detailAddress": detailAddress,
-            "pickup": pickupCodeList,
-            "datetime": dateTime,
-            "comment": requestText,
-            "image": bouquet?.url
-          })
-          .then((res:any) => {
-            console.log(res.data);
-            const data = res.data;
-            if (data.code === 200) {
-              router.push("/");
-            }
-            else console.log("오류 발생");
-          });
+            .post(`https://flower-ly.co.kr/api/flly/request`, {
+            // .post(`http://localhost:6090/api/flly/request`, {
+              "situation" : situation == "선택 안함"? null : situation,
+              "target" : target == "선택 안함"? null : target,
+              "colors": colors.includes("선택 안함")? null : colors,
+              "flowers": flowers,
+              "orderType": checkDelivery? "DELIVERY": "PICKUP",
+              "delivery": addressCode,
+              "detailAddress": detailAddress,
+              "pickup": pickupCodeList,
+              "deadline": dateTime,
+              "requestContent": requestText,
+              "imageUrl": bouquet?.url,
+              "budget": price,
+            })
+            .then((res) => {
+              console.log(res.data);
+              const data = res.data;
+              if (data.code === 200) {
+                // router.push("/");
+              }
+              else console.log("오류 발생");
+            });
         }
       }
     }
