@@ -15,9 +15,9 @@ public class ReviewResponseDto {
 
     private Long reviewId;
     private Long requestId;
-    private Long sellerId;
+    private String storeName;
     private String content;
-    private LocalDateTime createTime;
+    private LocalDateTime createdAt;
 
 
 

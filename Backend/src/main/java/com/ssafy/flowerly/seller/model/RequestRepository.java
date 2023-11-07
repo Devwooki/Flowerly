@@ -38,4 +38,6 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
     Optional<Request> findBySellerMemberIdAndFllyFllyId(Long memberId, Long fllyId);
 
     Optional<Request> findByFlly(Flly flly);
+
+    Optional<Request> findByRequestId(Long requestId);
 }

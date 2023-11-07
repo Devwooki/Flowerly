@@ -1,7 +1,8 @@
 package com.ssafy.flowerly.entity;
 
 import com.ssafy.flowerly.entity.common.BaseTimeEntity;
-import com.ssafy.flowerly.review.dtos.ReviewDetailDto;
+import com.ssafy.flowerly.review.dto.ReviewDetailDto;
+import com.ssafy.flowerly.review.dto.ReviewResponseDto;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -44,4 +45,8 @@ public class Review extends BaseTimeEntity {
                 .createdAt(this.getCreatedAt())
                 .build();
     }
+
+
+
+
 }
