@@ -29,7 +29,7 @@ const SellerFllyListProgressCard = () => {
               </div>
             </div>
             <div className={style.OrderFooter}>
-              <div>진행중인 플리 이동</div>
+              <div>진행중 플리 이동</div>
             </div>
           </div>
         </div>

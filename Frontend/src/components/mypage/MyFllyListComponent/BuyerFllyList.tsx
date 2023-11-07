@@ -1,7 +1,14 @@
 import React from "react";
+import BuyerFllyListCompletedCard from "./BuyerFllyListCard/BuyerFllyListCompletedCard";
+import BuyerFllyListProgressCard from "./BuyerFllyListCard/BuyerFllyListProgressCard";
 
 const BuyerFllyList = () => {
-  return <div>BuyerFllyList</div>;
+  return (
+    <>
+      <BuyerFllyListCompletedCard />
+      <BuyerFllyListProgressCard />
+    </>
+  );
 };
 
 export default BuyerFllyList;
