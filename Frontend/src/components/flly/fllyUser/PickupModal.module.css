@@ -113,8 +113,8 @@
 
   .sigunguTable {
     flex: 1;
-    width: 100px;
-  
+    margin-right: 4px;
+    width: 92px;
     font-size: 12px;
   }
   
