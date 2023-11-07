@@ -1,13 +1,19 @@
 package com.ssafy.flowerly.entity;
 
 import com.ssafy.flowerly.seller.vo.FllyNearDto;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.format.DateTimeFormatter;
 
 @Entity
 @Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class FllyPickupRegion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

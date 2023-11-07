@@ -18,7 +18,7 @@ public class FllyDto {
     private SituationType situation;
     private TargetType target;
     private List<String> colors;
-    private List<Flower> flowers;
+    private List<FlowerDto> flowers;
 
     private OrderType orderType;
     private String requestContent;
@@ -51,4 +51,5 @@ public class FllyDto {
         private String sigungu;
         private String dong;
     }
+
 }
