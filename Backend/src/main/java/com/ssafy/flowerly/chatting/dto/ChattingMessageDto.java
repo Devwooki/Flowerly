@@ -6,8 +6,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.TimeZone;
 
 public class ChattingMessageDto {
 
@@ -33,11 +36,17 @@ public class ChattingMessageDto {
         private String sendTime;
 
         public static ChattingMessageDto.Response of(ChattingMessage chattingMessage) {
+            // 원하는 포맷을 설정합니다.
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd HH:mm");
+            formatter.setTimeZone(TimeZone.getTimeZone("Asia/Seoul")); // 한국 시간대를 설정합니다.
+            // Date 객체를 포맷된 문자열로 변환합니다.
+            String formattedTimeString = formatter.format(chattingMessage.getSendTime());
+
             return Response.builder()
                     .memberId(chattingMessage.getMemberId())
                     .type(chattingMessage.getType())
                     .content(chattingMessage.getContent())
-                    .sendTime(chattingMessage.getSendTime().format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm")))
+                    .sendTime(formattedTimeString)
                     .build();
         }
     }

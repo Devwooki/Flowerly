@@ -7,6 +7,9 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -42,8 +45,10 @@ public class Chatting extends BaseCreatedTimeEntity {
     @Column(nullable = false)
     private boolean isRemoved;
 
-    public void updateChatting(String chattingMessage, LocalDateTime chattingTime) {
+    public void updateChatting(String chattingMessage, Date chattingTime) {
+        ZonedDateTime zdt = chattingTime.toInstant().atZone(ZoneId.of("Asia/Seoul"));
+
+        this.lastChattingTime = zdt.toLocalDateTime();
         this.lastChattingMessage = chattingMessage;
-        this.lastChattingTime = chattingTime;
     }
 }
