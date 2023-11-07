@@ -71,6 +71,9 @@
 
   .OrderInfoBoxHarf > div:nth-child(2) {
     width: calc(100% - 50px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     /* border: 1px solid black; */
   }
 
@@ -88,6 +91,9 @@
 
   .OrderInfoBoxAll > div:nth-child(2) {
     margin: 0px auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     /* border: 1px solid black; */
   }
 
@@ -224,6 +230,9 @@
 
   .OrderInfoBoxHarf > div:nth-child(2) {
     width: calc(100% - 40px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     /* border: 1px solid black; */
   }
 
@@ -241,6 +250,9 @@
 
   .OrderInfoBoxAll > div:nth-child(2) {
     margin: 0px auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     /* border: 1px solid black; */
   }
 
