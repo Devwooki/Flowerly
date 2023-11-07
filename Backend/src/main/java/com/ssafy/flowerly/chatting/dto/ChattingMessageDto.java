@@ -30,6 +30,7 @@ public class ChattingMessageDto {
     @AllArgsConstructor
     @Builder
     public static class Response {
+        private String messageId;
         private Long memberId;
         private String type;
         private String content;
@@ -43,6 +44,7 @@ public class ChattingMessageDto {
             String formattedTimeString = formatter.format(chattingMessage.getSendTime());
 
             return Response.builder()
+                    .messageId(chattingMessage.getId())
                     .memberId(chattingMessage.getMemberId())
                     .type(chattingMessage.getType())
                     .content(chattingMessage.getContent())

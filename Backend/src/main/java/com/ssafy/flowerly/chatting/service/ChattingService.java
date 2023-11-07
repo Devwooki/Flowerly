@@ -66,7 +66,7 @@ public class ChattingService {
         return chattingDtoList;
     }
 
-    public ChattingDto.RoomResponse getChattingMessageList(Long memberId, Long chattingId, String lastId, int size) {
+    public ChattingDto.RoomResponse getChattingRoomInfoNMessages(Long memberId, Long chattingId, Integer size) {
         Member member = memberRepository.findByMemberId(memberId).orElseThrow();
         Chatting chatting = chattingRepository.findById(chattingId).orElseThrow();
 
@@ -82,21 +82,40 @@ public class ChattingService {
             opponentName = opponent.getNickName();
         }
 
-        ObjectId objectId = lastId != null ? new ObjectId(lastId) : null;
         PageRequest pageRequest = PageRequest.of(0, size, Sort.Direction. DESC, "sendTime");
-        List<ChattingMessage> messages = null;
-        if(objectId != null)
-            messages = chattingMessageRepository.findChattingMessagesByIdBeforeAndChattingId(objectId, chattingId, pageRequest).getContent();
-        else
-            messages = chattingMessageRepository.findAllByChattingId(chattingId, pageRequest).getContent();
-
+        List<ChattingMessage> messages = chattingMessageRepository.findAllByChattingId(chattingId, pageRequest).getContent();
         List<ChattingMessage> sortedMessages = messages.stream().sorted(Comparator.comparing(ChattingMessage::getSendTime)).collect(Collectors.toList());
+
         List<ChattingMessageDto.Response> messageDtos = new ArrayList<>();
         for(ChattingMessage message : sortedMessages) {
             messageDtos.add(ChattingMessageDto.Response.of(message));
         }
 
-        return new ChattingDto.RoomResponse(chattingId, opponentMemberId, opponentName,  sortedMessages.get(0).getId(), messageDtos);
+        return new ChattingDto.RoomResponse(
+                chattingId,
+                opponentMemberId,
+                opponentName,
+                sortedMessages.size() > 0 ? sortedMessages.get(0).getId() : null,
+                messageDtos
+        );
+    }
+
+    public Map<String, Object> getChattingMessages(Long chattingId, String lastId, Integer size) {
+        ObjectId objectId = new ObjectId(lastId);
+        PageRequest pageRequest = PageRequest.of(0, size, Sort.Direction. DESC, "sendTime");
+        List<ChattingMessage> messages = chattingMessageRepository.findChattingMessagesByIdBeforeAndChattingId(objectId, chattingId, pageRequest).getContent();
+        List<ChattingMessage> sortedMessages = messages.stream().sorted(Comparator.comparing(ChattingMessage::getSendTime)).collect(Collectors.toList());
+
+        List<ChattingMessageDto.Response> messageDtos = new ArrayList<>();
+        for(ChattingMessage message : sortedMessages) {
+            messageDtos.add(ChattingMessageDto.Response.of(message));
+        }
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("lastId", sortedMessages.size() > 0 ? sortedMessages.get(0).getId() : null);
+        response.put("messages", messageDtos);
+
+        return response;
     }
 
     @Transactional
