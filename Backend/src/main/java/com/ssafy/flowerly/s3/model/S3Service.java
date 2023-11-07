@@ -155,7 +155,7 @@ public class S3Service {
 
             URL url = new URL(imageUrl);
             BufferedImage img = ImageIO.read(url);
-            File file = new File("downloaded.jpg");
+            File file = new File(getUUIDFileName("downloaded.jpg"));
             ImageIO.write(img, "jpg", file);
 
             //File로 변경

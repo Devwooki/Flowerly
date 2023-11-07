@@ -139,7 +139,8 @@ public class FlowerService {
         flly.setDeadline(fllyDto.getDeadline().plusHours(9));
         flly.setRequestContent(fllyDto.getRequestContent());
         flly.setBudget(fllyDto.getBudget());
-        flly.setImageUrl(""); // 처리하기
+//        flly.setImageUrl("");
+        flly.setImageUrl(s3Service.makeFlowerBouquet(fllyDto.getImageUrl()));
         flly.setCanceled(false);
         flly.setProgress(ProgressType.START);
 
