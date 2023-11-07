@@ -27,7 +27,8 @@ const Temp = () => {
 
   const getMemberinfo = async (token: string) => {
     axios
-      .get("https://flower-ly.co.kr/api/member", {
+      // .get("https://flower-ly.co.kr/api/member", {
+        .get("http://localhost:6090/api/member", {
         withCredentials: true,
         headers: {
           Authorization: `Bearer ${token}`,

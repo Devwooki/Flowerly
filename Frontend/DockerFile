@@ -10,6 +10,7 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 # 의존성 패키지 설치
 COPY package*.json ./
+ENV TZ Asia/Seoul
 RUN npm install
 
 FROM base AS builder
@@ -18,6 +19,7 @@ COPY . .
 # deps 단계에서 설치한 의존성 패키지 복사
 COPY --from=deps /app/node_modules ./node_modules
 # build 진행
+ENV TZ Asia/Seoul
 RUN npm run build
 
 FROM base AS runner
@@ -31,4 +33,5 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 USER nextjs
 EXPOSE 3000
+ENV TZ Asia/Seoul
 CMD ["node", "server.js"]
