@@ -5,6 +5,8 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.ssafy.flowerly.entity.FileInfo;
 import com.ssafy.flowerly.entity.type.UploadType;
+import com.ssafy.flowerly.exception.CustomException;
+import com.ssafy.flowerly.exception.ErrorCode;
 import com.ssafy.flowerly.util.CustomMultipartFile;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +22,7 @@ import javax.imageio.ImageIO;
 import javax.transaction.Transactional;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -139,6 +142,38 @@ public class S3Service {
             return new CustomMultipartFile(fileName, fileFormat, originalImage.getContentType(), baos.toByteArray());
         } catch (IOException e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "파일을 줄이는데 실패했습니다.");
+        }
+    }
+
+    public String makeFlowerBouquet(String imageUrl){
+        return uploadBase64Image(urlToBase64(imageUrl), UploadType.FlOWER);
+    }
+
+    private String urlToBase64(String imageUrl) {
+        try{
+            if(imageUrl == null || imageUrl.trim().equals("")) throw new CustomException(ErrorCode.INVALID_IMAGE_URL);
+
+            URL url = new URL(imageUrl);
+            BufferedImage img = ImageIO.read(url);
+
+            // Write the image to a ByteArrayOutputStream
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(img, "jpg", baos);
+            baos.flush();
+
+            // Convert the ByteArrayOutputStream to a byte array
+            byte[] imageBytes = baos.toByteArray();
+            baos.close();
+
+            // Encode the byte array to Base64
+            String imageStr = Base64.getEncoder().encodeToString(imageBytes);
+            // Determine the file extension
+            String fileExtName = imageUrl.substring(imageUrl.lastIndexOf(".") + 1);
+
+            // 밑에 changeString은 img 태그안에 쓰이는 용입니다. 위에만 참고하셔도 괜찮아요!
+            return "data:image/"+ fileExtName +";base64, "+ imageStr;
+        }catch(IOException e){
+            throw new CustomException(ErrorCode.IOException);
         }
     }
 }

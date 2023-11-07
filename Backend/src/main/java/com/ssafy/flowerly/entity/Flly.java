@@ -13,6 +13,7 @@ import java.time.format.DateTimeFormatter;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @DynamicUpdate //update시, 실제 값이 변경되는 컬럼만 update 쿼리로 생성

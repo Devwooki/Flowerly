@@ -47,11 +47,6 @@ public class FllyController {
     @PostMapping("/request")
     public CustomResponse saveFllyRequest(@RequestBody FllyDto fllyDto){
         log.info("의뢰서 저장");
-//        System.out.println(fllyDto.getDelivery());
-//        System.out.println(fllyDto.getPickup());
-//        System.out.println(fllyDto.getOrderType());
-//        System.out.println(fllyDto.getDeadline());
-//        System.out.println(fllyDto.getDetailAddress());
         flowerService.saveFllyRequest(fllyDto);
         return new CustomResponse(200, "의뢰서 저장 성공");
     }

@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ChattingRepository extends JpaRepository<Chatting, Long> {
-    List<Chatting> findAllByConsumerAndIsRemovedFalse(Member consumer);
-    List<Chatting> findAllBySellerAndIsRemovedFalse(Member seller);
+    List<Chatting> findAllByConsumerAndIsRemovedConsumerFalse(Member consumer);
+    List<Chatting> findAllBySellerAndIsRemovedSellerFalse(Member seller);
 }
