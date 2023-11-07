@@ -16,16 +16,19 @@ import com.ssafy.flowerly.seller.model.FllyDeliveryRegionRepository;
 import com.ssafy.flowerly.seller.model.FllyPickupRegionRepository;
 import com.ssafy.flowerly.seller.model.FllyRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class FlowerService {
     private final FlowerRepository flowerRepository;
