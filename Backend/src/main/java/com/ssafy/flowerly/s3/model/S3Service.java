@@ -155,18 +155,20 @@ public class S3Service {
 
             URL url = new URL(imageUrl);
             BufferedImage img = ImageIO.read(url);
-            File file = new File(getUUIDFileName("downloaded.jpg"));
-            ImageIO.write(img, "jpg", file);
 
-            //File로 변경
-            InputStream finput = new FileInputStream(file);
-            byte[] imageBytes = new byte[(int)file.length()];
-            finput.read(imageBytes, 0, imageBytes.length);
-            finput.close();
-            String filePathName = imageUrl.replace("file:///", "");
-            String fileExtName = filePathName.substring( filePathName.lastIndexOf(".") + 1);
-            // Base64
+            // Write the image to a ByteArrayOutputStream
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(img, "jpg", baos);
+            baos.flush();
+
+            // Convert the ByteArrayOutputStream to a byte array
+            byte[] imageBytes = baos.toByteArray();
+            baos.close();
+
+            // Encode the byte array to Base64
             String imageStr = Base64.getEncoder().encodeToString(imageBytes);
+            // Determine the file extension
+            String fileExtName = imageUrl.substring(imageUrl.lastIndexOf(".") + 1);
 
             // 밑에 changeString은 img 태그안에 쓰이는 용입니다. 위에만 참고하셔도 괜찮아요!
             return "data:image/"+ fileExtName +";base64, "+ imageStr;
