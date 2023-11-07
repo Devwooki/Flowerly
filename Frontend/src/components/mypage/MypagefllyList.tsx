@@ -8,6 +8,7 @@ import BuyerFllyList from "./MyFllyListComponent/BuyerFllyList";
 const MypagefllyList = () => {
   const router = useRouter();
   const [userType, setUserType] = useState<string>("buyer");
+
   return (
     <>
       <div className={style.fllyListBack}>

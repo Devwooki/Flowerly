@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import style from "./style/ChattingList.module.css";
 import axios from "axios";
 import Image from "next/image";
-import { Transition } from "framer-motion";
 
 import ChattingListCard from "./ChattingListCard";
 
@@ -19,7 +18,7 @@ const ChattingList = () => {
 
   const axiosHandler = () => {
     axios.get(`https://flower-ly.co.kr/api/chatting`).then((response) => {
-      console.log(response.data);
+      // console.log(response.data);
       setChattings(response.data.data);
     });
   };

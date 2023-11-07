@@ -18,7 +18,7 @@ const PaymentMsg: React.FC<PaymentMsgProps> = ({ chattingId }) => {
 
   useEffect(() => {
     axios.get(`https://flower-ly.co.kr/api/chatting/price/${chattingId}`).then((response) => {
-      console.log(response);
+      // console.log(response);
       setPaymentInfo(response.data.data);
     });
   }, []);
