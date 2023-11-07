@@ -129,6 +129,11 @@ public class ChattingController {
         return new DataResponse<>(200, "주문서 조회 성공", requestDto);
     }
 
+    /**
+     * 결제 정보 조회
+     * @param chattingId
+     * return requestId, price, sellerName
+     */
     @GetMapping("/price/{chattingId}")
     public CustomResponse getPrice(@PathVariable Long chattingId) {
         Map<String, Object> responseDto = chattingService.getPrice(chattingId);
