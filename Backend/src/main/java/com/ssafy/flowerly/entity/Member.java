@@ -52,6 +52,7 @@ public class Member extends BaseTimeEntity {
                 .nickName(this.nickName)
                 .email(this.email)
                 .isNotification(this.isNotification)
+                .role(this.role)
                 .build();
     }
 
