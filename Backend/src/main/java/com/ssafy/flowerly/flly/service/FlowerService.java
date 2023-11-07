@@ -11,6 +11,7 @@ import com.ssafy.flowerly.flly.dto.FllyDto;
 import com.ssafy.flowerly.flly.dto.FlowerDto;
 import com.ssafy.flowerly.flly.dto.FlowerRequestDto;
 import com.ssafy.flowerly.flly.repository.FlowerRepository;
+import com.ssafy.flowerly.s3.model.S3Service;
 import com.ssafy.flowerly.seller.model.FllyDeliveryRegionRepository;
 import com.ssafy.flowerly.seller.model.FllyPickupRegionRepository;
 import com.ssafy.flowerly.seller.model.FllyRepository;
@@ -34,7 +35,7 @@ public class FlowerService {
     private final DongRepository dongRepository;
     private final FllyPickupRegionRepository fllyPickupRegionRepository;
     private final FllyDeliveryRegionRepository fllyDeliveryRegionRepository;
-
+    private final S3Service s3Service;
     public Map<String, List<FlowerDto>> getFlowerList(FlowerRequestDto flowerRequest) {
         Map<String, List<FlowerDto>> lists = new HashMap<>();
         lists.put("flowers", null);
@@ -104,6 +105,11 @@ public class FlowerService {
     }
 
     public void saveFllyRequest(FllyDto fllyDto) {
+        //=========================================================
+        // String s3uploadUrl = s3Service.makeFlowerBouquet(이미지 URL);
+        // 으로 쓰면 됩니다.
+        //=========================================================
+
         Flly flly = new Flly();
         flly.setSituation(fllyDto.getSituation());
         flly.setTarget(fllyDto.getTarget());
