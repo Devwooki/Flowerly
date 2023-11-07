@@ -6,6 +6,8 @@ import axios from "axios";
 import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
 
+import { useInView } from "react-intersection-observer";
+
 import ChattingInput from "./ChattingInput";
 import MyChattingMsg from "../message/MyChattingMsg";
 import YourChattingMsg from "../message/YourChattingMsg";
@@ -24,6 +26,7 @@ type ChattingMsg = {
   chattingId: number;
   opponentMemberId: number;
   opponentName: string;
+  lastId: string;
   messages: {
     memberId: number;
     type: string;
@@ -37,9 +40,15 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const route = useRouter();
   const messageEndRef = useRef<HTMLDivElement | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
   // axios로 받아야 함!!
   const [chattingMsgs, setChattingMsgs] = useState<ChattingMsg>();
+  const [initialLoading, setInitialLoading] = useState(true);
+  const [messageTopRef, inView] = useInView({
+    threshold: 0,
+    skip: initialLoading, // 초기 로딩 중에는 useInView를 스킵합니다.
+  });
 
   const axiosHandler = async () => {
     await axios.get(`https://flower-ly.co.kr/api/chatting/${chattingId}`).then((response) => {
@@ -76,6 +85,7 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
             return {
               chattingId: 0,
               opponentMemberId: 0,
+              lastId: "",
               opponentName: "",
               messages: [newMsg],
             };
@@ -101,6 +111,9 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
     client.activate();
     setStompClient(client);
 
+    scrollDown(); // 처음 렌더링 시에 스크롤 제일 아래로
+    setInitialLoading(false);
+
     // 컴포넌트 unmount 시 연결 종료
     return () => {
       if (client.connected) {
@@ -109,16 +122,35 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
     };
   }, []);
 
-  useEffect(() => {
-    messageEndRef.current?.scrollIntoView({ behavior: "auto" });
-  }, [chattingMsgs, menuOpen]);
+  // useEffect(() => {
+  //   if (inView && !initialLoading && chattingMsgs?.lastId) {
+  //     console.log("무한스크롤");
+  //     axios
+  //       .get(`https://flower-ly.co.kr/api/chatting/${chattingId}?lastId=${chattingMsgs?.lastId}`)
+  //       .then((response) => {
+  //         console.log(response.data.data);
+  //         setChattingMsgs((prev) => {
+  //           return {
+  //             ...prev,
+  //             lastId: response.data.data.lastId,
+  //             messages: [response.data.data.messages, ...prev!.messages],
+  //           };
+  //         });
+  //       });
+  //   }
+  // }, [inView, initialLoading]);
 
   const imageLoadHandler = () => {
-    messageEndRef.current?.scrollIntoView({ behavior: "auto" });
+    messageEndRef.current?.scrollIntoView({ behavior: "auto" }); // 이미지  로딩 완료되면 스크롤 조정
   };
 
   const moveBack = () => {
     route.back();
+  };
+
+  const scrollDown = () => {
+    // console.log("scrollDown");
+    messageEndRef.current?.scrollIntoView({ behavior: "auto" });
   };
 
   const sendMessage = (type: string, content: string) => {
@@ -135,10 +167,8 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
       stompClient.publish({ destination, body });
       // console.log("메세지 보내기 성공");
     }
-  };
 
-  const closeMenu = () => {
-    if (menuOpen) changeMenuOpen();
+    scrollDown();
   };
 
   // 타입별 메세지 전송 관련
@@ -146,8 +176,22 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
     sendMessage("TEXT", content);
   };
   const changeMenuOpen = () => {
-    // console.log(menuOpen);
     setMenuOpen(!menuOpen);
+
+    console.log(containerRef.current?.scrollTop, containerRef.current?.scrollHeight);
+    console.log(containerRef.current!.scrollHeight - containerRef.current!.clientHeight - 120);
+    if (menuOpen) {
+      containerRef.current!.scrollTop -= 120;
+    } else {
+      if (
+        containerRef.current!.scrollTop >=
+        containerRef.current!.scrollHeight - containerRef.current!.clientHeight - 120
+      ) {
+        scrollDown(); // 스크롤이 최대 크기를 넘어가는 경우
+      } else {
+        containerRef.current!.scrollTop += 120;
+      }
+    }
   };
   const sendOrderForm = () => {
     sendMessage("ORDER_FORM", "주문 유형을 선택해주세요.");
@@ -195,7 +239,14 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
           </div>
           <div className={style.chattingName}>{chattingMsgs && chattingMsgs.opponentName}</div>
         </div>
-        <div className={menuOpen ? style.containerWithMenu : style.container} onClick={closeMenu}>
+        <div
+          className={menuOpen ? style.containerWithMenu : style.container}
+          onClick={() => {
+            if (menuOpen) changeMenuOpen();
+          }}
+          ref={containerRef}
+        >
+          <div ref={messageTopRef}></div>
           {chattingMsgs &&
             chattingMsgs.messages.map((message, idx) => {
               return message.memberId == chattingMsgs.opponentMemberId ? (
