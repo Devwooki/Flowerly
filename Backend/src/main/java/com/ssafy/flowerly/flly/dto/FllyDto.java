@@ -25,14 +25,16 @@ public class FllyDto {
     private Integer budget;
     private LocalDateTime deadline;
 
-    private FllyDto.Pickup pickup;
+    private List<FllyDto.Pickup> pickup;
     private FllyDto.Delivery delivery;
+    private String detailAddress;
 
     // ++++ 주소
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
+    @ToString()
     public static class Pickup {
         private Long sidoCode;
         private Long sigunguCode;
@@ -43,6 +45,7 @@ public class FllyDto {
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
+    @ToString()
     public static class Delivery {
         private String sido;
         private String sigungu;
