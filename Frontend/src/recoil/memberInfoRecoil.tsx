@@ -5,6 +5,7 @@ export interface MemberInfo {
   socialId: string;
   nickName: string;
   email: string;
+  role: string; // role 추가
   store?: StoreInfo | null;
   notification: boolean;
 }
@@ -16,14 +17,10 @@ export interface StoreInfo {
   sellerName: string;
   phoneNumber: string;
   address: string;
-  member: Omit<MemberInfo, "store">;
   images: string[];
 }
 
-// 판매자와 구매자의 데이터를 통합한 타입
-export type UserInfo = MemberInfo | StoreInfo;
-
-export const memberInfoState = atom<UserInfo | null>({
+export const memberInfoState = atom<MemberInfo | null>({
   key: "memberInfoState",
   default: null,
 });

@@ -1,0 +1,58 @@
+.fllyReviewBack {
+  width: 100%;
+  height: calc(100vh - 40px);
+  position: relative;
+  /* border: 1px solid black; */
+}
+
+.fllyReviewHeader {
+  position: absolute;
+  width: 100%;
+  z-index: 10;
+  background-color: white;
+}
+
+.headerTitleBox {
+  display: flex;
+  height: 100px;
+  width: 100%;
+
+  /* border: 1px solid red; */
+}
+
+.headerTitleBox > img {
+  margin-top: 37px;
+  margin-left: 20px;
+  margin-right: 10px;
+}
+
+.headerTitleBox > img:hover {
+  cursor: pointer;
+}
+
+.fllyReviewHeader > div:nth-last-child(1) {
+  width: calc(100% - 40px);
+  margin: 0px auto;
+  font-size: 24px;
+  font-family: "NanumSquareNeoOTF-Rg";
+}
+
+.headerTitle {
+  margin-top: 30px;
+  font-size: 28px;
+  height: 32px;
+  margin-left: 15px;
+  font-family: "Pretendard-Bold";
+}
+
+.fllyReviewMain {
+  padding-top: 125px;
+  height: calc(100% - 120px);
+  overflow: scroll;
+  /* border: 1px solid black; */
+}
+
+.fllyReviewMain > div:nth-child(1) {
+  border-top: 1px solid var(--sky);
+  padding-top: 20px;
+}

@@ -1,11 +1,10 @@
-import style from "./ProgressBar.module.css";
 import React, { useEffect, useState } from "react";
+import style from "./BuyerFllyListProgressBar.module.css";
 
 interface ProgressBarProps {
   currentStep: number;
 }
-
-const ProgressBar: React.FC<ProgressBarProps> = ({ currentStep }) => {
+const BuyerFllyListProgressBar: React.FC<ProgressBarProps> = ({ currentStep }) => {
   const [barWidth, setBarWidth] = useState("0");
 
   useEffect(() => {
@@ -46,7 +45,6 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ currentStep }) => {
 
       <div className={style.text}>
         <div style={{ color: coloroSelect(0, currentStep) }}>입찰</div>
-
         <div style={{ color: coloroSelect(1, currentStep) }}>조율</div>
         <div style={{ color: coloroSelect(2, currentStep) }}>주문완료</div>
         <div style={{ color: coloroSelect(3, currentStep) }}>제작완료</div>
@@ -56,4 +54,4 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ currentStep }) => {
   );
 };
 
-export default ProgressBar;
+export default BuyerFllyListProgressBar;

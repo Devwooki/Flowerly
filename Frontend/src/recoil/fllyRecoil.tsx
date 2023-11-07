@@ -78,7 +78,7 @@ export const bouquetState = atom({
 });
 
 export const deliveryAddressState = atom<deliveryAddressType>({
-  key: "sellerAddressState",
+  key: "deliveryAddressState",
   default: {
     sido: "",
     sigungu: "",
