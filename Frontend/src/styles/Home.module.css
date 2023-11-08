@@ -26,28 +26,26 @@
 }
 
 .mainBody {
-  padding-top: 25px;
-  height: calc(100vh - 220px);
-  margin-top: 20px;
-  overflow: scroll;
+  height: 72vh;
+  margin-top: 15px;
+  /* border: 1px solid black; */
 }
 
 .bannerImg {
   position: relative;
   border-radius: 40px;
-  margin-bottom: 30px;
+  /* margin-bottom: 20px; */
 }
 
 .imgDiv {
-  object-fit: cover;
-  width: 100px;
-  padding-top: 140%;
   border-radius: 40px;
+  object-fit: center;
+  object-position: center;
 }
 
 .imgDiv img {
   border-radius: 40px;
-  object-fit: cover;
+  object-fit: center;
   object-position: center;
 }
 
@@ -62,7 +60,7 @@
   position: absolute;
   bottom: 0;
   color: white;
-  padding: 40px 0 60px 0;
+  padding: 40px 0 40px 0;
   border-radius: 0 0 40px 40px;
   background-color: #00000030;
 }
