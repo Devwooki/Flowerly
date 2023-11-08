@@ -42,9 +42,9 @@ public class FllyDeliveryRegion {
 
         return FllyNearDto.builder()
                 .fllyId(this.flly.getFllyId())
-                .flowerName1(this.flly.getFlower1().getFlowerName())
-                .flowerName2(this.flly.getFlower2().getFlowerName())
-                .flowerName3(this.flly.getFlower3().getFlowerName())
+                .flowerName1(this.flly.getFlower1() != null ? this.flly.getFlower1().getFlowerName() : null)
+                .flowerName2(this.flly.getFlower2() != null ? this.flly.getFlower2().getFlowerName() : null)
+                .flowerName3(this.flly.getFlower3() != null ? this.flly.getFlower3().getFlowerName() : null)
                 .budget(this.flly.getBudget())
                 .deadline(this.flly.getDeadline() != null ? this.flly.getDeadline().format(Timeformatter) : null)
                 .progress(this.flly.getProgress().getTitle())
