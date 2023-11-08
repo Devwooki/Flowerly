@@ -37,11 +37,9 @@ public class ChattingMessageDto {
         private String sendTime;
 
         public static ChattingMessageDto.Response of(ChattingMessage chattingMessage) {
-            // 원하는 포맷을 설정합니다.
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd HH:mm");
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd HH:mm");  // 원하는 포맷을 설정합니다.
             formatter.setTimeZone(TimeZone.getTimeZone("Asia/Seoul")); // 한국 시간대를 설정합니다.
-            // Date 객체를 포맷된 문자열로 변환합니다.
-            String formattedTimeString = formatter.format(chattingMessage.getSendTime());
+            String formattedTimeString = formatter.format(chattingMessage.getSendTime());  // Date 객체를 포맷된 문자열로 변환합니다.
 
             return Response.builder()
                     .messageId(chattingMessage.getId())

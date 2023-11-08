@@ -1,7 +1,6 @@
 package com.ssafy.flowerly.chatting.controller;
 
 import com.ssafy.flowerly.chatting.dto.ChattingDto;
-import com.ssafy.flowerly.chatting.dto.ChattingMessageDto;
 import com.ssafy.flowerly.chatting.dto.FllyFromChattingDto;
 import com.ssafy.flowerly.chatting.dto.RequestFromChattingDto;
 import com.ssafy.flowerly.chatting.service.ChattingService;
@@ -74,9 +73,9 @@ public class ChattingController {
      */
     @PostMapping("/request/{chattingId}")
     public CustomResponse saveRequestInfo(@PathVariable Long chattingId, @RequestBody RequestFromChattingDto requestDto) {
-        Long requestId = chattingService.saveRequestInfo(requestDto, chattingId);
+        Long requestId = chattingService.saveRequestPrice(requestDto, chattingId);
 
-        if(requestId == null) throw new CustomException(ErrorCode.REQUEST_ALREADY_PAID);
+        if(requestId == null) throw new CustomException(ErrorCode.REQUEST_PRICE_EXIST);
         return new DataResponse<Long>(200, "주문서 저장 성공", requestId);
     }
 
@@ -87,7 +86,7 @@ public class ChattingController {
      */
     @PostMapping("/request/price")
     public CustomResponse saveRequestPrice(@RequestBody Map<String, Object> requestBody) {
-        chattingService.saveRequestInfo(
+        chattingService.saveRequestPrice(
                 Long.parseLong(requestBody.get("requestId").toString()),
                 Integer.parseInt(requestBody.get("price").toString())
         );
