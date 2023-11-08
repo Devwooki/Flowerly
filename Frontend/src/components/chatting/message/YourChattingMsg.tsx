@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import style from "./style/YourChattingMsg.module.css";
 
 import ParticipationInfo from "./ParticipationInfo";
@@ -25,7 +25,30 @@ const YourChattingMsg: React.FC<ChattingMsgProps> = ({
   modalHandler,
   imageLoadHandler,
 }) => {
-  const [time, setTime] = useState(new Date(message.sendTime));
+  const [date, setDate] = useState<string>();
+  const [time, setTime] = useState<string>();
+
+  useEffect(() => {
+    const timeStr = message.sendTime.replaceAll(".", "/");
+    const dateTime = new Date(timeStr);
+    setTime(dateTime.getHours() + ":" + String(dateTime.getMinutes()).padStart(2, "0"));
+
+    const today = new Date();
+    // console.log(dateTime.getFullYear(), dateTime.getMonth(), dateTime.getDate());
+    if (
+      today.getFullYear() != dateTime.getFullYear() ||
+      today.getMonth() != dateTime.getMonth() ||
+      today.getDate() != dateTime.getDate()
+    ) {
+      setDate(
+        dateTime.getFullYear().toString().slice(-2) +
+          "." +
+          (dateTime.getMonth() + 1).toString().padStart(2, "0") +
+          "." +
+          dateTime.getDate().toString().padStart(2, "0"),
+      );
+    }
+  }, []);
 
   return (
     <div className={style.wrapper} id={message.messageId}>
@@ -47,7 +70,8 @@ const YourChattingMsg: React.FC<ChattingMsgProps> = ({
         <div className={style.contentDiv}>{message.content}</div>
       )}
       <div className={style.timeDiv}>
-        {time.getHours()}:{String(time.getMinutes()).padStart(2, "0")}
+        {/* <div>{date && date}</div> */}
+        <div>{time}</div>
       </div>
     </div>
   );
