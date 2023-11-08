@@ -17,12 +17,12 @@ public interface FllyDeliveryRegionRepository extends JpaRepository<FllyDelivery
         @Query(
                 "SELECT fr FROM FllyDeliveryRegion fr " +
                         " Left JOIN Flly fy ON fr.flly.fllyId = fy.fllyId " +
-                        " LEFT JOIN FllyParticipation fp ON fp.flly.fllyId = fy.fllyId " +
                         " Where ( fr.dong IN :dongList " +
                         " OR fr.sigungu IN :sigunguList " +
                         " OR fr.sido IN :sidoList )" +
                         " AND fy.isCanceled = false AND fy.deadline > current_timestamp" +
-                        " AND (fp.seller.memberId IS NULL OR fp.seller.memberId != :memberId) " +
+                        " AND NOT EXISTS(SELECT 1 FROM FllyParticipation  fp " +
+                        " WHERE fp.flly.fllyId = fy.fllyId AND fp.seller.memberId = :memberId )" +
                         " order by fy.deadline "
         )
         Page<FllyDeliveryRegion> getSellerDeliverAbleList(List<Sido> sidoList, List<Sigungu> sigunguList, List<Dong> dongList, Pageable pageable, Long memberId);
