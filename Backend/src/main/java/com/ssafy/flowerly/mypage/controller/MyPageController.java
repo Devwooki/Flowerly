@@ -2,6 +2,7 @@ package com.ssafy.flowerly.mypage.controller;
 
 
 import com.ssafy.flowerly.mypage.dto.NickNameUpdateDto;
+import com.ssafy.flowerly.mypage.dto.StoreMyPageDto;
 import com.ssafy.flowerly.mypage.service.MyPageService;
 import com.ssafy.flowerly.util.CustomResponse;
 import com.ssafy.flowerly.util.DataResponse;
@@ -29,6 +30,15 @@ public class MyPageController {
         return new DataResponse<>(200, "닉네임 조회 성공", myPageService.getNickName(memberId));
     }
 
+    // 마이페이지 첫 화면 - seller
+    @GetMapping("/seller")
+    public CustomResponse getStoreNameAndImg(HttpServletRequest request) {
+        Long memberId = (Long) request.getAttribute("memberId");
+        StoreMyPageDto storeMyPageInfo = myPageService.getStoreNameAndImg(memberId);
+
+        return new DataResponse<>(200, "가게 마이페이지 정보 조회 성공", storeMyPageInfo );
+    }
+
     // buyer 닉네임 수정
     @PutMapping("/nickname")
     public CustomResponse updateNickName(HttpServletRequest request, @RequestBody NickNameUpdateDto nickNameUpdateDto) {
@@ -39,7 +49,7 @@ public class MyPageController {
     }
 
     // notification 수정
-    @PutMapping
+    @PutMapping("/notification")
     public CustomResponse updateNotification(HttpServletRequest request) {
         Long memberId = (Long) request.getAttribute("memberId");
         String newNotificationStatus = (String) myPageService.updateNotification(memberId);
