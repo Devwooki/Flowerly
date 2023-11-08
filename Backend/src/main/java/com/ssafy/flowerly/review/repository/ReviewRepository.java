@@ -14,4 +14,5 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     Page<Review> findByConsumerMemberIdAndIsRemovedFalse(Pageable pageable, Long consumerId); // 구매자 리뷰 목록 조회
 
+    Boolean existsByRequestRequestId(Long requestId);
 }

@@ -18,6 +18,7 @@ public class OrderParticipationDto {
     private String fllyFlower3;
     private Integer fllybudget;
     private String fllyDeadline;
+    private String fllyProgress;
     //응답 정보
     FllyResponeDto fllyResponeDto;
 //    private Long fllyParticipationId;
