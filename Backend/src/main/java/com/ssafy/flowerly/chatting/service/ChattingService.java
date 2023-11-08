@@ -132,12 +132,12 @@ public class ChattingService {
     }
 
     @Transactional
-    public Long saveRequestInfo(RequestFromChattingDto requestDto, Long chattingId) {
+    public Long saveRequestPrice(RequestFromChattingDto requestDto, Long chattingId) {
         Chatting chatting = chattingRepository.findById(chattingId)
                 .orElseThrow(() -> new CustomException(ErrorCode.CHATTING_NOT_FOUND));
 
         Request request = null;
-        Optional<Request> prevRequest = requestRepository.findByFlly(chatting.getFlly());
+        Optional<Request> prevRequest = requestRepository.findByFllyAndSeller(chatting.getFlly(), chatting.getSeller());
         if(prevRequest.isPresent()) {  // 이미 작성한 주문이 있는 경우
             request = prevRequest.get();
 
@@ -200,10 +200,15 @@ public class ChattingService {
     }
 
     @Transactional
-    public void saveRequestInfo(Long requestId, Integer price) {
+    public void saveRequestPrice(Long requestId, Integer price) {
         Request request = requestRepository.findById(requestId)
                 .orElseThrow(() -> new CustomException(ErrorCode.REQUEST_NOT_FOUND));
-        request.setRequestPrice(price);
+
+        if(request.getIsPaid()) {
+            throw new CustomException(ErrorCode.REQUEST_ALREADY_PAID);
+        } else {
+            request.setRequestPrice(price);
+        }
     }
 
     public FllyFromChattingDto.Participation getParticipationInfo(Long chattingId) {
@@ -233,7 +238,7 @@ public class ChattingService {
 
         RequestFromChattingDto requestFromChattingDto = new RequestFromChattingDto();
 
-        Request request = requestRepository.findByFlly(chatting.getFlly())
+        Request request = requestRepository.findByFllyAndSeller(chatting.getFlly(), chatting.getSeller())
                 .orElseThrow(() -> new CustomException(ErrorCode.REQUEST_NOT_FOUND));
         String storeName = storeInfoRepository.findStoreName(request.getSeller());
         requestFromChattingDto.setRequestInfo(request, storeName);
@@ -252,7 +257,7 @@ public class ChattingService {
 
         Chatting chatting = chattingRepository.findById(chattingId)
                 .orElseThrow(() -> new CustomException(ErrorCode.CHATTING_NOT_FOUND));
-        Request request = requestRepository.findByFlly(chatting.getFlly())
+        Request request = requestRepository.findByFllyAndSeller(chatting.getFlly(), chatting.getSeller())
                 .orElseThrow(() -> new CustomException(ErrorCode.REQUEST_NOT_FOUND));
 
         responseDto.put("requestId", request.getRequestId());

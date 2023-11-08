@@ -1,6 +1,7 @@
 package com.ssafy.flowerly.seller.model;
 
 import com.ssafy.flowerly.entity.Flly;
+import com.ssafy.flowerly.entity.Member;
 import com.ssafy.flowerly.entity.Request;
 import com.ssafy.flowerly.seller.vo.OrderRequestDto;
 import jdk.jfr.Registered;
@@ -37,7 +38,7 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
 
     Optional<Request> findBySellerMemberIdAndFllyFllyId(Long memberId, Long fllyId);
 
-    Optional<Request> findByFlly(Flly flly);
+    Optional<Request> findByFllyAndSeller(Flly flly, Member seller);
 
     Optional<Request> findByRequestId(Long requestId);
 }
