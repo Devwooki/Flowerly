@@ -7,11 +7,9 @@ interface ProgressBarProps {
 
 const ProgressBar: React.FC<ProgressBarProps> = ({ currentStep }) => {
   const [barWidth, setBarWidth] = useState("0");
-
-  useEffect(() => {
-    const stepWidths = ["0", "20%", "40%", "60%", "100%"];
-    setBarWidth(stepWidths[currentStep]);
-  }, [currentStep]);
+  const stepWidths = ["0", "20%", "40%", "60%", "100%"];
+  const stepWidthShort = ["0", "20%", "36%", "58.2%", "100%"];
+  // const stepWidthShort = ["0", "20%", "36%", "58.2%", "100%"];
 
   const coloroSelect = (step: number, divStep: number) => {
     if (step < divStep) {
@@ -30,6 +28,21 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ currentStep }) => {
       return "var(--sky)";
     }
   };
+
+  useEffect(() => {
+    const updateWidth = () => {
+      if (window.innerWidth <= 400) {
+        setBarWidth(stepWidthShort[currentStep]);
+      } else {
+        setBarWidth(stepWidths[currentStep]);
+      }
+    };
+    window.addEventListener("resize", updateWidth);
+
+    // 컴포넌트가 언마운트되거나 currentStep이 변경되기 전에 이벤트 리스너를 정리
+    return () => window.removeEventListener("resize", updateWidth);
+    /* eslint-disable-next-line */
+  }, [currentStep]);
 
   return (
     <div className={style.main}>

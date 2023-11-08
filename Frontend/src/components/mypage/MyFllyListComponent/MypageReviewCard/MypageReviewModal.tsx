@@ -6,10 +6,10 @@ import { ToastErrorMessage, ToastSuccessMessage } from "@/model/toastMessageJHM"
 interface Props {
   ModalChangeHandler: () => void;
   $selectId: number;
-  UpdateAdptList: (fllyUpdateReviewState: boolean) => void;
+  UpdateFllyList: () => void;
 }
 
-const MypageReviewModal = ({ ModalChangeHandler, $selectId, UpdateAdptList }: Props) => {
+const MypageReviewModal = ({ ModalChangeHandler, $selectId, UpdateFllyList }: Props) => {
   const NotClickEventHandler = (e: React.MouseEvent<HTMLDivElement>) => {
     //상위 함수를 실행하지 말아라 (모달 꺼지는거 방지)
     e.stopPropagation();

@@ -2,8 +2,19 @@ import React, { useState } from "react";
 import style from "./MypageReviewCard.module.css";
 import Image from "next/image";
 
-const MypageReviewCard = () => {
+interface Props {
+  ModalChangeHandler: () => void;
+  SelectIdChangeHandler: (requestId: number, index: number) => void;
+  // $requestIndex: number;
+}
+
+const MypageReviewCard = ({ ModalChangeHandler, SelectIdChangeHandler }: Props) => {
   const [userType, setUserType] = useState<string>("buyer");
+
+  const DeleteBtnHandler = () => {
+    ModalChangeHandler();
+    // SelectIdChangeHandler($requestIndex);
+  };
 
   return (
     <>
@@ -16,7 +27,9 @@ const MypageReviewCard = () => {
                 <Image src="/img/btn/right-btn.png" width={10} height={15} alt="이동"></Image>
               </span>
             </div>
-            <div className={style.BuyerReviewDelete}>삭제</div>
+            <div className={style.BuyerReviewDelete} onClick={DeleteBtnHandler}>
+              삭제
+            </div>
           </div>
         ) : (
           <div className={style.SellerReviewCardHeader}>
