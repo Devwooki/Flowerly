@@ -17,6 +17,7 @@ type ChattingMsgProps = {
   chattingId: number;
   modalHandler: Function;
   imageLoadHandler: Function;
+  lastRequestMsgId: string | null;
 };
 
 const YourChattingMsg: React.FC<ChattingMsgProps> = ({
@@ -24,6 +25,7 @@ const YourChattingMsg: React.FC<ChattingMsgProps> = ({
   chattingId,
   modalHandler,
   imageLoadHandler,
+  lastRequestMsgId,
 }) => {
   const [date, setDate] = useState<string>();
   const [time, setTime] = useState<string>();
@@ -57,7 +59,7 @@ const YourChattingMsg: React.FC<ChattingMsgProps> = ({
       ) : message.type === "ORDER_FORM" ? (
         <OrderFormMsg modalHandler={modalHandler} />
       ) : message.type === "ORDER_COMPLETE" ? (
-        <RequestMsg modalHandler={modalHandler} />
+        <RequestMsg isLast={lastRequestMsgId == message.messageId} modalHandler={modalHandler} />
       ) : message.type === "PAYMENT_FORM" ? (
         <PaymentMsg chattingId={chattingId} />
       ) : message.type === "IMAGE" ? (

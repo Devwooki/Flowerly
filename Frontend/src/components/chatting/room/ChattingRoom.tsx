@@ -54,6 +54,7 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
   });
   const [prevLastId, setPrevLastId] = useState<string | null>();
   const [sendImage, setSendImage] = useState(false);
+  const [lastRequestMsgId, setLastRequestMsgId] = useState<string | null>(null);
 
   const axiosHandler = async () => {
     await axios.get(`https://flower-ly.co.kr/api/chatting/${chattingId}`).then((response) => {
@@ -171,13 +172,14 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
   }, [chattingMsgs]);
 
   const addDateMsg = (messages: Message[]) => {
-    console.log("addDateMsg");
+    // console.log("addDateMsg");
     const newMessges: Message[] = [];
     // let lastDate = new Date(messages[0].sendTime.replaceAll(".", "/"));
     let lastDate;
 
     for (const message of messages) {
       if (message.type == "DATE") continue;
+      if (message.type == "ORDER_COMPLETE") setLastRequestMsgId(message.messageId);
 
       const sendTime = new Date(message.sendTime.replaceAll(".", "/"));
 
@@ -340,6 +342,7 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
                   chattingId={chattingId}
                   modalHandler={modalHandler}
                   imageLoadHandler={imageLoadHandler}
+                  lastRequestMsgId={lastRequestMsgId}
                 />
               ) : (
                 <MyChattingMsg
@@ -348,6 +351,7 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
                   chattingId={chattingId}
                   modalHandler={modalHandler}
                   imageLoadHandler={imageLoadHandler}
+                  lastRequestMsgId={lastRequestMsgId}
                 />
               );
             })}

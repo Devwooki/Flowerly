@@ -7,6 +7,7 @@ type PaymentInfo = {
   requestId: number;
   sellerName: string;
   price: number;
+  isPaid: boolean;
 };
 
 type PaymentMsgProps = {
@@ -33,9 +34,18 @@ const PaymentMsg: React.FC<PaymentMsgProps> = ({ chattingId }) => {
             <div>금액</div>
             <div>{paymentInfo?.price.toLocaleString()} 원</div>
           </div>
-          <div className={style.btnDiv}>
-            <Image src="/img/btn/kakao-pay-btn.png" width={80} height={30} alt="카카오페이" />
-          </div>
+          {paymentInfo?.isPaid ? (
+            <div className={style.disabledBtnDiv}>결제 완료</div>
+          ) : (
+            <div
+              className={style.btnDiv}
+              onClick={() => {
+                console.log("카카오페이 연결해야함!");
+              }}
+            >
+              <Image src="/img/btn/kakao-pay-btn.png" width={80} height={30} alt="카카오페이" />
+            </div>
+          )}
         </div>
       </div>
     </>
