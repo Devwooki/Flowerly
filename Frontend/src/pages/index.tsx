@@ -120,7 +120,7 @@ export default function Home() {
           modules={[EffectCreative]}
           className={style.mainBody}
         >
-          {cards.map((card, index) => (
+          {cards.map((card) => (
             <>
               <SwiperSlide key={card.id} className={`${style.bannerImg}`}>
                 <div className={`${style.imgDiv}`}>
