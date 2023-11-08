@@ -20,6 +20,24 @@ public class MyPageController {
 
     private final MyPageService myPageService;
 
+    // seller 플리 내역
+
+    @GetMapping("/seller/flly")
+    public CustomResponse getSellerFlly(HttpServletRequest request) {
+        Long memberId = (Long) request.getAttribute("memberId");
+
+        return new DataResponse<>(200, "판매자 플리 내역 조회 성공", myPageService.getSellerFlly(memberId));
+    }
+
+
+    // Buyer 플리 내역
+
+    @GetMapping("/buyer/flly")
+    public CustomResponse getBuyerFlly(HttpServletRequest request) {
+        Long memberId = (Long) request.getAttribute("memberId");
+
+        return new DataResponse<>(200, "구매자 플리 내역 조회 성공", myPageService.getBuyerFlly(memberId));
+    }
 
     // 마이페이지 첫화면 - buyer
     @GetMapping("/buyer")
