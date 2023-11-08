@@ -3,6 +3,7 @@ package com.ssafy.flowerly.seller.model;
 import com.ssafy.flowerly.entity.Flly;
 import com.ssafy.flowerly.entity.Request;
 import com.ssafy.flowerly.seller.vo.OrderRequestDto;
+import io.lettuce.core.dynamic.annotation.Param;
 import jdk.jfr.Registered;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,6 +11,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -40,4 +42,8 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
     Optional<Request> findByFlly(Flly flly);
 
     Optional<Request> findByRequestId(Long requestId);
+
+    List<Request> findBySellerMemberId(@Param("memberId") Long memberId);
+
+    Optional<Request> findByFllyFllyIdAndIsPaid(Long fllyId, Boolean isPaid);
 }
