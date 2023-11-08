@@ -1,5 +1,7 @@
 .home {
   position: relative;
+  height: 100vh;
+  /* border: 1px solid black; */
 }
 
 .mainHeader {
@@ -26,7 +28,9 @@
 }
 
 .mainBody {
-  height: 72vh;
+  width: 90%;
+  margin: 0 auto;
+  height: 65vh;
   margin-top: 15px;
   /* border: 1px solid black; */
 }
@@ -39,13 +43,11 @@
 
 .imgDiv {
   border-radius: 40px;
-  object-fit: center;
   object-position: center;
 }
 
 .imgDiv img {
   border-radius: 40px;
-  object-fit: center;
   object-position: center;
 }
 
