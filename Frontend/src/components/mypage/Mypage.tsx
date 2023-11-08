@@ -1,12 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import style from "./style/Mypage.module.css";
 import MypageName from "./MyPageComponent/MypageName";
 import MypageCategory from "./MyPageComponent/MypageCategory";
 import MypageStoreImg from "./MyPageComponent/MypageStoreImg";
+import { memberInfoState } from "@/recoil/memberInfoRecoil";
+import { useRecoilState } from "recoil";
 
 const Mypage = () => {
   //나중에 리코일로 변경하면됩니다
   const [userType, setUserType] = useState<String>("seller");
+  const [memberInfo, setMemberInfo] = useRecoilState(memberInfoState);
+
+  useEffect(() => {
+    console.log(memberInfo);
+  }, []);
 
   return (
     <>
