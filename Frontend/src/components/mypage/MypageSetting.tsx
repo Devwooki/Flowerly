@@ -2,15 +2,26 @@ import React, { useState } from "react";
 import style from "./style/MypageSetting.module.css";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import UserTypeChangeModal from "./MyPageSettingComponent/UserTypeChangeModal";
 
 const MypageSetting = () => {
   const [alarmState, setAlarmState] = useState<Boolean>(false);
   const [userType, setUserType] = useState<String>("seller");
   const router = useRouter();
 
+  //우저정보 변경 모달확인
+  const [userChangModalState, setUserChangModalState] = useState<Boolean>(false);
+
+  const userChangModalHandler = () => {
+    setUserChangModalState(!userChangModalState);
+  };
+
   return (
     <>
       <div className={style.SettingBack}>
+        {userChangModalState && (
+          <UserTypeChangeModal userChangModalHandler={userChangModalHandler} />
+        )}
         <div className={style.SettingHeader}>
           <Image
             src="/img/btn/left-btn.png"
@@ -50,7 +61,7 @@ const MypageSetting = () => {
             <div>알림 설정을 ON 하실경우 카카오톡 을 통한 플리에 대한 알림을 받을 수 있습니다</div>
           </div>
           {userType === "seller" && (
-            <div className={style.SideDetail}>
+            <div className={style.SideDetail} onClick={userChangModalHandler}>
               <div>
                 <div>사용자로 전환하기</div>
                 <div>
@@ -61,7 +72,7 @@ const MypageSetting = () => {
             </div>
           )}
           {userType === "buyer" && (
-            <div className={style.SideDetail}>
+            <div className={style.SideDetail} onClick={userChangModalHandler}>
               <div>
                 <div>판매자로 전환하기</div>
                 <div>
