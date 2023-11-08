@@ -5,7 +5,7 @@ import MypageReviewModal from "./MypageReviewCard/MypageReviewModal";
 
 const BuyerFllyList = () => {
   //모달 상태
-  const [modalState, setModalStest] = useState<Boolean>(false);
+  const [modalState, setModalState] = useState<Boolean>(false);
   //클릭한 아이템의 값
   const [selectId, setSelectId] = useState<number>(-1);
   const [clickIndex, setClickIndex] = useState<number>(0);
@@ -16,7 +16,7 @@ const BuyerFllyList = () => {
   };
 
   //모달 완료하기 클릭으로 인한 리뷰작성여부 변경 핸들러
-  const UpdateAdptList = (fllyUpdateReviewState: boolean) => {
+  const UpdateFllyList = () => {
     //정보가 담긴 리스트를 가져온다
     //clickIndex값이 유효하다면 변경해준다 ( 추후 길이도 체크해줘야함 && clickIndex < updatedAdoptData.length 처럼)
     if (clickIndex >= 0) {
@@ -26,7 +26,7 @@ const BuyerFllyList = () => {
 
   //모달의 상태 변경 핸들러
   const ModalChangeHandler = () => {
-    setModalStest(!modalState);
+    setModalState(!modalState);
   };
 
   return (
@@ -35,7 +35,7 @@ const BuyerFllyList = () => {
         <MypageReviewModal
           ModalChangeHandler={ModalChangeHandler}
           $selectId={selectId}
-          UpdateAdptList={UpdateAdptList}
+          UpdateFllyList={UpdateFllyList}
         />
       )}
       <BuyerFllyListCompletedCard ModalChangeHandler={ModalChangeHandler} />
