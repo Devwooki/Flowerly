@@ -263,6 +263,7 @@ public class ChattingService {
         responseDto.put("requestId", request.getRequestId());
         responseDto.put("sellerName", storeInfoRepository.findStoreName(request.getSeller()));
         responseDto.put("price", request.getPrice());
+        responseDto.put("isPaid", request.getIsPaid());
 
         return responseDto;
     }
