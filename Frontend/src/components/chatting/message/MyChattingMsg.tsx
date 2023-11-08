@@ -9,6 +9,7 @@ import ImageMsg from "./ImageMsg";
 
 type ChattingMsgProps = {
   message: {
+    messageId: string;
     sendTime: string;
     content: string;
     type: string;
@@ -27,7 +28,7 @@ const MyChattingMsg: React.FC<ChattingMsgProps> = ({
   const [time, setTime] = useState(new Date(message.sendTime));
 
   return (
-    <div className={style.wrapper}>
+    <div className={style.wrapper} id={message.messageId}>
       <div className={style.timeDiv}>
         {time.getHours()}:{String(time.getMinutes()).padStart(2, "0")}
       </div>

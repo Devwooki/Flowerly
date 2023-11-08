@@ -9,6 +9,7 @@ import ImageMsg from "./ImageMsg";
 
 type ChattingMsgProps = {
   message: {
+    messageId: string;
     sendTime: string;
     content: string;
     type: string;
@@ -27,30 +28,28 @@ const YourChattingMsg: React.FC<ChattingMsgProps> = ({
   const [time, setTime] = useState(new Date(message.sendTime));
 
   return (
-    <>
-      <div className={style.wrapper}>
-        {message.type === "PARTICIPATION" ? (
-          <ParticipationInfo chattingId={chattingId} modalHandler={modalHandler} />
-        ) : message.type === "ORDER_FORM" ? (
-          <OrderFormMsg modalHandler={modalHandler} />
-        ) : message.type === "ORDER_COMPLETE" ? (
-          <RequestMsg modalHandler={modalHandler} />
-        ) : message.type === "PAYMENT_FORM" ? (
-          <PaymentMsg chattingId={chattingId} />
-        ) : message.type === "IMAGE" ? (
-          <ImageMsg
-            imgUrl={message.content}
-            onImageLoad={imageLoadHandler}
-            modalHandler={modalHandler}
-          />
-        ) : (
-          <div className={style.contentDiv}>{message.content}</div>
-        )}
-        <div className={style.timeDiv}>
-          {time.getHours()}:{String(time.getMinutes()).padStart(2, "0")}
-        </div>
+    <div className={style.wrapper} id={message.messageId}>
+      {message.type === "PARTICIPATION" ? (
+        <ParticipationInfo chattingId={chattingId} modalHandler={modalHandler} />
+      ) : message.type === "ORDER_FORM" ? (
+        <OrderFormMsg modalHandler={modalHandler} />
+      ) : message.type === "ORDER_COMPLETE" ? (
+        <RequestMsg modalHandler={modalHandler} />
+      ) : message.type === "PAYMENT_FORM" ? (
+        <PaymentMsg chattingId={chattingId} />
+      ) : message.type === "IMAGE" ? (
+        <ImageMsg
+          imgUrl={message.content}
+          onImageLoad={imageLoadHandler}
+          modalHandler={modalHandler}
+        />
+      ) : (
+        <div className={style.contentDiv}>{message.content}</div>
+      )}
+      <div className={style.timeDiv}>
+        {time.getHours()}:{String(time.getMinutes()).padStart(2, "0")}
       </div>
-    </>
+    </div>
   );
 };
 
