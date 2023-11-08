@@ -29,6 +29,7 @@
   position: absolute;
   top: 70px;
   overflow-y: auto;
+  will-change: scroll-position;
 }
 
 .containerWithMenu {
@@ -39,6 +40,7 @@
   position: absolute;
   top: 70px;
   overflow-y: auto;
+  will-change: scroll-position;
 }
 
 .bottom {

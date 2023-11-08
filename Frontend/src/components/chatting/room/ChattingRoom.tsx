@@ -28,6 +28,7 @@ type ChattingMsg = {
   opponentName: string;
   lastId: string;
   messages: {
+    messageId: string;
     memberId: number;
     type: string;
     content: string;
@@ -45,10 +46,13 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
   // axios로 받아야 함!!
   const [chattingMsgs, setChattingMsgs] = useState<ChattingMsg>();
   const [initialLoading, setInitialLoading] = useState(true);
+  const [infiniteScrolling, setInfiniteScrolling] = useState(false);
   const [messageTopRef, inView] = useInView({
     threshold: 0,
     skip: initialLoading, // 초기 로딩 중에는 useInView를 스킵합니다.
   });
+  const [prevLastId, setPrevLastId] = useState<string | null>();
+  const [sendImage, setSendImage] = useState(false);
 
   const axiosHandler = async () => {
     await axios.get(`https://flower-ly.co.kr/api/chatting/${chattingId}`).then((response) => {
@@ -58,6 +62,7 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
   };
 
   useEffect(() => {
+    console.log("첫 렌더링");
     // SockJS와 STOMP 설정
     // const socket = new SockJS("http://localhost:6090/stomp-chat"); // 로컬 테스트용
     const socket = new SockJS("https://flower-ly.co.kr/stomp-chat"); // 배포용
@@ -65,7 +70,7 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
       webSocketFactory: () => socket,
     });
 
-    client.onConnect = (frame) => {
+    client.onConnect = () => {
       axiosHandler();
 
       console.log(chattingId, "Connected");
@@ -74,6 +79,7 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
         // console.log(message.body);
         const newMsgJson = JSON.parse(message.body);
         const newMsg = {
+          messageId: "",
           memberId: newMsgJson.memberId,
           type: newMsgJson.type,
           content: newMsgJson.content,
@@ -111,8 +117,8 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
     client.activate();
     setStompClient(client);
 
-    scrollDown(); // 처음 렌더링 시에 스크롤 제일 아래로
     setInitialLoading(false);
+    scrollDown();
 
     // 컴포넌트 unmount 시 연결 종료
     return () => {
@@ -122,26 +128,48 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
     };
   }, []);
 
-  // useEffect(() => {
-  //   if (inView && !initialLoading && chattingMsgs?.lastId) {
-  //     console.log("무한스크롤");
-  //     axios
-  //       .get(`https://flower-ly.co.kr/api/chatting/${chattingId}?lastId=${chattingMsgs?.lastId}`)
-  //       .then((response) => {
-  //         console.log(response.data.data);
-  //         setChattingMsgs((prev) => {
-  //           return {
-  //             ...prev,
-  //             lastId: response.data.data.lastId,
-  //             messages: [response.data.data.messages, ...prev!.messages],
-  //           };
-  //         });
-  //       });
-  //   }
-  // }, [inView, initialLoading]);
+  useEffect(() => {
+    console.log("무한스크롤");
+    if (inView && !initialLoading && chattingMsgs?.lastId) {
+      setInfiniteScrolling(true);
+      setPrevLastId(chattingMsgs.lastId);
+
+      axios
+        .get(`https://flower-ly.co.kr/api/chatting/${chattingId}?lastId=${chattingMsgs?.lastId}`)
+        .then((response) => {
+          console.log(response.data.data);
+          setChattingMsgs((prev: any) => {
+            return {
+              ...prev,
+              lastId: response.data.data.lastId,
+              messages: [...response.data.data.messages, ...prev!.messages],
+            };
+          });
+        });
+    }
+  }, [inView]);
+
+  useEffect(() => {
+    if (prevLastId && !initialLoading && inView) {
+      console.log("스크롤 위치 조정");
+
+      // containerRef.current!.scrollTop = containerRef.current!.scrollHeight - prevScrollHeight;
+      requestAnimationFrame(() => {
+        // containerRef.current!.scrollTop = containerRef.current!.scrollHeight - prevScrollHeight;
+        const currentElement = document.getElementById(prevLastId);
+        console.log(currentElement?.id);
+        currentElement?.scrollIntoView({ behavior: "auto" });
+      });
+    }
+  }, [chattingMsgs]);
 
   const imageLoadHandler = () => {
-    messageEndRef.current?.scrollIntoView({ behavior: "auto" }); // 이미지  로딩 완료되면 스크롤 조정
+    console.log("imageLoadHandler");
+    if (!infiniteScrolling) scrollDown(); // 이미지  로딩 완료되면 스크롤 조정
+    if (sendImage) {
+      scrollDown();
+      setSendImage(false);
+    }
   };
 
   const moveBack = () => {
@@ -149,7 +177,7 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
   };
 
   const scrollDown = () => {
-    // console.log("scrollDown");
+    console.log("scrollDown");
     messageEndRef.current?.scrollIntoView({ behavior: "auto" });
   };
 
@@ -168,7 +196,12 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
       // console.log("메세지 보내기 성공");
     }
 
-    scrollDown();
+    if (type === "IMAGE") setSendImage(true);
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        scrollDown();
+      });
+    });
   };
 
   // 타입별 메세지 전송 관련
@@ -187,7 +220,9 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
         containerRef.current!.scrollTop >=
         containerRef.current!.scrollHeight - containerRef.current!.clientHeight - 120
       ) {
-        scrollDown(); // 스크롤이 최대 크기를 넘어가는 경우
+        requestAnimationFrame(() => {
+          scrollDown(); // 스크롤이 최대 크기를 넘어가는 경우
+        });
       } else {
         containerRef.current!.scrollTop += 120;
       }
@@ -251,7 +286,7 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
             chattingMsgs.messages.map((message, idx) => {
               return message.memberId == chattingMsgs.opponentMemberId ? (
                 <YourChattingMsg
-                  key={idx}
+                  key={message.messageId}
                   message={message}
                   chattingId={chattingId}
                   modalHandler={modalHandler}
