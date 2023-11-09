@@ -46,6 +46,10 @@ public class Review extends BaseTimeEntity {
                 .build();
     }
 
+    public void markAsRemoved() {
+        this.isRemoved = true;
+
+    }
 
 
 

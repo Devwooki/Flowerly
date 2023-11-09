@@ -1,6 +1,9 @@
 package com.ssafy.flowerly.mypage.service;
 
 
+import com.ssafy.flowerly.address.repository.DongRepository;
+import com.ssafy.flowerly.address.repository.SidoRepository;
+import com.ssafy.flowerly.address.repository.SigunguRepository;
 import com.ssafy.flowerly.entity.*;
 import com.ssafy.flowerly.exception.CustomException;
 import com.ssafy.flowerly.exception.ErrorCode;
@@ -30,6 +33,9 @@ public class MyPageService {
     private final FllyRepository fllyRepository;
     private final ReviewRepository reviewRepository;
     private final StoreDeliveryRegionRepository storeDeliveryRegionRepository;
+    private final SidoRepository sidoRepository;
+    private final SigunguRepository sigunguRepository;
+    private final DongRepository dongRepository;
 
 
     public Object getNickName(Long memberId) {
@@ -143,22 +149,23 @@ public class MyPageService {
 
     public MyStoreInfoDto getMyStoreInfo(Long memberId) {
 
-    StoreInfo storeInfo = storeInfoRepository.findBySellerMemberId(memberId)
-            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_STOREINFO));
+        StoreInfo storeInfo = storeInfoRepository.findBySellerMemberId(memberId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_STOREINFO));
 
-    return MyStoreInfoDto.builder()
-            .storeId(storeInfo.getStoreInfoId())
-            .storeName(storeInfo.getStoreName())
-            .sellerName(storeInfo.getSellerName())
-            .phoneNumber(storeInfo.getPhoneNumber())
-            .storeNumber(storeInfo.getStoreNumber())
-            .address(storeInfo.getAddress())
-            .build();
+        return MyStoreInfoDto.builder()
+                .storeId(storeInfo.getStoreInfoId())
+                .storeName(storeInfo.getStoreName())
+                .sellerName(storeInfo.getSellerName())
+                .phoneNumber(storeInfo.getPhoneNumber())
+                .storeNumber(storeInfo.getStoreNumber())
+                .address(storeInfo.getAddress())
+                .build();
     }
+
     @Transactional
     public MyStoreInfoDto updateMyStoreInfo(Long memberId, MyStoreInfoDto myStoreInfoDto) {
         StoreInfo storeInfo = storeInfoRepository.findBySellerMemberId(memberId)
-                .orElseThrow(()-> new CustomException(ErrorCode.NOT_FIND_STOREINFO));
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_STOREINFO));
 
         storeInfo.updateStoreName(myStoreInfoDto.getStoreName());
         storeInfo.updateStoreNumber(myStoreInfoDto.getStoreNumber());
@@ -187,23 +194,43 @@ public class MyPageService {
                 .collect(Collectors.toList());
 
 
-
     }
 
-//    @Transactional
-//    public MyDeliveryRegionDto updateDeliveryRegion(Long memberId, List<MyDeliveryRegionDto> myDeliveryRegionDto) {
-//
-//        storeDeliveryRegionRepository.deleteBySellerMemberId(memberId);
-//
-//        List<StoreDeliveryRegion> newDeliveryRegion=  myDeliveryRegionDto.stream()
-//                .map(region -> new StoreDeliveryRegion(
-//                        null,
-//                        region.getSidoCode(),
-//                        region.getSigunguCode(),
-//                        region.getDongCode()
-//                ))
-//                .collect(Collectors.toList());
-//
-//
-//    }
-}
+    @Transactional
+    public List<MyDeliveryRegionDto> updateDeliveryRegion(Long memberId, List<MyDeliveryRegionDto> myDeliveryRegionDtos) {
+
+        storeDeliveryRegionRepository.deleteBySellerMemberId(memberId);
+
+
+        List<MyDeliveryRegionDto> savedDtos = myDeliveryRegionDtos.stream()
+                .map(dto -> {
+                    Sido sido = sidoRepository.findBySidoCode(dto.getSidoCode())
+                            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_SIDO));
+                    Sigungu sigungu = sigunguRepository.findBySigunguCodeAndSido(dto.getSigunguCode(), sido)
+                            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_SIGUNGU));
+                    Dong dong = dongRepository.findByDongCodeAndSigungu(dto.getDongCode(), sigungu)
+                            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_DONG));
+                    Member seller = memberRepository.findById(memberId)
+                            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_MEMBER));
+
+                    StoreDeliveryRegion newRegion = StoreDeliveryRegion.builder()
+                            .seller(seller)
+                            .sido(sido)
+                            .sigungu(sigungu)
+                            .dong(dong)
+                            .build();
+
+
+                    StoreDeliveryRegion savedRegion = storeDeliveryRegionRepository.save(newRegion);
+
+                    return MyDeliveryRegionDto.builder()
+                            .storeDeliveryRegionId(savedRegion.getStoreDeliveryRegionId())
+                            .sidoCode(sido.getSidoCode())
+                            .sigunguCode(sigungu.getSigunguCode())
+                            .dongCode(dong.getDongCode())
+                            .build();
+                }).collect(Collectors.toList());
+
+        return savedDtos;
+    }
+};
