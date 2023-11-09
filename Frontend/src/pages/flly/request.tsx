@@ -19,6 +19,7 @@ import DeliveryModal from "@/components/flly/fllyUser/DeliveryModal";
 import PickupModal from "@/components/flly/fllyUser/PickupModal";
 import CheckModal from "@/components/flly/fllyUser/CheckModal";
 import axios from "axios";
+import { ToastErrorMessage } from "@/model/toastMessageJHM";
 
 const FllyTarget = () => {
   const router = useRouter();
@@ -74,8 +75,20 @@ const FllyTarget = () => {
   }
 
   const handleClickNext = () => {
-
-    setShowNextModal(true);
+    if(checkDelivery && basicAddress==="") {
+      ToastErrorMessage("주소를 입력해 주세요.");
+    } else if(!checkDelivery && pickupCodeList.length===0) {
+      ToastErrorMessage("주소를 입력해 주세요.");
+    } else {
+      if(price == undefined) ToastErrorMessage("가격을 입력해 주세요.");
+      else {
+        if(time === "") {
+          ToastErrorMessage("시간을 입력해 주세요.");
+        } else {
+          setShowNextModal(true);
+        }
+      }
+    }
   }
 
 
@@ -158,43 +171,30 @@ const FllyTarget = () => {
   };
 
   const submitBtn = () => {
-    if(checkDelivery && basicAddress==="") {
-      
-    } else if(!checkDelivery && pickupCodeList.length===0) {
-
-    } else {
-      if(price == undefined) {
-      } else {
-        if(time === "") {
-
-        } else {
-          axios
-            .post(`https://flower-ly.co.kr/api/flly/request`, {
-            // .post(`http://localhost:6090/api/flly/request`, {
-              "situation" : situation == "선택 안함"? null : situation,
-              "target" : target == "선택 안함"? null : target,
-              "colors": colors.includes("선택 안함")? null : colors,
-              "flowers": flowers,
-              "orderType": checkDelivery? "DELIVERY": "PICKUP",
-              "delivery": addressCode,
-              "detailAddress": detailAddress,
-              "pickup": pickupCodeList,
-              "deadline": dateTime,
-              "requestContent": requestText,
-              "imageUrl": bouquet?.url,
-              "budget": price,
-            })
-            .then((res) => {
-              console.log(res.data);
-              const data = res.data;
-              if (data.code === 200) {
-                router.push("/");
-              }
-              else console.log("오류 발생");
-            });
+    axios
+      .post(`https://flower-ly.co.kr/api/flly/request`, {
+      // .post(`http://localhost:6090/api/flly/request`, {
+        "situation" : situation == "선택 안함"? null : situation,
+        "target" : target == "선택 안함"? null : target,
+        "colors": colors.includes("선택 안함")? null : colors,
+        "flowers": flowers,
+        "orderType": checkDelivery? "DELIVERY": "PICKUP",
+        "delivery": addressCode,
+        "detailAddress": detailAddress,
+        "pickup": pickupCodeList,
+        "deadline": dateTime,
+        "requestContent": requestText,
+        "imageUrl": bouquet?.url,
+        "budget": price,
+      })
+      .then((res) => {
+        console.log(res.data);
+        const data = res.data;
+        if (data.code === 200) {
+          router.push("/");
         }
-      }
-    }
+        else console.log("오류 발생");
+      });
   };
 
   useEffect(() => {
