@@ -59,4 +59,20 @@ public class StoreInfo {
                 .address(this.address)
                 .build();
     }
+
+
+    public void updateStoreName(String storeName) {this.storeName = storeName;}
+
+    public void updateStoreNumber(String storeNumber) {this.storeNumber = storeNumber;}
+
+    public void updateSellerName(String sellerName) {this.sellerName = sellerName;}
+
+    public void updatePhoneNumber(String phoneNumber) {this.phoneNumber = phoneNumber;}
+
+    public void updateAddress(String address) {this.address = address;}
+
+
+
+
+
 }

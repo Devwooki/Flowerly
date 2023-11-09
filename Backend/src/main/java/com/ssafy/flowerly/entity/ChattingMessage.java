@@ -2,6 +2,7 @@ package com.ssafy.flowerly.entity;
 
 import com.ssafy.flowerly.chatting.dto.StompChatRequest;
 import lombok.*;
+import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.Id;
@@ -10,6 +11,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Date;
 
+@Data
 @Document(collection = "chatting_message")
 @Getter
 @NoArgsConstructor

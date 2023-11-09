@@ -1,6 +1,5 @@
 package com.ssafy.flowerly.chatting.controller;
 
-import com.ssafy.flowerly.JWT.JWTService;
 import com.ssafy.flowerly.chatting.dto.ChattingDto;
 import com.ssafy.flowerly.chatting.dto.FllyFromChattingDto;
 import com.ssafy.flowerly.chatting.dto.RequestFromChattingDto;
@@ -24,7 +23,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ChattingController {
 
-    private final JWTService jwtService;
     private final ChattingService chattingService;
 
     /**
@@ -49,14 +47,22 @@ public class ChattingController {
      * @return chattingRoom 채팅방 정보
      */
     @GetMapping("/{chattingId}")
-    public CustomResponse getChattingMessageList(HttpServletRequest request, @PathVariable Long chattingId) {
+    public CustomResponse getChattingMessageList(
+            HttpServletRequest request,
+            @PathVariable Long chattingId,
+            @RequestParam(required = false) String lastId,
+            @RequestParam(defaultValue = "50") Integer size) {
         log.info(chattingId + "번 채팅방 조회");
 //        Long memberId = (Long) request.getAttribute("memberId");
         Long memberId = 1L;
 
-        ChattingDto.RoomResponse chattingRoom = chattingService.getChattingMessageList(memberId, chattingId);
-
-        return new DataResponse<>(200, "채팅방 메세지 조회 성공", chattingRoom);
+        if(lastId == null) {
+            ChattingDto.RoomResponse chattingRoom = chattingService.getChattingRoomInfoNMessages(memberId, chattingId, size);
+            return new DataResponse<>(200, "채팅방 메세지 조회 성공", chattingRoom);
+        } else {
+            Map<String, Object> messages = chattingService.getChattingMessages(chattingId, lastId, size);
+            return new DataResponse<>(200, "채팅방 메세지 조회 성공", messages);
+        }
     }
 
     /**
@@ -67,9 +73,9 @@ public class ChattingController {
      */
     @PostMapping("/request/{chattingId}")
     public CustomResponse saveRequestInfo(@PathVariable Long chattingId, @RequestBody RequestFromChattingDto requestDto) {
-        Long requestId = chattingService.saveRequestInfo(requestDto, chattingId);
+        Long requestId = chattingService.saveRequestPrice(requestDto, chattingId);
 
-        if(requestId == null) throw new CustomException(ErrorCode.REQUEST_ALREADY_PAID);
+        if(requestId == null) throw new CustomException(ErrorCode.REQUEST_PRICE_EXIST);
         return new DataResponse<Long>(200, "주문서 저장 성공", requestId);
     }
 
@@ -80,7 +86,7 @@ public class ChattingController {
      */
     @PostMapping("/request/price")
     public CustomResponse saveRequestPrice(@RequestBody Map<String, Object> requestBody) {
-        chattingService.saveRequestInfo(
+        chattingService.saveRequestPrice(
                 Long.parseLong(requestBody.get("requestId").toString()),
                 Integer.parseInt(requestBody.get("price").toString())
         );
@@ -139,5 +145,19 @@ public class ChattingController {
         Map<String, Object> responseDto = chattingService.getPrice(chattingId);
 
         return new DataResponse<>(200, "결제 정보 조회 성공", responseDto);
+    }
+
+    /**
+     * 채팅방 나가기
+     * @param chattingId
+     * @return
+     */
+    @DeleteMapping("/{chattingId}")
+    public CustomResponse exitChatting(HttpServletRequest request, @PathVariable Long chattingId) {
+//        Long memberId = (Long) request.getAttribute("memberId");
+        Long memberId = 1L;
+        chattingService.exitChatting(chattingId, memberId);
+
+        return new CustomResponse(200, "채팅방 나가기 성공");
     }
 }

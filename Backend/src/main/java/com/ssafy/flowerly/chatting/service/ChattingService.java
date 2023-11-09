@@ -14,12 +14,16 @@ import com.ssafy.flowerly.member.model.StoreInfoRepository;
 import com.ssafy.flowerly.seller.model.FllyDeliveryRegionRepository;
 import com.ssafy.flowerly.seller.model.RequestRepository;
 import lombok.RequiredArgsConstructor;
+import org.bson.types.ObjectId;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -62,7 +66,7 @@ public class ChattingService {
         return chattingDtoList;
     }
 
-    public ChattingDto.RoomResponse getChattingMessageList(Long memberId, Long chattingId) {
+    public ChattingDto.RoomResponse getChattingRoomInfoNMessages(Long memberId, Long chattingId, Integer size) {
         Member member = memberRepository.findByMemberId(memberId).orElseThrow();
         Chatting chatting = chattingRepository.findById(chattingId).orElseThrow();
 
@@ -78,13 +82,40 @@ public class ChattingService {
             opponentName = opponent.getNickName();
         }
 
-        List<ChattingMessage> messages = chattingMessageRepository.findAllByChattingIdOrderBySendTime(chatting.getChattingId());
+        PageRequest pageRequest = PageRequest.of(0, size, Sort.Direction. DESC, "sendTime");
+        List<ChattingMessage> messages = chattingMessageRepository.findAllByChattingId(chattingId, pageRequest).getContent();
+        List<ChattingMessage> sortedMessages = messages.stream().sorted(Comparator.comparing(ChattingMessage::getSendTime)).collect(Collectors.toList());
+
         List<ChattingMessageDto.Response> messageDtos = new ArrayList<>();
-        for(ChattingMessage message : messages) {
+        for(ChattingMessage message : sortedMessages) {
             messageDtos.add(ChattingMessageDto.Response.of(message));
         }
 
-        return new ChattingDto.RoomResponse(chattingId, opponentMemberId, opponentName, messageDtos);
+        return new ChattingDto.RoomResponse(
+                chattingId,
+                opponentMemberId,
+                opponentName,
+                sortedMessages.size() > 0 ? sortedMessages.get(0).getId() : null,
+                messageDtos
+        );
+    }
+
+    public Map<String, Object> getChattingMessages(Long chattingId, String lastId, Integer size) {
+        ObjectId objectId = new ObjectId(lastId);
+        PageRequest pageRequest = PageRequest.of(0, size, Sort.Direction. DESC, "sendTime");
+        List<ChattingMessage> messages = chattingMessageRepository.findChattingMessagesByIdBeforeAndChattingId(objectId, chattingId, pageRequest).getContent();
+        List<ChattingMessage> sortedMessages = messages.stream().sorted(Comparator.comparing(ChattingMessage::getSendTime)).collect(Collectors.toList());
+
+        List<ChattingMessageDto.Response> messageDtos = new ArrayList<>();
+        for(ChattingMessage message : sortedMessages) {
+            messageDtos.add(ChattingMessageDto.Response.of(message));
+        }
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("lastId", sortedMessages.size() > 0 ? sortedMessages.get(0).getId() : null);
+        response.put("messages", messageDtos);
+
+        return response;
     }
 
     @Transactional
@@ -101,12 +132,12 @@ public class ChattingService {
     }
 
     @Transactional
-    public Long saveRequestInfo(RequestFromChattingDto requestDto, Long chattingId) {
+    public Long saveRequestPrice(RequestFromChattingDto requestDto, Long chattingId) {
         Chatting chatting = chattingRepository.findById(chattingId)
                 .orElseThrow(() -> new CustomException(ErrorCode.CHATTING_NOT_FOUND));
 
         Request request = null;
-        Optional<Request> prevRequest = requestRepository.findByFlly(chatting.getFlly());
+        Optional<Request> prevRequest = requestRepository.findByFllyAndSeller(chatting.getFlly(), chatting.getSeller());
         if(prevRequest.isPresent()) {  // 이미 작성한 주문이 있는 경우
             request = prevRequest.get();
 
@@ -169,10 +200,15 @@ public class ChattingService {
     }
 
     @Transactional
-    public void saveRequestInfo(Long requestId, Integer price) {
+    public void saveRequestPrice(Long requestId, Integer price) {
         Request request = requestRepository.findById(requestId)
                 .orElseThrow(() -> new CustomException(ErrorCode.REQUEST_NOT_FOUND));
-        request.setRequestPrice(price);
+
+        if(request.getIsPaid()) {
+            throw new CustomException(ErrorCode.REQUEST_ALREADY_PAID);
+        } else {
+            request.setRequestPrice(price);
+        }
     }
 
     public FllyFromChattingDto.Participation getParticipationInfo(Long chattingId) {
@@ -202,7 +238,7 @@ public class ChattingService {
 
         RequestFromChattingDto requestFromChattingDto = new RequestFromChattingDto();
 
-        Request request = requestRepository.findByFlly(chatting.getFlly())
+        Request request = requestRepository.findByFllyAndSeller(chatting.getFlly(), chatting.getSeller())
                 .orElseThrow(() -> new CustomException(ErrorCode.REQUEST_NOT_FOUND));
         String storeName = storeInfoRepository.findStoreName(request.getSeller());
         requestFromChattingDto.setRequestInfo(request, storeName);
@@ -221,14 +257,23 @@ public class ChattingService {
 
         Chatting chatting = chattingRepository.findById(chattingId)
                 .orElseThrow(() -> new CustomException(ErrorCode.CHATTING_NOT_FOUND));
-        Request request = requestRepository.findByFlly(chatting.getFlly())
+        Request request = requestRepository.findByFllyAndSeller(chatting.getFlly(), chatting.getSeller())
                 .orElseThrow(() -> new CustomException(ErrorCode.REQUEST_NOT_FOUND));
 
         responseDto.put("requestId", request.getRequestId());
         responseDto.put("sellerName", storeInfoRepository.findStoreName(request.getSeller()));
         responseDto.put("price", request.getPrice());
+        responseDto.put("isPaid", request.getIsPaid());
 
         return responseDto;
+    }
+
+    @Transactional
+    public void exitChatting(Long chattingId, Long memberId) {
+        Chatting chatting = chattingRepository.findById(chattingId)
+                .orElseThrow(() -> new CustomException(ErrorCode.CHATTING_NOT_FOUND));
+        Member member = memberRepository.findByMemberId(memberId).orElseThrow();
+        chatting.deleteChatting(member.getRole());
     }
 }
 

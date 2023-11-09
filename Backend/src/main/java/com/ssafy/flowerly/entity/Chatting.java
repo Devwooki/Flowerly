@@ -2,6 +2,7 @@ package com.ssafy.flowerly.entity;
 
 import com.ssafy.flowerly.entity.common.BaseCreatedTimeEntity;
 import com.ssafy.flowerly.entity.common.BaseTimeEntity;
+import com.ssafy.flowerly.member.MemberRole;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -53,5 +54,10 @@ public class Chatting extends BaseCreatedTimeEntity {
 
         this.lastChattingTime = zdt.toLocalDateTime();
         this.lastChattingMessage = chattingMessage;
+    }
+
+    public void deleteChatting(MemberRole role) {
+        if(role.equals(MemberRole.USER)) this.isRemovedConsumer = true;
+        else if(role.equals(MemberRole.SELLER)) this.isRemovedSeller = true;
     }
 }

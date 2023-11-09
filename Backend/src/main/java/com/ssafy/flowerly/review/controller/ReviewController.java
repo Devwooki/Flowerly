@@ -28,8 +28,9 @@ public class ReviewController {
         return new DataResponse<>(HttpStatus.SC_OK, "리뷰를 반환합니다. page : " + pageable.getOffset(),  reviewService.getReviewBySellerId(pageable, sellerId));
     }
 
-    @GetMapping("/buyer-review/{consumerId}")
-    public CustomResponse getBuyerReview(HttpServletRequest request, Pageable pageable, @PathVariable Long consumerId){
+    @GetMapping("/buyer-review")
+    public CustomResponse getBuyerReview(HttpServletRequest request, Pageable pageable){
+        Long consumerId = (Long) request.getAttribute("memberId");
         return new DataResponse<>(HttpStatus.SC_OK, "리뷰를 반환합니다. page : " + pageable.getOffset(),  reviewService.getReviewByConsumerId(pageable, consumerId));
     }
 
@@ -43,6 +44,14 @@ public class ReviewController {
         reviewService.saveReview(reviewRequestDto, memberId);
 
         return new CustomResponse(200, "리뷰 저장 성공");
+    }
+
+    @DeleteMapping("/delete/{reviewId}")
+    public CustomResponse deleteReview(HttpServletRequest request, @PathVariable Long reviewId) {
+        Long consumerId = (Long) request.getAttribute("memberId");
+        reviewService.deleteReview(reviewId, consumerId);
+
+        return new CustomResponse(200, "리뷰 삭제 성공");
     }
 
 

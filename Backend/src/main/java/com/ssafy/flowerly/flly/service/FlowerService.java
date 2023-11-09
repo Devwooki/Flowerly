@@ -86,7 +86,9 @@ public class FlowerService {
 
                 for(Flower flower: flowerListColor) {
                     if(flowerDtoListColor.size() > 9) break;
-                    if(flowerDtoList.contains(flower)) continue;
+                    FlowerDto flowerDto = new FlowerDto();
+                    flowerDto.setFlowerCode(flower.getFlowerCode());
+                    if(flowerDtoList.contains(flowerDto)) continue;
                     flowerDtoListColor.add(FlowerDto.of(flower));
                 }
                 lists.put("flowersColor", flowerDtoListColor);
@@ -97,11 +99,12 @@ public class FlowerService {
             List<FlowerDto> flowerDtoListMeaning = new ArrayList<>();
             for(Flower flower: flowerListMeaning) {
                 if(flowerDtoListMeaning.size() > 9) break;
-                if(flowerDtoList.contains(flower) || flowerDtoListColor.contains(flower)) continue;
+                FlowerDto flowerDto = new FlowerDto();
+                flowerDto.setFlowerCode(flower.getFlowerCode());
+                if(flowerDtoList.contains(flowerDto) || flowerDtoListColor.contains(flowerDto)) continue;
                 flowerDtoListMeaning.add(FlowerDto.of(flower));
             }
             lists.put("flowersMeaning", flowerDtoListMeaning);
-
         }
 
         return lists;

@@ -16,6 +16,7 @@ public enum ErrorCode {
     INIT_FCM_ERROR(-3000, "FCM 설정 중 에러가 발생했습니다."),
 
     NOT_FIND_MEMBER(-4000, "유저 정보를 찾을 수 없습니다"),
+
     NOT_FIND_FLLY(-4001, "플리 정보를 찾을 수 없습니다."),
     NOT_SELLER_DELIVERY_REGION(-4002, "배달 가능 지역을 설정해주세요"),
     MEMBER_NOT_SELLER(-4003, "해당 유저는 판매자가 아닙니다"),
@@ -27,6 +28,9 @@ public enum ErrorCode {
     NOT_FIND_SIDO(-4008, "시도 정보를 찾을 수 없습니다"),
     NOT_FIND_SIGUNGU(-4009, "시군구 정보를 찾을 수 없습니다."),
     NOT_FIND_DONG(-4010, "동 정보를 찾을 수 없습니다."),
+    NOT_FIND_STOREINFO(-4011, "가게 정보를 찾을 수 없습니다."),
+    NOT_FIND_REVIEW(-4012, "리뷰 정보를 찾을 수 없습니다"),
+    CONSUMER_NOT_REVIEWER(-4013, "리뷰 작성자가 아닙니다"),
 
     SELLER_PARTICIPATE_FAIL(-5000, "플리 참여에 실패하였습니다"),
     SELLER_ALREADY_PARTICIPATE(-5001, "이미 참가하신 플리입니다"),
@@ -36,7 +40,8 @@ public enum ErrorCode {
     CHATTING_NOT_FOUND(-6001, "채팅 정보를 찾을 수 없습니다."),
     REQUEST_NOT_FOUND(-6002, "주문 정보를 찾을 수 없습니다."),
     REQUEST_DELIVERY_NOT_FOUND(-6003, "주문 배달 정보를 찾을 수 없습니다."),
-    REQUEST_ALREADY_PAID(-604, "결제 금액이 존재하는 주문은 수정할 수 없습니다."),
+    REQUEST_PRICE_EXIST(-604, "결제 금액이 존재하는 주문은 수정할 수 없습니다."),
+    REQUEST_ALREADY_PAID(-605, "이미 결제가 완료된 주문입니다."),
 
     INVALID_UPLOAD_FILE(-8001, "업로드한 파일을 찾을 수 없습니다."),
     INVALID_UPLOAD_TYPE(-8002, "업로드 요청 타입을 찾을 수 없습니다."),
