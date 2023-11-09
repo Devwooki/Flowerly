@@ -5,6 +5,7 @@
   align-items: center;
   height: 80px;
   width: 100%;
+  max-width: 450px;
   z-index: 10;
 }
 

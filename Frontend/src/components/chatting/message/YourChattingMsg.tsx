@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import style from "./style/YourChattingMsg.module.css";
 
 import ParticipationInfo from "./ParticipationInfo";
@@ -17,6 +17,7 @@ type ChattingMsgProps = {
   chattingId: number;
   modalHandler: Function;
   imageLoadHandler: Function;
+  lastRequestMsgId: string | null;
 };
 
 const YourChattingMsg: React.FC<ChattingMsgProps> = ({
@@ -24,8 +25,32 @@ const YourChattingMsg: React.FC<ChattingMsgProps> = ({
   chattingId,
   modalHandler,
   imageLoadHandler,
+  lastRequestMsgId,
 }) => {
-  const [time, setTime] = useState(new Date(message.sendTime));
+  const [date, setDate] = useState<string>();
+  const [time, setTime] = useState<string>();
+
+  useEffect(() => {
+    const timeStr = message.sendTime.replaceAll(".", "/");
+    const dateTime = new Date(timeStr);
+    setTime(dateTime.getHours() + ":" + String(dateTime.getMinutes()).padStart(2, "0"));
+
+    const today = new Date();
+    // console.log(dateTime.getFullYear(), dateTime.getMonth(), dateTime.getDate());
+    if (
+      today.getFullYear() != dateTime.getFullYear() ||
+      today.getMonth() != dateTime.getMonth() ||
+      today.getDate() != dateTime.getDate()
+    ) {
+      setDate(
+        dateTime.getFullYear().toString().slice(-2) +
+          "." +
+          (dateTime.getMonth() + 1).toString().padStart(2, "0") +
+          "." +
+          dateTime.getDate().toString().padStart(2, "0"),
+      );
+    }
+  }, []);
 
   return (
     <div className={style.wrapper} id={message.messageId}>
@@ -34,7 +59,7 @@ const YourChattingMsg: React.FC<ChattingMsgProps> = ({
       ) : message.type === "ORDER_FORM" ? (
         <OrderFormMsg modalHandler={modalHandler} />
       ) : message.type === "ORDER_COMPLETE" ? (
-        <RequestMsg modalHandler={modalHandler} />
+        <RequestMsg isLast={lastRequestMsgId == message.messageId} modalHandler={modalHandler} />
       ) : message.type === "PAYMENT_FORM" ? (
         <PaymentMsg chattingId={chattingId} />
       ) : message.type === "IMAGE" ? (
@@ -47,7 +72,8 @@ const YourChattingMsg: React.FC<ChattingMsgProps> = ({
         <div className={style.contentDiv}>{message.content}</div>
       )}
       <div className={style.timeDiv}>
-        {time.getHours()}:{String(time.getMinutes()).padStart(2, "0")}
+        {/* <div>{date && date}</div> */}
+        <div>{time}</div>
       </div>
     </div>
   );

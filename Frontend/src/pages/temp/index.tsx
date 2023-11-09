@@ -43,6 +43,8 @@ const Temp = () => {
         // token(일회용 토큰) 초기화하기
         if (response.data.code === 200) {
           setMemberInfo(response.data.data);
+          console.log("memberinfo recoil에 데이터 저장 완료");
+          console.log(response.data.data);
 
           localStorage.setItem("accessToken", token);
 

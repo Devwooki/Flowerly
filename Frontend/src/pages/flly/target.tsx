@@ -6,6 +6,7 @@ import { targetState } from "@/recoil/fllyRecoil";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { ToastErrorMessage } from "@/model/toastMessageJHM";
 
 const FllyTarget = () => {
   const router = useRouter();
@@ -29,6 +30,7 @@ const FllyTarget = () => {
 
   const handleClick = () => {
     if(check) router.push("color");
+    else ToastErrorMessage("항목을 선택해 주세요.");
   };
 
   return (

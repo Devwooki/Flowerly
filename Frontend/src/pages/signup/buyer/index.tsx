@@ -26,8 +26,8 @@ const Buyer = () => {
 
     try {
       const response = await axios.post(
-       // "https://flower-ly.co.kr/api/member/signup/buyer",
-       "        http://localhost:6090/api/member/signup/buyer",
+        "https://flower-ly.co.kr/api/member/signup/buyer",
+        //  "        http://localhost:6090/api/member/signup/buyer",
         buyerInput,
         {
           headers: {

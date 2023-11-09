@@ -22,18 +22,20 @@ type ChattingRoomProps = {
   chattingId: number;
 };
 
+type Message = {
+  messageId: string;
+  memberId: number;
+  type: string;
+  content: string;
+  sendTime: string;
+};
+
 type ChattingMsg = {
   chattingId: number;
   opponentMemberId: number;
   opponentName: string;
   lastId: string;
-  messages: {
-    messageId: string;
-    memberId: number;
-    type: string;
-    content: string;
-    sendTime: string;
-  }[];
+  messages: Message[];
 };
 
 const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
@@ -43,7 +45,6 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
   const messageEndRef = useRef<HTMLDivElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
-  // axios로 받아야 함!!
   const [chattingMsgs, setChattingMsgs] = useState<ChattingMsg>();
   const [initialLoading, setInitialLoading] = useState(true);
   const [infiniteScrolling, setInfiniteScrolling] = useState(false);
@@ -53,16 +54,24 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
   });
   const [prevLastId, setPrevLastId] = useState<string | null>();
   const [sendImage, setSendImage] = useState(false);
+  const [lastRequestMsgId, setLastRequestMsgId] = useState<string | null>(null);
 
   const axiosHandler = async () => {
     await axios.get(`https://flower-ly.co.kr/api/chatting/${chattingId}`).then((response) => {
-      // console.log(response.data.data);
-      setChattingMsgs(response.data.data);
+      const responseData = response.data.data;
+      setChattingMsgs({
+        chattingId: responseData.chattingId,
+        opponentMemberId: responseData.opponentMemberId,
+        opponentName: responseData.opponentName,
+        lastId: responseData.lastId,
+        messages: addDateMsg(responseData.messages),
+      });
     });
   };
 
   useEffect(() => {
-    console.log("첫 렌더링");
+    // console.log("첫 렌더링");
+
     // SockJS와 STOMP 설정
     // const socket = new SockJS("http://localhost:6090/stomp-chat"); // 로컬 테스트용
     const socket = new SockJS("https://flower-ly.co.kr/stomp-chat"); // 배포용
@@ -99,7 +108,7 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
 
           return {
             ...prevState,
-            messages: [...prevState.messages, newMsg],
+            messages: addDateMsg([...prevState.messages, newMsg]),
           };
         });
       });
@@ -129,7 +138,7 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
   }, []);
 
   useEffect(() => {
-    console.log("무한스크롤");
+    // console.log("무한스크롤");
     if (inView && !initialLoading && chattingMsgs?.lastId) {
       setInfiniteScrolling(true);
       setPrevLastId(chattingMsgs.lastId);
@@ -142,7 +151,7 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
             return {
               ...prev,
               lastId: response.data.data.lastId,
-              messages: [...response.data.data.messages, ...prev!.messages],
+              messages: addDateMsg([...response.data.data.messages, ...prev!.messages]),
             };
           });
         });
@@ -151,9 +160,8 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
 
   useEffect(() => {
     if (prevLastId && !initialLoading && inView) {
-      console.log("스크롤 위치 조정");
+      // console.log("스크롤 위치 조정");
 
-      // containerRef.current!.scrollTop = containerRef.current!.scrollHeight - prevScrollHeight;
       requestAnimationFrame(() => {
         // containerRef.current!.scrollTop = containerRef.current!.scrollHeight - prevScrollHeight;
         const currentElement = document.getElementById(prevLastId);
@@ -163,8 +171,51 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
     }
   }, [chattingMsgs]);
 
+  const addDateMsg = (messages: Message[]) => {
+    // console.log("addDateMsg");
+    const newMessges: Message[] = [];
+    // let lastDate = new Date(messages[0].sendTime.replaceAll(".", "/"));
+    let lastDate;
+
+    for (const message of messages) {
+      if (message.type == "DATE") continue;
+      if (message.type == "ORDER_COMPLETE") setLastRequestMsgId(message.messageId);
+
+      const sendTime = new Date(message.sendTime.replaceAll(".", "/"));
+
+      if (
+        !lastDate ||
+        sendTime.getFullYear() != lastDate.getFullYear() ||
+        sendTime.getMonth() != lastDate.getMonth() ||
+        sendTime.getDate() != lastDate.getDate()
+      ) {
+        // 새로운 날짜가 시작될 때 그룹을 추가
+        newMessges.push({
+          messageId: "",
+          memberId: -1,
+          type: "DATE",
+          content:
+            sendTime.getFullYear().toString() +
+            "년 " +
+            (sendTime.getMonth() + 1).toString() +
+            "월 " +
+            sendTime.getDate().toString() +
+            "일",
+          sendTime: message.sendTime,
+        });
+
+        lastDate = sendTime;
+      }
+
+      newMessges.push(message);
+    }
+
+    // console.log(newMessges);
+    return newMessges;
+  };
+
   const imageLoadHandler = () => {
-    console.log("imageLoadHandler");
+    // console.log("imageLoadHandler");
     if (!infiniteScrolling) scrollDown(); // 이미지  로딩 완료되면 스크롤 조정
     if (sendImage) {
       scrollDown();
@@ -177,7 +228,7 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
   };
 
   const scrollDown = () => {
-    console.log("scrollDown");
+    // console.log("scrollDown");
     messageEndRef.current?.scrollIntoView({ behavior: "auto" });
   };
 
@@ -211,8 +262,6 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
   const changeMenuOpen = () => {
     setMenuOpen(!menuOpen);
 
-    console.log(containerRef.current?.scrollTop, containerRef.current?.scrollHeight);
-    console.log(containerRef.current!.scrollHeight - containerRef.current!.clientHeight - 120);
     if (menuOpen) {
       containerRef.current!.scrollTop -= 120;
     } else {
@@ -284,13 +333,16 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
           <div ref={messageTopRef}></div>
           {chattingMsgs &&
             chattingMsgs.messages.map((message, idx) => {
-              return message.memberId == chattingMsgs.opponentMemberId ? (
+              return message.type == "DATE" ? (
+                <div className={style.dateDiv}>{message.content}</div>
+              ) : message.memberId == chattingMsgs.opponentMemberId ? (
                 <YourChattingMsg
-                  key={message.messageId}
+                  key={idx}
                   message={message}
                   chattingId={chattingId}
                   modalHandler={modalHandler}
                   imageLoadHandler={imageLoadHandler}
+                  lastRequestMsgId={lastRequestMsgId}
                 />
               ) : (
                 <MyChattingMsg
@@ -299,6 +351,7 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
                   chattingId={chattingId}
                   modalHandler={modalHandler}
                   imageLoadHandler={imageLoadHandler}
+                  lastRequestMsgId={lastRequestMsgId}
                 />
               );
             })}

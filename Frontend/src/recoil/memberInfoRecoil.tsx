@@ -20,7 +20,15 @@ export interface StoreInfo {
   images: string[];
 }
 
-export const memberInfoState = atom<MemberInfo | null>({
+export const memberInfoState = atom<MemberInfo>({
   key: "memberInfoState",
-  default: null,
+  default: {
+    id: 0,
+    socialId: "",
+    nickName: "",
+    email: "",
+    role: "", // role 추가
+    store: null,
+    notification: false,
+  },
 });

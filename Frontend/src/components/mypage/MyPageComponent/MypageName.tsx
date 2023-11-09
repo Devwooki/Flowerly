@@ -1,16 +1,19 @@
 import React, { useState } from "react";
 import style from "./style/MypageName.module.css";
+import { memberInfoState, MemberInfo } from "@/recoil/memberInfoRecoil";
+import { useRecoilValue } from "recoil";
 
 const MypageName = () => {
   //나중에 리코일~!!
   const [userType, setUserType] = useState<String>("seller");
+  const memberInfo = useRecoilValue<MemberInfo>(memberInfoState);
 
   return (
     <>
       {userType === "seller" && (
         <div className={style.MypageNameBack}>
           <div>판매자님 반갑습니다</div>
-          <div>행복한 꽃집</div>
+          <div>{memberInfo.nickName}</div>
         </div>
       )}
       {userType === "buyer" && (

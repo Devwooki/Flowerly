@@ -18,6 +18,7 @@ const MypageReview = () => {
   //선택한 flly 세팅을 위한 핸들러
   const SelectIdChangeHandler = (reviewId: number, index: number) => {
     setSelectReviewId(reviewId);
+    setClickIndex(index);
   };
 
   //모달 완료하기 클릭으로 인한 삭제여부 변경 핸들러

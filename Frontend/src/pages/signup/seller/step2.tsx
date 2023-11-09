@@ -159,8 +159,8 @@ const Step2 = () => {
 
       if (host && path) {
         const response = await axios.post(
-          // "https://flower-ly.co.kr/api/member/signup/seller",
-          "http://localhost:6090/api/member/signup/seller",
+          "https://flower-ly.co.kr/api/member/signup/seller",
+          // "http://localhost:6090/api/member/signup/seller",
           signupData,
           {
             headers: {
