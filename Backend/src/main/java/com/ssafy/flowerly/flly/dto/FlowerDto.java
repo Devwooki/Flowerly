@@ -22,7 +22,7 @@ public class FlowerDto {
 
     @Override
     public boolean equals(Object o) {
-        return this.flowerCode == ((Flower)o).getFlowerCode();
+        return this.flowerCode.equals(((FlowerDto)o).getFlowerCode());
     }
 
     public static FlowerDto of(Flower flower) {
