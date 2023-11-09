@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import style from "./style/MypageReview.module.css";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -6,10 +6,20 @@ import MypageReviewCard from "./MyFllyListComponent/MypageReviewCard/MypageRevie
 import MypageReviewDeleteModal from "./MyFllyListComponent/MypageReviewCard/MypageReviewDeleteModal";
 import { useRecoilState } from "recoil";
 import { MemberInfo, memberInfoState } from "@/recoil/memberInfoRecoil";
+import axios from "axios";
+
+interface ReviewType {
+  reviewId: number;
+  requestId: number;
+  storeName: string;
+  content: string;
+  createdAt: string;
+}
 
 const MypageReview = () => {
   const router = useRouter();
   const [memberInfo, setMemberInfo] = useRecoilState<MemberInfo>(memberInfoState);
+  const [reviewList, setReviewList] = useState<ReviewType[]>([]);
 
   //판매자 전용 (리뷰 삭제) 시작
   const [modalState, setModalState] = useState<Boolean>();
@@ -25,10 +35,10 @@ const MypageReview = () => {
 
   //모달 완료하기 클릭으로 인한 삭제여부 변경 핸들러
   const UpdateReviewList = () => {
-    //정보가 담긴 리스트를 가져온다
-    //clickIndex값이 유효하다면 변경해준다 ( 추후 길이도 체크해줘야함 && clickIndex < updatedAdoptData.length 처럼)
     if (clickIndex >= 0) {
       //해당 clickIndex의 정보를 접근해 업데이트! (이렇게 해야 화면에 변화가 생긴다)
+      const updateReviewList = reviewList.filter((item, index) => index !== clickIndex);
+      setReviewList(updateReviewList);
     }
   };
 
@@ -37,6 +47,23 @@ const MypageReview = () => {
     setModalState(!modalState);
   };
   //판매자 전용 (리뷰 삭제) 끝
+
+  useEffect(() => {
+    const tokens =
+      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcwOTUwNjY2NywibWVtYmVySWQiOjF9.Rvoz54jid-oatfns3YuHLkvTTQ_eyCfHmT4tAod3QuH3geimCFbSk_TCgmuuHUtgs34EGuVbdm_aBwpRbNBi6w";
+
+    axios
+      .get("https://flower-ly.co.kr/api/review/buyer-review/1", {
+        headers: {
+          Authorization: "Bearer " + tokens,
+        },
+      })
+      .then((res) => {
+        if (res.data.code === 200) {
+          setReviewList(res.data.data);
+        }
+      });
+  }, []);
 
   return (
     <>
@@ -64,11 +91,17 @@ const MypageReview = () => {
           {memberInfo.role === "USER" ? <div>내가 쓴 리뷰</div> : <div>우리 가게 리뷰</div>}
         </div>
         <div className={style.fllyReviewMain}>
-          <MypageReviewCard
-            ModalChangeHandler={ModalChangeHandler}
-            SelectIdChangeHandler={SelectIdChangeHandler}
-            // $requestIndex = {index}
-          />
+          {reviewList &&
+            reviewList.map((value, index) => (
+              <>
+                <MypageReviewCard
+                  ModalChangeHandler={ModalChangeHandler}
+                  SelectIdChangeHandler={SelectIdChangeHandler}
+                  $requestIndex={index}
+                  $reviewInfo={value}
+                />
+              </>
+            ))}
         </div>
       </div>
     </>

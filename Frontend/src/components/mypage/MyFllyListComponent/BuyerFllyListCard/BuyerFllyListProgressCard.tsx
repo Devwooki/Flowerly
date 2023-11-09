@@ -3,7 +3,22 @@ import style from "./BuyerFllyListProgressCard.module.css";
 import Image from "next/image";
 import BuyerFllyListProgressBar from "./BuyerFllyListProgressBar";
 
-const BuyerFllyListProgressCard = () => {
+interface BuyerFillListType {
+  fllyId: number;
+  buyerNickName: string;
+  deliveryPickupTime: string;
+  progress: string;
+  storeName: string;
+  fllyOrderType: string;
+  requestOrderType: string;
+  isReviewed: boolean;
+}
+
+interface Props {
+  $fllyInfo: BuyerFillListType;
+}
+
+const BuyerFllyListProgressCard = ({ $fllyInfo }: Props) => {
   const [progressStep, setProgressStep] = useState<number>(0);
 
   useEffect(() => {

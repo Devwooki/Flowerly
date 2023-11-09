@@ -17,6 +17,8 @@ const MypageReviewDeleteModal = ({ ModalChangeHandler, $reviewId, UpdateReviewLi
   //삭제하기 눌렀을때
   const SummitBtnHandler = () => {
     console.log($reviewId);
+    //만약 200이라면 삭제 리뷰 아이디 엑시오스로 요청
+    UpdateReviewList();
   };
 
   return (
