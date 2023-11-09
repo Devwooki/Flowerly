@@ -15,6 +15,7 @@ public enum ErrorCode {
 
 
     NOT_FIND_MEMBER(-4000, "유저 정보를 찾을 수 없습니다"),
+
     NOT_FIND_FLLY(-4001, "플리 정보를 찾을 수 없습니다."),
     NOT_SELLER_DELIVERY_REGION(-4002, "배달 가능 지역을 설정해주세요"),
     MEMBER_NOT_SELLER(-4003, "해당 유저는 판매자가 아닙니다"),
@@ -26,6 +27,7 @@ public enum ErrorCode {
     NOT_FIND_SIDO(-4008, "시도 정보를 찾을 수 없습니다"),
     NOT_FIND_SIGUNGU(-4009, "시군구 정보를 찾을 수 없습니다."),
     NOT_FIND_DONG(-4010, "동 정보를 찾을 수 없습니다."),
+    NOT_FIND_STOREINFO(-4011, "가게 정보를 찾을 수 없습니다."),
 
     SELLER_PARTICIPATE_FAIL(-5000, "플리 참여에 실패하였습니다"),
     SELLER_ALREADY_PARTICIPATE(-5001, "이미 참가하신 플리입니다"),
