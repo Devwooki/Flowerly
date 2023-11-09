@@ -3,10 +3,12 @@ import style from "./style/MypageSetting.module.css";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import UserTypeChangeModal from "./MyPageSettingComponent/UserTypeChangeModal";
+import { useRecoilState } from "recoil";
+import { MemberInfo, memberInfoState } from "@/recoil/memberInfoRecoil";
 
 const MypageSetting = () => {
   const [alarmState, setAlarmState] = useState<Boolean>(false);
-  const [userType, setUserType] = useState<String>("seller");
+  const [memberInfo, setMemberInfo] = useRecoilState<MemberInfo>(memberInfoState);
   const router = useRouter();
 
   //우저정보 변경 모달확인
@@ -35,7 +37,7 @@ const MypageSetting = () => {
           <div>설정</div>
         </div>
         <div className={style.SettingMain}>
-          {userType === "seller" && (
+          {memberInfo.role === "SELLER" && (
             <>
               <div className={style.SideSimple}>
                 <div>대표 이미지 변경</div>
@@ -60,7 +62,7 @@ const MypageSetting = () => {
             </div>
             <div>알림 설정을 ON 하실경우 카카오톡 을 통한 플리에 대한 알림을 받을 수 있습니다</div>
           </div>
-          {userType === "seller" && (
+          {memberInfo.role === "SELLER" && (
             <div className={style.SideDetail} onClick={userChangModalHandler}>
               <div>
                 <div>사용자로 전환하기</div>
@@ -71,7 +73,7 @@ const MypageSetting = () => {
               <div>사용자로 전환시 등록하신 판매자 관련 데이터는 사라집니다</div>
             </div>
           )}
-          {userType === "buyer" && (
+          {memberInfo.role === "USER" && (
             <div className={style.SideDetail} onClick={userChangModalHandler}>
               <div>
                 <div>판매자로 전환하기</div>

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import style from "./MypageReviewCard.module.css";
 import Image from "next/image";
+import { useRecoilValue } from "recoil";
+import { MemberInfo, memberInfoState } from "@/recoil/memberInfoRecoil";
 
 interface Props {
   ModalChangeHandler: () => void;
@@ -9,7 +11,7 @@ interface Props {
 }
 
 const MypageReviewCard = ({ ModalChangeHandler, SelectIdChangeHandler }: Props) => {
-  const [userType, setUserType] = useState<string>("buyer");
+  const memberInfo = useRecoilValue<MemberInfo>(memberInfoState);
 
   const DeleteBtnHandler = () => {
     ModalChangeHandler();
@@ -19,7 +21,7 @@ const MypageReviewCard = ({ ModalChangeHandler, SelectIdChangeHandler }: Props) 
   return (
     <>
       <div className={style.ReviewCardBack}>
-        {userType === "buyer" ? (
+        {memberInfo.role === "USER" ? (
           <div className={style.BuyerReviewCardHeader}>
             <div>
               행복한 꽃집

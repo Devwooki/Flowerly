@@ -4,10 +4,12 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import MypageReviewCard from "./MyFllyListComponent/MypageReviewCard/MypageReviewCard";
 import MypageReviewDeleteModal from "./MyFllyListComponent/MypageReviewCard/MypageReviewDeleteModal";
+import { useRecoilState } from "recoil";
+import { MemberInfo, memberInfoState } from "@/recoil/memberInfoRecoil";
 
 const MypageReview = () => {
   const router = useRouter();
-  const [userType, setUserType] = useState<string>("seller");
+  const [memberInfo, setMemberInfo] = useRecoilState<MemberInfo>(memberInfoState);
 
   //판매자 전용 (리뷰 삭제) 시작
   const [modalState, setModalState] = useState<Boolean>();
@@ -59,7 +61,7 @@ const MypageReview = () => {
             />
             <div className={style.headerTitle}>플리 리뷰</div>
           </div>
-          {userType === "buyer" ? <div>내가 쓴 리뷰</div> : <div>우리 가게 리뷰</div>}
+          {memberInfo.role === "USER" ? <div>내가 쓴 리뷰</div> : <div>우리 가게 리뷰</div>}
         </div>
         <div className={style.fllyReviewMain}>
           <MypageReviewCard

@@ -4,10 +4,12 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import SellerFllyList from "./MyFllyListComponent/SellerFllyList";
 import BuyerFllyList from "./MyFllyListComponent/BuyerFllyList";
+import { useRecoilState } from "recoil";
+import { MemberInfo, memberInfoState } from "@/recoil/memberInfoRecoil";
 
 const MypagefllyList = () => {
   const router = useRouter();
-  const [userType, setUserType] = useState<string>("buyer");
+  const [memberInfo, setMemberInfo] = useRecoilState<MemberInfo>(memberInfoState);
 
   return (
     <>
@@ -25,8 +27,8 @@ const MypagefllyList = () => {
           <div className={style.headerTitle}>플리 내역</div>
         </div>
         <div className={style.fllyListMain}>
-          {userType === "seller" && <SellerFllyList />}
-          {userType === "buyer" && <BuyerFllyList />}
+          {memberInfo.role === "SELLER" && <SellerFllyList />}
+          {memberInfo.role === "USER" && <BuyerFllyList />}
         </div>
       </div>
     </>
