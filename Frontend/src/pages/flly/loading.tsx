@@ -81,10 +81,10 @@ const FllyLoading = () => {
         <div className={style.contentBox}>
           <div className={style.guide}>하나뿐인 꽃다발을 생성중입니다.</div>
           <Image
-            src="/img/homeBanner/121_pink_gomphrena.jpg"
-            width={300}
-            height={300}
-            alt="아이콘"
+            src="/img/etc/loading.gif"
+            width={240}
+            height={240}
+            alt="로딩"
           ></Image>
         </div>
       </div>

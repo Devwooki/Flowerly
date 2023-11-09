@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/router";
 import style from "./style/ChattingList.module.css";
 import axios from "axios";
 import Image from "next/image";
 
 import ChattingListCard from "./ChattingListCard";
+import { ToastErrorMessage } from "@/model/toastMessageJHM";
 
 type Chatting = {
   chattingId: number;
@@ -15,12 +17,63 @@ type Chatting = {
 
 const ChattingList = () => {
   const [chattings, setChattings] = useState<Chatting[]>([]);
+  const router = useRouter();
 
   const axiosHandler = () => {
-    axios.get(`https://flower-ly.co.kr/api/chatting`).then((response) => {
-      // console.log(response.data);
-      setChattings(response.data.data);
-    });
+    const BaseUrl = `https://flower-ly.co.kr/api/chatting`;
+    // const accessToken =
+    //   "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcwODY4MzQ4NiwibWVtYmVySWQiOjF9.wU3IYYWErRie5E5s7oIRYMliboyumfMrCZILaKnwlxXxJXCW1kHZ5fJ-mKvsAwYuMV4-UT0F4qoUX9rVcrTiNw";
+    const accessToken =
+      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcwODc1MjUwMywibWVtYmVySWQiOjJ9.o_v_EVuucqlh2NPfHioqquPjm3U-JTP-7ZP2xJkxIxMsPBMhxnw0DL-Avnh2ryBa_J6JYS7YdCc5dZuMS_9IUw";
+    axios
+      .get(BaseUrl, {
+        headers: {
+          Authorization: "Bearer " + accessToken,
+          withCredential: false,
+        },
+      })
+      .then((response) => {
+        if (response.data.code === 200) {
+          setChattings(response.data.data);
+        }
+        if (response.data.code === 401) {
+          axios
+            .get(BaseUrl, {
+              headers: {
+                withCredential: true,
+              },
+            })
+            .then((response) => {
+              if (response.data.code === 200) {
+                setChattings(response.data.data);
+              }
+              //리프레시 포함
+              else if (response.data.code === 403) {
+                ToastErrorMessage("로그인이 만료되었습니다. 다시 로그인해주세요");
+                localStorage.removeItem("accessToken");
+                router.push("/fllylogin");
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+              ToastErrorMessage("서버 에러 발생!! 초비상!!!");
+            });
+        }
+        if (response.data.code === 403) {
+          //리프레시 포함
+          ToastErrorMessage("로그인이 만료되었습니다. 다시 로그인해주세요");
+          localStorage.removeItem("accessToken");
+          router.push("/fllylogin");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        ToastErrorMessage("서버 에러 발생!! 초비상!!!");
+      });
+    // axios.get(`https://flower-ly.co.kr/api/chatting`).then((response) => {
+    //   // console.log(response.data);
+    //   setChattings(response.data.data);
+    // });
   };
 
   const [isActive, setIsActive] = useState(false);
