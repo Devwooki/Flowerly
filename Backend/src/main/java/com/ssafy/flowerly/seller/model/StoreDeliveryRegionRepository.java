@@ -13,4 +13,6 @@ public interface StoreDeliveryRegionRepository extends JpaRepository<StoreDelive
 
     Optional<List<StoreDeliveryRegion>> findBySellerMemberId (Long memberId);
 
+    Optional<List<StoreDeliveryRegion>> deleteBySellerMemberId(Long memberId);
+
 }

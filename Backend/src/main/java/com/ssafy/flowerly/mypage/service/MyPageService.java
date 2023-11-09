@@ -6,12 +6,11 @@ import com.ssafy.flowerly.exception.CustomException;
 import com.ssafy.flowerly.exception.ErrorCode;
 import com.ssafy.flowerly.member.model.MemberRepository;
 import com.ssafy.flowerly.member.model.StoreInfoRepository;
-import com.ssafy.flowerly.mypage.dto.BuyerFllyDto;
-import com.ssafy.flowerly.mypage.dto.SellerFllyDto;
-import com.ssafy.flowerly.mypage.dto.StoreMyPageDto;
+import com.ssafy.flowerly.mypage.dto.*;
 import com.ssafy.flowerly.review.repository.ReviewRepository;
 import com.ssafy.flowerly.seller.model.FllyRepository;
 import com.ssafy.flowerly.seller.model.RequestRepository;
+import com.ssafy.flowerly.seller.model.StoreDeliveryRegionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +29,7 @@ public class MyPageService {
     private final RequestRepository requestRepository;
     private final FllyRepository fllyRepository;
     private final ReviewRepository reviewRepository;
+    private final StoreDeliveryRegionRepository storeDeliveryRegionRepository;
 
 
     public Object getNickName(Long memberId) {
@@ -141,4 +141,69 @@ public class MyPageService {
 
     }
 
+    public MyStoreInfoDto getMyStoreInfo(Long memberId) {
+
+    StoreInfo storeInfo = storeInfoRepository.findBySellerMemberId(memberId)
+            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_STOREINFO));
+
+    return MyStoreInfoDto.builder()
+            .storeId(storeInfo.getStoreInfoId())
+            .storeName(storeInfo.getStoreName())
+            .sellerName(storeInfo.getSellerName())
+            .phoneNumber(storeInfo.getPhoneNumber())
+            .storeNumber(storeInfo.getStoreNumber())
+            .address(storeInfo.getAddress())
+            .build();
+    }
+    @Transactional
+    public MyStoreInfoDto updateMyStoreInfo(Long memberId, MyStoreInfoDto myStoreInfoDto) {
+        StoreInfo storeInfo = storeInfoRepository.findBySellerMemberId(memberId)
+                .orElseThrow(()-> new CustomException(ErrorCode.NOT_FIND_STOREINFO));
+
+        storeInfo.updateStoreName(myStoreInfoDto.getStoreName());
+        storeInfo.updateStoreNumber(myStoreInfoDto.getStoreNumber());
+        storeInfo.updateSellerName(myStoreInfoDto.getSellerName());
+        storeInfo.updateAddress(myStoreInfoDto.getAddress());
+        storeInfo.updatePhoneNumber(myStoreInfoDto.getPhoneNumber());
+
+        storeInfoRepository.save(storeInfo);
+
+        myStoreInfoDto.setStoreId(storeInfo.getStoreInfoId());
+
+        return myStoreInfoDto;
+    }
+
+    public List<MyDeliveryRegionDto> getMyDeliveryRegion(Long memberId) {
+        List<StoreDeliveryRegion> myDeliveryRegionList = storeDeliveryRegionRepository.findBySellerMemberId(memberId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_SELLER_DELIVERY_REGION));
+
+        return myDeliveryRegionList.stream()
+                .map(myDeliveryRegion -> MyDeliveryRegionDto.builder()
+                        .storeDeliveryRegionId(myDeliveryRegion.getStoreDeliveryRegionId())
+                        .sidoCode(myDeliveryRegion.getSido().getSidoCode())
+                        .sigunguCode(myDeliveryRegion.getSigungu().getSigunguCode())
+                        .dongCode(myDeliveryRegion.getDong().getDongCode())
+                        .build())
+                .collect(Collectors.toList());
+
+
+
+    }
+
+//    @Transactional
+//    public MyDeliveryRegionDto updateDeliveryRegion(Long memberId, List<MyDeliveryRegionDto> myDeliveryRegionDto) {
+//
+//        storeDeliveryRegionRepository.deleteBySellerMemberId(memberId);
+//
+//        List<StoreDeliveryRegion> newDeliveryRegion=  myDeliveryRegionDto.stream()
+//                .map(region -> new StoreDeliveryRegion(
+//                        null,
+//                        region.getSidoCode(),
+//                        region.getSigunguCode(),
+//                        region.getDongCode()
+//                ))
+//                .collect(Collectors.toList());
+//
+//
+//    }
 }
