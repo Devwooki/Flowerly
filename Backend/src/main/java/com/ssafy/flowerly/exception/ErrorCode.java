@@ -13,6 +13,7 @@ public enum ErrorCode {
     NOT_AVAILABLE(404, "데이터가 접근불가능하거나 삭제가 되었습니다."),
     INVALID_ACCESS(403, "비정상적인 접근입니다."),
 
+    INIT_FCM_ERROR(-3000, "FCM 설정 중 에러가 발생했습니다."),
 
     NOT_FIND_MEMBER(-4000, "유저 정보를 찾을 수 없습니다"),
 

@@ -48,16 +48,10 @@ public class SecurityConfig {
                 .and()
                 //===========URL 별 권한 옵션 =============
                 .authorizeRequests()
-                //.antMatchers("/api/member").permitAll()
                 .antMatchers("/**").permitAll()
                 .antMatchers("/api/member").authenticated()
                 .antMatchers("/api/member/signup/**").authenticated()
-                //.antMatchers("/api/member/dummy-token").permitAll()
-                //.antMatchers("/api/s3/**").permitAll()
-                //.antMatchers("/ws/**").permitAll()
-                //.antMatchers("/stomp-chat/**").permitAll()
                 .antMatchers("/api/member/need-login").permitAll();
-                //permitAll() : 인증이 처리 되었다고 생각했기 때문
 
         //Oauth 설정
         http.oauth2Login()
