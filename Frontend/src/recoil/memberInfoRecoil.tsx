@@ -21,6 +21,9 @@ export interface StoreInfo {
   images: string[];
 }
 
+const isBrowser = typeof window !== "undefined";
+const sessionStorage = isBrowser ? window.sessionStorage : undefined;
+
 const { persistAtom } = recoilPersist({
   key: "fllyMemberInfo",
   storage: sessionStorage,
