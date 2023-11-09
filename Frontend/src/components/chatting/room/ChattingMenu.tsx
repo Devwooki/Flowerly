@@ -4,6 +4,9 @@ import style from "./style/ChattingMenu.module.css";
 import Image from "next/image";
 import imageCompression from "browser-image-compression";
 
+import { useRecoilValue } from "recoil";
+import { memberInfoState } from "@/recoil/memberInfoRecoil";
+
 type ChattingMenuProps = {
   sendOrderFormHandler: Function;
   sendImgHandler: Function;
@@ -11,6 +14,7 @@ type ChattingMenuProps = {
 
 const ChattingMenu: React.FC<ChattingMenuProps> = ({ sendOrderFormHandler, sendImgHandler }) => {
   const inputFileRef = useRef<HTMLInputElement>(null);
+  const memberInfo = useRecoilValue(memberInfoState);
 
   const uploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) {
@@ -77,23 +81,25 @@ const ChattingMenu: React.FC<ChattingMenuProps> = ({ sendOrderFormHandler, sendI
           </div>
           <div className={style.menuName}>사진</div>
         </div>
-        <div className={style.menuItem}>
-          <div
-            className={style.menuIcon}
-            onClick={() => {
-              sendOrderFormHandler();
-            }}
-          >
-            <Image
-              className={style.icon}
-              src="/img/icon/chatting-order.png"
-              width={30}
-              height={30}
-              alt="주문 양식"
-            />
+        {memberInfo.role == "SELLER" && (
+          <div className={style.menuItem}>
+            <div
+              className={style.menuIcon}
+              onClick={() => {
+                sendOrderFormHandler();
+              }}
+            >
+              <Image
+                className={style.icon}
+                src="/img/icon/chatting-order.png"
+                width={30}
+                height={30}
+                alt="주문 양식"
+              />
+            </div>
+            <div className={style.menuName}>주문 양식</div>
           </div>
-          <div className={style.menuName}>주문 양식</div>
-        </div>
+        )}
         <div className={style.menuItem}>
           <div className={style.menuIcon}>
             <Image
