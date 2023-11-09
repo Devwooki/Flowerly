@@ -33,8 +33,8 @@ public class ChattingController {
     @GetMapping
     public CustomResponse getChattingList(HttpServletRequest request){
         log.info("채팅방 목록 조회");
-//        Long memberId = (Long) request.getAttribute("memberId");
-        Long memberId = 1L;
+        Long memberId = (Long) request.getAttribute("memberId");
+//        Long memberId = 1L;
         List<ChattingDto.BasicResponse> chattingList = chattingService.getChattingList(memberId);
 
         return new DataResponse<>(200, "채팅방 리스트 조회 성공", chattingList);
@@ -53,8 +53,8 @@ public class ChattingController {
             @RequestParam(required = false) String lastId,
             @RequestParam(defaultValue = "50") Integer size) {
         log.info(chattingId + "번 채팅방 조회");
-//        Long memberId = (Long) request.getAttribute("memberId");
-        Long memberId = 1L;
+        Long memberId = (Long) request.getAttribute("memberId");
+//        Long memberId = 1L;
 
         if(lastId == null) {
             ChattingDto.RoomResponse chattingRoom = chattingService.getChattingRoomInfoNMessages(memberId, chattingId, size);
@@ -153,9 +153,9 @@ public class ChattingController {
      * @return
      */
     @DeleteMapping("/{chattingId}")
-    public CustomResponse exitChatting(@PathVariable Long chattingId) {
-        //        Long memberId = (Long) request.getAttribute("memberId");
-        Long memberId = 1L;
+    public CustomResponse exitChatting(HttpServletRequest request, @PathVariable Long chattingId) {
+        Long memberId = (Long) request.getAttribute("memberId");
+//        Long memberId = 1L;
         chattingService.exitChatting(chattingId, memberId);
 
         return new CustomResponse(200, "채팅방 나가기 성공");
