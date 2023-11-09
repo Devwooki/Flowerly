@@ -57,6 +57,8 @@ public class MyPageController {
         return new DataResponse<>(200, "가게 마이페이지 정보 조회 성공", storeMyPageInfo );
     }
 
+
+
     // buyer 닉네임 수정
     @PutMapping("/nickname")
     public CustomResponse updateNickName(HttpServletRequest request, @RequestBody NickNameUpdateDto nickNameUpdateDto) {
