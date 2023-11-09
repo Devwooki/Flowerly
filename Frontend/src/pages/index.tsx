@@ -121,19 +121,17 @@ export default function Home() {
           className={style.mainBody}
         >
           {cards.map((card) => (
-            <>
-              <SwiperSlide key={card.id} className={`${style.bannerImg}`}>
-                <div className={`${style.imgDiv}`}>
-                  <Image src={card.imgSrc} alt={card.alt} fill className={`${style.imgContent}`} />
-                </div>
-                <div className={style.imgDisc}>
-                  <div>{card.date}</div>
-                  <div>{card.desc}</div>
-                  <div className={style.divider}></div>
-                  <div>{card.message}</div>
-                </div>
-              </SwiperSlide>
-            </>
+            <SwiperSlide key={card.id} className={`${style.bannerImg}`}>
+              <div className={`${style.imgDiv}`}>
+                <Image src={card.imgSrc} alt={card.alt} fill className={`${style.imgContent}`} />
+              </div>
+              <div className={style.imgDisc}>
+                <div>{card.date}</div>
+                <div>{card.desc}</div>
+                <div className={style.divider}></div>
+                <div>{card.message}</div>
+              </div>
+            </SwiperSlide>
           ))}
         </Swiper>
       </div>

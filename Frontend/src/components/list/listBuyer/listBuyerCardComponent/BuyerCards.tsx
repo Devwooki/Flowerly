@@ -24,10 +24,7 @@ const BuyerCards = ({ card }: BuyerCardsProps) => {
   const setCardProps = useSetRecoilState(FllylistDiscRecoil);
   const [selectedColor, setSelectedColor] = useState<string[]>([]);
 
-  useEffect(
-    () => setSelectedColor([`${card.color1}`, `${card.color2}`, `${card.color3}`]),
-    [selectedColor, card],
-  );
+  useEffect(() => setSelectedColor([`${card.color1}`, `${card.color2}`, `${card.color3}`]), [card]);
 
   const buttomBtnCmd = (stepNumber: number) => {
     switch (stepNumber) {
@@ -48,7 +45,8 @@ const BuyerCards = ({ card }: BuyerCardsProps) => {
           <div className={style.cardBtn}>
             <button
               className={style.fllistBtnClose}
-              onClick={() => ToastErrorMessage("주문 이후에는 플리스트가 비활성화됩니다.")}
+              // onClick={() => ToastErrorMessage("주문 이후에는 플리스트가 비활성화됩니다.")}
+              onClick={() => fllistBtn(card.fllyId)}
             >
               플리스트
             </button>
