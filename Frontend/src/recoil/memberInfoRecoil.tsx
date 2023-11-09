@@ -1,4 +1,5 @@
 import { atom } from "recoil";
+import { recoilPersist } from "recoil-persist";
 
 export interface MemberInfo {
   id: number;
@@ -20,6 +21,14 @@ export interface StoreInfo {
   images: string[];
 }
 
+const isBrowser = typeof window !== "undefined";
+const sessionStorage = isBrowser ? window.sessionStorage : undefined;
+
+const { persistAtom } = recoilPersist({
+  key: "fllyMemberInfo",
+  storage: sessionStorage,
+});
+
 export const memberInfoState = atom<MemberInfo>({
   key: "memberInfoState",
   default: {
@@ -31,4 +40,5 @@ export const memberInfoState = atom<MemberInfo>({
     store: null,
     notification: false,
   },
+  effects_UNSTABLE: [persistAtom],
 });
