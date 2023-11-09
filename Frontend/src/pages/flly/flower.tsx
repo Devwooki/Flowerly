@@ -158,6 +158,8 @@ const FllyFlower = () => {
   },[selectedFlowers]);
 
   const handleClickNext = () => {
+    // 선택을 안하거나 조금 했을 때에 대한 처리
+    // if(selectedFlowers.length==)
     setShowNextModal(true);
   }
 
