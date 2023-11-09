@@ -1,8 +1,35 @@
 import React, { useState } from "react";
 import style from "./BuyerFllyListCompletedCard.module.css";
 
-const BuyerFllyListCompletedCard = ({ ModalChangeHandler }: { ModalChangeHandler: () => void }) => {
-  const [riviewState, setRiviewState] = useState<Boolean>(false);
+interface BuyerFillListType {
+  fllyId: number;
+  buyerNickName: string;
+  deliveryPickupTime: string;
+  progress: string;
+  storeName: string;
+  fllyOrderType: string;
+  requestOrderType: string;
+  isReviewed: boolean;
+}
+
+interface Props {
+  ModalChangeHandler: () => void;
+  $fllyInfo: BuyerFillListType;
+  SelectIdChangeHandler: (fllyId: number, index: number) => void;
+  $index: number;
+}
+
+const BuyerFllyListCompletedCard = ({
+  ModalChangeHandler,
+  $fllyInfo,
+  SelectIdChangeHandler,
+  $index,
+}: Props) => {
+  const ReviewBtnHandler = () => {
+    SelectIdChangeHandler($fllyInfo.fllyId, $index);
+    ModalChangeHandler();
+  };
+
   return (
     <>
       <div className={style.cardBack}>
@@ -27,12 +54,12 @@ const BuyerFllyListCompletedCard = ({ ModalChangeHandler }: { ModalChangeHandler
               <div>23.10.21. 18:00</div>
             </div>
           </div>
-          {riviewState ? (
+          {$fllyInfo.isReviewed ? (
             <div className={style.OrderFooterTrue}>
               <div>리뷰 작성 완료</div>
             </div>
           ) : (
-            <div className={style.OrderFooterFalse} onClick={ModalChangeHandler}>
+            <div className={style.OrderFooterFalse} onClick={ReviewBtnHandler}>
               <div>리뷰 작성</div>
             </div>
           )}

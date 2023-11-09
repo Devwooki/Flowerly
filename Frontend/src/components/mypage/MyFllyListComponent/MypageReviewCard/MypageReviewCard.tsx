@@ -4,18 +4,32 @@ import Image from "next/image";
 import { useRecoilValue } from "recoil";
 import { MemberInfo, memberInfoState } from "@/recoil/memberInfoRecoil";
 
-interface Props {
-  ModalChangeHandler: () => void;
-  SelectIdChangeHandler: (requestId: number, index: number) => void;
-  // $requestIndex: number;
+interface ReviewType {
+  reviewId: number;
+  requestId: number;
+  storeName: string;
+  content: string;
+  createdAt: string;
 }
 
-const MypageReviewCard = ({ ModalChangeHandler, SelectIdChangeHandler }: Props) => {
+interface Props {
+  ModalChangeHandler: () => void;
+  SelectIdChangeHandler: (reviewId: number, index: number) => void;
+  $requestIndex: number;
+  $reviewInfo: ReviewType;
+}
+
+const MypageReviewCard = ({
+  ModalChangeHandler,
+  SelectIdChangeHandler,
+  $requestIndex,
+  $reviewInfo,
+}: Props) => {
   const memberInfo = useRecoilValue<MemberInfo>(memberInfoState);
 
   const DeleteBtnHandler = () => {
     ModalChangeHandler();
-    // SelectIdChangeHandler($requestIndex);
+    SelectIdChangeHandler($reviewInfo.reviewId, $requestIndex);
   };
 
   return (
