@@ -41,83 +41,57 @@ public class JWTAuthenticationProcessingFilter extends OncePerRequestFilter {
     private GrantedAuthoritiesMapper authoritiesMapper = new NullAuthoritiesMapper();
 
 
-    /** ============== 23.11.09 토큰 검증 로직 수정 ===============
-     * 1. AccessToken 검증
-     *   if(AccessToken == null) : 리프레시 토큰을 요청한다.
-     * 2.
-     *
-     * */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
-        //return을 하게 되면 Servlet 컨테이너를 넘어 Interceptor -> Controller로 접속하게 된다.
-        //멤버 검증 로직은 인터셉터에서 수행하므로 filter를 넘어간다.
+        //일회용 토큰 검증용
         if(request.getRequestURI().equals("/api/member")){
             log.info("너냐!?");
             filterChain.doFilter(request, response);
             return;
         }
-        if(request.getRequestURI().startsWith("/api/member/dummy-token")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
 
-        //EndPoint가 /oauth2, favicon을 요청할 경우 컨트롤러로 들어간다. 즉 무시해도 되는 요청
+        //해당 필터는 JWT만 검증하므로 다음 필터에게 작업을 처리하도록한다.
         if(request.getRequestURI().equals(NO_CHECK_URL) || request.getRequestURI().contains("favicon")){
             filterChain.doFilter(request,response);
             return;
         }
 
-        // >>>>>>>>>>>>>>>>>>>>>>>> 지금부터 검증 시작 <<<<<<<<<<<<<<<<<<<<<<<<<<
-//         검증 시나리오
-//         1. 클라이언트는 AccessToken을 가지고 서버에 자유롭게  요청한다.
-//         -> 만료되거나 유효하지 않으면 null이므로 refreshToken을 검증한다.
-//              -> refreshToken이 유효하다 : AccessToken을 재발급하고 RefreshToken도 재발급해주자
-//              -> refreshToken도 만료 되었다 : 클라이언트에게 다시 로그인 하라고 한다.
-
-        String accessToken = jwtService.extractAccessToken(request)
-                .filter(jwtService::isValidToken)
-                .orElse(null);
-        log.info("accessToken : {} ", accessToken);
-
-        //엑세스 토큰이 유효하므로 컨트롤러로 접속한다.
-        if(accessToken != null){
-            checkAccessTokenAndAuthentication(request, accessToken);
-            filterChain.doFilter(request,response);
-            return;
-        }
-
-        log.info("accesstoken이 만료 되었따!!!!! refreshToken 검증 시작");
-        // 엑세스 토큰이 유효하지 않는 경우 RefreshToken을 요청받아야하지만
-        // 도메인이 같기 때문에 항상 쿠키를 주고 받는다 고로 주석 처리
-        // withCredentials : true여서 항상 쿠키를 주고 받는다.
-
-        //accessToken이 만료 되었으므로 RefreshToken을 검증한다.
+        // 1. 헤더에 RefreshToken이 들어있는지 체크 | 헤더에 RefreshToken이 들어있으면 AccessToken이 만료됨
+        // RefreshToken이 있으면 비교한 뒤 AccessToken을 재발급한다.
+        // 유효하지 않거나, 없는 경우 -> null -> filter작업 이어서 수행
         String refreshToken = jwtService.extractRefreshToken(request)
                 .filter(jwtService::isValidToken)
                 .orElse(null);
 
-        if(refreshToken != null) {
-            checkRefreshTokenAndReIssueAccessToken(response, refreshToken);
-        }else{
-            response.sendError(403,"로그인 정보가 없거나 만료되어 재로그인이 필요합니다.");
+        if(refreshToken != null){
+            log.info("refreshToken 검증 시작");
+            checkRefreshTokenAndReIssueAccessToken(response,refreshToken);
+            log.info("refreshToken 검증 끝");
+        }
+
+        //RefreshToken이 없거나 유효하지 않다면, AccessToken을 검사한다
+        if (refreshToken == null) {
+            checkAccessTokenAndAuthentication(request, response, filterChain);
+            filterChain.doFilter(request, response);
         }
     }
 
     // AccessToken + 인증 처리 메소드
     //토큰이 유효하다면 accessToken에서 memberId를 추출하고 member를 찾아 인증 객체에 넣는다.
     //추후 Controller 등에서 사용하기 위해 Attribute에 memberId를 넣는다
-    private void checkAccessTokenAndAuthentication(HttpServletRequest request, String accessToken){
-        log.info("accessToken 검증 시작");
+    private void checkAccessTokenAndAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        log.info("accessToken 검증 시작 : checkAccessTokenAndAuthentication() 호출");
 
-        jwtService.extractMemberId(accessToken)
+        jwtService.extractAccessToken(request)
+                .filter(jwtService::isValidToken)
+                .flatMap(jwtService::extractMemberId)
                 .flatMap(memberRepository::findByMemberIdActivate)
                 .ifPresent(member -> {
-                    log.info("이왜진? {}", member);
                     request.setAttribute("memberId", member.getMemberId());
                     saveAuthentication(member);
                 });
-        log.info("검증 성공! 컨트롤러로 접속!");
+
+        log.info("검증 성공!");
     }
 
     // 인증을 수행하는 메소드
@@ -143,25 +117,21 @@ public class JWTAuthenticationProcessingFilter extends OncePerRequestFilter {
     }
 
     //RefreshToken이 Redis에 있는지 체크하는 로직
-    public void checkRefreshTokenAndReIssueAccessToken(HttpServletResponse response, String refreshToken) throws IOException {
+    public void checkRefreshTokenAndReIssueAccessToken(HttpServletResponse response, String refreshToken) {
         try{
-            log.info(">>>> RefreshToken 검증 시작! <<<<");
             //RefreshToken으로 유저 정보(ID) 찾기
             String storedValue = redisTemplate.opsForValue().get(refreshToken);
             if(storedValue == null)
-                response.sendError(403,"로그인 정보가 없거나 만료되어 재로그인이 필요합니다.");
+                throw new AuthException(ErrorCode.FORBIDDEN);
 
             //기존 RefreshToken 제거
             redisTemplate.delete(refreshToken);
 
             // RefreshToken 및 AccessToken 재발급
-            log.info("storedValue :{}", storedValue);
             Long memberId = Long.valueOf(storedValue);
             reIssueTokens(response, memberId);
-
         }catch(Exception e){
-            e.printStackTrace();
-            response.sendError(403,"로그인 정보가 없거나 만료되어 재로그인이 필요합니다.");
+            throw new AuthException(ErrorCode.FORBIDDEN);
         }
     }
 
@@ -170,10 +140,5 @@ public class JWTAuthenticationProcessingFilter extends OncePerRequestFilter {
         String reIssueAccessToken = jwtService.createAccessToken(memberId);
 
         jwtService.sendAccessTokenAndRefreshToken(response, reIssueAccessToken, reIssueRefreshToken);
-    }
-
-    private static class MyResponse{
-        int code;
-        String message;
     }
 }
