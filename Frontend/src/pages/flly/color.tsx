@@ -6,6 +6,7 @@ import { colorState, flowerState } from "@/recoil/fllyRecoil";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { ToastErrorMessage } from "@/model/toastMessageJHM";
 
 const FllyColor = () => {
   const router = useRouter();
@@ -68,7 +69,7 @@ const FllyColor = () => {
     if(check) {
       setSelcetedFlowers([]);
       router.push("flower");
-    }
+    } else ToastErrorMessage("항목을 선택해 주세요.");
   };
 
   return (

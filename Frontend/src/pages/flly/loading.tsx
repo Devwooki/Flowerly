@@ -67,6 +67,7 @@ const FllyLoading = () => {
 
   useEffect(() => {
     console.log(order);
+    router.push("bouquet"); // 지우기
     // if(order != "") generateImage();
   },[order]);
 
