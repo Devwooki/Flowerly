@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import style from "./UserTypeChangeModal.module.css";
+import { useRecoilState } from "recoil";
+import { MemberInfo, memberInfoState } from "@/recoil/memberInfoRecoil";
 
 interface Props {
   userChangModalHandler: () => void;
@@ -7,6 +9,7 @@ interface Props {
 
 const UserTypeChangeModal = ({ userChangModalHandler }: Props) => {
   const [userType, setUserType] = useState<string>();
+  const [memberInfo, setMemberInfo] = useRecoilState<MemberInfo>(memberInfoState);
 
   const NotClickEventHandler = (e: React.MouseEvent<HTMLDivElement>) => {
     //상위 함수를 실행하지 말아라 (모달 꺼지는거 방지)
@@ -15,9 +18,9 @@ const UserTypeChangeModal = ({ userChangModalHandler }: Props) => {
 
   //유저정보 변경 눌렀을때
   const SummitBtnHandler = () => {
-    if (userType === "buyer") {
+    if (memberInfo.role === "USER") {
       console.log("저 구매자인데 유저 정보변경을 눌렀어요!!!");
-    } else if (userType === "seller") {
+    } else if (memberInfo.role === "SELLER") {
       console.log("저 판매자인데 유저 정보변경을 눌렀어요!!!");
     }
   };
@@ -25,7 +28,7 @@ const UserTypeChangeModal = ({ userChangModalHandler }: Props) => {
   return (
     <>
       <div className={style.checkBack} onClick={userChangModalHandler}>
-        {userType === "buyer" ? (
+        {memberInfo.role === "USER" ? (
           <div className={style.modalBack} onClick={NotClickEventHandler}>
             <div>판매자로 전환하시겠습니까?</div>
             <div>판매자로 전환시 사업자 등록 및 추가적인 정보를 입력하셔야합니다.</div>
