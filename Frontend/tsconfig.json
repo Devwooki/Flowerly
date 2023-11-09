@@ -1,29 +1,30 @@
 {
-  "compilerOptions": {
-    "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "noEmit": true,
-    "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "bundler",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "jsx": "preserve",
-    "incremental": true,
-    "paths": {
-      "@/*": ["./*"],
-      "@components/*": ["components/*"],
-      "@pages/*": ["pages/*"],
-      "@api/*": ["api/*"],
-      "@styles/*": ["styles/*"],
-      "@public/*": ["../public/*"]
+    "compilerOptions": {
+      "target": "es5",
+      "lib": ["dom", "dom.iterable", "esnext"],
+      "allowJs": true,
+      "skipLibCheck": true,
+      "strict": true,
+      "noEmit": true,
+      "esModuleInterop": true,
+      "module": "esnext",
+      "moduleResolution": "bundler",
+      "resolveJsonModule": true,
+      "isolatedModules": true,
+      "jsx": "preserve",
+      "incremental": true,
+      "paths": {
+        "@/*": ["./*"],
+        "@components/*": ["components/*"],
+        "@pages/*": ["pages/*"],
+        "@api/*": ["api/*"],
+        "@styles/*": ["styles/*"],
+        "@public/*": ["../public/*"]
+      },
+      "baseUrl": "./src",
+      "types": ["kakao.maps.d.ts"]
     },
-    "baseUrl": "./src",
-    "types": ["kakao.maps.d.ts"]
-  },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
-  "exclude": ["node_modules"]
-}
+    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
+    "exclude": ["node_modules"]
+  }
+  
