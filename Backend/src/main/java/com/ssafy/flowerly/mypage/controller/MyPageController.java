@@ -92,15 +92,15 @@ public class MyPageController {
         return new DataResponse<>(200, "배달 가능 지역 조회 성공", myPageService.getMyDeliveryRegion(memberId));
     }
 
-//    // seller - 배달 가능 지역 수정
-//    @PutMapping("/delivery")
-//    public CustomResponse updateMyDeliveryRegion(HttpServletRequest request, @RequestBody List<MyDeliveryRegionDto> myDeliveryRegionDto) {
-//        Long memberId = (Long) request.getAttribute("memberId");
-//        MyDeliveryRegionDto updateDeliveryRegion = myPageService.updateDeliveryRegion(memberId,myDeliveryRegionDto);
-//
-//        return new DataResponse<>(200, "배달 가능 지역 수정", updateDeliveryRegion);
-//
-//    }
+    // seller - 배달 가능 지역 수정
+    @PutMapping("/delivery")
+    public CustomResponse updateMyDeliveryRegion(HttpServletRequest request, @RequestBody List<MyDeliveryRegionDto> myDeliveryRegionDto) {
+        Long memberId = (Long) request.getAttribute("memberId");
+        List<MyDeliveryRegionDto> updateDeliveryRegion = myPageService.updateDeliveryRegion(memberId,myDeliveryRegionDto);
+
+        return new DataResponse<>(200, "배달 가능 지역 수정", updateDeliveryRegion);
+
+    }
 
 
     // buyer 닉네임 수정

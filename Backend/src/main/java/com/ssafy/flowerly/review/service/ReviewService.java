@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -68,6 +69,11 @@ public class ReviewService {
         Member consumer = memberRepository.findByMemberId(memberId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_MEMBER));
 
+        // consumer 검증
+        if (!consumer.equals(request.getFlly().getConsumer())) {
+            throw new CustomException(ErrorCode.CONSUMER_NOT_REVIEWER);
+        }
+
         Review review = Review.builder()
                 .consumer(consumer)
                 .request(request)
@@ -80,5 +86,13 @@ public class ReviewService {
 
 
 
+    }
+
+    public void deleteReview(Long reviewId, Long consumerId) {
+        Review review = reviewRepository.findByConsumerMemberIdAndReviewIdAndIsRemovedFalse(reviewId, consumerId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_REVIEW));
+
+        review.markAsRemoved();
+        reviewRepository.save(review);
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ReviewRepository extends JpaRepository<Review, Long> {
@@ -15,4 +16,6 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     Page<Review> findByConsumerMemberIdAndIsRemovedFalse(Pageable pageable, Long consumerId); // 구매자 리뷰 목록 조회
 
     Boolean existsByRequestRequestId(Long requestId);
+
+    Optional<Review> findByConsumerMemberIdAndReviewIdAndIsRemovedFalse(Long reviewId, Long consumerId);
 }

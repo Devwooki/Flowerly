@@ -5,6 +5,7 @@ import com.ssafy.flowerly.entity.StoreDeliveryRegion;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +14,7 @@ public interface StoreDeliveryRegionRepository extends JpaRepository<StoreDelive
 
     Optional<List<StoreDeliveryRegion>> findBySellerMemberId (Long memberId);
 
+    @Transactional
     Optional<List<StoreDeliveryRegion>> deleteBySellerMemberId(Long memberId);
 
 }
