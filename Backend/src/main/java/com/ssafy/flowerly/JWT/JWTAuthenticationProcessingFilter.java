@@ -59,9 +59,14 @@ public class JWTAuthenticationProcessingFilter extends OncePerRequestFilter {
         // 1. 헤더에 RefreshToken이 들어있는지 체크 | 헤더에 RefreshToken이 들어있으면 AccessToken이 만료됨
         // RefreshToken이 있으면 비교한 뒤 AccessToken을 재발급한다.
         // 유효하지 않거나, 없는 경우 -> null -> filter작업 이어서 수행
+        String accessToken = jwtService.extractAccessToken(request)
+                .filter(jwtService::isValidToken)
+                .orElse(null);
+
         String refreshToken = jwtService.extractRefreshToken(request)
                 .filter(jwtService::isValidToken)
                 .orElse(null);
+
 
         if(refreshToken != null){
             log.info("refreshToken 검증 시작");

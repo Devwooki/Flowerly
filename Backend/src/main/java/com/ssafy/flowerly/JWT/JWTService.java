@@ -51,7 +51,6 @@ public class JWTService {
     private static final String BEARER = "Bearer ";
 
     public String createAccessToken(Long memberId){
-        log.info("현재 시간 : {}", LocalDateTime.now());
         Date now = new Date();
         Date expireDate = new Date(now.getTime() + accessExpiration);
         return JWT.create()
