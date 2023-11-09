@@ -58,6 +58,11 @@
 .chattingName {
   margin-left: 10px;
 }
+.storeBtn {
+  margin-left: 8px;
+  display: flex;
+  align-items: center;
+}
 
 .dateDiv {
   width: 100%;
