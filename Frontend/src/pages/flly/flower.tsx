@@ -38,12 +38,13 @@ const FllyFlower = () => {
       }
       )
       .then((response) => {
+        console.log(response);
         console.log(response.data);
         if (response.data.code === 200) {
           setFlowers(response.data.data.flowers);
           setFlowersColor(response.data.data.flowersColor);
           setFlowersMeaning(response.data.data.flowersMeaning);
-          localStorage.setItem("accessToken", response.headers.Authorization);
+          localStorage.setItem("accessToken", response.headers.authorization);
         }
       })
       .catch((error) => {

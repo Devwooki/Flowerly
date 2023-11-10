@@ -191,7 +191,7 @@ const FllyTarget = () => {
         console.log(response.data);
         if (response.data.code === 200) {
           router.push("/");
-          localStorage.setItem("accessToken", response.headers.Authorization);
+          localStorage.setItem("accessToken", response.headers.authorization);
         }
       })
       .catch((error) => {
