@@ -10,7 +10,7 @@ const Temp = () => {
   const [host, setHost] = useState<string | null>(null);
   const router = useRouter();
   const setMemberInfo = useSetRecoilState(memberInfoState);
-  const { token } = router.query as { token: string };
+  const { tempToken } = router.query as { tempToken: string };
 
   useEffect(() => {
     if (!path && !host) {
@@ -20,46 +20,42 @@ const Temp = () => {
   }, [path, host]);
 
   useEffect(() => {
-    if (token && host && path) {
-      getMemberinfo(token);
+    if (tempToken && host && path) {
+      getMemberinfo(tempToken);
     }
-  }, [token, host, path]);
+  }, [tempToken, host, path]);
 
-  const getMemberinfo = async (token: string) => {
-    axios
-      .get("https://flower-ly.co.kr/api/member", {
-        // .get("http://localhost:6090/api/member", {
+  const getMemberinfo = async (tempToken: string) => {
+    try {
+      const response = await axios.get("https://flower-ly.co.kr/api/member", {
         withCredentials: true,
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${tempToken}`,
           "X-Request-Host": host,
           "X-Request-Path": path,
         },
-      })
-      .then((response) => {
-        console.log(response);
-        // memberinfo recoil에 데이터 저장, accesstoken localstorage에 저장
-        // router.push("/"); // 메인 페이지로 이동
-        // token(일회용 토큰) 초기화하기
-        if (response.data.code === 200) {
-          setMemberInfo(response.data.data);
-          console.log("memberinfo recoil에 데이터 저장 완료");
-          console.log(response.data.data);
-
-          localStorage.setItem("accessToken", token);
-
-          router.replace("/");
-
-          console.log("로그인 성공");
-          console.log(response.data.data);
-          console.log(token);
-        } else {
-          console.error("로그인 실패: ", response.data.message);
-        }
-      })
-      .catch((error) => {
-        console.error(error);
       });
+
+      console.log(response);
+      if (response.data.code === 200) {
+        setMemberInfo(response.data.data);
+
+        const accessToken = response.headers.Authorization;
+        console.log("최종 엑세스 토큰", accessToken);
+
+        if (accessToken) {
+          localStorage.setItem("accessToken", accessToken);
+          console.log("액세스 토큰 로컬 스토리지에 저장 완료");
+        }
+
+        router.replace("/");
+        console.log("로그인 성공", response.data.data);
+      } else {
+        console.error("로그인 실패: ", response.data.message);
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return null;
