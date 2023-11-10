@@ -30,11 +30,6 @@
   border-bottom-right-radius: 8px;
 }
 
-.cardTop {
-  display: flex;
-  justify-content: space-between;
-}
-
 .opponentName {
   font-weight: 700;
 }
@@ -42,6 +37,18 @@
 .cardTop,
 .cardBottom {
   padding: 3px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.newMsg {
+  background-color: #ce2939;
+  padding: 3px 5px;
+  border-radius: 50%;
+  color: white;
+  font-family: "NanumSquareNeoOTF-Bd";
+  font-size: 12px;
 }
 
 .time {

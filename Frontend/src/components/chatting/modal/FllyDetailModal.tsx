@@ -3,6 +3,9 @@ import style from "./style/FllyDetailModal.module.css";
 import Image from "next/image";
 import axios from "axios";
 
+import { tokenHttp } from "@/api/chattingTokenHttp";
+import { useRouter } from "next/router";
+
 type FllyDetailProps = {
   chattingId: number | undefined;
   modalHandler: Function;
@@ -30,13 +33,26 @@ type FllyDetail = {
 };
 
 const FllyDetailModal: React.FC<FllyDetailProps> = ({ chattingId, modalHandler }) => {
-  // axios로 받아와야 함
+  const router = useRouter();
   const [fllyDetail, setFllyDetail] = useState<FllyDetail>();
   useEffect(() => {
-    axios.get(`https://flower-ly.co.kr/api/chatting/flly/detail/${chattingId}`).then((response) => {
-      console.log(response.data.data);
-      setFllyDetail(response.data.data);
-    });
+    tokenHttp
+      .get(`/chatting/flly/detail/${chattingId}`)
+      .then((response) => {
+        if (response.data.code === 200) {
+          const responseData = response.data.data;
+          setFllyDetail(response.data.data);
+          //요거 필수!! (엑세스 토큰 만료로 재발급 받았다면 바꿔줘!! )
+          if (response.headers.authorization) {
+            localStorage.setItem("accessToken", response.headers.authorization);
+          }
+        }
+      })
+      .catch((err) => {
+        if (err.response.status === 403) {
+          router.push("/fllylogin");
+        }
+      });
   }, []);
 
   return (

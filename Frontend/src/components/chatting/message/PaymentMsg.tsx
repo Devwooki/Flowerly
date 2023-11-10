@@ -2,6 +2,10 @@ import { useState, useEffect } from "react";
 import style from "./style/PaymentMsg.module.css";
 import Image from "next/image";
 import axios from "axios";
+import { tokenHttp } from "@/api/chattingTokenHttp";
+import { useRouter } from "next/router";
+
+import { ToastErrorMessage } from "@/model/toastMessageJHM";
 
 type PaymentInfo = {
   requestId: number;
@@ -15,13 +19,31 @@ type PaymentMsgProps = {
 };
 
 const PaymentMsg: React.FC<PaymentMsgProps> = ({ chattingId }) => {
+  const router = useRouter();
   const [paymentInfo, setPaymentInfo] = useState<PaymentInfo>();
 
   useEffect(() => {
-    axios.get(`https://flower-ly.co.kr/api/chatting/price/${chattingId}`).then((response) => {
-      // console.log(response);
-      setPaymentInfo(response.data.data);
-    });
+    tokenHttp
+      .get(`/chatting/price/${chattingId}`)
+      .then((response) => {
+        if (response.data.code === 200) {
+          setPaymentInfo(response.data.data);
+          //요거 필수!! (엑세스 토큰 만료로 재발급 받았다면 바꿔줘!! )
+          if (response.headers.authorization) {
+            localStorage.setItem("accessToken", response.headers.authorization);
+          }
+        }
+      })
+      .catch((err) => {
+        if (err.response.status === 403) {
+          router.push("/fllylogin");
+        }
+      });
+
+    // axios.get(`https://flower-ly.co.kr/api/chatting/price/${chattingId}`).then((response) => {
+    //   // console.log(response);
+    //   setPaymentInfo(response.data.data);
+    // });
   }, []);
 
   return (
