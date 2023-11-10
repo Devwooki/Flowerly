@@ -23,7 +23,8 @@ public interface FllyRepository extends JpaRepository<Flly, Long> {
     Optional<Flly> findByFllyIdAndActivate (@Param("fllyId") Long fllyId);
 
     @Query("select f from Flly f " +
-            " where f.consumer.memberId = :memberId ")
+            " where f.consumer.memberId = :memberId " +
+            " and f.progress not like `` ")
     Page<Flly> findFllyByConsumerMemberId(Pageable pageable, @Param("memberId") Long memberId);
 
 
