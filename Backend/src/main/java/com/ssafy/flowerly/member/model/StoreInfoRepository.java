@@ -21,4 +21,8 @@ public interface StoreInfoRepository extends JpaRepository<StoreInfo, Long> {
     )
     List<Object[]> findBySellerInfo(@Param("memberId") Long memberId);
 
+    @Query(" select si.storeName from StoreInfo si " +
+            " where si.seller.memberId = :memberId ")
+    String findStoreName (@Param("memberId") Long memberId);
+
 }

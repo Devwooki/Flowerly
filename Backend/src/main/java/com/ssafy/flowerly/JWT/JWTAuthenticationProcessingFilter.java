@@ -88,13 +88,6 @@ public class JWTAuthenticationProcessingFilter extends OncePerRequestFilter {
                 .filter(jwtService::isValidToken)
                 .orElse(null);
 
-//        DecodedJWT decodedJWT = JWT.decode(accessToken);
-//        log.info("현재 시간{} : ", new Date());
-//        log.info("엑세스 시간{} : ", decodedJWT.getExpiresAt());
-//
-//        log.info("{}", decodedJWT.getExpiresAt().after(new Date()));
-        //log.info("{} ",(decodedJWT.getExpiresAt() < new Date()) ? "이후" : "이전");
-
         //엑세스 토큰이 유효하므로 컨트롤러로 접속한다.
         if(accessToken != null){
             checkAccessTokenAndAuthentication(request, accessToken);
@@ -103,9 +96,6 @@ public class JWTAuthenticationProcessingFilter extends OncePerRequestFilter {
         }
 
         log.info("accesstoken이 만료 되었따!!!!! refreshToken 검증 시작");
-        // 엑세스 토큰이 유효하지 않는 경우 RefreshToken을 요청받아야하지만
-        // 도메인이 같기 때문에 항상 쿠키를 주고 받는다 고로 주석 처리
-        // withCredentials : true여서 항상 쿠키를 주고 받는다.
 
         //accessToken이 만료 되었으므로 RefreshToken을 검증한다.
         String refreshToken = jwtService.extractRefreshToken(request)

@@ -21,8 +21,12 @@ public interface FllyRepository extends JpaRepository<Flly, Long> {
             "WHERE f.fllyId = :fllyId AND f.isCanceled = false " +
             "AND f.deadline > current_timestamp")
     Optional<Flly> findByFllyIdAndActivate (@Param("fllyId") Long fllyId);
-    Optional<Page<Flly>> findFllyByConsumerMemberId(Pageable pageable, Long memberId);
+
+    @Query("select f from Flly f " +
+            " where f.consumer.memberId = :memberId " +
+            " and f.progress not like `` ")
+    Page<Flly> findFllyByConsumerMemberId(Pageable pageable, @Param("memberId") Long memberId);
+
 
     List<Flly> findByConsumerMemberId(Long memberId);
-
 }
