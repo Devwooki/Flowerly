@@ -82,8 +82,8 @@ const FllyLoading = () => {
           <div className={style.guide}>하나뿐인 꽃다발을 생성중입니다.</div>
           <Image
             src="/img/etc/loading.gif"
-            width={240}
-            height={240}
+            width={200}
+            height={200}
             alt="로딩"
           ></Image>
         </div>
