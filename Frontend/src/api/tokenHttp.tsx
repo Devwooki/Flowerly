@@ -1,3 +1,4 @@
+import { ToastErrorMessage } from "@/model/toastMessageJHM";
 import axios from "axios";
 
 const baseURL = "https://flower-ly.co.kr/api";
@@ -24,3 +25,18 @@ tokenHttp.interceptors.request.use(async (req) => {
   req.headers["Authorization"] = "Bearer " + accessToken;
   return req;
 });
+
+tokenHttp.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 403) {
+      // 토큰 만료된 경우 처리를 합니다.
+      ToastErrorMessage("로그인 만료되어 로그인 화면으로 이동합니다.");
+      localStorage.removeItem("accessToken");
+    } else {
+      console.log(error);
+    }
+    // 에러를 반환하여 후속 .then() 또는 .catch()에서 처리할 수 있도록 합니다.
+    return Promise.reject(error);
+  },
+);
