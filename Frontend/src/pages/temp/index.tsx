@@ -20,7 +20,9 @@ const Temp = () => {
   }, [path, host]);
 
   useEffect(() => {
+    console.log("유즈이펙트 테스트");
     if (tempToken && host && path) {
+      console.log("토큰 있나 토큰있나 ?");
       getMemberinfo(tempToken);
     }
   }, [tempToken, host, path]);
