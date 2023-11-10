@@ -126,7 +126,7 @@ export const tokenHttp = axios.create({
 });
 
 tokenHttp.interceptors.request.use(async (req) => {
-  const accessToken = localStorage.getItem("accesstoken");
+  const accessToken = localStorage.getItem("accessToken");
 
   if (!accessToken) {
     console.log("token 이 존재하지 않습니다.");
