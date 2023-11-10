@@ -47,4 +47,6 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
     List<Request> findBySellerMemberId(@Param("memberId") Long memberId);
 
     Optional<Request> findByFllyFllyIdAndIsPaid(Long fllyId, Boolean isPaid);
+
+    Optional<Request> findByFllyFllyIdAndIsPaidTrue(Long fllyId);
 }
