@@ -10,7 +10,7 @@ const Temp = () => {
   const [host, setHost] = useState<string | null>(null);
   const router = useRouter();
   const setMemberInfo = useSetRecoilState(memberInfoState);
-  const { tempToken } = router.query as { tempToken: string };
+  const { token } = router.query as { token: string };
 
   useEffect(() => {
     if (!path && !host) {
@@ -20,10 +20,12 @@ const Temp = () => {
   }, [path, host]);
 
   useEffect(() => {
-    if (tempToken && host && path) {
-      getMemberinfo(tempToken);
+    console.log("유즈이펙트 테스트");
+    if (token && host && path) {
+      console.log("토큰 있나 토큰있나 ?");
+      getMemberinfo(token);
     }
-  }, [tempToken, host, path]);
+  }, [token, host, path]);
 
   const getMemberinfo = async (tempToken: string) => {
     try {
