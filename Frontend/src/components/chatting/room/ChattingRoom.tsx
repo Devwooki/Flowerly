@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import style from "./style/ChattingRoom.module.css";
 import { useRouter } from "next/router";
 import axios from "axios";
+import { useRecoilValue } from "recoil";
 
 import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
@@ -19,6 +20,8 @@ import RequestModal from "../modal/RequestModal";
 import ImageModal from "../modal/ImageModal";
 
 import { ToastErrorMessage } from "@/model/toastMessageJHM";
+import { memberInfoState } from "@/recoil/memberInfoRecoil";
+import Image from "next/image";
 
 type ChattingRoomProps = {
   chattingId: number;
@@ -47,6 +50,7 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
   const messageEndRef = useRef<HTMLDivElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
+  const memberInfo = useRecoilValue(memberInfoState);
   const [chattingMsgs, setChattingMsgs] = useState<ChattingMsg>();
   const [initialLoading, setInitialLoading] = useState(true);
   const [infiniteScrolling, setInfiniteScrolling] = useState(false);
@@ -60,18 +64,19 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
 
   const axiosHandler = async () => {
     const BaseUrl = `https://flower-ly.co.kr/api/chatting/${chattingId}`;
-    // const accessToken =
-    //   "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcwODY4MzQ4NiwibWVtYmVySWQiOjF9.wU3IYYWErRie5E5s7oIRYMliboyumfMrCZILaKnwlxXxJXCW1kHZ5fJ-mKvsAwYuMV4-UT0F4qoUX9rVcrTiNw";
     const accessToken =
-      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcwODc1MjUwMywibWVtYmVySWQiOjJ9.o_v_EVuucqlh2NPfHioqquPjm3U-JTP-7ZP2xJkxIxMsPBMhxnw0DL-Avnh2ryBa_J6JYS7YdCc5dZuMS_9IUw";
-    axios
+      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcwODY4MzQ4NiwibWVtYmVySWQiOjF9.wU3IYYWErRie5E5s7oIRYMliboyumfMrCZILaKnwlxXxJXCW1kHZ5fJ-mKvsAwYuMV4-UT0F4qoUX9rVcrTiNw";
+    // const accessToken =
+    //   "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcwODc1MjUwMywibWVtYmVySWQiOjJ9.o_v_EVuucqlh2NPfHioqquPjm3U-JTP-7ZP2xJkxIxMsPBMhxnw0DL-Avnh2ryBa_J6JYS7YdCc5dZuMS_9IUw";
+    await axios
       .get(BaseUrl, {
         headers: {
           Authorization: "Bearer " + accessToken,
-          withCredential: false,
         },
+        withCredentials: true,
       })
       .then((response) => {
+        console.log(response.data);
         if (response.data.code === 200) {
           const responseData = response.data.data;
           setChattingMsgs({
@@ -82,45 +87,11 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
             messages: addDateMsg(responseData.messages),
           });
         }
-        if (response.data.code === 401) {
-          axios
-            .get(BaseUrl, {
-              headers: {
-                withCredential: true,
-              },
-            })
-            .then((response) => {
-              if (response.data.code === 200) {
-                const responseData = response.data.data;
-                setChattingMsgs({
-                  chattingId: responseData.chattingId,
-                  opponentMemberId: responseData.opponentMemberId,
-                  opponentName: responseData.opponentName,
-                  lastId: responseData.lastId,
-                  messages: addDateMsg(responseData.messages),
-                });
-              }
-              //리프레시 포함
-              else if (response.data.code === 403) {
-                ToastErrorMessage("로그인이 만료되었습니다. 다시 로그인해주세요");
-                localStorage.removeItem("accessToken");
-                router.push("/fllylogin");
-              }
-            })
-            .catch((error) => {
-              console.log(error);
-              ToastErrorMessage("서버 에러 발생!! 초비상!!!");
-            });
-        }
-        if (response.data.code === 403) {
-          //리프레시 포함
-          ToastErrorMessage("로그인이 만료되었습니다. 다시 로그인해주세요");
-          localStorage.removeItem("accessToken");
-          router.push("/fllylogin");
-        }
       })
       .catch((error) => {
-        console.log(error);
+        if (error.response.status === 403) {
+          console.log("잠이나 자자");
+        }
         ToastErrorMessage("서버 에러 발생!! 초비상!!!");
       });
 
@@ -137,71 +108,72 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
   };
 
   useEffect(() => {
-    // console.log("첫 렌더링");
+    // // console.log("첫 렌더링");
 
-    // SockJS와 STOMP 설정
-    // const socket = new SockJS("http://localhost:6090/stomp-chat"); // 로컬 테스트용
-    const socket = new SockJS("https://flower-ly.co.kr/stomp-chat"); // 배포용
-    const client = new Client({
-      webSocketFactory: () => socket,
-    });
+    // // SockJS와 STOMP 설정
+    // // const socket = new SockJS("http://localhost:6090/stomp-chat"); // 로컬 테스트용
+    // const socket = new SockJS("https://flower-ly.co.kr/stomp-chat"); // 배포용
+    // const client = new Client({
+    //   webSocketFactory: () => socket,
+    // });
 
-    client.onConnect = () => {
-      axiosHandler();
+    // client.onConnect = () => {
+    //   axiosHandler();
 
-      console.log(chattingId, "Connected");
-      // 특정 채팅방의 메세지를 구독
-      client.subscribe(`/sub/message/${chattingId}`, (message) => {
-        // console.log(message.body);
-        const newMsgJson = JSON.parse(message.body);
-        const newMsg = {
-          messageId: "",
-          memberId: newMsgJson.memberId,
-          type: newMsgJson.type,
-          content: newMsgJson.content,
-          sendTime: String(new Date()),
-        };
+    //   console.log(chattingId, "Connected");
+    //   // 특정 채팅방의 메세지를 구독
+    //   client.subscribe(`/sub/message/${chattingId}`, (message) => {
+    //     // console.log(message.body);
+    //     const newMsgJson = JSON.parse(message.body);
+    //     const newMsg = {
+    //       messageId: "",
+    //       memberId: newMsgJson.memberId,
+    //       type: newMsgJson.type,
+    //       content: newMsgJson.content,
+    //       sendTime: String(new Date()),
+    //     };
 
-        setChattingMsgs((prevState) => {
-          if (!prevState) {
-            return {
-              chattingId: 0,
-              opponentMemberId: 0,
-              lastId: "",
-              opponentName: "",
-              messages: [newMsg],
-            };
-          }
+    //     setChattingMsgs((prevState) => {
+    //       if (!prevState) {
+    //         return {
+    //           chattingId: 0,
+    //           opponentMemberId: 0,
+    //           lastId: "",
+    //           opponentName: "",
+    //           messages: [newMsg],
+    //         };
+    //       }
 
-          return {
-            ...prevState,
-            messages: addDateMsg([...prevState.messages, newMsg]),
-          };
-        });
-      });
-    };
+    //       return {
+    //         ...prevState,
+    //         messages: addDateMsg([...prevState.messages, newMsg]),
+    //       };
+    //     });
+    //   });
+    // };
 
-    client.onStompError = (error) => {
-      console.error("STOMP Error:", error);
-    };
+    // client.onStompError = (error) => {
+    //   console.error("STOMP Error:", error);
+    // };
 
-    client.onDisconnect = () => {
-      console.log("Disconnected");
-    };
+    // client.onDisconnect = () => {
+    //   console.log("Disconnected");
+    // };
 
-    // 연결 시작
-    client.activate();
-    setStompClient(client);
+    // // 연결 시작
+    // client.activate();
+    // setStompClient(client);
 
-    setInitialLoading(false);
-    scrollDown();
+    // setInitialLoading(false);
+    // scrollDown();
 
-    // 컴포넌트 unmount 시 연결 종료
-    return () => {
-      if (client.connected) {
-        client.deactivate();
-      }
-    };
+    // // 컴포넌트 unmount 시 연결 종료
+    // return () => {
+    //   if (client.connected) {
+    //     client.deactivate();
+    //   }
+    // };
+    axiosHandler();
   }, []);
 
   useEffect(() => {
@@ -389,6 +361,19 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
             &lt;
           </div>
           <div className={style.chattingName}>{chattingMsgs && chattingMsgs.opponentName}</div>
+          {memberInfo.role == "USER" && (
+            <div className={style.storeBtn}>
+              <Image
+                src="/img/btn/store-btn.png"
+                width={20}
+                height={20}
+                alt="가게정보"
+                onClick={() => {
+                  router.push(`/list/shop/${chattingMsgs?.opponentMemberId}`);
+                }}
+              />
+            </div>
+          )}
         </div>
         <div
           className={menuOpen ? style.containerWithMenu : style.container}

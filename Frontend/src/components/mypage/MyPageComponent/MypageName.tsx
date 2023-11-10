@@ -5,18 +5,17 @@ import { useRecoilValue } from "recoil";
 
 const MypageName = () => {
   //나중에 리코일~!!
-  const [userType, setUserType] = useState<String>("seller");
   const memberInfo = useRecoilValue<MemberInfo>(memberInfoState);
 
   return (
     <>
-      {userType === "seller" && (
+      {memberInfo.role === "SELLER" && (
         <div className={style.MypageNameBack}>
           <div>판매자님 반갑습니다</div>
           <div>{memberInfo.nickName}</div>
         </div>
       )}
-      {userType === "buyer" && (
+      {memberInfo.role === "USER" && (
         <div className={style.MypageNameBack}>
           {/* 아래 div 없애지 말아주세요! */}
           <div></div>

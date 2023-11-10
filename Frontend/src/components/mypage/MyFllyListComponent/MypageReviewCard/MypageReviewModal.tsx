@@ -18,6 +18,8 @@ const MypageReviewModal = ({ ModalChangeHandler, $selectId, UpdateFllyList }: Pr
   const SummitBtnHandler = () => {
     //엑시오스 요청
     console.log($selectId);
+    //요청이 200이 넘어온다면!
+    UpdateFllyList();
   };
 
   return (
