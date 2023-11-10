@@ -48,6 +48,8 @@ public class SecurityConfig {
                 .and()
                 //===========URL 별 권한 옵션 =============
                 .authorizeRequests()
+                //=============채팅 요청에 대한 검증=================
+                //==========================================
                 .antMatchers("/**").permitAll()
                 .antMatchers("/api/member").authenticated()
                 .antMatchers("/api/member/signup/**").authenticated()

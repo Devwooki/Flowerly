@@ -34,7 +34,7 @@ public class ChattingController {
     public CustomResponse getChattingList(HttpServletRequest request){
         log.info("채팅방 목록 조회");
         Long memberId = (Long) request.getAttribute("memberId");
-//        Long memberId = 1L;
+        //Long memberId = 1L;
         List<ChattingDto.BasicResponse> chattingList = chattingService.getChattingList(memberId);
 
         return new DataResponse<>(200, "채팅방 리스트 조회 성공", chattingList);

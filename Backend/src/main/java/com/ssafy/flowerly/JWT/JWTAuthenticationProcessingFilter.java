@@ -54,7 +54,8 @@ public class JWTAuthenticationProcessingFilter extends OncePerRequestFilter {
 
         //return을 하게 되면 Servlet 컨테이너를 넘어 Interceptor -> Controller로 접속하게 된다.
         //멤버 검증 로직은 인터셉터에서 수행하므로 filter를 넘어간다.
-        if(request.getRequestURI().equals("/api/member")){
+        if(request.getRequestURI().equals("/api/member")
+                ||request.getRequestURI().startsWith("/stomp-chat")){
             log.info("너냐!?");
             filterChain.doFilter(request, response);
             return;
