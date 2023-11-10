@@ -2,7 +2,11 @@ import React, { useEffect, useRef, useState } from "react";
 import style from "./style/MypageStoreImg.module.css";
 import Image from "next/image";
 
-const MypageStoreImg = () => {
+interface MypageStoreImgProps {
+  imageUrls: string[];
+}
+
+const MypageStoreImg: React.FC<MypageStoreImgProps> = ({ imageUrls }) => {
   const imgBoxRef = useRef<HTMLDivElement>(null);
 
   //이미지 사이즈 변화
@@ -24,15 +28,11 @@ const MypageStoreImg = () => {
         <div>대표 사진</div>
 
         <div className={style.ImgBox} ref={imgBoxRef}>
-          <div>
-            <Image src={"/test/test-flower-img.png"} fill alt="대표사진" />
-          </div>
-          <div>
-            <Image src={"/test/test-flower-img.png"} fill alt="대표사진" />
-          </div>
-          <div>
-            <Image src={"/test/test-flower-img.png"} fill alt="대표사진" />
-          </div>
+          {imageUrls.map((url, index) => (
+            <div key={index}>
+              <Image src={url} fill alt="대표사진" />
+            </div>
+          ))}
         </div>
       </div>
     </>

@@ -5,32 +5,76 @@ import MypageCategory from "./MyPageComponent/MypageCategory";
 import MypageStoreImg from "./MyPageComponent/MypageStoreImg";
 import { memberInfoState, MemberInfo } from "@/recoil/memberInfoRecoil";
 import { useRecoilState } from "recoil";
+import { tokenHttp } from "@/api/tokenHttp";
+import Router from "next/router";
+import { ToastErrorMessage } from "@/model/toastMessageJHM";
+
+interface SellerMyPageData {
+  storeName: string;
+  imageUrl: string[];
+}
+
+interface BuyerMyPageData {
+  nickName: string;
+}
 
 const Mypage = () => {
   //나중에 리코일로 변경하면됩니다
   const [memberInfo, setMemberInfo] = useRecoilState<MemberInfo>(memberInfoState);
+  const [sellerData, setSellerData] = useState<SellerMyPageData | null>(null);
+  const [buyerData, setBuyerData] = useState<BuyerMyPageData | null>(null);
 
   useEffect(() => {
     console.log(memberInfo);
-  }, []);
+
+    const getMyPageData = () => {
+      tokenHttp
+        .get(memberInfo.role === "SELLER" ? "/mypage/seller" : "/mypage/buyer")
+        .then((response) => {
+          if (memberInfo.role === "SELLER") {
+            setSellerData(response.data.data);
+          } else {
+            setBuyerData(response.data.data);
+          }
+
+          if (response.headers.authorization) {
+            localStorage.setItem("accessToken", response.headers.authorization);
+          }
+        })
+        .catch((error) => {
+          console.error("마이페이지 데이터를 불러오는데 실패했습니다.", error);
+          if (error.response && error.response.status === 403) {
+            Router.push("/fllylogin");
+          }
+        });
+    };
+
+    getMyPageData();
+  }, [memberInfo]);
+
+  const handleMyStoreInfo = () => {
+    Router.push("/mypage/mystore");
+  };
 
   return (
     <>
       <div className={style.MyPageBack}>
         <div className={style.MyPageTitle}>마이페이지</div>
+
         <div className={style.NameBox}>
-          <MypageName />
+          <MypageName name={sellerData ? sellerData.storeName : buyerData?.nickName || ""} />
         </div>
-        {memberInfo.role === "SELLER" && (
+        {memberInfo.role === "SELLER" && sellerData && (
           <div className={style.StoreImgBox}>
-            <MypageStoreImg />
+            <MypageStoreImg imageUrls={sellerData.imageUrl} />
           </div>
         )}
+
         <div className={style.CategoryBox}>
           <MypageCategory />
         </div>
         {memberInfo.role === "SELLER" && (
-          <div className={style.MypageSidBox}>
+          <div className={style.MypageSidBox} onClick={() => handleMyStoreInfo()}>
             <div>
               <div>가게 정보 보기</div>
               <div> &gt;</div>

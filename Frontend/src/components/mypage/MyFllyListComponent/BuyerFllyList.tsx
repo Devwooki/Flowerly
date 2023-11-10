@@ -3,6 +3,9 @@ import BuyerFllyListCompletedCard from "./BuyerFllyListCard/BuyerFllyListComplet
 import BuyerFllyListProgressCard from "./BuyerFllyListCard/BuyerFllyListProgressCard";
 import MypageReviewModal from "./MypageReviewCard/MypageReviewModal";
 import axios from "axios";
+import { tokenHttp } from "@/api/tokenHttp";
+import router from "next/router";
+import { ToastErrorMessage } from "@/model/toastMessageJHM";
 
 interface BuyerFillListType {
   fllyId: number;
@@ -48,21 +51,21 @@ const BuyerFllyList = () => {
   };
 
   useEffect(() => {
-    const tokens =
-      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcwOTUwNjY2NywibWVtYmVySWQiOjF9.Rvoz54jid-oatfns3YuHLkvTTQ_eyCfHmT4tAod3QuH3geimCFbSk_TCgmuuHUtgs34EGuVbdm_aBwpRbNBi6w";
-
-    axios
-      .get("https://flower-ly.co.kr/api/mypage/buyer/flly", {
-        headers: {
-          Authorization: "Bearer " + tokens,
-        },
-      })
+    tokenHttp
+      .get("/mypage/buyer/flly")
       .then((res) => {
         if (res.data.code === 200) {
           setBuyerFllyList(res.data.data);
+          localStorage.setItem("accessToekn", res.headers.authorization);
+        }
+      })
+      .catch((err) => {
+        if (err.response.status === 403) {
+          router.push("/fllylogin");
+          ToastErrorMessage("로그인 만료되어 로그인화면으로 이동합니다.");
         }
       });
-  }, []);
+  });
 
   return (
     <>
