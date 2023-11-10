@@ -172,7 +172,7 @@ const FllyTarget = () => {
 
   const submitBtn = () => {
     tokenHttp
-      .post(`/request`, {
+      .post(`/flly/request`, {
         "situation" : situation == "선택 안함"? null : situation,
         "target" : target == "선택 안함"? null : target,
         "colors": colors.includes("선택 안함")? null : colors,
