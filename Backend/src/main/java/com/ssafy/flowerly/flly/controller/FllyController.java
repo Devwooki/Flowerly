@@ -35,9 +35,6 @@ public class FllyController {
     @PostMapping
     public CustomResponse getFlowerList(@RequestBody FlowerRequestDto flowerRequest){
         log.info("꽃 목록 조회");
-        System.out.println(flowerRequest.getSituation());
-        System.out.println(flowerRequest.getTarget());
-        System.out.println(flowerRequest.getColors());
         Map<String, List<FlowerDto>> map = flowerService.getFlowerList(flowerRequest);
         return new DataResponse<>(200, "꽃 리스트 조회 성공", map);
     }
