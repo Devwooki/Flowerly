@@ -69,4 +69,20 @@ public class Chatting extends BaseCreatedTimeEntity {
         if(role.equals(MemberRole.USER)) this.isRemovedConsumer = true;
         else if(role.equals(MemberRole.SELLER)) this.isRemovedSeller = true;
     }
+
+    public void readChatting(Member member) {
+        if(member.getRole().equals(MemberRole.USER)) {
+            this.unreadCntConsumer = 0;
+        } else if(member.getRole().equals(MemberRole.SELLER)) {
+            this.unreadCntSeller = 0;
+        }
+    }
+
+    public void updateUnreadCntConsumer() {
+        this.unreadCntConsumer++;
+    }
+
+    public void updateUnreadSeller() {
+        this.unreadCntSeller++;
+    }
 }

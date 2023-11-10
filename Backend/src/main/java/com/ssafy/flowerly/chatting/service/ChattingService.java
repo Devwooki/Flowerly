@@ -28,6 +28,8 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class ChattingService {
+    private final StompChatService stompChatService;
+
     private final MemberRepository memberRepository;
     private final StoreInfoRepository storeInfoRepository;
     private final ChattingRepository chattingRepository;
@@ -124,11 +126,30 @@ public class ChattingService {
         ChattingMessage message = ChattingMessage.toEntity(messageDto);
         chattingMessageRepository.save(message);
 
-        // 채팅방 마지막 메세지 업데이트
+        // 채팅방 마지막 메세지 및 읽지 않은 메세지수 업데이트
         Chatting chatting = chattingRepository.findById(messageDto.getChattingId())
                 .orElseThrow(() -> new CustomException(ErrorCode.CHATTING_NOT_FOUND));
         String msgContent = message.getType().equals("IMAGE") ? "사진을 보냈습니다." : message.getContent();
         chatting.updateChatting(msgContent, message.getSendTime());
+
+        Member member = memberRepository.findByMemberId(message.getMemberId()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_MEMBER));
+        if(member.getRole().equals(MemberRole.SELLER)) {
+            Long otherMemberId = chatting.getConsumer().getMemberId();
+            if(!stompChatService.isUserConnected(otherMemberId, chatting.getChattingId())) chatting.updateUnreadCntConsumer();
+        } else {
+            Long otherMemberId = chatting.getSeller().getMemberId();
+            if(!stompChatService.isUserConnected(otherMemberId, chatting.getChattingId())) chatting.updateUnreadSeller();
+        }
+    }
+
+    @Transactional
+    public void readChattingMessage(Long memberId, Long chattingId) {
+        Member member = memberRepository.findByMemberId(memberId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_MEMBER));
+        Chatting chatting = chattingRepository.findById(chattingId)
+                .orElseThrow(() -> new CustomException(ErrorCode.CHATTING_NOT_FOUND));
+
+        chatting.readChatting(member);
     }
 
     @Transactional
