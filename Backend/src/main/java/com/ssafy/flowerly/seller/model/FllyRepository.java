@@ -2,6 +2,7 @@ package com.ssafy.flowerly.seller.model;
 
 import com.ssafy.flowerly.entity.Flly;
 import com.ssafy.flowerly.entity.Member;
+import com.ssafy.flowerly.entity.type.ProgressType;
 import com.ssafy.flowerly.mypage.dto.BuyerFllyDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,8 +25,9 @@ public interface FllyRepository extends JpaRepository<Flly, Long> {
 
     @Query("select f from Flly f " +
             " where f.consumer.memberId = :memberId " +
-            " and f.progress not like `` ")
-    Page<Flly> findFllyByConsumerMemberId(Pageable pageable, @Param("memberId") Long memberId);
+            " and f.progress != :process ")
+    Page<Flly> findFllyByConsumerMemberIdNotLikeFinish(Pageable pageable, @Param("memberId") Long memberId,
+                                                       @Param("process")ProgressType pt);
 
 
     List<Flly> findByConsumerMemberId(Long memberId);

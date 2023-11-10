@@ -4,6 +4,7 @@ package com.ssafy.flowerly.seller.buyer;
 import com.ssafy.flowerly.address.repository.DongRepository;
 import com.ssafy.flowerly.address.repository.SigunguRepository;
 import com.ssafy.flowerly.entity.*;
+import com.ssafy.flowerly.entity.type.ProgressType;
 import com.ssafy.flowerly.exception.CustomException;
 import com.ssafy.flowerly.exception.ErrorCode;
 import com.ssafy.flowerly.member.model.MemberRepository;
@@ -48,7 +49,8 @@ public class BuyerService {
         // if orderType.getTiltle == 입찰, 조율 그대로 반환
         // else if process = 가게 이름으로
 
-        return fllyRepository.findFllyByConsumerMemberId(pageable, memberId).map(flly -> {
+
+        return fllyRepository.findFllyByConsumerMemberIdNotLikeFinish(pageable, memberId, ProgressType.FINISH_DELIVERY).map(flly -> {
             if(flly.getProgress().getTitle().equals("입찰")||flly.getProgress().getTitle().equals("조율"))
                 return flly.toBuyerFlly(flly.getProgress().getTitle());
             else{
