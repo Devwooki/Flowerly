@@ -36,10 +36,12 @@ const Temp = () => {
         },
       });
 
+      console.log(response);
       if (response.data.code === 200) {
         setMemberInfo(response.data.data);
 
         const accessToken = response.headers.Authorization;
+        console.log("최종 엑세스 토큰", accessToken);
 
         if (accessToken) {
           localStorage.setItem("accessToken", accessToken);
