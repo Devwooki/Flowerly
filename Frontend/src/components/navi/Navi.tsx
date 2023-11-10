@@ -48,7 +48,6 @@ const Navi = () => {
   useEffect(() => {
     // 라우터 경로가 변경될 때마다 setSelectedButton을 업데이트
     setSelectedButton(determineInitialButton());
-    console.log("aa");
   }, []);
 
   return (

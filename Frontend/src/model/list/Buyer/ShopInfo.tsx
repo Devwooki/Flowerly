@@ -34,14 +34,13 @@ type fllyList = {
   stores: stores;
 };
 
+type stores = {
+  content: storeContent[];
+};
+
 type storeContent = {
   participant: participant;
   storeInfoDto: storeInfoDto;
-};
-
-// Define the type for the entire "stores" structure
-type stores = {
-  content: storeContent[];
 };
 
 type participant = {

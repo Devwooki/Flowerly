@@ -3,21 +3,16 @@ import style from "./ListBuyer.module.css";
 import BuyerCardOne from "./listBuyerCardComponent/BuyerCardOne";
 import { useQuery } from "react-query";
 import axios, { AxiosError } from "axios";
-import { KDMaxios } from "@/api/basicHttp";
 import BuyerCards from "./listBuyerCardComponent/BuyerCards";
+import { tokenHttp } from "@/api/tokenHttp";
 
 const ListBuyer = () => {
   const { data, isLoading, isFetching, isError } = useQuery<BuyerCard[], AxiosError>(
     ["listBuyerQuery"],
     async () => {
-      const res = await KDMaxios.get("api/buyer/my-flly", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-        withCredentials: true,
-      });
+      const res = await tokenHttp.get("/buyer/my-flly");
       console.log(res.data.data.content);
-
+      localStorage.setItem("accessToken", res.headers.authorization);
       return res.data.data.content;
     },
     {

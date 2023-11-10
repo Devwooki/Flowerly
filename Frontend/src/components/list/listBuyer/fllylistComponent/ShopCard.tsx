@@ -6,15 +6,15 @@ import ShopModal from "./ShopModal";
 import { motion } from "framer-motion";
 
 type ShopCardProps = {
-  shopInfo: ShopInfo;
+  shopInfo: storeContent;
 };
 
 const ShopCard = ({ shopInfo }: ShopCardProps) => {
   console.log("zz", shopInfo);
 
   const router = useRouter();
-  const originalContent = shopInfo.recommandComment;
-  const originalAdress = shopInfo.shopLoc;
+  const originalContent = shopInfo.participant.content;
+  const originalAdress = shopInfo.storeInfoDto.address;
   const maxLengthAD = 20; // 주소 최대 길이 설정
   const maxLengthCT = 30; // 코멘트 최대 길이 설정
   const [modal, setModal] = useState(false); // 모달창
@@ -40,17 +40,23 @@ const ShopCard = ({ shopInfo }: ShopCardProps) => {
   return (
     <>
       <motion.div
-        layoutId={`shopCardMain-${shopInfo.shopId}`}
+        layoutId={`shopCardMain-${shopInfo.participant.fllyParticipationId}`}
         className={style.shopCardMain}
         onClick={() => setModal((pre) => !pre)}
       >
-        <motion.div className={style.shopFlowerImg} layoutId={`shopFlowerImg-${shopInfo.shopId}`}>
-          <Image src={shopInfo.reImg} alt="추천 꽃다발" fill />
+        <motion.div
+          className={style.shopFlowerImg}
+          layoutId={`shopFlowerImg-${shopInfo.participant.fllyParticipationId}`}
+        >
+          <Image src={shopInfo.participant.imageUrl} alt="추천 꽃다발" fill />
         </motion.div>
-        <motion.div className={style.shopInfo} layoutId={`shopInfo-${shopInfo.shopId}`}>
+        <motion.div
+          className={style.shopInfo}
+          layoutId={`shopInfo-${shopInfo.participant.fllyParticipationId}`}
+        >
           <div className={style.infoTable}>
             <div onClick={(e) => moveToShop(1, e)} className={style.shopName}>
-              {shopInfo.shopName}
+              {shopInfo.storeInfoDto.storeName}
             </div>
           </div>
           <div className={style.infoTable}>
@@ -59,13 +65,13 @@ const ShopCard = ({ shopInfo }: ShopCardProps) => {
           </div>
           <div className={style.infoTable}>
             <Image src={"/img/icon/seller-money.png"} alt="제시 금액 " width={15} height={15} />
-            <div>{shopInfo.recommandPrice}</div>
+            <div>{shopInfo.participant.offerPrice}</div>
           </div>
           <div className={style.responseContent}>{truncatedContent}</div>
         </motion.div>
         <div className={style.chatAction}>채팅하기</div>
       </motion.div>
-      {modal && <ShopModal modal={modalState} shopInfo={shopInfo} shopId={shopInfo.shopId} />}
+      {/* {modal && <ShopModal modal={modalState} shopInfo={shopInfo} />} */}
     </>
   );
 };
