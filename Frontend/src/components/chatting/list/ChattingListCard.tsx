@@ -9,6 +9,7 @@ type ChattingProps = {
     chattingId: number;
     lastChattingTime: string;
     lastChattingMessage: string;
+    unreadCnt: number;
     opponentMemberId: number;
     opponentName: string;
   };
@@ -83,6 +84,9 @@ const ChattingListCard: React.FC<ChattingProps> = ({ chattingData }) => {
           </div>
           <div className={style.cardBottom}>
             <div>{chattingData.lastChattingMessage}</div>
+            {chattingData.unreadCnt > 0 && (
+              <div className={style.newMsg}>{chattingData.unreadCnt}</div>
+            )}
           </div>
         </div>
       </div>
