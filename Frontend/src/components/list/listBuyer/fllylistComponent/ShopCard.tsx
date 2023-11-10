@@ -10,7 +10,7 @@ type ShopCardProps = {
 };
 
 const ShopCard = ({ shopInfo }: ShopCardProps) => {
-  console.log("zz", shopInfo.shopId);
+  console.log("zz", shopInfo);
 
   const router = useRouter();
   const originalContent = shopInfo.recommandComment;

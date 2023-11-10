@@ -19,8 +19,14 @@ const BuyerCardOne = ({ card }: BuyerCardOneProps) => {
   const route = useRouter();
   const isClient = typeof window !== "undefined";
   const [windowWidth, setWindowWidth] = useState<number>(0);
-  const stepNumber = stateProps.indexOf(card.state);
+  const stepNumber = stateProps.indexOf(card.progress);
   const setCardProps = useSetRecoilState(FllylistDiscRecoil);
+  const [selectedColor, setSelectedColor] = useState<string[]>([]);
+
+  useEffect(
+    () => setSelectedColor([`${card.color1}`, `${card.color2}`, `${card.color3}`]),
+    [selectedColor, card],
+  );
 
   const buttomBtnCmd = (stepNumber: number) => {
     switch (stepNumber) {
@@ -81,7 +87,7 @@ const BuyerCardOne = ({ card }: BuyerCardOneProps) => {
         return "#FFC5BF";
       case "노랑색":
         return "#FBE870";
-      case "파랑색":
+      case "파란색":
         return "#0489DD";
       case "보라색":
         return "#CE92D8";
@@ -97,14 +103,14 @@ const BuyerCardOne = ({ card }: BuyerCardOneProps) => {
   const mapFlowerText = (colorName: string) => {
     switch (colorName) {
       case "빨간색":
-        return "빨간";
+        return "빨강";
       case "주황색":
         return "주황";
       case "분홍색":
         return "분홍";
       case "노랑색":
         return "노랑";
-      case "파랑색":
+      case "파란색":
         return "파랑";
       case "보라색":
         return "보라";
@@ -194,7 +200,7 @@ const BuyerCardOne = ({ card }: BuyerCardOneProps) => {
           </div>
           <div className={style.infoColorTable}>
             <div>주요색상</div>
-            {card.selectedColor.map((color, idx) => {
+            {selectedColor.map((color, idx) => {
               const rgbColor = mapColorNameToRGB(color);
               return (
                 <div
@@ -221,7 +227,7 @@ const BuyerCardOne = ({ card }: BuyerCardOneProps) => {
           </div>
           <div className={style.infoTable}>
             <div className={style.infoTitle}>꽃집</div>
-            <div className={`${style.flowerShop}`}>{card.shopName}</div>
+            <div className={`${style.flowerShop}`}>{card.consumer}</div>
           </div>
         </div>
       </div>

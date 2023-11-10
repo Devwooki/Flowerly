@@ -20,8 +20,11 @@ const BuyerCards = ({ card }: BuyerCardsProps) => {
   const isClient = typeof window !== "undefined";
   const [windowWidth, setWindowWidth] = useState<number>(0);
   const route = useRouter();
-  const stepNumber = stateProps.indexOf(card.state);
+  const stepNumber = stateProps.indexOf(card.progress);
   const setCardProps = useSetRecoilState(FllylistDiscRecoil);
+  const [selectedColor, setSelectedColor] = useState<string[]>([]);
+
+  useEffect(() => setSelectedColor([`${card.color1}`, `${card.color2}`, `${card.color3}`]), [card]);
 
   const buttomBtnCmd = (stepNumber: number) => {
     switch (stepNumber) {
@@ -42,7 +45,8 @@ const BuyerCards = ({ card }: BuyerCardsProps) => {
           <div className={style.cardBtn}>
             <button
               className={style.fllistBtnClose}
-              onClick={() => ToastErrorMessage("주문 이후에는 플리스트가 비활성화됩니다.")}
+              // onClick={() => ToastErrorMessage("주문 이후에는 플리스트가 비활성화됩니다.")}
+              onClick={() => fllistBtn(card.fllyId)}
             >
               플리스트
             </button>
@@ -80,9 +84,9 @@ const BuyerCards = ({ card }: BuyerCardsProps) => {
         return "#F67828";
       case "분홍색":
         return "#FFC5BF";
-      case "노랑색":
+      case "노란색":
         return "#FBE870";
-      case "파랑색":
+      case "파란색":
         return "#0489DD";
       case "보라색":
         return "#CE92D8";
@@ -94,37 +98,18 @@ const BuyerCards = ({ card }: BuyerCardsProps) => {
         return "rgba(255, 255, 255, 0)"; // 만약 매핑되지 않는 경우 원래 문자열 반환
     }
   };
-  const mapFlowerColor = (colorName: string) => {
-    switch (colorName) {
-      case "빨간색":
-        return "redFlower";
-      case "주황색":
-        return "orangeFlower";
-      case "분홍색":
-        return "pinkFlower";
-      case "노랑색":
-        return "yellowFlower";
-      case "파랑색":
-        return "bleFlower";
-      case "보라색":
-        return "purpleFlower";
-      case "흰색":
-        return "whiteFlower";
-      default:
-        return "noneFlower"; // 만약 매핑되지 않는 경우 원래 문자열 반환
-    }
-  };
+
   const mapFlowerText = (colorName: string) => {
     switch (colorName) {
       case "빨간색":
-        return "빨간";
+        return "빨강";
       case "주황색":
         return "주황";
       case "분홍색":
         return "분홍";
       case "노랑색":
         return "노랑";
-      case "파랑색":
+      case "파란색":
         return "파랑";
       case "보라색":
         return "보라";
@@ -196,7 +181,7 @@ const BuyerCards = ({ card }: BuyerCardsProps) => {
         </div>
         <ProgressBar currentStep={stepNumber} />
         <div className={style.cardInfo}>
-          <Image src={card.img} alt="꽃 이미지" width={150} height={150} />
+          <Image src={card.imageUrl} alt="꽃 이미지" width={150} height={150} />
           <div className={style.InfoText}>
             <div className={style.infoTitle}>상품정보</div>
             <div className={style.infoTable}>
@@ -209,7 +194,7 @@ const BuyerCards = ({ card }: BuyerCardsProps) => {
             </div>
             <div className={style.infoColorTable}>
               <div>주요색상</div>
-              {card.selectedColor.map((color, idx) => {
+              {selectedColor.map((color, idx) => {
                 const rgbColor = mapColorNameToRGB(color);
                 return (
                   <div
@@ -236,7 +221,7 @@ const BuyerCards = ({ card }: BuyerCardsProps) => {
             </div>
             <div className={style.infoTable}>
               <div className={style.infoTitle}>꽃집</div>
-              <div className={`${style.flowerShop}`}>{card.shopName}</div>
+              <div className={`${style.flowerShop}`}>{card.consumer}</div>
             </div>
           </div>
         </div>
