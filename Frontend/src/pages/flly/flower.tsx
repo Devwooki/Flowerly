@@ -67,7 +67,7 @@ const FllyFlower = () => {
 
   const subValue = (value:flowerCardType) => {
     const updatedSelected = selected.filter(item => item != value.flowerCode);
-    const updatedFlowers = selectedFlowers.filter(item => item !== value);
+    const updatedFlowers = selectedFlowers.filter(item => item.flowerCode !== value.flowerCode);
     setSelected(updatedSelected);
     setSelcetedFlowers(updatedFlowers);
   }
