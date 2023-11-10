@@ -125,7 +125,6 @@ public class JWTService {
     // 헤더에서 AccessToken 추출
     public Optional<String> extractAccessToken(HttpServletRequest request) {
         log.info("엑세스 토큰 추출중");
-        log.info("{}", request.getHeader(accessHeader));
         return Optional.ofNullable(request.getHeader(accessHeader))
                 .filter(accessToken -> accessToken.startsWith(BEARER))
                 .map(accessToken -> accessToken.replace(BEARER, ""));

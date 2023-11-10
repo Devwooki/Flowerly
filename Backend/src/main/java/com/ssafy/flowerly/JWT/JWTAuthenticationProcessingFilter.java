@@ -1,5 +1,7 @@
 package com.ssafy.flowerly.JWT;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.ssafy.flowerly.entity.Member;
 import com.ssafy.flowerly.exception.AuthException;
 import com.ssafy.flowerly.exception.CustomException;
@@ -78,7 +80,13 @@ public class JWTAuthenticationProcessingFilter extends OncePerRequestFilter {
         String accessToken = jwtService.extractAccessToken(request)
                 .filter(jwtService::isValidToken)
                 .orElse(null);
-        log.info("accessToken : {} ", accessToken);
+
+//        DecodedJWT decodedJWT = JWT.decode(accessToken);
+//        log.info("현재 시간{} : ", new Date());
+//        log.info("엑세스 시간{} : ", decodedJWT.getExpiresAt());
+//
+//        log.info("{}", decodedJWT.getExpiresAt().after(new Date()));
+        //log.info("{} ",(decodedJWT.getExpiresAt() < new Date()) ? "이후" : "이전");
 
         //엑세스 토큰이 유효하므로 컨트롤러로 접속한다.
         if(accessToken != null){
@@ -113,7 +121,6 @@ public class JWTAuthenticationProcessingFilter extends OncePerRequestFilter {
         jwtService.extractMemberId(accessToken)
                 .flatMap(memberRepository::findByMemberIdActivate)
                 .ifPresent(member -> {
-                    log.info("이왜진? {}", member);
                     request.setAttribute("memberId", member.getMemberId());
                     saveAuthentication(member);
                 });
