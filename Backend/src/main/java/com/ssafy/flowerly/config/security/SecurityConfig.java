@@ -72,6 +72,7 @@ public class SecurityConfig {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
 
         corsConfiguration.addAllowedOriginPattern("*"); //모든 도메인에 대해 Request 허용
+        corsConfiguration.addAllowedHeader("Access-Control-Expose-Headers");        //모든 헤더 허용
         corsConfiguration.addAllowedHeader("*");        //모든 헤더 허용
         corsConfiguration.setAllowedOrigins(List.of("http://localhost:3000/", "http://localhost:6090/", "http://localhost:5173/", "https://flower-ly.co.kr/"));
         corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));        //모든 메소드 허용
