@@ -15,9 +15,9 @@ interface resultSimpleType {
   color1: string | null;
   color2: string | null;
   color3: string | null;
-  flower1: flowerType;
-  flower2: flowerType;
-  flower3: flowerType;
+  flower1: flowerType | null;
+  flower2: flowerType | null;
+  flower3: flowerType | null;
 }
 
 const FllyOrderBox = ({
@@ -59,9 +59,9 @@ const FllyOrderBox = ({
             <div>
               <div>선택한 꽃</div>
               <div className={style.flowerBox}>
-                <div>{$requestInfo.flower1.flowerName}</div>
-                <div>{$requestInfo.flower2.flowerName}</div>
-                <div>{$requestInfo.flower3.flowerName}</div>
+                {$requestInfo.flower1 && <div>{$requestInfo.flower1.flowerName}</div>}
+                {$requestInfo.flower2 && <div>{$requestInfo.flower2.flowerName}</div>}
+                {$requestInfo.flower3 && <div>{$requestInfo.flower3.flowerName}</div>}
               </div>
             </div>
           </div>

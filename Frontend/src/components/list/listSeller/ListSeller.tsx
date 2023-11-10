@@ -29,9 +29,9 @@ interface fllyResponeDtoType {
 interface participationType {
   fllyId: number;
   fllyImageUrl: string;
-  fllyFlower1: string;
-  fllyFlower2: string;
-  fllyFlower3: string;
+  fllyFlower1: string | null;
+  fllyFlower2: string | null;
+  fllyFlower3: string | null;
   fllybudget: number;
   fllyDeadline: string;
   fllyResponeDto: fllyResponeDtoType;
@@ -108,7 +108,6 @@ const ListSeller = () => {
       .catch((err) => {
         if (err.response.status === 403) {
           router.push("/fllylogin");
-          ToastErrorMessage("로그인 만료되어 로그인화면으로 이동합니다.");
         }
       });
   };

@@ -57,7 +57,6 @@ const FllySellerDetail = () => {
       .catch((err) => {
         if (err.response.status === 403) {
           router.push("/fllylogin");
-          ToastErrorMessage("로그인 만료되어 로그인화면으로 이동합니다.");
         }
       });
   }, []);
