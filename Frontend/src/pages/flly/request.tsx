@@ -20,6 +20,7 @@ import PickupModal from "@/components/flly/fllyUser/PickupModal";
 import CheckModal from "@/components/flly/fllyUser/CheckModal";
 import axios from "axios";
 import { ToastErrorMessage } from "@/model/toastMessageJHM";
+import { tokenHttp } from "@/api/tokenHttp";
 
 const FllyTarget = () => {
   const router = useRouter();
@@ -153,7 +154,6 @@ const FllyTarget = () => {
         time.setHours(hours);
         time.setMinutes(minutes);
         setDateTime(time);
-        console.log(time);
       }
     }
   };
@@ -171,9 +171,8 @@ const FllyTarget = () => {
   };
 
   const submitBtn = () => {
-    axios
-      .post(`https://flower-ly.co.kr/api/flly/request`, {
-      // .post(`http://localhost:6090/api/flly/request`, {
+    tokenHttp
+      .post(`/request`, {
         "situation" : situation == "선택 안함"? null : situation,
         "target" : target == "선택 안함"? null : target,
         "colors": colors.includes("선택 안함")? null : colors,
@@ -186,14 +185,20 @@ const FllyTarget = () => {
         "requestContent": requestText,
         "imageUrl": bouquet?.url,
         "budget": price,
-      })
-      .then((res) => {
-        console.log(res.data);
-        const data = res.data;
-        if (data.code === 200) {
+      }
+      )
+      .then((response) => {
+        console.log(response.data);
+        if (response.data.code === 200) {
           router.push("/");
+          localStorage.setItem("accessToken", response.headers.Authorization);
         }
-        else console.log("오류 발생");
+      })
+      .catch((error) => {
+        if (error.response.status === 403) {
+          ToastErrorMessage("로그인 만료되어 로그인화면으로 이동합니다.");
+          router.push("/fllylogin");
+        } else ToastErrorMessage("오류가 발생했습니다.");
       });
   };
 
