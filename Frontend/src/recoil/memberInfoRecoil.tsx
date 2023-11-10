@@ -22,11 +22,11 @@ export interface StoreInfo {
 }
 
 const isBrowser = typeof window !== "undefined";
-const sessionStorage = isBrowser ? window.sessionStorage : undefined;
+const localStorage = isBrowser ? window.localStorage : undefined;
 
 const { persistAtom } = recoilPersist({
   key: "fllyMemberInfo",
-  storage: sessionStorage,
+  storage: localStorage,
 });
 
 export const memberInfoState = atom<MemberInfo>({
