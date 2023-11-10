@@ -39,7 +39,9 @@ const FllySeller = () => {
           setNearFllyList([]);
           ToastErrorMessage(rData.message);
         }
-        localStorage.setItem("accessToken", res.headers.authorization);
+        if (res.headers.authorization) {
+          localStorage.setItem("accessToken", res.headers.authorization);
+        }
       })
       .catch((err) => {
         if (err.response.status === 403) {
