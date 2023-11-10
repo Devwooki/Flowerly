@@ -6,8 +6,9 @@ import FllyInfoBox from "./fllyOrderComponent/FllyInfoBox";
 import OrderInfoBox from "./fllyOrderComponent/OrderInfoBox";
 import ShippingInfoBox from "./fllyOrderComponent/ShippingInfoBox";
 import PaymentInfoBox from "./fllyOrderComponent/PaymentInfoBox";
-import axios from "axios";
 import { useParams } from "next/navigation";
+import { tokenHttp } from "@/api/tokenHttp";
+import { ToastErrorMessage } from "@/model/toastMessageJHM";
 
 interface flowerType {
   flowerName: string;
@@ -57,15 +58,24 @@ const FllyOrder = () => {
   const [memberType, setMemberType] = useState<string>("seller");
 
   useEffect(() => {
-    axios.get(`https://flower-ly.co.kr/api/seller/flly/order/` + fllyId.fllyId).then((res) => {
-      console.log(res);
-      const rData = res.data;
-      if (rData.code === 200) {
-        setRequestInfo(rData.data.reqestInfo);
-        setOrderInfo(rData.data.orderInfo);
-        setDeliverInfo(rData.data.deliverInfo);
-      }
-    });
+    tokenHttp
+      .get(`/seller/flly/order/` + fllyId.fllyId)
+      .then((res) => {
+        console.log(res);
+        const rData = res.data;
+        if (rData.code === 200) {
+          setRequestInfo(rData.data.reqestInfo);
+          setOrderInfo(rData.data.orderInfo);
+          setDeliverInfo(rData.data.deliverInfo);
+        }
+        localStorage.setItem("accessToken", res.headers.authorization);
+      })
+      .catch((err) => {
+        if (err.response.status === 403) {
+          router.push("/fllylogin");
+          ToastErrorMessage("로그인 만료되어 로그인화면으로 이동합니다.");
+        }
+      });
   }, []);
 
   return (

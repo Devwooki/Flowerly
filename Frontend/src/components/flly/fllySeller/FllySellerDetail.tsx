@@ -3,10 +3,10 @@ import style from "./style/FllySellerDetail.module.css";
 import Image from "next/image";
 import RequestDetail from "./fllySellerDetailComponent/RequestDetail";
 import { useParams } from "next/navigation";
-import axios from "axios";
 import { ToastErrorMessage } from "@/model/toastMessageJHM";
 import { useRouter } from "next/router";
 import { backIn } from "framer-motion";
+import { tokenHttp } from "@/api/tokenHttp";
 
 interface flowerInfoType {
   flowerName: string;
@@ -40,15 +40,24 @@ const FllySellerDetail = () => {
 
   useEffect(() => {
     console.log(fllyId.fllyId);
-    axios.get("https://flower-ly.co.kr/api/seller/request/" + fllyId.fllyId).then((res) => {
-      const rsData = res.data;
-      if (rsData.code == 200) {
-        console.log(res.data.data);
-        setFllyRequestInfo(rsData.data);
-      } else {
-        ToastErrorMessage(rsData.message);
-      }
-    });
+    tokenHttp
+      .get("/seller/request/" + fllyId.fllyId)
+      .then((res) => {
+        const rsData = res.data;
+        if (rsData.code == 200) {
+          console.log(res.data.data);
+          setFllyRequestInfo(rsData.data);
+        } else {
+          ToastErrorMessage(rsData.message);
+        }
+        localStorage.setItem("accessToken", res.headers.authorization);
+      })
+      .catch((err) => {
+        if (err.response.status === 403) {
+          router.push("/fllylogin");
+          ToastErrorMessage("로그인 만료되어 로그인화면으로 이동합니다.");
+        }
+      });
   }, []);
 
   const pageMoveHandelr = () => {
