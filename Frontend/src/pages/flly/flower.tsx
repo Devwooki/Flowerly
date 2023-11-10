@@ -28,83 +28,52 @@ const FllyFlower = () => {
   const [flowersMeaning, setFlowersMeaning] = useState<flowerCardType[]>([]);
 
   const axiosHandler = () => {
-    // const requestUrl = "flly";
-    // const BaseUrl = "https://flower-ly.co.kr/api/";
-    // const accessToken = localStorage.getItem("accessToken");
-    // console.log("나 유알엘", requestUrl);
-    // axios
-    //   .post(BaseUrl + requestUrl, {
-    //     headers: {
-    //       Authorization: "Bearer " + accessToken,
-    //       withCredential: false,
-    //     },
-    //     body: {
-    //       "situation" : [situation == "선택 안함"? null : situation],
-    //       "target" : [target == "선택 안함"? null : target],
-    //       "colors": colors.includes("선택 안함")? null : colors
-    //     },
-    //   })
-    //   .then((response) => {
-    //     console.log("나 리스펀스", response);
-    //     if (response.data.code === 200) {
-    //       console.log("나 성공", response.data);
-    //       setFlowers(response.data.data.flowers);
-    //       setFlowersColor(response.data.data.flowersColor);
-    //       setFlowersMeaning(response.data.data.flowersMeaning);
-    //     }
-    //     if (response.data.code === 401) {
-    //       axios
-    //         .get(BaseUrl + requestUrl, {
-    //           headers: {
-    //             withCredential: true,
-    //           },
-    //         })
-    //         .then((response) => {
-    //           if (response.data.code === 200) {
-    //             setFlowers(response.data.data.flowers);
-    //             setFlowersColor(response.data.data.flowersColor);
-    //             setFlowersMeaning(response.data.data.flowersMeaning);
-    //           }
-    //           //리프레시 포함
-    //           else if (response.data.code === 403) {
-    //             ToastErrorMessage("로그인이 만료되었습니다. 다시 로그인해주세요");
-    //             localStorage.removeItem("accessToken");
-    //             // router.push("/fllylogin");
-    //           }
-    //         })
-    //         .catch((error) => {
-    //           console.log(error);
-    //           ToastErrorMessage("서버 에러 발생!! 초비상!!!");
-    //         });
-    //     }
-    //     if (response.data.code === 403) {
-    //       //리프레시 포함
-    //       ToastErrorMessage("로그인이 만료되었습니다. 다시 로그인해주세요");
-    //       localStorage.removeItem("accessToken");
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //     ToastErrorMessage("서버 에러 발생!! 초비상!!!");
-    //   });
-
-      console.log(situation, target, colors);
-      axios
-        .post(`https://flower-ly.co.kr/api/flly`, {
+    const accessToken = localStorage.getItem("accessToken");
+    axios
+      // .post(`https://flower-ly.co.kr/api/flly`, {
+      .post(`http://localhost:6090/api/flly`, {
+        headers: {
+          Authorization: "Bearer " + accessToken,
+        },
+        withCredentials: true,
+        body: {
           "situation" : [situation == "선택 안함"? null : situation],
           "target" : [target == "선택 안함"? null : target],
           "colors": colors.includes("선택 안함")? null : colors
-        })
-        .then((res) => {
-          console.log(res.data);
-          const data = res.data;
-          if (data.code === 200) {
-            setFlowers(data.data.flowers);
-            setFlowersColor(data.data.flowersColor);
-            setFlowersMeaning(data.data.flowersMeaning);
-          }
-          else console.log("오류 발생");
-        });
+        }
+      })
+      .then((response) => {
+        console.log(response.data);
+        if (response.data.code === 200) {
+          setFlowers(response.data.data.flowers);
+          setFlowersColor(response.data.data.flowersColor);
+          setFlowersMeaning(response.data.data.flowersMeaning);
+        }
+      })
+      .catch((error) => {
+        if (error.response.status === 403) {
+          console.log("잠이나 자자");
+        }
+        ToastErrorMessage("서버 에러 발생!! 초비상!!!");
+      });
+
+      console.log(situation, target, colors);
+      // axios
+      //   .post(`https://flower-ly.co.kr/api/flly`, {
+      //     "situation" : [situation == "선택 안함"? null : situation],
+      //     "target" : [target == "선택 안함"? null : target],
+      //     "colors": colors.includes("선택 안함")? null : colors
+      //   })
+      //   .then((res) => {
+      //     console.log(res.data);
+      //     const data = res.data;
+      //     if (data.code === 200) {
+      //       setFlowers(data.data.flowers);
+      //       setFlowersColor(data.data.flowersColor);
+      //       setFlowersMeaning(data.data.flowersMeaning);
+      //     }
+      //     else console.log("오류 발생");
+      //   });
 
       // .catch((error) => {
       //   if (error.response) {
@@ -200,7 +169,11 @@ const FllyFlower = () => {
             <div className={style.guidePlus}>최대 3개까지 선택 가능합니다.</div>
           </div>
           <div className={style.selectAreaBox}>
-            {flowers.length === 0? <div className={style.selectLoading}>꽃 목록을 로딩중입니다.</div> : 
+            {(flowers.length === 0 && flowersMeaning.length === 0)? 
+              <div className={style.selectLoading}>
+                <Image src="/img/etc/loading.gif" width={100} height={100} alt="loading"/>
+                <div>꽃 목록을 로딩중입니다.</div>
+              </div> : 
               <div className={style.selectBox}>
                 {flowers.map((item, index) => (
                   <div key={index} className={style.selectCard} onClick={() => {handleSelect(item)}}>
