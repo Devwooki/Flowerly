@@ -57,60 +57,83 @@ import axios from "axios";
 
 // export default tokenHttp;
 
-export const getTokenHttp = (
-  requestUrl: string,
-  successHandler: (response: any) => void,
-  failHandler: () => void,
-) => {
-  const BaseUrl = "https://flower-ly.co.kr/api/";
-  const accessToken = localStorage.getItem("accessToken");
-  console.log("나 유알엘", requestUrl);
-  axios
-    .get(BaseUrl + requestUrl, {
-      headers: {
-        Authorization: "Bearer " + accessToken,
-        withCredential: false,
-      },
-    })
-    .then((response) => {
-      console.log("나 리스펀스", response);
-      if (response.data.code === 200) {
-        console.log("나 성공", response.data);
-        successHandler(response.data);
-      }
-      if (response.data.code === 401) {
-        axios
-          .get(BaseUrl + requestUrl, {
-            headers: {
-              withCredential: true,
-            },
-          })
-          .then((response) => {
-            if (response.data.code === 200) {
-              successHandler(response.data);
-            }
-            //리프레시 포함
-            else if (response.data.code === 403) {
-              ToastErrorMessage("로그인이 만료되었습니다. 다시 로그인해주세요");
-              localStorage.removeItem("accessToken");
-              failHandler();
-              // router.push("/fllylogin");
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-            ToastErrorMessage("서버 에러 발생!! 초비상!!!");
-          });
-      }
-      if (response.data.code === 403) {
-        //리프레시 포함
-        ToastErrorMessage("로그인이 만료되었습니다. 다시 로그인해주세요");
-        localStorage.removeItem("accessToken");
-        failHandler();
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-      ToastErrorMessage("서버 에러 발생!! 초비상!!!");
-    });
-};
+// export const getTokenHttp = (
+//   requestUrl: string,
+//   successHandler: (response: any) => void,
+//   failHandler: () => void,
+// ) => {
+//   const BaseUrl = "https://flower-ly.co.kr/api/";
+//   const accessToken = localStorage.getItem("accessToken");
+//   console.log("나 유알엘", requestUrl);
+//   axios
+//     .get(BaseUrl + requestUrl, {
+//       headers: {
+//         Authorization: "Bearer " + accessToken,
+//         withCredential: false,
+//       },
+//     })
+//     .then((response) => {
+//       console.log("나 리스펀스", response);
+//       if (response.data.code === 200) {
+//         console.log("나 성공", response.data);
+//         successHandler(response.data);
+//       }
+//       if (response.data.code === 401) {
+//         axios
+//           .get(BaseUrl + requestUrl, {
+//             headers: {
+//               withCredential: true,
+//             },
+//           })
+//           .then((response) => {
+//             if (response.data.code === 200) {
+//               successHandler(response.data);
+//             }
+//             //리프레시 포함
+//             else if (response.data.code === 403) {
+//               ToastErrorMessage("로그인이 만료되었습니다. 다시 로그인해주세요");
+//               localStorage.removeItem("accessToken");
+//               failHandler();
+//               // router.push("/fllylogin");
+//             }
+//           })
+//           .catch((error) => {
+//             console.log(error);
+//             ToastErrorMessage("서버 에러 발생!! 초비상!!!");
+//           });
+//       }
+//       if (response.data.code === 403) {
+//         //리프레시 포함
+//         ToastErrorMessage("로그인이 만료되었습니다. 다시 로그인해주세요");
+//         localStorage.removeItem("accessToken");
+//         failHandler();
+//       }
+//     })
+//     .catch((error) => {
+//       console.log(error);
+//       ToastErrorMessage("서버 에러 발생!! 초비상!!!");
+//     });
+// };
+
+const baseURL = "https://flower-ly.co.kr/api";
+
+export const tokenHttp = axios.create({
+  baseURL,
+  headers: {
+    "Content-type": "application/json",
+  },
+  withCredentials: true,
+});
+
+tokenHttp.interceptors.request.use(async (req) => {
+  // const accessToken = localStorage.getItem("accesstoken");
+  const accessToken = "Bearer asdfjasdlkfjsdaklfjsdkl;afj;asldkfjasldk;jfskl;ajf;slfjsda";
+  // "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcwOTUwNjY2NywibWVtYmVySWQiOjF9.Rvoz54jid-oatfns3YuHLkvTTQ_eyCfHmT4tAod3QuH3geimCFbSk_TCgmuuHUtgs34EGuVbdm_aBwpRbNBi6w";
+  if (!accessToken) {
+    console.log("token 이 존재하지 않습니다.");
+    throw new Error("expire token");
+  }
+
+  req.headers["Authorization"] = accessToken;
+  return req;
+});

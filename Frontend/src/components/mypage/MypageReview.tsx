@@ -7,6 +7,8 @@ import MypageReviewDeleteModal from "./MyFllyListComponent/MypageReviewCard/Mypa
 import { useRecoilState } from "recoil";
 import { MemberInfo, memberInfoState } from "@/recoil/memberInfoRecoil";
 import axios from "axios";
+import { tokenHttp } from "@/api/tokenHttp";
+import { ToastErrorMessage } from "@/model/toastMessageJHM";
 
 interface ReviewType {
   reviewId: number;
@@ -49,18 +51,21 @@ const MypageReview = () => {
   //판매자 전용 (리뷰 삭제) 끝
 
   useEffect(() => {
-    const tokens =
-      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcwOTUwNjY2NywibWVtYmVySWQiOjF9.Rvoz54jid-oatfns3YuHLkvTTQ_eyCfHmT4tAod3QuH3geimCFbSk_TCgmuuHUtgs34EGuVbdm_aBwpRbNBi6w";
-
-    axios
-      .get("https://flower-ly.co.kr/api/review/buyer-review/1", {
-        headers: {
-          Authorization: "Bearer " + tokens,
-        },
-      })
+    tokenHttp
+      .get("/review/buyer-review")
       .then((res) => {
         if (res.data.code === 200) {
-          setReviewList(res.data.data);
+          setReviewList(res.data.data.content);
+          console.log(res.headers);
+          console.log(res.headers.Authorization);
+          // console.log(res.headers[Authorization);
+        }
+      })
+      .catch((err) => {
+        console.log("에러 ", err);
+        if (err.response.status === 403) {
+          router.push("/fllylogin");
+          ToastErrorMessage("로그인 만료되어 로그인화면으로 이동합니다.");
         }
       });
   }, []);
