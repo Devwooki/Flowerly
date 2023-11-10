@@ -22,10 +22,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -41,9 +38,37 @@ public class FlowerService {
     private final S3Service s3Service;
     public Map<String, List<FlowerDto>> getFlowerList(FlowerRequestDto flowerRequest) {
         Map<String, List<FlowerDto>> lists = new HashMap<>();
+        List<FlowerDto> flowerDtoList = new ArrayList<>();
         lists.put("flowers", null);
         lists.put("flowersColor", null);
         lists.put("flowersMeaning", null);
+
+        if(flowerRequest.getSituation() == null && flowerRequest.getTarget() == null && flowerRequest.getColors() == null) {
+            List<Flower> flowerList = new ArrayList<>();
+            List<Long> indexList = new ArrayList<>();
+            Random random = new Random();
+            generateRandom(1, 7, indexList, random);
+            generateRandom(15, 19, indexList, random);
+            generateRandom(20, 24, indexList, random);
+            generateRandom(25, 28, indexList, random);
+            generateRandom(29, 31, indexList, random);
+            generateRandom(32, 37, indexList, random);
+            generateRandom(38, 43, indexList, random);
+            generateRandom(44, 48, indexList, random);
+            generateRandom(80, 85, indexList, random);
+            generateRandom(75, 79, indexList, random);
+
+            for(Long index: indexList) {
+                flowerList.add(flowerRepository.findById(index).orElseThrow(() -> new CustomException(ErrorCode.FLOWER_NOT_FOUND)));
+            }
+
+            for(Flower flower: flowerList) {
+                flowerDtoList.add(FlowerDto.of(flower));
+            }
+
+            lists.put("flowers", flowerDtoList);
+            return lists;
+        }
 
         List<SituationType> situationTypes = flowerRequest.getSituation();
         List<TargetType> targetTypes = flowerRequest.getTarget();
@@ -73,7 +98,6 @@ public class FlowerService {
         List<Flower> flowerList = flowerRepository.findFlowersByRequest(
                 colorTypes, situationTypes, targetTypes, pageable);
 
-        List<FlowerDto> flowerDtoList = new ArrayList<>();
         for(Flower flower: flowerList) {
             flowerDtoList.add(FlowerDto.of(flower));
         }
@@ -108,6 +132,16 @@ public class FlowerService {
         }
 
         return lists;
+    }
+
+    public static void generateRandom(int min, int max, List<Long> indexList, Random random) {
+        indexList.add((long) (random.nextInt(max-min)+min));
+        while(true) {
+            Long temp = (long) (random.nextInt(max-min)+min);
+            if(indexList.contains(temp)) continue;
+            indexList.add(temp);
+            break;
+        }
     }
 
     public void saveFllyRequest(FllyDto fllyDto) {
