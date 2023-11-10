@@ -66,6 +66,11 @@ export const flowerState = atom({
   default: [] as flowerCardType[],
 });
 
+export const randomFlowerState = atom({
+  key: "randomFlowerState",
+  default: [] as flowerCardType[],
+});
+
 export const bouquetsState = atom({
   key: 'bouquetsState',
   // default: [{url:"https://neighbrew.s3.ap-northeast-2.amazonaws.com/FlOWER/FlOWER_a531b7ab-1329-4164-96c3-d10898212538"}, {url:"https://neighbrew.s3.ap-northeast-2.amazonaws.com/FlOWER/0026c981-2cc8-4abe-b5c1-4a78ab16bfac094_orange_gumuhcho.jpeg.jpeg"}, {url:"https://neighbrew.s3.ap-northeast-2.amazonaws.com/FlOWER/FlOWER_a531b7ab-1329-4164-96c3-d10898212538"}, {url:"https://neighbrew.s3.ap-northeast-2.amazonaws.com/FlOWER/0026c981-2cc8-4abe-b5c1-4a78ab16bfac094_orange_gumuhcho.jpeg.jpeg"}] as bouquetType[],
