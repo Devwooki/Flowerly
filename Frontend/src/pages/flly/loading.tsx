@@ -41,7 +41,6 @@ const FllyLoading = () => {
   };
 
   const generateImage = async () => {
-    console.log("생성전 문구", order);
     try {
       const response = await openai.images.generate({
         prompt: order,
@@ -76,8 +75,8 @@ const FllyLoading = () => {
 
   useEffect(() => {
     console.log(order);
-    router.push("bouquet"); // 지우기
-    // if(order != "") generateImage();
+    // router.push("bouquet"); // 지우기
+    if(order != "") generateImage();
   },[order]);
 
   useEffect(() => {

@@ -9,7 +9,6 @@ import { colorState } from "@/recoil/fllyRecoil";
 import { flowerState } from "@/recoil/fllyRecoil";
 import { flowerCardType } from "@/recoil/fllyRecoil";
 import Image from "next/image";
-import axios from "axios";
 import { useRouter } from "next/router";
 import CheckModal from "@/components/flly/fllyUser/CheckModal";
 import { ToastErrorMessage } from "@/model/toastMessageJHM";
@@ -33,12 +32,11 @@ const FllyFlower = () => {
   const axiosHandler = () => {
     tokenHttp
       .post(`/flly`, {
-        body: {
-          "situation" : situation == "선택 안함"? null : [situation],
-          "target" : target == "선택 안함"? null : [target],
-          "colors": colors.includes("선택 안함")? null : colors
-        }
-      })
+        "situation" : situation == "선택 안함"? null : [situation],
+        "target" : target == "선택 안함"? null : [target],
+        "colors": colors.includes("선택 안함")? null : colors
+      }
+      )
       .then((response) => {
         console.log(response.data);
         if (response.data.code === 200) {
@@ -50,43 +48,12 @@ const FllyFlower = () => {
       })
       .catch((error) => {
         if (error.response.status === 403) {
-          console.log("잠이나 자자");
-          router.push("/fllylogin");
           ToastErrorMessage("로그인 만료되어 로그인화면으로 이동합니다.");
-        }
+          router.push("/fllylogin");
+        } else ToastErrorMessage("오류가 발생했습니다.");
       });
 
-      console.log(situation, target, colors);
       console.log(situation == "선택 안함"? null : [situation], target == "선택 안함"? null : [target], colors.includes("선택 안함")? null : colors);
-      // axios
-      //   .post(`https://flower-ly.co.kr/api/flly`, {
-      //     "situation" : [situation == "선택 안함"? null : situation],
-      //     "target" : [target == "선택 안함"? null : target],
-      //     "colors": colors.includes("선택 안함")? null : colors
-      //   })
-      //   .then((res) => {
-      //     console.log(res.data);
-      //     const data = res.data;
-      //     if (data.code === 200) {
-      //       setFlowers(data.data.flowers);
-      //       setFlowersColor(data.data.flowersColor);
-      //       setFlowersMeaning(data.data.flowersMeaning);
-      //     }
-      //     else console.log("오류 발생");
-      //   });
-
-      // .catch((error) => {
-      //   if (error.response) {
-      //     // 서버 응답이 있는 경우
-      //     console.log("서버 응답 오류:", error.response.data);
-      //   } else if (error.request) {
-      //     // 요청은 보내었지만 응답이 없는 경우
-      //     console.log("서버 응답이 없음");
-      //   } else {
-      //     // 요청을 보내기 전에 오류 발생
-      //     console.error("요청 보내기 전 오류:", error.message);
-      //   }
-      // });
   };
 
   const handleSelect = (e:flowerCardType) => {
