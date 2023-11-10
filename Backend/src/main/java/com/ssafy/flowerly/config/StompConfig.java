@@ -1,4 +1,4 @@
-package com.ssafy.flowerly.chatting;
+package com.ssafy.flowerly.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
