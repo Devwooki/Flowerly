@@ -10,7 +10,12 @@ const ListBuyer = () => {
   const { data, isLoading, isFetching, isError } = useQuery<BuyerCard[], AxiosError>(
     ["listBuyerQuery"],
     async () => {
-      const res = await KDMaxios.get("api/buyer/my-flly");
+      const res = await KDMaxios.get("api/buyer/my-flly", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        withCredentials: true,
+      });
       console.log(res.data.data.content);
 
       return res.data.data.content;
@@ -42,7 +47,7 @@ const ListBuyer = () => {
         {data && data.length === 1 ? (
           <BuyerCardOne card={data[0]} key={data[0].fllyId} />
         ) : (
-          data && data.map((card, idx) => <BuyerCards card={card} key={card.fllyId} />)
+          data && data.map((card) => <BuyerCards card={card} key={card.fllyId} />)
         )}
       </div>
     </div>

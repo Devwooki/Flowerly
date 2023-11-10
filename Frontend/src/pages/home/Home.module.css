@@ -1,0 +1,89 @@
+.home {
+  position: relative;
+  height: 100vh;
+  /* border: 1px solid black; */
+}
+
+.mainHeader {
+  position: relative;
+  max-width: 450px;
+  font-family: "Pretendard-SemiBold";
+  width: 85%;
+  margin: 0 auto;
+  margin-top: 40px;
+  flex-flow: row;
+  align-items: flex-end;
+}
+
+.header {
+  /* border: 1px solid black; */
+  display: block;
+  font-size: 20px;
+}
+
+.title {
+  /* border: 1px solid black; */
+  display: block;
+  font-size: 30px;
+}
+
+.mainBody {
+  width: 90%;
+  margin: 0 auto;
+  height: 65vh;
+  margin-top: 15px;
+  /* border: 1px solid black; */
+}
+
+.bannerImg {
+  position: relative;
+  border-radius: 40px;
+  /* margin-bottom: 20px; */
+}
+
+.imgDiv {
+  border-radius: 40px;
+  object-position: center;
+}
+
+.imgDiv img {
+  border-radius: 40px;
+  object-position: center;
+}
+
+.divider {
+  /* width: 40%; */
+  border: 1px solid white;
+  margin-left: 5%;
+}
+.imgDisc {
+  width: 100%;
+  font-family: "NanumSquareNeoOTF-Rg";
+  position: absolute;
+  bottom: 0;
+  color: white;
+  padding: 40px 0 40px 0;
+  border-radius: 0 0 40px 40px;
+  background-color: #00000030;
+}
+
+.imgDisc div {
+  width: 60%;
+  padding-left: 5%;
+  margin-bottom: 5px;
+}
+
+.imgDisc div:nth-child(1) {
+  font-size: 20px;
+}
+
+.imgDisc div:nth-child(2) {
+  font-size: 28px;
+}
+.imgDisc div:nth-child(3) {
+  font-size: 20px;
+}
+
+.btnPakage {
+  display: flex;
+}
