@@ -44,7 +44,7 @@ const FllyFlower = () => {
           setFlowers(response.data.data.flowers);
           setFlowersColor(response.data.data.flowersColor);
           setFlowersMeaning(response.data.data.flowersMeaning);
-          localStorage.setItem("accessToken", response.headers.authorization);
+          if(response.headers.authorization) localStorage.setItem("accessToken", response.headers.authorization);
         }
       })
       .catch((error) => {
