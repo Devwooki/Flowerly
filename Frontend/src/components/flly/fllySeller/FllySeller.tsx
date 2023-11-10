@@ -9,9 +9,9 @@ import { tokenHttp } from "@/api/tokenHttp";
 
 interface FllyNearType {
   fllyId: number;
-  flowerName1: string;
-  flowerName2: string;
-  flowerName3: string;
+  flowerName1: string | null;
+  flowerName2: string | null;
+  flowerName3: string | null;
   imageUrl: string;
   progress: string;
   deadline: string;
@@ -46,7 +46,6 @@ const FllySeller = () => {
       .catch((err) => {
         if (err.response.status === 403) {
           router.push("/fllylogin");
-          ToastErrorMessage("로그인 만료되어 로그인화면으로 이동합니다.");
         }
       });
   };

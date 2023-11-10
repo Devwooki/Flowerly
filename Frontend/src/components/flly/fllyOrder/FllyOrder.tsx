@@ -23,9 +23,9 @@ interface resultSimpleType {
   color1: string | null;
   color2: string | null;
   color3: string | null;
-  flower1: flowerType;
-  flower2: flowerType;
-  flower3: flowerType;
+  flower1: flowerType | null;
+  flower2: flowerType | null;
+  flower3: flowerType | null;
 }
 
 interface orderInfoType {
@@ -75,7 +75,6 @@ const FllyOrder = () => {
       .catch((err) => {
         if (err.response.status === 403) {
           router.push("/fllylogin");
-          ToastErrorMessage("로그인 만료되어 로그인화면으로 이동합니다.");
         }
       });
   }, []);
