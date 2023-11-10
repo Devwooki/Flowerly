@@ -7,11 +7,9 @@ type DiscProps = {
 };
 
 const Disc = ({ card }: DiscProps) => {
-  console.log("DISC", card);
-
   const [moreBtn, setMoreBtn] = useState(false);
   const [selectedColor, setSelectedColor] = useState<string[]>([]);
-  const [selectedFlower, setSelectedFlower] = useState<string[]>([]);
+  const [selectedFlower, setSelectedFlower] = useState<flower[]>([]);
 
   const handlerMoreBtn = () => {
     setMoreBtn((pre) => !pre);
@@ -19,11 +17,13 @@ const Disc = ({ card }: DiscProps) => {
   };
 
   useEffect(() => {
-    console.log(card.imageUrl);
+    console.log("DISC", card);
 
     setSelectedColor([`${card.color1}`, `${card.color2}`, `${card.color3}`]),
-      setSelectedFlower([`${card.flower1}`, `${card.flower2}`, `${card.flower3}`]);
+      setSelectedFlower([card.flower1, card.flower2, card.flower3]);
   }, [card]);
+
+  console.log(selectedFlower);
 
   return (
     <div className={style.discMain}>
@@ -73,9 +73,9 @@ const Disc = ({ card }: DiscProps) => {
             <div className={style.discDetailTable}>
               <div className={style.detailTitle}>선택한 꽃</div>
               <div className={style.detailContent}>
-                {selectedFlower.map((flower, idx) => (
-                  <div key={idx}>{flower}</div>
-                ))}
+                {selectedFlower.map(
+                  (flower, idx) => flower && <div key={idx}>{flower.flowerName}</div>,
+                )}
               </div>
             </div>
             <div className={style.divider} />

@@ -51,7 +51,7 @@ const ShopModal = ({ shopInfo, modal }: ShopModalProps) => {
             <Image src={"/img/icon/seller-money.png"} alt="제시 금액 " width={15} height={15} />
             <div>{shopInfo.participant.offerPrice}</div>
           </div>
-          <div className={style.responseContent}>{shopInfo.participant.offerPrice}</div>
+          <div className={style.responseContent}>{shopInfo.participant.content}</div>
         </motion.div>
         <div className={style.chatAction}>채팅하기</div>
       </motion.div>

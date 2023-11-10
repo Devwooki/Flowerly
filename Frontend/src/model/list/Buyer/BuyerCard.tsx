@@ -20,18 +20,9 @@ type BuyerCard = {
   consumer: string;
   deadline: string;
   fllyId: number;
-  flower1: {
-    flowerName: string;
-    meaning: string;
-  };
-  flower2: {
-    flowerName: string;
-    meaning: string;
-  };
-  flower3: {
-    flowerName: string;
-    meaning: string;
-  };
+  flower1: flower;
+  flower2: flower;
+  flower3: flower;
   imageUrl: string;
   orderType: string;
   progress: string;
@@ -41,6 +32,7 @@ type BuyerCard = {
   target: string;
 };
 
-// type BuyerCardList = {
-//   BuyerCard: BuyerCard[];
-// };
+type flower = {
+  flowerName: string;
+  meaning: string;
+};
