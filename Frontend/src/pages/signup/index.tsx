@@ -13,6 +13,7 @@ const Signup = () => {
     const token = router.query.token as string;
     if (token) {
       setTempToken(token);
+      localStorage.setItem("accessToken", token);
     }
   }, [router.query.token, setTempToken]);
 

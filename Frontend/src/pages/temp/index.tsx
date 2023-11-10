@@ -10,7 +10,7 @@ const Temp = () => {
   const [host, setHost] = useState<string | null>(null);
   const router = useRouter();
   const setMemberInfo = useSetRecoilState(memberInfoState);
-  const { token } = router.query as { token: string };
+  const { tempToken } = router.query as { tempToken: string };
 
   useEffect(() => {
     if (!path && !host) {
@@ -20,17 +20,17 @@ const Temp = () => {
   }, [path, host]);
 
   useEffect(() => {
-    if (token && host && path) {
-      getMemberinfo(token);
+    if (tempToken && host && path) {
+      getMemberinfo(tempToken);
     }
-  }, [token, host, path]);
+  }, [tempToken, host, path]);
 
-  const getMemberinfo = async (token: string) => {
+  const getMemberinfo = async (tempToken: string) => {
     try {
       const response = await axios.get("https://flower-ly.co.kr/api/member", {
         withCredentials: true,
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${tempToken}`,
           "X-Request-Host": host,
           "X-Request-Path": path,
         },
