@@ -45,9 +45,10 @@ public class FllyController {
      * @return flowerList
      */
     @PostMapping("/request")
-    public CustomResponse saveFllyRequest(@RequestBody FllyDto fllyDto){
+    public CustomResponse saveFllyRequest(HttpServletRequest request, @RequestBody FllyDto fllyDto){
         log.info("의뢰서 저장");
-        flowerService.saveFllyRequest(fllyDto);
+        Long memberId = (Long) request.getAttribute("memberId");
+        flowerService.saveFllyRequest(fllyDto, memberId);
         return new CustomResponse(200, "의뢰서 저장 성공");
     }
 
