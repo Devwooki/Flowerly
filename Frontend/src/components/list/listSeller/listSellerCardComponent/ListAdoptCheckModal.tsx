@@ -32,7 +32,9 @@ const ListAdoptCheckModal = ({ ModalChangeHandler, $selectId, UpdateAdptList }: 
           ToastErrorMessage(rData.message);
           ModalChangeHandler();
         }
-        localStorage.setItem("accessToken", res.headers.authorization);
+        if (res.headers.authorization) {
+          localStorage.setItem("accessToken", res.headers.authorization);
+        }
       })
       .catch((err) => {
         if (err.response.status === 403) {

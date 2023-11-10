@@ -94,13 +94,15 @@ const ListSeller = () => {
         console.log(res);
         const reData = res.data;
         if (reData.code === 200) {
-          localStorage.setItem("accessToken", res.headers.authorization);
           console.log(reData.data.content);
           setTotalPage(reData.data.totalPages);
           if (ListState === "adopt") setAdoptData(reData.data.content);
           else setParticipationData(reData.data.content);
         } else {
           ToastErrorMessage(reData.message);
+        }
+        if (res.headers.authorization) {
+          localStorage.setItem("accessToken", res.headers.authorization);
         }
       })
       .catch((err) => {
