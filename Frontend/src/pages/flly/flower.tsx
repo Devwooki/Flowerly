@@ -3,7 +3,7 @@ import style from "@/components/flly/fllyUser/FllyFlower.module.css"
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
 import { useRecoilState } from "recoil";
-import { situationState } from "@/recoil/fllyRecoil";
+import { situationState, randomFlowerState } from "@/recoil/fllyRecoil";
 import { targetState } from "@/recoil/fllyRecoil";
 import { colorState } from "@/recoil/fllyRecoil";
 import { flowerState } from "@/recoil/fllyRecoil";
@@ -13,6 +13,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import CheckModal from "@/components/flly/fllyUser/CheckModal";
 import { ToastErrorMessage } from "@/model/toastMessageJHM";
+import { tokenHttp } from "@/api/tokenHttp";
 
 const FllyFlower = () => {
   const [showPrevModal, setShowPrevModal] = useState<boolean>(false);
@@ -22,23 +23,19 @@ const FllyFlower = () => {
   const target = useRecoilValue(targetState);
   const colors = useRecoilValue(colorState);
   const [selectedFlowers, setSelcetedFlowers] = useRecoilState(flowerState);
+  const [randomFlower, setRandomFlower] = useRecoilState(randomFlowerState);
   const [selected, setSelected] = useState<number[]>([]);
   const [flowers, setFlowers] = useState<flowerCardType[]>([]);
   const [flowersColor, setFlowersColor] = useState<flowerCardType[]>([]);
   const [flowersMeaning, setFlowersMeaning] = useState<flowerCardType[]>([]);
+  const router = useRouter();
 
   const axiosHandler = () => {
-    const accessToken = localStorage.getItem("accessToken");
-    axios
-      // .post(`https://flower-ly.co.kr/api/flly`, {
-      .post(`http://localhost:6090/api/flly`, {
-        headers: {
-          Authorization: "Bearer " + accessToken,
-        },
-        withCredentials: true,
+    tokenHttp
+      .post(`/flly`, {
         body: {
-          "situation" : [situation == "선택 안함"? null : situation],
-          "target" : [target == "선택 안함"? null : target],
+          "situation" : situation == "선택 안함"? null : [situation],
+          "target" : target == "선택 안함"? null : [target],
           "colors": colors.includes("선택 안함")? null : colors
         }
       })
@@ -48,16 +45,19 @@ const FllyFlower = () => {
           setFlowers(response.data.data.flowers);
           setFlowersColor(response.data.data.flowersColor);
           setFlowersMeaning(response.data.data.flowersMeaning);
+          localStorage.setItem("accessToken", response.headers.Authorization);
         }
       })
       .catch((error) => {
         if (error.response.status === 403) {
           console.log("잠이나 자자");
+          router.push("/fllylogin");
+          ToastErrorMessage("로그인 만료되어 로그인화면으로 이동합니다.");
         }
-        ToastErrorMessage("서버 에러 발생!! 초비상!!!");
       });
 
       console.log(situation, target, colors);
+      console.log(situation == "선택 안함"? null : [situation], target == "선택 안함"? null : [target], colors.includes("선택 안함")? null : colors);
       // axios
       //   .post(`https://flower-ly.co.kr/api/flly`, {
       //     "situation" : [situation == "선택 안함"? null : situation],
@@ -126,9 +126,17 @@ const FllyFlower = () => {
     else setCheck(false);
   },[selectedFlowers]);
 
+  // 배열에서 랜덤하게 n개의 요소를 선택하는 함수
+  const getRandomElements = (arr:flowerCardType[], n:number) => {
+    const shuffled = arr.sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, n);
+  };
+
   const handleClickNext = () => {
     // 선택을 안하거나 조금 했을 때에 대한 처리
-    // if(selectedFlowers.length==)
+    if(selectedFlowers.length==0) {
+      setRandomFlower(getRandomElements(flowers, Math.min(3, flowers.length)));
+    }
     setShowNextModal(true);
   }
 

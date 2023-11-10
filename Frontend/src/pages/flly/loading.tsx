@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import style from "@/components/flly/fllyUser/FllyLoading.module.css";
 import Image from "next/image";
 import { useRecoilValue, useRecoilState } from "recoil";
-import { flowerState } from "@/recoil/fllyRecoil";
+import { flowerState, randomFlowerState } from "@/recoil/fllyRecoil";
 import OpenAI from "openai";
 import { bouquetsState, bouquetType } from "@/recoil/fllyRecoil";
 import { useRouter } from "next/router";
@@ -20,15 +20,24 @@ const FllyLoading = () => {
   });
 
   const flowers = useRecoilValue(flowerState);
+  const randoms = useRecoilValue(randomFlowerState);
   const [bouquets, setBouquets] = useRecoilState(bouquetsState);
 
   const generateOrder = async () => {
-    const flowerStringArray = flowers.map((flower) => {
-      return `${flower.color} ${flower.engName}`;
-    });
+    if(flowers.length > 0) {
+      const flowerStringArray = flowers.map((flower) => {
+        return `${flower.color} ${flower.engName}`;
+      });
+      const flowerString = flowerStringArray.join(", ");
+      setOrder(`a bouquet of ${flowerString}, on Light Bluish Gray background`);
+    } else {
+      const flowerStringArray = randoms.map((flower) => {
+        return `${flower.color} ${flower.engName}`;
+      });
+      const flowerString = flowerStringArray.join(", ");
+      setOrder(`a bouquet of ${flowerString}, on Light Bluish Gray background`);
+    }
 
-    const flowerString = flowerStringArray.join(", ");
-    setOrder(`a bouquet of ${flowerString}, on Light Bluish Gray background`);
   };
 
   const generateImage = async () => {
