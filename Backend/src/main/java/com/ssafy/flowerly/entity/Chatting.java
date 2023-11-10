@@ -4,6 +4,7 @@ import com.ssafy.flowerly.entity.common.BaseCreatedTimeEntity;
 import com.ssafy.flowerly.entity.common.BaseTimeEntity;
 import com.ssafy.flowerly.member.MemberRole;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
@@ -48,6 +49,14 @@ public class Chatting extends BaseCreatedTimeEntity {
 
     @Column(nullable = false, columnDefinition = "boolean default false")
     private boolean isRemovedSeller;
+
+    @Column(nullable = false)
+    @ColumnDefault("0")
+    private Integer unreadCntConsumer;
+
+    @Column(nullable = false)
+    @ColumnDefault("0")
+    private Integer unreadCntSeller;
 
     public void updateChatting(String chattingMessage, Date chattingTime) {
         ZonedDateTime zdt = chattingTime.toInstant().atZone(ZoneId.of("Asia/Seoul"));
