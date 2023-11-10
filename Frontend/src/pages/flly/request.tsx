@@ -196,7 +196,6 @@ const FllyTarget = () => {
       })
       .catch((error) => {
         if (error.response.status === 403) {
-          ToastErrorMessage("로그인 만료되어 로그인화면으로 이동합니다.");
           router.push("/fllylogin");
         } else ToastErrorMessage("오류가 발생했습니다.");
       });
