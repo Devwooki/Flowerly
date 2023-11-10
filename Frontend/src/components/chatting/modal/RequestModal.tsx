@@ -16,6 +16,7 @@ type RequestInfo = {
   recipientName: string;
   recipientPhoneNumber: string;
   address: string;
+  isPaid: boolean;
 };
 
 type RequestModalProps = {
@@ -112,41 +113,57 @@ const RequestModal: React.FC<RequestModalProps> = ({ chattingId, modalHandler, s
                 </div>
               </>
             )}
+            {requestInfo?.isPaid && (
+              <>
+                <div className={style.subTitle}>결제 정보</div>
+                <div className={style.content}>
+                  <div className={style.contentItem} id={style.priceItem}>
+                    <div className={style.itemTitle}>결제 금액</div>
+                    <div className={style.itemText}>{requestInfo?.price.toLocaleString()} 원</div>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
-          <div className={style.bottom}>
-            <div className={style.payDiv}>
-              <div className={style.payTitle}>
-                <Image
-                  className={style.icon}
-                  src="/img/icon/chatting-money.png"
-                  width={18}
-                  height={18}
-                  alt="결제"
-                />
-                결제 금액
-              </div>
-              <div>
-                <input
-                  type="number"
-                  className={style.input}
-                  value={price}
-                  onChange={(e) => {
-                    setPrice(e.target.value);
+          {
+            // 판매자이면서 &&
+            !requestInfo?.isPaid && (
+              <div className={style.bottom}>
+                <div className={style.payDiv}>
+                  <div className={style.payTitle}>
+                    <Image
+                      className={style.icon}
+                      src="/img/icon/chatting-money.png"
+                      width={18}
+                      height={18}
+                      alt="결제"
+                    />
+                    결제 금액
+                  </div>
+                  <div>
+                    <input
+                      type="number"
+                      className={style.input}
+                      value={price}
+                      onChange={(e) => {
+                        setPrice(e.target.value);
+                      }}
+                    ></input>
+                  </div>
+                </div>
+                <button
+                  className={style.btn}
+                  onClick={() => {
+                    savePrice();
+                    sendHandler();
+                    modalHandler("REQUEST", false);
                   }}
-                ></input>
+                >
+                  결제 요청
+                </button>
               </div>
-            </div>
-            <button
-              className={style.btn}
-              onClick={() => {
-                savePrice();
-                sendHandler();
-                modalHandler("REQUEST", false);
-              }}
-            >
-              결제 요청
-            </button>
-          </div>
+            )
+          }
         </div>
       </div>
     </>

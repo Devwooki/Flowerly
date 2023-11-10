@@ -44,7 +44,6 @@ const Step2 = () => {
 
   const [sellerInput, setSellerInput] = useRecoilState(sellerInputState);
   const [sellerAddress, setSellerAddress] = useRecoilState(sellerAddressState);
-  const tempToken = useRecoilValue(tempTokenState);
 
   useEffect(() => {
     const getSidoData = async () => {
@@ -149,6 +148,7 @@ const Step2 = () => {
   };
 
   const handleFinish = async () => {
+    const tempToken = localStorage.getItem("accessToken");
     try {
       const signupData = {
         sellerInput,
@@ -160,6 +160,7 @@ const Step2 = () => {
       if (host && path) {
         const response = await axios.post(
           "https://flower-ly.co.kr/api/member/signup/seller",
+          // "http://localhost:6090/api/member/signup/seller",
           signupData,
           {
             headers: {

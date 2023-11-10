@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import style from "@/components/flly/fllyUser/DeliveryModal.module.css"
 import { useDaumPostcodePopup } from "react-daum-postcode";
+import { deliveryAddressType } from "@/recoil/fllyRecoil";
 
 interface Props {
   ModalChangeHandler: () => void;
@@ -8,9 +9,10 @@ interface Props {
   initialAddress: string;
   initialDetailAddress: string;
   UpdateDetailAddress: (newAddress: string) => void;
+  setAddressCode: React.Dispatch<React.SetStateAction<deliveryAddressType>>;
 }
 
-const DeliveryModal = ({ ModalChangeHandler, UpdateBasicAddress, initialAddress, initialDetailAddress, UpdateDetailAddress }: Props) => {
+const DeliveryModal = ({ ModalChangeHandler, UpdateBasicAddress, initialAddress, initialDetailAddress, UpdateDetailAddress, setAddressCode }: Props) => {
   const [basicAddress, setBasicAddress] = useState("");
   const [detailAddress, setDetailAddress] = useState("");
 
@@ -38,6 +40,12 @@ const DeliveryModal = ({ ModalChangeHandler, UpdateBasicAddress, initialAddress,
     console.log(data);
     setBasicAddress(jibunAddress);
     UpdateBasicAddress(jibunAddress);
+
+    setAddressCode({
+      sido: data.sido,
+      sigungu: data.sigungu,
+      dong: data.bname,
+    });
   };
 
   const handleClick = () => {

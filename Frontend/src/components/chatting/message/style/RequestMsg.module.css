@@ -36,3 +36,16 @@
   margin: 5px 0;
   color: black;
 }
+
+.disabledBtn {
+  font-family: "NanumSquareNeoOTF-Rg";
+  font-size: 16px;
+  border: none;
+  width: 80%;
+  height: 32px;
+  background-color: var(--gray);
+  border-radius: 5px;
+  margin: 5px 0;
+  color: black;
+  opacity: 0.5;
+}

@@ -35,7 +35,7 @@ const ListParticipationCard = ({ $participationInfo }: Props) => {
           pathname: "/flly/order/detail/[fllyId]",
           query: { fllyId: $participationInfo.fllyId },
         },
-        "/flly/detail", // 이것은 브라우저 주소창에 표시될 URL입니다.
+        "/flly/order/detail", // 이것은 브라우저 주소창에 표시될 URL입니다.
         { shallow: true },
       );
     } else {
@@ -93,7 +93,7 @@ const ListParticipationCard = ({ $participationInfo }: Props) => {
             </div>
           </div>
         </div>
-        <div className={style.footerBox}>입찰중</div>
+        <div className={style.footerBox}>이거 넣어야함</div>
       </div>
     </>
   );

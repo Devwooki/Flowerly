@@ -1,5 +1,5 @@
 import React from "react";
-import style from "./MypageCategory.module.css";
+import style from "./style/MypageCategory.module.css";
 import Image from "next/image";
 import { useRouter } from "next/router";
 

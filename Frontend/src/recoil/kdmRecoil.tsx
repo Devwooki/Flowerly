@@ -4,7 +4,7 @@ import { recoilPersist } from "recoil-persist";
 const isBrowser = typeof window !== "undefined";
 const sessionStorage = isBrowser ? window.sessionStorage : undefined;
 
-const { persistAtom } = recoilPersist({
+const { persistAtom: persistAtomSession } = recoilPersist({
   key: "fllySession",
   storage: sessionStorage,
 });
@@ -13,13 +13,32 @@ const { persistAtom } = recoilPersist({
 export const FllylistDiscRecoil = atom<BuyerCard>({
   key: "FllylistDiscRecoil",
   default: {
+    budget: 0,
+    color1: null,
+    color2: null,
+    color3: null,
+    consumer: "",
+    deadline: "",
     fllyId: 0,
-    state: "",
-    img: "",
+    flower1: {
+      flowerName: "",
+      meaning: "",
+    },
+    flower2: {
+      flowerName: "",
+      meaning: "",
+    },
+    flower3: {
+      flowerName: "",
+      meaning: "",
+    },
+    imageUrl: "",
+    orderType: "",
+    progress: "",
+    requestAddress: "",
+    requestContent: "",
     situation: "",
     target: "",
-    selectedColor: [],
-    shopName: "",
   },
-  effects_UNSTABLE: [persistAtom],
+  effects_UNSTABLE: [persistAtomSession],
 });

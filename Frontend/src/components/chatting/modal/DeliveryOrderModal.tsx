@@ -114,7 +114,7 @@ const DeliveryOrderModal: React.FC<DeliveryOrderProps> = ({
         return updatedInputs;
       });
     } else {
-      alert("날짜, 시간을 입력하세요.");
+      ToastErrorMessage("날짜, 시간을 입력하세요.");
     }
   };
 

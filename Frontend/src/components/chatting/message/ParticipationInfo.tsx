@@ -46,7 +46,6 @@ const ParticipationForm: React.FC<ParticipationFormProps> = ({ chattingId, modal
                 height={14}
                 alt="상태이미지"
               />
-
               <div id={style.price}>
                 {participationInfo && participationInfo.offerPrice.toLocaleString()} 원
               </div>

@@ -8,7 +8,7 @@ import axios from "axios";
 const Buyer = () => {
   const [path, setPath] = useState<string | null>(null);
   const [host, setHost] = useState<string | null>(null);
-  const tempToken = useRecoilValue(tempTokenState);
+
   const [buyerInput, setBuyerInput] = useRecoilState(buyerInputState);
 
   useEffect(() => {
@@ -22,11 +22,13 @@ const Buyer = () => {
   };
 
   const handleComplete = async () => {
+    const tempToken = localStorage.getItem("accessToken");
     console.log(buyerInput);
 
     try {
       const response = await axios.post(
         "https://flower-ly.co.kr/api/member/signup/buyer",
+        //  "        http://localhost:6090/api/member/signup/buyer",
         buyerInput,
         {
           headers: {
