@@ -8,7 +8,7 @@ import axios from "axios";
 const Buyer = () => {
   const [path, setPath] = useState<string | null>(null);
   const [host, setHost] = useState<string | null>(null);
-  const tempToken = localStorage.getItem("accessToken");
+
   const [buyerInput, setBuyerInput] = useRecoilState(buyerInputState);
 
   useEffect(() => {
@@ -22,6 +22,7 @@ const Buyer = () => {
   };
 
   const handleComplete = async () => {
+    const tempToken = localStorage.getItem("accessToken");
     console.log(buyerInput);
 
     try {
