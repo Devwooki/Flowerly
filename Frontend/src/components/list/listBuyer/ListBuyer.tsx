@@ -12,7 +12,11 @@ const ListBuyer = () => {
     async () => {
       const res = await tokenHttp.get("/buyer/my-flly");
       console.log(res.data.data.content);
-      localStorage.setItem("accessToken", res.headers.authorization);
+
+      if (res.headers.authorization) {
+        console.log("accessToken", res.headers.authorization);
+        localStorage.setItem("accessToken", res.headers.authorization);
+      }
       return res.data.data.content;
     },
     {
@@ -39,10 +43,13 @@ const ListBuyer = () => {
         <div className={style.headerTitle}>진행중인 플리</div>
       </div>
       <div className={style.ListBuyerMain}>
-        {data && data.length === 1 ? (
+        {data && data.length >= 2 ? (
+          data.map((card) => <BuyerCards card={card} key={card.fllyId} />)
+        ) : data && data.length === 1 ? (
           <BuyerCardOne card={data[0]} key={data[0].fllyId} />
         ) : (
-          data && data.map((card) => <BuyerCards card={card} key={card.fllyId} />)
+          // 다른 경우에 대한 처리 (예: 데이터가 없을 때)
+          <div>텅텅!!</div>
         )}
       </div>
     </div>

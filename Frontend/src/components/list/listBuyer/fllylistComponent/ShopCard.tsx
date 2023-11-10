@@ -10,8 +10,6 @@ type ShopCardProps = {
 };
 
 const ShopCard = ({ shopInfo }: ShopCardProps) => {
-  console.log("zz", shopInfo);
-
   const router = useRouter();
   const originalContent = shopInfo.participant.content;
   const originalAdress = shopInfo.storeInfoDto.address;
@@ -71,7 +69,7 @@ const ShopCard = ({ shopInfo }: ShopCardProps) => {
         </motion.div>
         <div className={style.chatAction}>채팅하기</div>
       </motion.div>
-      {/* {modal && <ShopModal modal={modalState} shopInfo={shopInfo} />} */}
+      {modal && <ShopModal modal={modalState} shopInfo={shopInfo} />}
     </>
   );
 };

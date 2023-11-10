@@ -11,13 +11,14 @@ import { useEffect } from "react";
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const isChattingRoom = router.pathname.includes("/chatting/room/");
+  const fllyLogin = router.pathname.includes("/fllylogin");
   const queryClient = new QueryClient();
 
   return (
     <QueryClientProvider client={queryClient}>
       <ToastContainer />
       <RecoilRoot>
-        {isChattingRoom ? (
+        {isChattingRoom || fllyLogin ? (
           <Component {...pageProps} />
         ) : (
           <>

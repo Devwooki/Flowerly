@@ -16,8 +16,10 @@ const FllyList = () => {
     ["FllyListQuery"],
     async () => {
       const res = await tokenHttp.get(`/buyer/flist/${param.fllyId}`);
-      console.log("FllyListQuery", res.data.data.stores.content);
-      localStorage.setItem("accessToken", res.headers.authorization);
+      if (res.headers.authorization) {
+        console.log("accessToken", res.headers.authorization);
+        localStorage.setItem("accessToken", res.headers.authorization);
+      }
       return res.data.data;
     },
     {
@@ -49,7 +51,7 @@ const FllyList = () => {
         {data && (
           <div className={style.fllyListMain}>
             <Disc card={data.flly} />
-            {/* <ShopList shopList={data.stores.content} /> */}
+            <ShopList shopList={data.stores.content} />
           </div>
         )}
       </div>
@@ -63,7 +65,7 @@ export const getServerSideProps: GetServerSideProps = async (context: any) => {
   // context.params를 통해 URL 파라미터에 접근할 수 있습니다.
   const { fllyId } = context.params;
 
-  console.log("SSR", fllyId);
+  console.log("SSR 렌더링", fllyId);
   // 필요한 데이터를 props로 페이지에 전달할 수 있습니다.
   return {
     props: { fllyId },
