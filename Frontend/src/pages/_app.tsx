@@ -17,7 +17,6 @@ export default function App({ Component, pageProps }: AppProps) {
     <QueryClientProvider client={queryClient}>
       <ToastContainer />
       <RecoilRoot>
-        <ToastContainer position="top-center" />
         {isChattingRoom ? (
           <Component {...pageProps} />
         ) : (
