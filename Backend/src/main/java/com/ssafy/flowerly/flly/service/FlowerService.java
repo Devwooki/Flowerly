@@ -11,6 +11,7 @@ import com.ssafy.flowerly.flly.dto.FllyDto;
 import com.ssafy.flowerly.flly.dto.FlowerDto;
 import com.ssafy.flowerly.flly.dto.FlowerRequestDto;
 import com.ssafy.flowerly.flly.repository.FlowerRepository;
+import com.ssafy.flowerly.member.model.MemberRepository;
 import com.ssafy.flowerly.s3.model.S3Service;
 import com.ssafy.flowerly.seller.model.FllyDeliveryRegionRepository;
 import com.ssafy.flowerly.seller.model.FllyPickupRegionRepository;
@@ -21,7 +22,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -36,6 +36,8 @@ public class FlowerService {
     private final FllyPickupRegionRepository fllyPickupRegionRepository;
     private final FllyDeliveryRegionRepository fllyDeliveryRegionRepository;
     private final S3Service s3Service;
+    private final MemberRepository memberRepository;
+
     public Map<String, List<FlowerDto>> getFlowerList(FlowerRequestDto flowerRequest) {
         Map<String, List<FlowerDto>> lists = new HashMap<>();
         List<FlowerDto> flowerDtoList = new ArrayList<>();
@@ -144,7 +146,7 @@ public class FlowerService {
         }
     }
 
-    public void saveFllyRequest(FllyDto fllyDto) {
+    public void saveFllyRequest(FllyDto fllyDto, Long memberId) {
         //=========================================================
         // String s3uploadUrl = s3Service.makeFlowerBouquet(이미지 URL);
         // 으로 쓰면 됩니다.
@@ -179,10 +181,12 @@ public class FlowerService {
         flly.setDeadline(fllyDto.getDeadline().plusHours(9));
         flly.setRequestContent(fllyDto.getRequestContent());
         flly.setBudget(fllyDto.getBudget());
-//        flly.setImageUrl("");
         flly.setImageUrl(s3Service.makeFlowerBouquet(fllyDto.getImageUrl()));
         flly.setCanceled(false);
         flly.setProgress(ProgressType.START);
+        Member member = memberRepository.findByMemberId(memberId)
+                        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_MEMBER));
+        flly.setConsumer(member);
 
         Flly savedFlly = fllyRepository.save(flly);
         if(fllyDto.getOrderType().equals(OrderType.DELIVERY)) {
