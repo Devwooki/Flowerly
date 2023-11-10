@@ -56,13 +56,10 @@ const MypageReview = () => {
       .then((res) => {
         if (res.data.code === 200) {
           setReviewList(res.data.data.content);
-          console.log(res.headers);
-          console.log(res.headers.Authorization);
-          // console.log(res.headers[Authorization);
+          localStorage.setItem("accessToken", res.headers.Authorization);
         }
       })
       .catch((err) => {
-        console.log("에러 ", err);
         if (err.response.status === 403) {
           router.push("/fllylogin");
           ToastErrorMessage("로그인 만료되어 로그인화면으로 이동합니다.");

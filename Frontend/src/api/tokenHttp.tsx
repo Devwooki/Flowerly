@@ -126,9 +126,8 @@ export const tokenHttp = axios.create({
 });
 
 tokenHttp.interceptors.request.use(async (req) => {
-  // const accessToken = localStorage.getItem("accesstoken");
-  const accessToken = "Bearer asdfjasdlkfjsdaklfjsdkl;afj;asldkfjasldk;jfskl;ajf;slfjsda";
-  // "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcwOTUwNjY2NywibWVtYmVySWQiOjF9.Rvoz54jid-oatfns3YuHLkvTTQ_eyCfHmT4tAod3QuH3geimCFbSk_TCgmuuHUtgs34EGuVbdm_aBwpRbNBi6w";
+  const accessToken = localStorage.getItem("accesstoken");
+
   if (!accessToken) {
     console.log("token 이 존재하지 않습니다.");
     throw new Error("expire token");
