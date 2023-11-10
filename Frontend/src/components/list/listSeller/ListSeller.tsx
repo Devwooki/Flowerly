@@ -3,8 +3,10 @@ import style from "./style/ListSeller.module.css";
 import ListAdoptCard from "./listSellerCardComponent/ListAdoptCard";
 import ListParticipationCard from "./listSellerCardComponent/ListParticipationCard";
 import ListAdoptCheckModal from "./listSellerCardComponent/ListAdoptCheckModal";
-import axios from "axios";
 import { ToastErrorMessage } from "@/model/toastMessageJHM";
+import { tokenHttp } from "@/api/tokenHttp";
+import { useRouter } from "next/router";
+import { error } from "console";
 
 interface adoptType {
   requestId: number;
@@ -27,9 +29,9 @@ interface fllyResponeDtoType {
 interface participationType {
   fllyId: number;
   fllyImageUrl: string;
-  fllyFlower1: string;
-  fllyFlower2: string;
-  fllyFlower3: string;
+  fllyFlower1: string | null;
+  fllyFlower2: string | null;
+  fllyFlower3: string | null;
   fllybudget: number;
   fllyDeadline: string;
   fllyResponeDto: fllyResponeDtoType;
@@ -49,6 +51,8 @@ const ListSeller = () => {
 
   const [adoptData, setAdoptData] = useState<adoptType[]>([]);
   const [participationData, setParticipationData] = useState<participationType[]>([]);
+
+  const router = useRouter();
 
   //상단 Side 클릭에 따른 세팅 핸들러
   const ChangeStatHander = (clickName: string) => {
@@ -84,9 +88,10 @@ const ListSeller = () => {
   };
 
   const axiosHandler = (addUrl: string) => {
-    axios
-      .get("https://flower-ly.co.kr/api/seller/" + addUrl + "?page=" + currentPage)
+    tokenHttp
+      .get("/seller/" + addUrl + "?page=" + currentPage)
       .then((res) => {
+        console.log(res);
         const reData = res.data;
         if (reData.code === 200) {
           console.log(reData.data.content);
@@ -95,6 +100,14 @@ const ListSeller = () => {
           else setParticipationData(reData.data.content);
         } else {
           ToastErrorMessage(reData.message);
+        }
+        if (res.headers.authorization) {
+          localStorage.setItem("accessToken", res.headers.authorization);
+        }
+      })
+      .catch((err) => {
+        if (err.response.status === 403) {
+          router.push("/fllylogin");
         }
       });
   };

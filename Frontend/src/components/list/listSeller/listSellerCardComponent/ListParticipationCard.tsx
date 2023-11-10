@@ -14,9 +14,9 @@ interface fllyResponeDtoType {
 interface participationType {
   fllyId: number;
   fllyImageUrl: string;
-  fllyFlower1: string;
-  fllyFlower2: string;
-  fllyFlower3: string;
+  fllyFlower1: string | null;
+  fllyFlower2: string | null;
+  fllyFlower3: string | null;
   fllybudget: number;
   fllyDeadline: string;
   fllyResponeDto: fllyResponeDtoType;
@@ -60,8 +60,9 @@ const ListParticipationCard = ({ $participationInfo }: Props) => {
               <div>
                 <Image src="/img/icon/seller-flower.png" width={20} height={20} alt="상태이미지" />
                 <div>
-                  {$participationInfo.fllyFlower1},{$participationInfo.fllyFlower2},{" "}
-                  {$participationInfo.fllyFlower3}
+                  {$participationInfo.fllyFlower1 && $participationInfo.fllyFlower1},
+                  {$participationInfo.fllyFlower2 && $participationInfo.fllyFlower2},{" "}
+                  {$participationInfo.fllyFlower3 && $participationInfo.fllyFlower3}
                 </div>
               </div>
               <div>

@@ -3,21 +3,20 @@ import style from "./ListBuyer.module.css";
 import BuyerCardOne from "./listBuyerCardComponent/BuyerCardOne";
 import { useQuery } from "react-query";
 import axios, { AxiosError } from "axios";
-import { KDMaxios } from "@/api/basicHttp";
 import BuyerCards from "./listBuyerCardComponent/BuyerCards";
+import { tokenHttp } from "@/api/tokenHttp";
 
 const ListBuyer = () => {
   const { data, isLoading, isFetching, isError } = useQuery<BuyerCard[], AxiosError>(
     ["listBuyerQuery"],
     async () => {
-      const res = await KDMaxios.get("api/buyer/my-flly", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-        withCredentials: true,
-      });
+      const res = await tokenHttp.get("/buyer/my-flly");
       console.log(res.data.data.content);
 
+      if (res.headers.authorization) {
+        console.log("accessToken", res.headers.authorization);
+        localStorage.setItem("accessToken", res.headers.authorization);
+      }
       return res.data.data.content;
     },
     {
@@ -44,10 +43,13 @@ const ListBuyer = () => {
         <div className={style.headerTitle}>진행중인 플리</div>
       </div>
       <div className={style.ListBuyerMain}>
-        {data && data.length === 1 ? (
+        {data && data.length >= 2 ? (
+          data.map((card) => <BuyerCards card={card} key={card.fllyId} />)
+        ) : data && data.length === 1 ? (
           <BuyerCardOne card={data[0]} key={data[0].fllyId} />
         ) : (
-          data && data.map((card) => <BuyerCards card={card} key={card.fllyId} />)
+          // 다른 경우에 대한 처리 (예: 데이터가 없을 때)
+          <div>텅텅!!</div>
         )}
       </div>
     </div>

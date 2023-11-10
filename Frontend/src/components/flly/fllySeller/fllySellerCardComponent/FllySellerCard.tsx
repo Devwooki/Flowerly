@@ -6,9 +6,9 @@ import { useRouter } from "next/router";
 
 interface FllyNearType {
   fllyId: number;
-  flowerName1: string;
-  flowerName2: string;
-  flowerName3: string;
+  flowerName1: string | null;
+  flowerName2: string | null;
+  flowerName3: string | null;
   imageUrl: string;
   progress: string;
   deadline: string;
@@ -52,8 +52,9 @@ const FllySellerCard = ({ $FllyDeliveryNear }: { $FllyDeliveryNear: FllyNearType
             <div>
               <Image src="/img/icon/seller-flower.png" alt="꽃" width={22} height={22}></Image>
               <span>
-                {$FllyDeliveryNear.flowerName1}, {$FllyDeliveryNear.flowerName2},{" "}
-                {$FllyDeliveryNear.flowerName3}
+                {$FllyDeliveryNear.flowerName1 && $FllyDeliveryNear.flowerName1},{" "}
+                {$FllyDeliveryNear.flowerName2 && $FllyDeliveryNear.flowerName2},{" "}
+                {$FllyDeliveryNear.flowerName3 && $FllyDeliveryNear.flowerName3}
               </span>
             </div>
             <div>
