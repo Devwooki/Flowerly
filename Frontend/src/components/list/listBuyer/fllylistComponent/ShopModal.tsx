@@ -5,12 +5,11 @@ import { useRouter } from "next/router";
 import { motion } from "framer-motion";
 
 type ShopModalProps = {
-  shopInfo: ShopInfo;
-  shopId: number;
+  shopInfo: storeContent;
   modal: () => void;
 };
 
-const ShopModal = ({ shopInfo, shopId, modal }: ShopModalProps) => {
+const ShopModal = ({ shopInfo, modal }: ShopModalProps) => {
   const router = useRouter();
 
   const moveToShop = (shopId: number) => {
@@ -25,25 +24,34 @@ const ShopModal = ({ shopInfo, shopId, modal }: ShopModalProps) => {
       exit={{ opacity: 0, transition: { duration: 0.05 } }}
       onClick={modal}
     >
-      <motion.div layoutId={`shopCardMain-${shopId}`} className={`${style.shopCardMain}`}>
-        <motion.div className={style.shopFlowerImg} layoutId={`shopFlowerImg-${shopId}`}>
-          <Image src={shopInfo.reImg} alt="추천 꽃다발" fill />
+      <motion.div
+        layoutId={`shopCardMain-${shopInfo.participant.fllyParticipationId}`}
+        className={`${style.shopCardMain}`}
+      >
+        <motion.div
+          className={style.shopFlowerImg}
+          layoutId={`shopFlowerImg-${shopInfo.participant.fllyParticipationId}`}
+        >
+          <Image src={shopInfo.participant.imageUrl} alt="추천 꽃다발" fill />
         </motion.div>
-        <motion.div className={style.shopInfo} layoutId={`shopInfo-${shopId}`}>
+        <motion.div
+          className={style.shopInfo}
+          layoutId={`shopInfo-${shopInfo.participant.fllyParticipationId}`}
+        >
           <div className={style.infoTable}>
             <div onClick={() => moveToShop(1)} className={style.shopName}>
-              {shopInfo.shopName}
+              {shopInfo.storeInfoDto.storeName}
             </div>
           </div>
           <div className={style.infoTable}>
             <Image src={"/img/icon/seller-location.png"} alt="가게 위치" width={10} height={15} />
-            <div>{shopInfo.shopLoc}</div>
+            <div>{shopInfo.storeInfoDto.address}</div>
           </div>
           <div className={style.infoTable}>
             <Image src={"/img/icon/seller-money.png"} alt="제시 금액 " width={15} height={15} />
-            <div>{shopInfo.recommandPrice}</div>
+            <div>{shopInfo.participant.offerPrice}</div>
           </div>
-          <div className={style.responseContent}>{shopInfo.recommandComment}</div>
+          <div className={style.responseContent}>{shopInfo.participant.offerPrice}</div>
         </motion.div>
         <div className={style.chatAction}>채팅하기</div>
       </motion.div>
