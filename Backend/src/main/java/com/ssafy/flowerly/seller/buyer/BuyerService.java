@@ -11,6 +11,7 @@ import com.ssafy.flowerly.member.model.StoreInfoRepository;
 import com.ssafy.flowerly.member.vo.StoreInfoDto;
 import com.ssafy.flowerly.s3.model.S3Service;
 import com.ssafy.flowerly.seller.buyer.dto.BuyerFlly;
+import com.ssafy.flowerly.seller.buyer.dto.BuyerFllyDto;
 import com.ssafy.flowerly.seller.buyer.dto.Flist;
 import com.ssafy.flowerly.seller.buyer.dto.FllyParticipateResponseDto;
 import com.ssafy.flowerly.seller.model.*;
@@ -42,23 +43,21 @@ public class BuyerService {
     private final S3Service s3Service;
 
     //진행중인 플리목록
-    public Page<FllyRequestDto> getMyFlly(Pageable pageable, Long memberId) {
+    public Page<BuyerFllyDto> getMyFlly(Pageable pageable, Long memberId) {
         // 주문 완료면 뺀다.
         // if orderType.getTiltle == 입찰, 조율 그대로 반환
         // else if process = 가게 이름으로
 
         return fllyRepository.findFllyByConsumerMemberId(pageable, memberId).map(flly -> {
             if(flly.getProgress().getTitle().equals("입찰")||flly.getProgress().getTitle().equals("조율"))
-                return flly.toFllyRequestDto();
+                return flly.toBuyerFlly(flly.getProgress().getTitle());
             else{
                 Long fllyId = flly.getFllyId();
                 Request request = requestRepository.findByFllyFllyIdAndIsPaidTrue(fllyId).orElse(null);
                 if(request == null)
-                    return flly.toFllyRequestDto();
+                    return flly.toBuyerFlly(flly.getProgress().getTitle());
 
-                FllyRequestDto temp = flly.toFllyRequestDto();
-                temp.setProgress((storeInfoRepository.findStoreName(request.getSeller().getMemberId())));
-                return temp;
+                return flly.toBuyerFlly(storeInfoRepository.findStoreName(request.getSeller().getMemberId()));
             }
         });
     }
