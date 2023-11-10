@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import style from "./style/FllySeller.module.css";
 
 import FllySellerCard from "./fllySellerCardComponent/FllySellerCard";
-import axios from "axios";
 
 import { ToastErrorMessage } from "@/model/toastMessageJHM";
 import { useRouter } from "next/router";
+import { tokenHttp } from "@/api/tokenHttp";
 
 interface FllyNearType {
   fllyId: number;
@@ -23,10 +23,11 @@ const FllySeller = () => {
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [totalPage, setTotalPage] = useState<number>();
   const [dpState, setDpState] = useState<String>("delivery");
+  const router = useRouter();
 
   const axiosHandelr = () => {
-    axios
-      .get(`https://flower-ly.co.kr/api/seller/near/${dpState}?page=` + currentPage)
+    tokenHttp
+      .get(`/seller/near/${dpState}?page=` + currentPage)
       .then((res) => {
         console.log(res);
         const rData = res.data;
@@ -37,6 +38,13 @@ const FllySeller = () => {
         if (rData.code === -4004) {
           setNearFllyList([]);
           ToastErrorMessage(rData.message);
+        }
+        localStorage.setItem("accessToken", res.headers.authorization);
+      })
+      .catch((err) => {
+        if (err.response.status === 403) {
+          router.push("/fllylogin");
+          ToastErrorMessage("로그인 만료되어 로그인화면으로 이동합니다.");
         }
       });
   };

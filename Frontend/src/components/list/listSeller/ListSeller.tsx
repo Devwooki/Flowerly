@@ -3,8 +3,10 @@ import style from "./style/ListSeller.module.css";
 import ListAdoptCard from "./listSellerCardComponent/ListAdoptCard";
 import ListParticipationCard from "./listSellerCardComponent/ListParticipationCard";
 import ListAdoptCheckModal from "./listSellerCardComponent/ListAdoptCheckModal";
-import axios from "axios";
 import { ToastErrorMessage } from "@/model/toastMessageJHM";
+import { tokenHttp } from "@/api/tokenHttp";
+import { useRouter } from "next/router";
+import { error } from "console";
 
 interface adoptType {
   requestId: number;
@@ -50,6 +52,8 @@ const ListSeller = () => {
   const [adoptData, setAdoptData] = useState<adoptType[]>([]);
   const [participationData, setParticipationData] = useState<participationType[]>([]);
 
+  const router = useRouter();
+
   //상단 Side 클릭에 따른 세팅 핸들러
   const ChangeStatHander = (clickName: string) => {
     if (ListState !== clickName && clickName === "participation") {
@@ -84,17 +88,25 @@ const ListSeller = () => {
   };
 
   const axiosHandler = (addUrl: string) => {
-    axios
-      .get("https://flower-ly.co.kr/api/seller/" + addUrl + "?page=" + currentPage)
+    tokenHttp
+      .get("/seller/" + addUrl + "?page=" + currentPage)
       .then((res) => {
+        console.log(res);
         const reData = res.data;
         if (reData.code === 200) {
+          localStorage.setItem("accessToken", res.headers.authorization);
           console.log(reData.data.content);
           setTotalPage(reData.data.totalPages);
           if (ListState === "adopt") setAdoptData(reData.data.content);
           else setParticipationData(reData.data.content);
         } else {
           ToastErrorMessage(reData.message);
+        }
+      })
+      .catch((err) => {
+        if (err.response.status === 403) {
+          router.push("/fllylogin");
+          ToastErrorMessage("로그인 만료되어 로그인화면으로 이동합니다.");
         }
       });
   };

@@ -4,8 +4,8 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { ToastErrorMessage, ToastSuccessMessage } from "@/model/toastMessageJHM";
-import axios from "axios";
 import imageCompression from "browser-image-compression";
+import { tokenHttp } from "@/api/tokenHttp";
 
 const FllySellerParticipation = () => {
   const [userImgSrc, setUserImgSrc] = useState<string>();
@@ -106,8 +106,8 @@ const FllySellerParticipation = () => {
     formData.append("content", content.toString());
     formData.append("offerPrice", money);
 
-    axios
-      .post("https://flower-ly.co.kr/api/seller/flly/participate", formData, {
+    tokenHttp
+      .post("/seller/flly/participate", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -118,6 +118,13 @@ const FllySellerParticipation = () => {
           ToastSuccessMessage("성공적으로 참여하였습니다");
         } else {
           ToastErrorMessage(res.data.message);
+        }
+        localStorage.setItem("accessToken", res.headers.authorization);
+      })
+      .catch((err) => {
+        if (err.response.status === 403) {
+          router.push("/fllylogin");
+          ToastErrorMessage("로그인 만료되어 로그인화면으로 이동합니다.");
         }
       });
   };
