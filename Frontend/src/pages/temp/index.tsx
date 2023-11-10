@@ -42,7 +42,7 @@ const Temp = () => {
       if (response.data.code === 200) {
         setMemberInfo(response.data.data);
 
-        const accessToken = response.headers.Authorization;
+        const accessToken = response.headers.authorization;
         console.log("최종 엑세스 토큰", accessToken);
 
         if (accessToken) {
