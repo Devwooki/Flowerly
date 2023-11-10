@@ -44,7 +44,7 @@ const Step2 = () => {
 
   const [sellerInput, setSellerInput] = useRecoilState(sellerInputState);
   const [sellerAddress, setSellerAddress] = useRecoilState(sellerAddressState);
-  const tempToken = useRecoilValue(tempTokenState);
+  const tempToken = localStorage.getItem("accessToken");
 
   useEffect(() => {
     const getSidoData = async () => {
