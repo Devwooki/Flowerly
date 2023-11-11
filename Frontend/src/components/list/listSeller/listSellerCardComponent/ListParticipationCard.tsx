@@ -14,9 +14,9 @@ interface fllyResponeDtoType {
 interface participationType {
   fllyId: number;
   fllyImageUrl: string;
-  fllyFlower1: string;
-  fllyFlower2: string;
-  fllyFlower3: string;
+  fllyFlower1: string | null;
+  fllyFlower2: string | null;
+  fllyFlower3: string | null;
   fllybudget: number;
   fllyDeadline: string;
   fllyResponeDto: fllyResponeDtoType;
@@ -35,7 +35,7 @@ const ListParticipationCard = ({ $participationInfo }: Props) => {
           pathname: "/flly/order/detail/[fllyId]",
           query: { fllyId: $participationInfo.fllyId },
         },
-        "/flly/detail", // 이것은 브라우저 주소창에 표시될 URL입니다.
+        "/flly/order/detail", // 이것은 브라우저 주소창에 표시될 URL입니다.
         { shallow: true },
       );
     } else {
@@ -60,8 +60,9 @@ const ListParticipationCard = ({ $participationInfo }: Props) => {
               <div>
                 <Image src="/img/icon/seller-flower.png" width={20} height={20} alt="상태이미지" />
                 <div>
-                  {$participationInfo.fllyFlower1},{$participationInfo.fllyFlower2},{" "}
-                  {$participationInfo.fllyFlower3}
+                  {$participationInfo.fllyFlower1 && $participationInfo.fllyFlower1},
+                  {$participationInfo.fllyFlower2 && $participationInfo.fllyFlower2},{" "}
+                  {$participationInfo.fllyFlower3 && $participationInfo.fllyFlower3}
                 </div>
               </div>
               <div>
@@ -93,7 +94,7 @@ const ListParticipationCard = ({ $participationInfo }: Props) => {
             </div>
           </div>
         </div>
-        <div className={style.footerBox}>입찰중</div>
+        <div className={style.footerBox}>이거 넣어야함</div>
       </div>
     </>
   );

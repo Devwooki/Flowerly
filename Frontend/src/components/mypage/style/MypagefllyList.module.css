@@ -1,0 +1,39 @@
+.fllyListBack {
+  width: 100%;
+  height: calc(100vh - 40px);
+  position: relative;
+  /* border: 1px solid black; */
+}
+
+.fllyListHeader {
+  position: absolute;
+  display: flex;
+  height: 80px;
+  width: 100%;
+  z-index: 10;
+  background-color: white;
+  /* border: 1px solid red; */
+}
+
+.fllyListHeader > img {
+  margin-top: 37px;
+  margin-left: 20px;
+}
+
+.fllyListHeader > img:hover {
+  cursor: pointer;
+}
+
+.headerTitle {
+  margin-top: 30px;
+  font-size: 28px;
+  height: 32px;
+  margin-left: 15px;
+  font-family: "Pretendard-Bold";
+}
+
+.fllyListMain {
+  padding-top: 90px;
+  height: calc(100% - 100px);
+  overflow: scroll;
+}

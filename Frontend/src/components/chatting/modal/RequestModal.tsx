@@ -2,7 +2,12 @@ import { useState, useEffect } from "react";
 
 import style from "./style/RequestModal.module.css";
 import Image from "next/image";
-import axios from "axios";
+
+import { tokenHttp } from "@/api/chattingTokenHttp";
+import { useRouter } from "next/router";
+
+import { useRecoilValue } from "recoil";
+import { memberInfoState } from "@/recoil/memberInfoRecoil";
 
 type RequestInfo = {
   requestId: number;
@@ -16,6 +21,7 @@ type RequestInfo = {
   recipientName: string;
   recipientPhoneNumber: string;
   address: string;
+  isPaid: boolean;
 };
 
 type RequestModalProps = {
@@ -25,15 +31,29 @@ type RequestModalProps = {
 };
 
 const RequestModal: React.FC<RequestModalProps> = ({ chattingId, modalHandler, sendHandler }) => {
-  // axios로 받아와야 함
+  const router = useRouter();
   const [requestInfo, setRequestInfo] = useState<RequestInfo>();
   const [price, setPrice] = useState<string>("");
+  const memberInfo = useRecoilValue(memberInfoState);
 
   useEffect(() => {
-    axios.get(`https://flower-ly.co.kr/api/chatting/request/${chattingId}`).then((response) => {
-      console.log(response.data.data);
-      setRequestInfo(response.data.data);
-    });
+    tokenHttp
+      .get(`/chatting/request/${chattingId}`)
+      .then((response) => {
+        if (response.data.code === 200) {
+          const responseData = response.data.data;
+          setRequestInfo(response.data.data);
+          //요거 필수!! (엑세스 토큰 만료로 재발급 받았다면 바꿔줘!! )
+          if (response.headers.authorization) {
+            localStorage.setItem("accessToken", response.headers.authorization);
+          }
+        }
+      })
+      .catch((err) => {
+        if (err.response.status === 403) {
+          router.push("/fllylogin");
+        }
+      });
   }, []);
 
   const savePrice = () => {
@@ -42,9 +62,23 @@ const RequestModal: React.FC<RequestModalProps> = ({ chattingId, modalHandler, s
       requestId: requestInfo?.requestId,
       price: price,
     };
-    axios.post("https://flower-ly.co.kr/api/chatting/request/price", body).then((response) => {
-      console.log(response);
-    });
+
+    tokenHttp
+      .post(`/chatting/request/price`, body)
+      .then((response) => {
+        console.log(response);
+        if (response.data.code === 200) {
+          //요거 필수!! (엑세스 토큰 만료로 재발급 받았다면 바꿔줘!! )
+          if (response.headers.authorization) {
+            localStorage.setItem("accessToken", response.headers.authorization);
+          }
+        }
+      })
+      .catch((err) => {
+        if (err.response.status === 403) {
+          router.push("/fllylogin");
+        }
+      });
   };
 
   return (
@@ -112,41 +146,54 @@ const RequestModal: React.FC<RequestModalProps> = ({ chattingId, modalHandler, s
                 </div>
               </>
             )}
+            {requestInfo?.isPaid && (
+              <>
+                <div className={style.subTitle}>결제 정보</div>
+                <div className={style.content}>
+                  <div className={style.contentItem} id={style.priceItem}>
+                    <div className={style.itemTitle}>결제 금액</div>
+                    <div className={style.itemText}>{requestInfo?.price.toLocaleString()} 원</div>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
-          <div className={style.bottom}>
-            <div className={style.payDiv}>
-              <div className={style.payTitle}>
-                <Image
-                  className={style.icon}
-                  src="/img/icon/chatting-money.png"
-                  width={18}
-                  height={18}
-                  alt="결제"
-                />
-                결제 금액
+          {memberInfo.role == "SELLER" && !requestInfo?.isPaid && (
+            <div className={style.bottom}>
+              <div className={style.payDiv}>
+                <div className={style.payTitle}>
+                  <Image
+                    className={style.icon}
+                    src="/img/icon/chatting-money.png"
+                    width={18}
+                    height={18}
+                    alt="결제"
+                  />
+                  결제 금액
+                </div>
+                <div>
+                  <input
+                    type="number"
+                    className={style.input}
+                    value={price}
+                    onChange={(e) => {
+                      setPrice(e.target.value);
+                    }}
+                  ></input>
+                </div>
               </div>
-              <div>
-                <input
-                  type="number"
-                  className={style.input}
-                  value={price}
-                  onChange={(e) => {
-                    setPrice(e.target.value);
-                  }}
-                ></input>
-              </div>
+              <button
+                className={style.btn}
+                onClick={() => {
+                  savePrice();
+                  sendHandler();
+                  modalHandler("REQUEST", false);
+                }}
+              >
+                결제 요청
+              </button>
             </div>
-            <button
-              className={style.btn}
-              onClick={() => {
-                savePrice();
-                sendHandler();
-                modalHandler("REQUEST", false);
-              }}
-            >
-              결제 요청
-            </button>
-          </div>
+          )}
         </div>
       </div>
     </>

@@ -6,8 +6,9 @@ import FllyInfoBox from "./fllyOrderComponent/FllyInfoBox";
 import OrderInfoBox from "./fllyOrderComponent/OrderInfoBox";
 import ShippingInfoBox from "./fllyOrderComponent/ShippingInfoBox";
 import PaymentInfoBox from "./fllyOrderComponent/PaymentInfoBox";
-import axios from "axios";
 import { useParams } from "next/navigation";
+import { tokenHttp } from "@/api/tokenHttp";
+import { ToastErrorMessage } from "@/model/toastMessageJHM";
 
 interface flowerType {
   flowerName: string;
@@ -22,9 +23,9 @@ interface resultSimpleType {
   color1: string | null;
   color2: string | null;
   color3: string | null;
-  flower1: flowerType;
-  flower2: flowerType;
-  flower3: flowerType;
+  flower1: flowerType | null;
+  flower2: flowerType | null;
+  flower3: flowerType | null;
 }
 
 interface orderInfoType {
@@ -57,15 +58,25 @@ const FllyOrder = () => {
   const [memberType, setMemberType] = useState<string>("seller");
 
   useEffect(() => {
-    axios.get(`https://flower-ly.co.kr/api/seller/flly/order/` + fllyId.fllyId).then((res) => {
-      console.log(res);
-      const rData = res.data;
-      if (rData.code === 200) {
-        setRequestInfo(rData.data.reqestInfo);
-        setOrderInfo(rData.data.orderInfo);
-        setDeliverInfo(rData.data.deliverInfo);
-      }
-    });
+    tokenHttp
+      .get(`/seller/flly/order/` + fllyId.fllyId)
+      .then((res) => {
+        console.log(res);
+        const rData = res.data;
+        if (rData.code === 200) {
+          setRequestInfo(rData.data.reqestInfo);
+          setOrderInfo(rData.data.orderInfo);
+          setDeliverInfo(rData.data.deliverInfo);
+        }
+        if (res.headers.authorization) {
+          localStorage.setItem("accessToken", res.headers.authorization);
+        }
+      })
+      .catch((err) => {
+        if (err.response.status === 403) {
+          router.push("/fllylogin");
+        }
+      });
   }, []);
 
   return (

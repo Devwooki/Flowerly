@@ -6,6 +6,7 @@ import { useRecoilValue, useRecoilState } from "recoil";
 import { bouquetsState, bouquetState, bouquetType } from "@/recoil/fllyRecoil";
 import Image from "next/image";
 import CheckModal from "@/components/flly/fllyUser/CheckModal";
+import { ToastErrorMessage } from "@/model/toastMessageJHM";
 
 const FllyBouquet = () => {
   const [showPrevModal, setShowPrevModal] = useState<boolean>(false);
@@ -27,7 +28,8 @@ const FllyBouquet = () => {
 
   const handleNextClick = () => {
     // if(bouquet !== null) setShowNextModal(true);
-    setShowNextModal(true);
+    // else ToastErrorMessage("항목을 선택해 주세요.");
+    setShowNextModal(true); // 삭제하기=========================================
   };
 
   const handlePrevClick = () => {
@@ -36,6 +38,7 @@ const FllyBouquet = () => {
 
   const handleAgainClick = () => {
     if(cnt > 0) setShowAgainModal(true);
+    else ToastErrorMessage("남은 생성 횟수가 없습니다.")
   };
 
   const prevBtnHandler = () => {

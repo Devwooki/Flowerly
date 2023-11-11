@@ -29,6 +29,7 @@
   position: absolute;
   top: 70px;
   overflow-y: auto;
+  will-change: scroll-position;
 }
 
 .containerWithMenu {
@@ -39,6 +40,7 @@
   position: absolute;
   top: 70px;
   overflow-y: auto;
+  will-change: scroll-position;
 }
 
 .bottom {
@@ -55,4 +57,30 @@
 }
 .chattingName {
   margin-left: 10px;
+}
+.storeBtn {
+  margin-left: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.dateDiv {
+  width: 100%;
+  text-align: center;
+  margin: 10px 0;
+  font-size: 14px;
+  display: flex;
+  flex-basis: 100%;
+  align-items: center;
+}
+
+.dateDiv::before,
+.dateDiv::after {
+  content: "";
+  flex-grow: 1;
+  background: rgba(62, 82, 86, 0.2);
+  height: 1px;
+  font-size: 0px;
+  line-height: 0px;
+  margin: 0px 16px;
 }

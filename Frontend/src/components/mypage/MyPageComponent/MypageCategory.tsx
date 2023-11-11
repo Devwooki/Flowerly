@@ -1,5 +1,5 @@
 import React from "react";
-import style from "./MypageCategory.module.css";
+import style from "./style/MypageCategory.module.css";
 import Image from "next/image";
 import { useRouter } from "next/router";
 
@@ -16,8 +16,8 @@ const MypageCategory = () => {
         <div className={style.iconWithText}>
           <Image
             src="/img/icon/list.png"
-            width={50}
-            height={50}
+            width={60}
+            height={60}
             alt="list-icon"
             onClick={() => navigateTo("/mypage/mylist")}
           />
@@ -27,8 +27,8 @@ const MypageCategory = () => {
         <div className={style.iconWithText}>
           <Image
             src="/img/icon/review.png"
-            width={50}
-            height={50}
+            width={60}
+            height={60}
             alt="review-icon"
             onClick={() => navigateTo("/mypage/review")}
           />
@@ -38,8 +38,8 @@ const MypageCategory = () => {
         <div className={style.iconWithText}>
           <Image
             src="/img/icon/setting.png"
-            width={50}
-            height={50}
+            width={60}
+            height={60}
             alt="setting-icon"
             onClick={() => navigateTo("/mypage/setting")}
           />

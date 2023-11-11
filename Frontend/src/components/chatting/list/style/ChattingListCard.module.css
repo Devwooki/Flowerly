@@ -1,17 +1,33 @@
+.wrapper {
+  position: relative;
+  min-width: calc(100% - 30px);
+}
+
 .cardMain {
+  position: absolute;
   box-sizing: border-box;
-  width: calc(100% - 30px);
+  min-width: 100%;
   height: 70px;
   border-radius: 8px;
   background-color: #f7f8f9;
-  padding: 10px 15px;
   margin-bottom: 10px;
   /* font-family: "NanumSquareNeoOTF-Rg"; */
+  display: flex;
 }
 
-.cardTop {
+.contentDiv {
+  padding: 10px 15px;
+  width: 100%;
+}
+
+.exitDiv {
+  min-width: 50px;
   display: flex;
-  justify-content: space-between;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--mint);
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
 }
 
 .opponentName {
@@ -21,8 +37,34 @@
 .cardTop,
 .cardBottom {
   padding: 3px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.newMsg {
+  box-sizing: border-box;
+  background-color: #ce2939;
+  /* padding: 3px 5px; */
+  border-radius: 50%;
+  color: white;
+  font-family: "NanumSquareNeoOTF-Bd";
+  font-size: 12px;
+  width: 22px;
+  height: 22px;
+  text-align: center;
+  line-height: 22px;
 }
 
 .time {
   font-size: 12px;
+}
+
+#underDiv {
+  position: relative;
+  z-index: -1;
+}
+
+#upperDiv {
+  transition: left 0.3s ease;
 }

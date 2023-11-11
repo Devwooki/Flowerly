@@ -58,6 +58,8 @@
     font-size: 12px;
     color: var(--dark);
     height: 16px;
+    font-family: "NanumSquareNeoOTF-Rg";
+    color: #757575;
 }
 
 .selectAreaBox {

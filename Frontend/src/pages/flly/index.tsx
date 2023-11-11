@@ -2,12 +2,16 @@ import React, { useState } from "react";
 
 import FllySeller from "@/components/flly/fllySeller/FllySeller";
 import FllySituation from "@/components/flly/fllyUser/FllySituation";
+import { useRecoilValue } from "recoil";
+import { MemberInfo, memberInfoState } from "@/recoil/memberInfoRecoil";
 
 const FllyMain = () => {
-  const [userType, setUserType] = useState<string>("seller");
-
+  const memberInfo = useRecoilValue<MemberInfo>(memberInfoState);
   return (
-    <>{(userType !== "seller" && <FllySituation />) || (userType === "seller" && <FllySeller />)}</>
+    <>
+      {(memberInfo.role !== "SELLER" && <FllySituation />) ||
+        (memberInfo.role === "SELLER" && <FllySeller />)}
+    </>
   );
 };
 

@@ -10,6 +10,7 @@
 .timeDiv {
   font-size: 12px;
   margin-right: 5px;
+  text-align: end;
 }
 .contentDiv {
   font-family: "NanumSquareNeoOTF-Rg";

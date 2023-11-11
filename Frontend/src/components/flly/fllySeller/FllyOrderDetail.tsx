@@ -4,13 +4,13 @@ import Image from "next/image";
 import RequestDetail from "./fllySellerDetailComponent/RequestDetail";
 import ResponseDetail from "./fllySellerDetailComponent/ResponseDetail";
 import { useParams } from "next/navigation";
-import axios from "axios";
 import { ToastErrorMessage } from "@/model/toastMessageJHM";
 import { useRouter } from "next/router";
 import { backIn } from "framer-motion";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { tokenHttp } from "@/api/tokenHttp";
 
 interface flowerInfoType {
   flowerName: string;
@@ -80,16 +80,26 @@ const FllyOrderDetail = () => {
         backImgRef.current.style.height = backWidth + "px";
       }
     }
-    axios.get("https://flower-ly.co.kr/api/seller/flly/request/" + fllyId.fllyId).then((res) => {
-      const rsData = res.data;
-      if (rsData.code == 200) {
-        console.log(res.data.data);
-        setFllyRequestInfo(rsData.data.fllyRequestDto);
-        setFllyResponseInfo(rsData.data.fllyResponeDto);
-      } else {
-        ToastErrorMessage(rsData.message);
-      }
-    });
+    tokenHttp
+      .get("/seller/flly/request/" + fllyId.fllyId)
+      .then((res) => {
+        const rsData = res.data;
+        if (rsData.code == 200) {
+          console.log(res.data.data);
+          setFllyRequestInfo(rsData.data.fllyRequestDto);
+          setFllyResponseInfo(rsData.data.fllyResponeDto);
+        } else {
+          ToastErrorMessage(rsData.message);
+        }
+        if (res.headers.authorization) {
+          localStorage.setItem("accessToken", res.headers.authorization);
+        }
+      })
+      .catch((err) => {
+        if (err.response.status === 403) {
+          router.push("/fllylogin");
+        }
+      });
   }, []);
 
   return (

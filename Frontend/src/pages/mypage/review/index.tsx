@@ -1,7 +1,12 @@
 import React from "react";
+import MypageReview from "@/components/mypage/MypageReview";
 
 const Review = () => {
-  return <div>Review</div>;
+  return (
+    <>
+      <MypageReview />
+    </>
+  );
 };
 
 export default Review;

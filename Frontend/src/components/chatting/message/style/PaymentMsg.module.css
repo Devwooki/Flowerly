@@ -34,6 +34,19 @@
   align-items: center;
   justify-content: center;
 }
+.disabledBtnDiv {
+  /* border: 1px solid black; */
+  background-color: #ffeb00;
+  height: 35px;
+  border-radius: 30px;
+  margin-top: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "NanumSquareNeoOTF-Rg";
+  color: black;
+  opacity: 0.5;
+}
 
 .priceDiv {
   display: flex;

@@ -11,6 +11,8 @@ import "dayjs/locale/ko";
 
 import DaumPostcode from "react-daum-postcode";
 import { ToastErrorMessage } from "@/model/toastMessageJHM";
+import { tokenHttp } from "@/api/chattingTokenHttp";
+import { useRouter } from "next/router";
 
 type DeliveryOrderProps = {
   chattingId: number;
@@ -30,6 +32,7 @@ const DeliveryOrderModal: React.FC<DeliveryOrderProps> = ({
   modalHandler,
   sendHandler,
 }) => {
+  const router = useRouter();
   const [orderInputs, setOrderInputs] = useState({
     orderType: "DELIVERY",
     ordererName: "",
@@ -101,20 +104,33 @@ const DeliveryOrderModal: React.FC<DeliveryOrderProps> = ({
         };
         // console.log(updatedInputs);
 
-        axios
-          .post(`https://flower-ly.co.kr/api/chatting/request/${chattingId}`, updatedInputs)
+        tokenHttp
+          .post(`/chatting/request/${chattingId}`, updatedInputs)
           .then((response) => {
-            console.log(response.data);
-            if (response.data.code == "200") sendHandler();
-            else if (response.data.code == "-604")
+            if (response.data.code === 200) {
+              sendHandler();
+              //요거 필수!! (엑세스 토큰 만료로 재발급 받았다면 바꿔줘!! )
+              if (response.headers.authorization) {
+                localStorage.setItem("accessToken", response.headers.authorization);
+              }
+            } else if (response.data.code == "-604") {
               ToastErrorMessage("이미 진행중인 주문이 있습니다.");
+              //요거 필수!! (엑세스 토큰 만료로 재발급 받았다면 바꿔줘!! )
+              if (response.headers.authorization) {
+                localStorage.setItem("accessToken", response.headers.authorization);
+              }
+            }
           })
-          .catch((error) => console.log(error));
+          .catch((err) => {
+            if (err.response.status === 403) {
+              router.push("/fllylogin");
+            }
+          });
 
         return updatedInputs;
       });
     } else {
-      alert("날짜, 시간을 입력하세요.");
+      ToastErrorMessage("날짜, 시간을 입력하세요.");
     }
   };
 

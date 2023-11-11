@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import style from "components/navi/Navi.module.css";
 import Image from "next/image";
 import { motion } from "framer-motion";
@@ -8,16 +8,15 @@ const Navi = () => {
   const router = useRouter();
 
   const determineInitialButton = () => {
-    switch (router.pathname) {
-      case "/":
-        return "home";
-      case "/list":
+    const pathSegments = router.pathname.split("/").filter(Boolean);
+    switch (pathSegments[0]) {
+      case "list":
         return "list";
-      case "/flly":
+      case "flly":
         return "flly";
-      case "/chatting":
+      case "chatting":
         return "chat";
-      case "/chatting":
+      case "mypage":
         return "my";
       default:
         return "home";
@@ -42,9 +41,14 @@ const Navi = () => {
     } else if (loc === "chat") {
       router.push("/chatting");
     } else if (loc === "my") {
-      router.push("/signup");
+      router.push("/mypage");
     }
   };
+
+  useEffect(() => {
+    // 라우터 경로가 변경될 때마다 setSelectedButton을 업데이트
+    setSelectedButton(determineInitialButton());
+  }, []);
 
   return (
     <div className={style.naviMain}>
