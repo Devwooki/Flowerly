@@ -22,7 +22,8 @@ tokenHttp.interceptors.request.use(async (req) => {
     throw new Error("expire token");
   }
 
-  req.headers["Authorization"] = "Bearer " + accessToken;
+  //req.headers["Authorization"] = "Bearer " + accessToken;
+  req.headers["Authorization"] = accessToken;
   return req;
 });
 
