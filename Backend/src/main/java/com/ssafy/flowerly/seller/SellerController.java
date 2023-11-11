@@ -56,7 +56,7 @@ public class SellerController {
     @GetMapping("/order")
     public DataResponse<Page<OrderSelectSimpleDto>> sellerOrderSelect(HttpServletRequest request, @PageableDefault(size = 10) Pageable pageable){
 
-        Long memberId = Long.valueOf(request.getHeader(jwtService.getAccessHeader()));
+        Long memberId = (Long) request.getAttribute("memberId");
         Page<OrderSelectSimpleDto> orderSelectList = sellerService.getOrderSelect(memberId, pageable);
 
         DataResponse<Page<OrderSelectSimpleDto>> result = new DataResponse<>(200, "채택 리스트반환 성공 ",orderSelectList );
@@ -72,7 +72,7 @@ public class SellerController {
     @PatchMapping("/flly/update/{fllyId}")
     public DataResponse<Map<String,Object>> fllyUpdateProgressType(HttpServletRequest request, @PathVariable("fllyId") long fllyId){
         Map<String, Object> temp = new HashMap<>();
-        Long memberId = Long.valueOf(request.getHeader(jwtService.getAccessHeader()));
+        Long memberId = (Long) request.getAttribute("memberId");
         String updateProgress = sellerService.UpdateProgressType(memberId, fllyId);
         temp.put("fllyUpdateProgress", updateProgress);
 
@@ -86,7 +86,7 @@ public class SellerController {
     */
     @GetMapping("/flly/seller")
     public DataResponse<Page<OrderParticipationDto>> fllyParticipationList(HttpServletRequest request, @PageableDefault(size = 10) Pageable pageable){
-        Long memberId = Long.valueOf(request.getHeader(jwtService.getAccessHeader()));
+        Long memberId = (Long) request.getAttribute("memberId");
 
         Page<OrderParticipationDto> participationList = sellerService.getParticipation(memberId, pageable);
 
@@ -100,7 +100,7 @@ public class SellerController {
      */
     @GetMapping("/flly/request/{fllyId}")
     public DataResponse<ParticipationRequestDto> getFllyRequestInfo(HttpServletRequest request, @PathVariable("fllyId") long fllyId){
-        Long memberId = Long.valueOf(request.getHeader(jwtService.getAccessHeader()));
+        Long memberId = (Long) request.getAttribute("memberId");
         ParticipationRequestDto participationRequestDto = sellerService.getFllyRequestInfo(memberId, fllyId);
         log.info(participationRequestDto.toString());
         DataResponse<ParticipationRequestDto> result = new DataResponse<>(200, "참여한 플리상제(제안+의뢰) 반환 성공 ", participationRequestDto);
@@ -114,7 +114,7 @@ public class SellerController {
     public CustomResponse sellerFllyParticipate(HttpServletRequest request,
                                                 @RequestPart("file") MultipartFile file,
                                                  RequestFllyParticipateDto data ){
-        Long memberId = Long.valueOf(request.getHeader(jwtService.getAccessHeader()));
+        Long memberId = (Long) request.getAttribute("memberId");
         sellerService.sellerFllyParticipate(memberId, file, data);
 
         CustomResponse resulet = new CustomResponse(200, "참여 완료!");
@@ -128,7 +128,7 @@ public class SellerController {
     public DataResponse<Page<FllyNearDto>> getNearFllyDeliveryList(HttpServletRequest request,
                                                             @PageableDefault(size=10) Pageable pageable){
 
-        Long memberId = Long.valueOf(request.getHeader(jwtService.getAccessHeader()));
+        Long memberId = (Long) request.getAttribute("memberId");
         Page<FllyNearDto> nearFllyList = sellerService.getNearFllyDeliverylist(memberId, pageable);
         DataResponse<Page<FllyNearDto>> result = new DataResponse<>(200, "근처 플리 요청성공", nearFllyList);
 
@@ -141,7 +141,7 @@ public class SellerController {
     public DataResponse<Page<FllyNearDto>> getNearFllyPickupList(HttpServletRequest request,
                                                                        @PageableDefault(size=10) Pageable pageable){
 
-        Long memberId = Long.valueOf(request.getHeader(jwtService.getAccessHeader()));
+        Long memberId = (Long) request.getAttribute("memberId");
         Page<FllyNearDto> nearFllyList = sellerService.getNearFllyPickuplist(memberId, pageable);
         DataResponse<Page<FllyNearDto>> result = new DataResponse<>(200, "근처 플리 요청성공", nearFllyList);
 
@@ -153,7 +153,7 @@ public class SellerController {
     @GetMapping("/flly/order/{fllyId}")
     public DataResponse<Map<String,Object>> getFllyOrder(HttpServletRequest request, @PathVariable("fllyId") long fllyId){
 
-        Long memberId = Long.valueOf(request.getHeader(jwtService.getAccessHeader()));
+        Long memberId = (Long) request.getAttribute("memberId");
         Map<String, Object> order = sellerService.getFllyOrder(memberId, fllyId);
 
         DataResponse<Map<String,Object>> result = new DataResponse<>(200, "주문서 반환 성공", order);
