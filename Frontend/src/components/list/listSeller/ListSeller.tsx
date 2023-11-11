@@ -6,7 +6,7 @@ import ListAdoptCheckModal from "./listSellerCardComponent/ListAdoptCheckModal";
 import { ToastErrorMessage } from "@/model/toastMessageJHM";
 import { tokenHttp } from "@/api/tokenHttp";
 import { useRouter } from "next/router";
-import { error } from "console";
+import { useInView } from "react-intersection-observer";
 
 interface adoptType {
   requestId: number;
@@ -40,7 +40,7 @@ interface participationType {
 const ListSeller = () => {
   //페이징
   const [currentPage, setCurrentPage] = useState<number>(0);
-  const [totalPage, setTotalPage] = useState<number>();
+  const [totalPage, setTotalPage] = useState<number>(0);
   //클릭 리스트 상태
   const [ListState, setListState] = useState<String>("adopt");
   //모달 상태
@@ -51,6 +51,8 @@ const ListSeller = () => {
 
   const [adoptData, setAdoptData] = useState<adoptType[]>([]);
   const [participationData, setParticipationData] = useState<participationType[]>([]);
+
+  const [lastref, inView] = useInView();
 
   const router = useRouter();
 
@@ -94,10 +96,15 @@ const ListSeller = () => {
         console.log(res);
         const reData = res.data;
         if (reData.code === 200) {
-          console.log(reData.data.content);
+          console.log(res);
           setTotalPage(reData.data.totalPages);
-          if (ListState === "adopt") setAdoptData(reData.data.content);
-          else setParticipationData(reData.data.content);
+          setCurrentPage((parent) => parent + 1);
+          if (ListState === "adopt") {
+            setAdoptData((parent) => [...parent, ...reData.data.content]);
+            console.log(adoptData);
+          } else {
+            setParticipationData((parent) => [...parent, ...reData.data.content]);
+          }
         } else {
           ToastErrorMessage(reData.message);
         }
@@ -113,15 +120,28 @@ const ListSeller = () => {
   };
 
   useEffect(() => {
+    setParticipationData([]);
+    setAdoptData([]);
+    setCurrentPage(0);
+    setTotalPage(0);
     //엑시오스 요청 할예정
     if (ListState === "adopt") {
-      setParticipationData([]);
       axiosHandler("order");
     } else {
-      setAdoptData([]);
       axiosHandler("flly/seller");
     }
   }, [ListState]);
+
+  /*무한 스크롤을 볼경우*/
+  useEffect(() => {
+    if (totalPage !== 0) {
+      if (ListState === "adopt") {
+        axiosHandler("order");
+      } else {
+        axiosHandler("flly/seller");
+      }
+    }
+  }, [inView]);
 
   return (
     <>
@@ -178,6 +198,10 @@ const ListSeller = () => {
               ))}
             </>
           )}
+          {
+            /* 무한 스크롤 을 위한 viw 체크 */
+            currentPage < totalPage && <div ref={lastref}></div>
+          }
         </div>
       </div>
     </>
