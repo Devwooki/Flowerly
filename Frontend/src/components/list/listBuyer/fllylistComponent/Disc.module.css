@@ -30,7 +30,7 @@
 
 .discTable div:nth-child(2) {
   display: inline-block;
-  background-color: var(--sky);
+  background-color: #cfe0ee;
   padding: 5px 15px;
   border-radius: 5px;
   margin: 5px 0 10px 0;
@@ -39,6 +39,7 @@
 .discDetailTable {
   display: flex;
   margin: 10px 0;
+  width: 95%;
 }
 
 .detailMius {
@@ -65,7 +66,7 @@
 }
 
 .requestContent {
-  width: 95%;
+  width: 98%;
   margin-top: 10px;
 }
 

@@ -23,25 +23,25 @@
 }
 
 .selectAreaBox {
-    margin: 100px 0 13px 0;
+    margin: 60px 0 13px 0;
     height: 526px;
 }
 
 .selectBox {
     margin: 0 auto;
     display: grid;
-    grid-template-columns: 150px 150px;
+    grid-template-columns: 170px 170px;
     justify-content: center;
     justify-items: center;
-    height: 300px;
+    height: 340px;
     overflow-y: scroll;
 }
 
 .selectImg {
     margin-top: 10px;
     border-radius: 10px;
-    width: 140px;
-    height: 140px;
+    width: 160px;
+    height: 160px;
     position: relative;
     background-position: center;
     background-size: cover;
@@ -49,8 +49,8 @@
 }
 
 .selectedImg {
-    width: 140px;
-    height: 140px;
+    width: 160px;
+    height: 160px;
     opacity: 0.5;
 }
 
@@ -116,11 +116,8 @@
     color: var(--gray);
     text-align: center;
     font-family: "NanumSquareNeoOTF-Bd";
-<<<<<<< Updated upstream
 }
 
 .contentBox a {
     text-decoration-line: none;
-=======
->>>>>>> Stashed changes
 }

@@ -1,12 +1,13 @@
 import { useRef, useEffect } from "react";
-import style from "./ImageMsg.module.css";
+import style from "./style/ImageMsg.module.css";
 
 type ImageMsgProps = {
   imgUrl: string;
   onImageLoad: Function;
+  modalHandler: Function;
 };
 
-const ImageMsg: React.FC<ImageMsgProps> = ({ imgUrl, onImageLoad }) => {
+const ImageMsg: React.FC<ImageMsgProps> = ({ imgUrl, onImageLoad, modalHandler }) => {
   const imgBoxRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -25,7 +26,13 @@ const ImageMsg: React.FC<ImageMsgProps> = ({ imgUrl, onImageLoad }) => {
 
   return (
     <>
-      <div className={style.mainBox} ref={imgBoxRef}></div>
+      <div
+        className={style.mainBox}
+        ref={imgBoxRef}
+        onClick={() => {
+          modalHandler("IMAGE", true, imgUrl);
+        }}
+      ></div>
     </>
   );
 };

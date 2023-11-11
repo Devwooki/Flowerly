@@ -1,27 +1,19 @@
 import React, { useEffect } from "react";
-<<<<<<< Updated upstream:Frontend/src/pages/flly/color.tsx
 import style from "@/components/flly/fllyUser/FllyColor.module.css"
-=======
-import style from "./FllyColor.module.css";
->>>>>>> Stashed changes:Frontend/src/components/flly/fllyUser/FllyColor.tsx
 import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { colorState, flowerState } from "@/recoil/fllyRecoil";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { ToastErrorMessage } from "@/model/toastMessageJHM";
 
 const FllyColor = () => {
-<<<<<<< Updated upstream:Frontend/src/pages/flly/color.tsx
   const router = useRouter();
   const [check, setCheck] = useState<boolean>(false);
   const [color, setColor] = useRecoilState(colorState);
   const [selected, setSelected] = useState<string[]>([]);
   const [selectedFlowers, setSelcetedFlowers] = useRecoilState(flowerState);
-=======
-  const [color, setColor] = useRecoilState(colorState);
-  const [selected, setSelected] = useState<string[]>([]);
->>>>>>> Stashed changes:Frontend/src/components/flly/fllyUser/FllyColor.tsx
   const colorNames = ["RED", "ORANGE", "PINK", "YELLOW", "BLUE", "PURPLE", "WHITE", "선택 안함"]
   const selectList = ["빨간색", "주황색", "분홍색", "노랑색", "파란색", "보라색", "흰색", "선택 안함"];
   const colorList = ["#DB4455", "#F67828", "#FFC5BF", "#FBE870", "#0489DD", "#CE92D8", "#FFFFFF", "#DADADA"];
@@ -67,7 +59,6 @@ const FllyColor = () => {
 
   useEffect(() => {
     setSelected(color);
-<<<<<<< Updated upstream:Frontend/src/pages/flly/color.tsx
   }, []);
 
   useEffect(() => {
@@ -78,12 +69,8 @@ const FllyColor = () => {
     if(check) {
       setSelcetedFlowers([]);
       router.push("flower");
-    }
+    } else ToastErrorMessage("항목을 선택해 주세요.");
   };
-=======
-  })
-  
->>>>>>> Stashed changes:Frontend/src/components/flly/fllyUser/FllyColor.tsx
 
   return (
     <>

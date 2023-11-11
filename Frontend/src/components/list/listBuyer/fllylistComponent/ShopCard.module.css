@@ -37,6 +37,12 @@
 .infoTable {
   display: flex;
   margin-bottom: 5px;
+  /* border: 1px solid black; */
+  overflow: hidden;
+}
+
+.shopInfo .infoTable:nth-child(2) {
+  height: 35px;
 }
 
 .infoTable img {
@@ -46,9 +52,8 @@
 .chatAction {
   font-family: "NanumSquareNeoOTF-Rg";
   text-align: center;
-  margin: 0 auto;
+  margin: 10px auto;
   padding: 8px;
-  margin-bottom: 10px;
   border-radius: 5px;
   background-color: var(--blue);
   color: white;
@@ -58,4 +63,6 @@
 
 .responseContent {
   font-size: 13px;
+  height: 32px;
+  overflow: hidden;
 }

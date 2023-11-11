@@ -1,6 +1,8 @@
 import React from "react";
 import style from "./ListParticipationCard.module.css";
 import Image from "next/image";
+import { useRouter } from "next/router";
+import { ToastErrorMessage } from "@/model/toastMessageJHM";
 
 interface fllyResponeDtoType {
   fllyParticipationId: number;
@@ -12,9 +14,9 @@ interface fllyResponeDtoType {
 interface participationType {
   fllyId: number;
   fllyImageUrl: string;
-  fllyFlower1: string;
-  fllyFlower2: string;
-  fllyFlower3: string;
+  fllyFlower1: string | null;
+  fllyFlower2: string | null;
+  fllyFlower3: string | null;
   fllybudget: number;
   fllyDeadline: string;
   fllyResponeDto: fllyResponeDtoType;
@@ -25,6 +27,22 @@ interface Props {
 }
 
 const ListParticipationCard = ({ $participationInfo }: Props) => {
+  const router = useRouter();
+  const pageMoveHandelr = () => {
+    if ($participationInfo) {
+      router.push(
+        {
+          pathname: "/flly/order/detail/[fllyId]",
+          query: { fllyId: $participationInfo.fllyId },
+        },
+        "/flly/order/detail", // 이것은 브라우저 주소창에 표시될 URL입니다.
+        { shallow: true },
+      );
+    } else {
+      ToastErrorMessage("잠시후 다시 눌러주세요!");
+    }
+  };
+
   return (
     <>
       <div className={style.cardBack}>
@@ -34,7 +52,7 @@ const ListParticipationCard = ({ $participationInfo }: Props) => {
           </div>
           <div className={style.cardInfoBox}>
             <div className={style.cardInfoBtnBox}>
-              <div className={style.cardInfoBtn}>
+              <div className={style.cardInfoBtn} onClick={pageMoveHandelr}>
                 자세히보기<span>&gt;</span>
               </div>
             </div>
@@ -42,8 +60,9 @@ const ListParticipationCard = ({ $participationInfo }: Props) => {
               <div>
                 <Image src="/img/icon/seller-flower.png" width={20} height={20} alt="상태이미지" />
                 <div>
-                  {$participationInfo.fllyFlower1},{$participationInfo.fllyFlower2},{" "}
-                  {$participationInfo.fllyFlower3}
+                  {$participationInfo.fllyFlower1 && $participationInfo.fllyFlower1},
+                  {$participationInfo.fllyFlower2 && $participationInfo.fllyFlower2},{" "}
+                  {$participationInfo.fllyFlower3 && $participationInfo.fllyFlower3}
                 </div>
               </div>
               <div>
@@ -75,7 +94,7 @@ const ListParticipationCard = ({ $participationInfo }: Props) => {
             </div>
           </div>
         </div>
-        <div className={style.footerBox}>입찰중</div>
+        <div className={style.footerBox}>이거 넣어야함</div>
       </div>
     </>
   );

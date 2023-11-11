@@ -1,0 +1,22 @@
+.modalBg {
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.3);
+  height: 100vh;
+  width: 100vw;
+  max-width: 450px;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modalMain {
+  /* box-sizing: border-box; */
+  position: relative;
+  display: flex;
+  flex-direction: column; /* 자식 요소를 수직 방향으로 배열 */
+  z-index: 1000;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import style from "./Step2.module.css";
+import style from "./step2.module.css";
 import { useRouter } from "next/router";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
@@ -8,6 +8,7 @@ import {
   sellerInputState,
   storeDeliveryRegionState,
   tempTokenState,
+  sellerAddressState,
 } from "@/recoil/tokenRecoil";
 
 interface sidoDataType {
@@ -42,13 +43,14 @@ const Step2 = () => {
     useRecoilState(storeDeliveryRegionState);
 
   const [sellerInput, setSellerInput] = useRecoilState(sellerInputState);
-  const tempToken = useRecoilValue(tempTokenState);
+  const [sellerAddress, setSellerAddress] = useRecoilState(sellerAddressState);
 
   useEffect(() => {
     const getSidoData = async () => {
       try {
         const response = await axios.get("https://flower-ly.co.kr/api/address/sido");
         setSidoData(response.data.data);
+        console.log(response);
       } catch (error) {
         console.error(error);
       }
@@ -77,7 +79,8 @@ const Step2 = () => {
   useEffect(() => {
     setPath(window.location.pathname);
     setHost(window.location.host);
-  }, []);
+    console.log(path, host);
+  }, [path, host]);
 
   const getSigunguData = async (sidoCode: number) => {
     try {
@@ -145,20 +148,23 @@ const Step2 = () => {
   };
 
   const handleFinish = async () => {
+    const tempToken = localStorage.getItem("accessToken");
     try {
       const signupData = {
         sellerInput,
         deliveryRegions: deliveryRegionCodeList,
+        sellerAddress: sellerAddress,
       };
       console.log(signupData);
 
       if (host && path) {
         const response = await axios.post(
           "https://flower-ly.co.kr/api/member/signup/seller",
+          // "http://localhost:6090/api/member/signup/seller",
           signupData,
           {
             headers: {
-              Authorization: "Bearer " + tempToken,
+              Authorization: `Bearer ${tempToken}`,
               "X-Request-Host": host,
               "X-Request-Path": path,
             },
@@ -167,16 +173,15 @@ const Step2 = () => {
 
         if (response.status === 200) {
           console.log(response);
-          if (tempToken) {
-            console.log(response);
-            console.log(tempToken);
-            router.push(`/temp?token=${tempToken}`);
-          }
+          console.log("회원가입 성공");
+          // 회원가입 성공
+          router.push(`/temp?token=${tempToken}`);
         }
+
         router.push("/");
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -203,11 +208,12 @@ const Step2 = () => {
         <div className={style.sidoDropDown}>
           <select onChange={handleSidoChange}>
             <option value="">지역을 선택해주세요</option>
-            {sidoData.map((sido) => (
-              <option key={sido.sidoCode} value={sido.sidoCode}>
-                {sido.sidoName}
-              </option>
-            ))}
+            {sidoData &&
+              sidoData.map((sido) => (
+                <option key={sido.sidoCode} value={sido.sidoCode}>
+                  {sido.sidoName}
+                </option>
+              ))}
           </select>
         </div>
 

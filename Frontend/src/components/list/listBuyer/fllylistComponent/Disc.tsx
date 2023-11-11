@@ -1,24 +1,34 @@
-import { log } from "console";
 import React, { useEffect, useState } from "react";
 import style from "./Disc.module.css";
 import Image from "next/image";
 
 type DiscProps = {
-  card: BuyerCardPlus;
+  card: BuyerCard;
 };
 
 const Disc = ({ card }: DiscProps) => {
   const [moreBtn, setMoreBtn] = useState(false);
+  const [selectedColor, setSelectedColor] = useState<string[]>([]);
+  const [selectedFlower, setSelectedFlower] = useState<flower[]>([]);
 
   const handlerMoreBtn = () => {
     setMoreBtn((pre) => !pre);
     console.log(moreBtn);
   };
 
+  useEffect(() => {
+    console.log("DISC", card);
+
+    setSelectedColor([`${card.color1}`, `${card.color2}`, `${card.color3}`]),
+      setSelectedFlower([card.flower1, card.flower2, card.flower3]);
+  }, [card]);
+
+  console.log(selectedFlower);
+
   return (
     <div className={style.discMain}>
       <div className={style.discMainShortUp}>
-        <Image src={card.img} alt="시안 이미지" width={120} height={120}></Image>
+        <Image src={card.imageUrl} alt="시안 이미지" width={120} height={120} />
         <div className={style.discText}>
           <div className={style.discTable}>
             <div>예산</div>
@@ -41,19 +51,19 @@ const Disc = ({ card }: DiscProps) => {
             <div className={style.divider} />
             <div className={style.discDetailTable}>
               <div className={style.detailTitle}>의뢰인</div>
-              <div className={style.detailContent}>{card.clientName}</div>
+              <div className={style.detailContent}>{card.consumer}</div>
             </div>
             <div className={style.discDetailTable}>
               <div className={style.detailTitle}>상황</div>
-              <div className={style.detailContent}>{card.state}</div>
-            </div>
-            <div className={style.discDetailTable}>
-              <div className={style.detailTitle}>대상</div>
               <div className={style.detailContent}>{card.situation}</div>
             </div>
             <div className={style.discDetailTable}>
+              <div className={style.detailTitle}>대상</div>
+              <div className={style.detailContent}>{card.target}</div>
+            </div>
+            <div className={style.discDetailTable}>
               <div className={style.detailTitle}>색상</div>
-              {card.selectedColor.map((color, idx) => (
+              {selectedColor.map((color, idx) => (
                 <div className={style.detailContent} key={idx}>
                   {idx > 0 && <span>&nbsp;</span>}
                   {color}
@@ -63,9 +73,9 @@ const Disc = ({ card }: DiscProps) => {
             <div className={style.discDetailTable}>
               <div className={style.detailTitle}>선택한 꽃</div>
               <div className={style.detailContent}>
-                {card.selectedFlower.map((flower, idx) => (
-                  <div key={idx}>{flower}</div>
-                ))}
+                {selectedFlower.map(
+                  (flower, idx) => flower && <div key={idx}>{flower.flowerName}</div>,
+                )}
               </div>
             </div>
             <div className={style.divider} />
@@ -75,11 +85,13 @@ const Disc = ({ card }: DiscProps) => {
             </div>
             <div className={style.discDetailTable}>
               <div className={style.detailTitle}>주소</div>
-              <div className={style.detailContent}>{card.adress}</div>
+              <div className={style.detailContent}>{card.requestAddress}</div>
             </div>
             <div className={style.discDetailTable} style={{ display: "inline-block" }}>
               <div className={style.detailTitle}>요청사항</div>
-              <div className={`${style.detailContent} ${style.requestContent}`}>{card.request}</div>
+              <div className={`${style.detailContent} ${style.requestContent}`}>
+                {card.requestContent}
+              </div>
             </div>
           </div>
           <div className={style.detailMius} onClick={() => handlerMoreBtn()}>

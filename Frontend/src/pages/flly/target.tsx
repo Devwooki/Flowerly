@@ -1,22 +1,16 @@
 import React, { useEffect } from "react";
-<<<<<<< Updated upstream:Frontend/src/pages/flly/target.tsx
 import style from "@/components/flly/fllyUser/FllyTarget.module.css"
-=======
-import style from "./FllyTarget.module.css";
->>>>>>> Stashed changes:Frontend/src/components/flly/fllyUser/FllyTarget.tsx
 import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { targetState } from "@/recoil/fllyRecoil";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { ToastErrorMessage } from "@/model/toastMessageJHM";
 
 const FllyTarget = () => {
-<<<<<<< Updated upstream:Frontend/src/pages/flly/target.tsx
   const router = useRouter();
   const [check, setCheck] = useState<boolean>(false);
-=======
->>>>>>> Stashed changes:Frontend/src/components/flly/fllyUser/FllyTarget.tsx
   const [target, setTarget] = useRecoilState(targetState);
   const [selected, setSelected] = useState<string>("");
   const selectList = ["친구", "연인", "부모님", "가족", "선생님", "동료", "나", "선택 안함"];
@@ -30,17 +24,15 @@ const FllyTarget = () => {
     setSelected(target);
   }, [])
 
-<<<<<<< Updated upstream:Frontend/src/pages/flly/target.tsx
   useEffect(() => {
     if(target !== "") setCheck(true);
   }, [target])
 
   const handleClick = () => {
     if(check) router.push("color");
+    else ToastErrorMessage("항목을 선택해 주세요.");
   };
 
-=======
->>>>>>> Stashed changes:Frontend/src/components/flly/fllyUser/FllyTarget.tsx
   return (
     <>
       <div className={style.fllyBox}>

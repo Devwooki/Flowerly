@@ -8,3 +8,7 @@ export default axios.create({
     "Content-type": "application/json",
   },
 });
+
+export const KDMaxios = axios.create({
+  baseURL: "https://flower-ly.co.kr",
+});

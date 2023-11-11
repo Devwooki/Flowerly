@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import router, { useRouter } from "next/router";
-import style from "./Buyer.module.css";
+import style from "./buyer.module.css";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { tempTokenState, buyerInputState } from "../../../recoil/tokenRecoil";
 import axios from "axios";
@@ -8,7 +8,7 @@ import axios from "axios";
 const Buyer = () => {
   const [path, setPath] = useState<string | null>(null);
   const [host, setHost] = useState<string | null>(null);
-  const tempToken = useRecoilValue(tempTokenState);
+
   const [buyerInput, setBuyerInput] = useRecoilState(buyerInputState);
 
   useEffect(() => {
@@ -19,19 +19,20 @@ const Buyer = () => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setBuyerInput({ ...buyerInput, [name]: value });
-    console.log(buyerInput);
   };
 
   const handleComplete = async () => {
+    const tempToken = localStorage.getItem("accessToken");
     console.log(buyerInput);
 
     try {
       const response = await axios.post(
         "https://flower-ly.co.kr/api/member/signup/buyer",
+        //  "        http://localhost:6090/api/member/signup/buyer",
         buyerInput,
         {
           headers: {
-            Authorization: "Bearer " + tempToken,
+            Authorization: `Bearer ${tempToken}`,
             "X-Request-Host": host,
             "X-Request-Path": path,
           },
@@ -41,6 +42,7 @@ const Buyer = () => {
       if (response.status === 200) {
         if (tempToken) {
           console.log(response);
+          console.log("회원가입 성공");
           router.push(`/temp?token=${tempToken}`);
         }
       } else {

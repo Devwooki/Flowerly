@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
-import style from "./ParticipationInfo.module.css";
+import { useRouter } from "next/router";
+import style from "./style/ParticipationInfo.module.css";
 import Image from "next/image";
+
+import { tokenHttp } from "@/api/chattingTokenHttp";
 
 type ParticipationFormProps = {
   chattingId: number;
@@ -16,12 +18,30 @@ type Participation = {
 };
 
 const ParticipationForm: React.FC<ParticipationFormProps> = ({ chattingId, modalHandler }) => {
+  const router = useRouter();
   const [participationInfo, setParticipationInfo] = useState<Participation | null>(null);
 
   useEffect(() => {
-    axios.get(`https://flower-ly.co.kr/api/chatting/flly/${chattingId}`).then((response) => {
-      setParticipationInfo(response.data.data);
-    });
+    tokenHttp
+      .get(`/chatting/flly/${chattingId}`)
+      .then((response) => {
+        if (response.data.code === 200) {
+          setParticipationInfo(response.data.data);
+          //요거 필수!! (엑세스 토큰 만료로 재발급 받았다면 바꿔줘!! )
+          if (response.headers.authorization) {
+            localStorage.setItem("accessToken", response.headers.authorization);
+          }
+        }
+      })
+      .catch((err) => {
+        if (err.response.status === 403) {
+          router.push("/fllylogin");
+        }
+      });
+
+    // axios.get(`https://flower-ly.co.kr/api/chatting/flly/${chattingId}`).then((response) => {
+    //   setParticipationInfo(response.data.data);
+    // });
   }, []);
 
   return (
@@ -46,7 +66,6 @@ const ParticipationForm: React.FC<ParticipationFormProps> = ({ chattingId, modal
                 height={14}
                 alt="상태이미지"
               />
-
               <div id={style.price}>
                 {participationInfo && participationInfo.offerPrice.toLocaleString()} 원
               </div>

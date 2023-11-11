@@ -10,6 +10,12 @@
     overflow: scroll;
 }
 
+.imageBox {
+    margin: 4px 0;
+    display: flex;
+    justify-content: center;
+}
+
 .headerTitle {
     display: flex;
 }
@@ -18,14 +24,11 @@
     line-height: 24px;
     font-size: 20px;
     font-family: "NanumSquareNeoOTF-Bd";
-}
-
-.requestArea {
-    padding: 10px 12px;
+    margin-top: 8px;
 }
 
 .requestTable {
-    padding: 10px 0;
+    padding: 4px 0;
     border-spacing: 4px;
     width: 100%;
 
@@ -44,6 +47,7 @@
 }
 
 .requestTable th {
+    min-width: 90px;
     width: 90px;
     text-align: left;
     vertical-align: top;
@@ -56,6 +60,7 @@
     text-align: left;
     vertical-align: top;
     font-family: "NanumSquareNeoOTF-Rg";
+    word-break: keep-all;
 }
 
 .colorLi {
@@ -78,7 +83,7 @@
 
 .selectedBtn {
     padding: 6px 16px;
-    margin: 0 6px 0 0;
+    margin: 0 2px 0 0;
     border-radius: 5px;
     box-shadow: inset 5px 5px 8px -5px #6e6e6e;
     background-color: #E8EAED;
@@ -86,7 +91,7 @@
 
 .nselectedBtn {
     padding: 6px 16px;
-    margin: 0 6px 0 0;
+    margin: 0 4px 0 0;
     border-radius: 5px;
     box-shadow: 5px 5px 8px -5px #333;
 }
@@ -96,6 +101,9 @@
     border-radius: 4px;
     padding: 6px 16px 6px 12px;
     color: var(--dark);
+    display: flex;
+    align-items: center;
+    height: 20px;
 }
 
 .price {
@@ -130,3 +138,17 @@
     text-align: center;
     font-family: "NanumSquareNeoOTF-Bd";
 }
+
+.second textarea {
+    resize: none;
+    height: 100px;
+    width: 100%;
+    font-family: "NanumSquareNeoOTF-Rg";
+}
+
+.textCount {
+    text-align: right;
+    margin-right: 4px;
+    font-size: 12px;
+}
+

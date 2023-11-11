@@ -1,56 +1,43 @@
+import { ToastErrorMessage } from "@/model/toastMessageJHM";
 import axios from "axios";
-import { jwtDecode } from "jwt-decode";
-import dayjs from "dayjs";
 
-// 토큰이 필요한 인증에 사용
-const baseURL = "https://flower-ly.co.kr";
+const baseURL = "https://flower-ly.co.kr/api";
 
-const tokenHttp = axios.create({
+export const tokenHttp = axios.create({
   baseURL,
   headers: {
     "Content-type": "application/json",
   },
+  withCredentials: true,
 });
 
-// 요청 인터셉터 설정 (요청 보내기 전에 수행되는 함수)
 tokenHttp.interceptors.request.use(async (req) => {
-  const accessToken = localStorage.getItem("accesstoken");
+  const accessToken = localStorage.getItem("accessToken");
+  // const accessToken =
+  //   "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcwOTU5NjYxOCwibWVtYmVySWQiOjJ9.ACc7GO0Th3g8vnT9iDfPEqiMqvvEXDVNMPF_x1ukk3oczXUilT2ctHXSoNvy-1Lp0-Jf4KQhyo-_FSj4CqlaHg";
+
+  console.log("토큰Http", accessToken);
   if (!accessToken) {
     console.log("token 이 존재하지 않습니다.");
     throw new Error("expire token");
   }
 
-  const user = jwtDecode(accessToken);
-  const decodedToken = jwtDecode(accessToken!);
-  const exp = decodedToken.exp;
-  const now = dayjs().unix();
-
-  if (exp && now >= exp) {
-    await axios
-      .post(
-        `${baseURL}/user/refresh`,
-        {},
-        {
-          headers: {
-            Authorization: localStorage.getItem("refreshToken"),
-          },
-        },
-      )
-      .then((response) => {
-        if (response.data.message === "success") {
-          localStorage.setItem("accessToken", response.data["accessToken"]);
-          localStorage.setItem("refreshToken", response.data["refreshToken"]);
-        } else {
-          throw new Error("expire token");
-        }
-      })
-      .catch(() => {
-        throw new Error("expire token");
-      });
-  }
-
-  req.headers["Authorization"] = localStorage.getItem("accessToken");
+  //req.headers["Authorization"] = "Bearer " + accessToken;
+  req.headers["Authorization"] = accessToken;
   return req;
 });
 
-export default tokenHttp;
+tokenHttp.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 403) {
+      // 토큰 만료된 경우 처리를 합니다.
+      ToastErrorMessage("로그인 만료되어 로그인 화면으로 이동합니다.");
+      localStorage.removeItem("accessToken");
+    } else {
+      console.log(error);
+    }
+    // 에러를 반환하여 후속 .then() 또는 .catch()에서 처리할 수 있도록 합니다.
+    return Promise.reject(error);
+  },
+);

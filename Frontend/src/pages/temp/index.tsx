@@ -13,49 +13,51 @@ const Temp = () => {
   const { token } = router.query as { token: string };
 
   useEffect(() => {
+    if (!path && !host) {
+      setPath(window.location.pathname);
+      setHost(window.location.host);
+    }
+  }, [path, host]);
+
+  useEffect(() => {
+    console.log("유즈이펙트 테스트");
     if (token && host && path) {
+      console.log("토큰 있나 토큰있나 ?");
       getMemberinfo(token);
     }
   }, [token, host, path]);
 
-  useEffect(() => {
-    setPath(window.location.pathname);
-    setHost(window.location.host);
-  }, []);
-
-  const getMemberinfo = async (token: string) => {
-    axios
-      .get("https://flower-ly.co.kr/api/member", {
+  const getMemberinfo = async (tempToken: string) => {
+    try {
+      const response = await axios.get("https://flower-ly.co.kr/api/member", {
         withCredentials: true,
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${tempToken}`,
           "X-Request-Host": host,
           "X-Request-Path": path,
         },
-      })
-      .then((response) => {
-        console.log(response);
-        // memberinfo recoil에 데이터 저장, accesstoken localstorage에 저장
-        // router.push("/"); // 메인 페이지로 이동
-        // token(일회용 토큰) 초기화하기
-        if (response.data.code === 200) {
-          setMemberInfo(response.data.data);
-
-          localStorage.setItem("accessToken", token);
-
-          router.replace("/");
-
-          router.push("/");
-          console.log("로그인 성공");
-          console.log(response.data.data);
-          console.log(token);
-        } else {
-          console.error("로그인 실패: ", response.data.message);
-        }
-      })
-      .catch((error) => {
-        console.error(error);
       });
+
+      console.log(response);
+      if (response.data.code === 200) {
+        setMemberInfo(response.data.data);
+
+        const accessToken = response.headers.authorization;
+        console.log("최종 엑세스 토큰", accessToken);
+
+        if (accessToken) {
+          localStorage.setItem("accessToken", accessToken);
+          console.log("액세스 토큰 로컬 스토리지에 저장 완료");
+        }
+
+        router.replace("/");
+        console.log("로그인 성공", response.data.data);
+      } else {
+        console.error("로그인 실패: ", response.data.message);
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return null;

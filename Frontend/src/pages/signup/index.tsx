@@ -1,5 +1,5 @@
 import React from "react";
-import style from "./Signup.module.css";
+import style from "./signup.module.css";
 import { useRouter } from "next/router";
 import { useRecoilState } from "recoil";
 import { useEffect } from "react";
@@ -13,6 +13,7 @@ const Signup = () => {
     const token = router.query.token as string;
     if (token) {
       setTempToken(token);
+      localStorage.setItem("accessToken", token);
     }
   }, [router.query.token, setTempToken]);
 
@@ -21,7 +22,7 @@ const Signup = () => {
   };
 
   const onClickSeller = () => {
-    router.push("/signup/seller/Step1");
+    router.push("/signup/seller/step1");
   };
   return (
     <div>

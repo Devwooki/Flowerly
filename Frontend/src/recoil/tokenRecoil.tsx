@@ -8,6 +8,16 @@ export interface sellerInputType {
   address: string;
 }
 
+export interface sellerAddressType {
+  sido: string;
+  sigungu: string;
+  dong: string;
+}
+
+export interface buyerInputType {
+  nickname: string;
+}
+
 export interface storeDeliveryRegionType {
   sidoCode: number;
   sigunguCode: number;
@@ -24,12 +34,12 @@ export const sellerDeliveryRegionState = atom<string[]>({
   default: [],
 });
 
-export const tempTokenState = atom({
+export const tempTokenState = atom<string>({
   key: "tempTokenState",
   default: "",
 });
 
-export const buyerInputState = atom({
+export const buyerInputState = atom<buyerInputType>({
   key: "buyerInputState",
   default: {
     nickname: "",
@@ -44,5 +54,14 @@ export const sellerInputState = atom<sellerInputType>({
     phonenumber: "",
     storenumber: "",
     address: "",
+  },
+});
+
+export const sellerAddressState = atom<sellerAddressType>({
+  key: "sellerAddressState",
+  default: {
+    sido: "",
+    sigungu: "",
+    dong: "",
   },
 });
