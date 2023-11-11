@@ -52,11 +52,27 @@ public class StoreInfo {
 
     public StoreInfoDto toDto(){
         return StoreInfoDto.builder()
-                .storeInfoId(this.storeInfoId)
+                .storeInfoId(this.seller.getMemberId())
                 .storeName(this.storeName)
                 .sellerName(this.sellerName)
                 .phoneNumber(this.phoneNumber)
                 .address(this.address)
                 .build();
     }
+
+
+    public void updateStoreName(String storeName) {this.storeName = storeName;}
+
+    public void updateStoreNumber(String storeNumber) {this.storeNumber = storeNumber;}
+
+    public void updateSellerName(String sellerName) {this.sellerName = sellerName;}
+
+    public void updatePhoneNumber(String phoneNumber) {this.phoneNumber = phoneNumber;}
+
+    public void updateAddress(String address) {this.address = address;}
+
+
+
+
+
 }

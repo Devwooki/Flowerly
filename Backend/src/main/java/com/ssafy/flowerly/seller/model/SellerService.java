@@ -98,7 +98,7 @@ public class SellerService {
         FllyRequestDto fllyRequestDto = getRequestLetter(fllyId);
         result.setFllyRequestDto(fllyRequestDto);
         //의뢰 조회 (여기선 검증을하면안되다! )
-        FllyResponeDto fllyResponeDto = fllyParticipationRepository.findByFllyFllyId(fllyId)
+        FllyResponeDto fllyResponeDto = fllyParticipationRepository.findByFllyFllyIdAndSellerMemberId(fllyId, memberId)
                 .map(FllyParticipation::toFllyResponeDto).orElseThrow();
         result.setFllyResponeDto(fllyResponeDto);
 
@@ -279,7 +279,7 @@ public class SellerService {
         //2 픽업 가능한지 찾아야한다!
         //2-1 판매자 가게의 주소
         //없다고 화면에 출력이 안되는게 아니기때문에 에러발생 X
-        StoreInfo store = storeInfoRepository.findBySellerMemberId(memberId).orElse(null);
+        StoreInfo store = storeInfoRepository.findBySellerMemberId(memberId). orElse(null);
 
         //나의 주소를 가지고 전체 값을 찾아야한다! (시를 보내 구군의 전체를 찾고 / 시구군을 보내 동에서 전체를 찾는다 )
         if(store != null){
@@ -321,7 +321,7 @@ public class SellerService {
         FllyOrderInfoDto fllyOrderInfo = requestRepository.findBySellerMemberIdAndFllyFllyId(memberId, fllyId)
                 .orElseThrow(() -> new CustomException(ErrorCode.SELLER_NOT_REQUEST)).toFllyOrderInfoDto();
 
-        String responseUrl = fllyParticipationRepository.findByFllyFllyId(fllyId).orElseThrow(
+        String responseUrl = fllyParticipationRepository.findByFllyFllyIdAndSellerMemberId(fllyId, memberId).orElseThrow(
                 () -> new CustomException(ErrorCode.NOT_FIND_FLLY_PARTICIPATE)).getImageUrl();
 
         FllyDeliveryInfoDto deliveryInfo = null;

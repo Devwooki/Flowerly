@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/buyer")
@@ -24,23 +25,25 @@ public class BuyerController {
     @GetMapping("/my-flly")
     public DataResponse<?> getMyFlly(HttpServletRequest request,
                                      @PageableDefault(size = 6) Pageable pageable){
-        Long memberId = 1L;
+        Long memberId = (Long) request.getAttribute("memberId");
         return new DataResponse<>(HttpStatus.OK.value(), "진행중인 flly를 반환합니다.", buyerService.getMyFlly(pageable, memberId));
     }
     @GetMapping("/flist/{fllyId}")
     public DataResponse<?> getFilst(HttpServletRequest request,
                                     @PathVariable Long fllyId){
-        Long memberId = request.getDateHeader("memberId");
+        Long memberId = (Long) request.getAttribute("memberId");
         return new DataResponse<>(HttpStatus.OK.value(), "fllyId :  "+ fllyId+" 의 플리스트를 조회합니다.", buyerService.getFlist(Pageable.ofSize(6), fllyId));
     }
 
-    @GetMapping("/flistPage/{fllyId}")
+    @GetMapping("/flist-page/{fllyId}")
     public DataResponse<?> getFilstPage(HttpServletRequest request,
                                     @PageableDefault(size = 6) Pageable pageable,
                                     @PathVariable Long fllyId){
 
-        Long memberId = request.getDateHeader("memberId");
-        return new DataResponse<>(HttpStatus.OK.value(), fllyId+" 의 "+ pageable.getOffset() + "페이지 플리스트 조회합니다.", buyerService.getParticipants(Pageable.ofSize(6), fllyId));
+        Long memberId = (Long) request.getAttribute("memberId");
+        Map<String, Object> responseData = new HashMap<>();
+        responseData.put("stores", buyerService.getParticipants(pageable, fllyId));
+        return new DataResponse<>(HttpStatus.OK.value(), fllyId+" 의 "+ pageable.getOffset() + "페이지 플리스트 조회합니다.", responseData);
     }
 
 

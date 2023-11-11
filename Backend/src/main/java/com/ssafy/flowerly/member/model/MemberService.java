@@ -1,4 +1,5 @@
 package com.ssafy.flowerly.member.model;
+import com.ssafy.flowerly.FCM.FCMRepository;
 import com.ssafy.flowerly.address.repository.DongRepository;
 import com.ssafy.flowerly.address.repository.SidoRepository;
 import com.ssafy.flowerly.address.repository.SigunguRepository;
@@ -35,7 +36,7 @@ public class MemberService {
     private final SigunguRepository sigunguRepository;
     private final DongRepository dongRepository;
     private final StoreDeliveryRegionRepository storeDeliveryRegionRepository;
-    private final JWTService jwtService;
+    private final FCMRepository fcmRepository;
 
 
     public MemberDto getMemberInfo(Long memberId) {
@@ -72,23 +73,22 @@ public class MemberService {
 
         Map<String, Object> sellerInput = (Map<String, Object>) data.get("sellerInput");
 
-        // 주소 분할
-        //String[] addressParts = ((String) data.get("address")).split(" ");
+        Map<String, Object> sellerAddress = (Map<String, Object>) data.get("sellerAddress");
 
-        String[] addressParts = ((String) sellerInput.get("address")).split(" ");
-        if (addressParts.length < 3) {
-            throw new CustomException(ErrorCode.INVALID_ADDRESS_FORMAT);
-        }
+        String sidoName = (String) sellerAddress.get("sido");
+        String sigunguName = (String) sellerAddress.get("sigungu");
+        String dongName = (String) sellerAddress.get("dong");
+
 
         // 시도, 시군구, 동 코드 조회
 
-        Sido sido = sidoRepository.findBySidoName(addressParts[0])
+        Sido sido = sidoRepository.findBySidoName(sidoName)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_SIDO));
 
-        Sigungu sigungu = sigunguRepository.findBySigunguNameAndSido(addressParts[1], sido)
+        Sigungu sigungu = sigunguRepository.findBySigunguNameAndSido(sigunguName, sido)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_SIGUNGU));
 
-        Dong dong = dongRepository.findByDongNameAndSigungu(addressParts[2], sigungu)
+        Dong dong = dongRepository.findByDongNameAndSigungu(dongName, sigungu)
                 .orElseThrow(() -> new CustomException((ErrorCode.NOT_FIND_DONG)));
 
 
@@ -114,12 +114,13 @@ public class MemberService {
 
         // storeDeliveryRegion 저장하기
 
-        List<Map<String, Integer>> deliveryRegions = (List<Map<String, Integer>>) data.get("deliveryRegions");
+        List<Map<String, Object>> deliveryRegions = (List<Map<String, Object>>) data.get("deliveryRegions");
 
-        for (Map<String, Integer> deliveryRegion : deliveryRegions) {
-            Integer sidoCode = deliveryRegion.get("sidoCode");
-            Integer sigunguCode = deliveryRegion.get("sigunguCode");
-            Integer dongCode = deliveryRegion.get("dongCode");
+        for (Map<String, Object> deliveryRegion : deliveryRegions) {
+            Long sidoCode = ((Number)deliveryRegion.get("sidoCode")).longValue();
+            Long sigunguCode = ((Number)deliveryRegion.get("sigunguCode")).longValue();
+            Long dongCode = ((Number)deliveryRegion.get("dongCode")).longValue();
+
 
             Sido deliverySido = sidoRepository.findBySidoCode(sidoCode)
                     .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_SIDO));
@@ -139,28 +140,39 @@ public class MemberService {
 
             storeDeliveryRegionRepository.save(storeDeliveryRegion);
         }
-
-
-
     }
 
-
-    private StoreInfoDto getStoreInfo(Long memberId){
+    public StoreInfoDto getStoreInfo(Long memberId){
         List<Object[]> object = storeInfoRepository.findBySellerInfo(memberId);
         //반환값 길이가 0이면 멤버 정보가 없다는 것이다.
-        if (object.size() != 0){
-            StoreInfo tempInfo = (StoreInfo) object.get(0)[0];
+        if (!object.isEmpty()){
+            StoreInfoDto storeInfoDto = extractStoreInfoDto(object);
 
-            StoreInfoDto storeInfoDto = tempInfo.toDto();
-            storeInfoDto.setImages(new ArrayList<>());
-
+            List<String> images = new ArrayList<>();
             //이미지 추가
             for (Object[] o : object) {
-                StoreImage temp = (StoreImage) o[1];
-                storeInfoDto.getImages().add(temp.getImageUrl());
+                if(o[1] == null) break;
+                images.add(extractImageUrl(o));
             }
+            storeInfoDto.setImages(images);
             return storeInfoDto;
         }
         return null;
+    }
+
+    @Transactional
+    public void addFCMToken(Long memberId, String FCMToken){
+        Member findMember = memberRepository.findByMemberIdActivate(memberId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_MEMBER));
+
+        fcmRepository.save(new FCMToken(findMember, FCMToken));
+    }
+
+    private StoreInfoDto extractStoreInfoDto(List<Object[]> object){
+        return ((StoreInfo) object.get(0)[0]).toDto();
+    }
+
+    private String extractImageUrl(Object[] o){
+        return ((StoreImage) o[1]).getImageUrl();
     }
 }

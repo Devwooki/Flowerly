@@ -2,12 +2,10 @@ package com.ssafy.flowerly.flly.dto;
 
 import com.ssafy.flowerly.entity.Flower;
 import com.ssafy.flowerly.entity.type.ColorType;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -22,7 +20,7 @@ public class FlowerDto {
 
     @Override
     public boolean equals(Object o) {
-        return this.flowerCode == ((Flower)o).getFlowerCode();
+        return this.flowerCode.equals(((FlowerDto)o).getFlowerCode());
     }
 
     public static FlowerDto of(Flower flower) {

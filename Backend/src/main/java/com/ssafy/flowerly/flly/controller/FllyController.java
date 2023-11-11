@@ -1,13 +1,20 @@
 package com.ssafy.flowerly.flly.controller;
 
+import com.ssafy.flowerly.flly.dto.FllyDto;
 import com.ssafy.flowerly.flly.dto.FlowerDto;
 import com.ssafy.flowerly.flly.dto.FlowerRequestDto;
+import com.ssafy.flowerly.flly.service.FllyService;
 import com.ssafy.flowerly.flly.service.FlowerService;
+import com.ssafy.flowerly.review.service.ReviewService;
 import com.ssafy.flowerly.util.CustomResponse;
 import com.ssafy.flowerly.util.DataResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.HttpStatus;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +25,8 @@ import java.util.Map;
 public class FllyController {
 
     private final FlowerService flowerService;
-
+    private final FllyService fllyService;
+    private final ReviewService reviewService;
     /**
      * 꽃 목록 조회 API
      * @param flowerRequest 사용자의 선택 정보
@@ -28,36 +36,27 @@ public class FllyController {
     public CustomResponse getFlowerList(@RequestBody FlowerRequestDto flowerRequest){
         log.info("꽃 목록 조회");
         Map<String, List<FlowerDto>> map = flowerService.getFlowerList(flowerRequest);
-//        List<FlowerDto> flowerList = flowerService.getFlowerList(flowerRequest);
-        return new DataResponse<>(200, "꽃 리스트 조회 성공 ", map);
+        return new DataResponse<>(200, "꽃 리스트 조회 성공", map);
     }
 
-    // 선택 내용과 이미지 저장
+    /**
+     * 의뢰서 저장 API
+     * @param fllyDto 의뢰서 정보
+     * @return flowerList
+     */
+    @PostMapping("/request")
+    public CustomResponse saveFllyRequest(HttpServletRequest request, @RequestBody FllyDto fllyDto){
+        log.info("의뢰서 저장");
+        Long memberId = (Long) request.getAttribute("memberId");
+        flowerService.saveFllyRequest(fllyDto, memberId);
+        return new CustomResponse(200, "의뢰서 저장 성공");
+    }
 
-    // 의뢰서 저장
 
-//    /**
-//     * 의미에 맞춘 꽃 목록 조회 API
-//     * @param flowerRequest 상황, 대상
-//     * @return flowerList
-//     */
-//    @PostMapping("/meaning")
-//    public CustomResponse getFlowerListByMeaning(@RequestBody FlowerRequestDto flowerRequest){
-//        log.info("의미 꽃 목록 조회");
-//        List<FlowerDto> flowerList = flowerService.getFlowerListByMeaning(flowerRequest);
-//        return new DataResponse<>(200, "의미 꽃 리스트 조회 성공 " + flowerList.size(), flowerList);
-//    }
-//
-//    /**
-//     * 색상에 맞춘 꽃 목록 조회 API
-//     * @param flowerRequest 꽃 색상
-//     * @return flowerList
-//     */
-//    @PostMapping("/color")
-//    public CustomResponse getFlowerListByColor(@RequestBody FlowerRequestDto flowerRequest){
-//        log.info("색상 꽃 목록 조회");
-//        List<FlowerDto> flowerList = flowerService.getFlowerListByColor(flowerRequest);
-//        return new DataResponse<>(200, "색상 꽃 리스트 조회 성공 " + flowerList.size(), flowerList);
-//    }
-
+    @GetMapping("/store/{sellerId}")
+    public DataResponse<?> getStoreInfo(HttpServletRequest request,
+                                        Pageable pageable,
+                                        @PathVariable Long sellerId){
+        return new DataResponse<>(HttpStatus.SC_OK, "가게 정보를 반환합니다",  fllyService.getStoreDetail(pageable, sellerId));
+    }
 }

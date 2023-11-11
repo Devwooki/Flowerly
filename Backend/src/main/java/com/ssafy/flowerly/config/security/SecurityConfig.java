@@ -48,16 +48,12 @@ public class SecurityConfig {
                 .and()
                 //===========URL 별 권한 옵션 =============
                 .authorizeRequests()
-                //.antMatchers("/api/member").permitAll()
+                //=============채팅 요청에 대한 검증=================
+                //==========================================
                 .antMatchers("/**").permitAll()
                 .antMatchers("/api/member").authenticated()
                 .antMatchers("/api/member/signup/**").authenticated()
-                //.antMatchers("/api/member/dummy-token").permitAll()
-                //.antMatchers("/api/s3/**").permitAll()
-                //.antMatchers("/ws/**").permitAll()
-                //.antMatchers("/stomp-chat/**").permitAll()
                 .antMatchers("/api/member/need-login").permitAll();
-                //permitAll() : 인증이 처리 되었다고 생각했기 때문
 
         //Oauth 설정
         http.oauth2Login()
@@ -78,6 +74,7 @@ public class SecurityConfig {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
 
         corsConfiguration.addAllowedOriginPattern("*"); //모든 도메인에 대해 Request 허용
+        corsConfiguration.addAllowedHeader("Access-Control-Expose-Headers");        //모든 헤더 허용
         corsConfiguration.addAllowedHeader("*");        //모든 헤더 허용
         corsConfiguration.setAllowedOrigins(List.of("http://localhost:3000/", "http://localhost:6090/", "http://localhost:5173/", "https://flower-ly.co.kr/"));
         corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));        //모든 메소드 허용
