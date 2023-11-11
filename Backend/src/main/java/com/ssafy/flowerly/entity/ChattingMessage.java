@@ -2,11 +2,16 @@ package com.ssafy.flowerly.entity;
 
 import com.ssafy.flowerly.chatting.dto.StompChatRequest;
 import lombok.*;
+import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.Id;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Date;
 
+@Data
 @Document(collection = "chatting_message")
 @Getter
 @NoArgsConstructor
@@ -20,7 +25,7 @@ public class ChattingMessage {
     private Long memberId;
     private String content;
     private String type;
-    private LocalDateTime sendTime;
+    private Date sendTime;
 
     public static ChattingMessage toEntity(StompChatRequest dto) {
         return ChattingMessage.builder()
@@ -28,7 +33,7 @@ public class ChattingMessage {
                 .memberId(dto.getMemberId())
                 .content(dto.getContent())
                 .type(dto.getType())
-                .sendTime(LocalDateTime.now())
+                .sendTime(Date.from(ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toInstant()))
                 .build();
     }
 }

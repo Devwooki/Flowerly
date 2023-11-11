@@ -51,7 +51,6 @@ public class JWTService {
     private static final String BEARER = "Bearer ";
 
     public String createAccessToken(Long memberId){
-        log.info("현재 시간 : {}", LocalDateTime.now());
         Date now = new Date();
         Date expireDate = new Date(now.getTime() + accessExpiration);
         return JWT.create()
@@ -116,6 +115,7 @@ public class JWTService {
                     .secure(true)
                     .maxAge(refreshExpiration)
                     .build();
+            log.info("refreshToken 만듬 : {}", refreshCookie.toString());
             response.setHeader("Set-Cookie", refreshCookie.toString());
         }
 
@@ -124,7 +124,7 @@ public class JWTService {
 
     // 헤더에서 AccessToken 추출
     public Optional<String> extractAccessToken(HttpServletRequest request) {
-        //헤더에 Autho
+        log.info("엑세스 토큰 추출중");
         return Optional.ofNullable(request.getHeader(accessHeader))
                 .filter(accessToken -> accessToken.startsWith(BEARER))
                 .map(accessToken -> accessToken.replace(BEARER, ""));
@@ -132,11 +132,13 @@ public class JWTService {
 
     //쿠키에서 RefreshToken 추출
     public Optional<String> extractRefreshToken(HttpServletRequest request) {
+        log.info("리프레시 토큰 추출중");
         Cookie[] cookies = request.getCookies();
 
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (refreshHeader.equals(cookie.getName())) {
+                    log.info("리프레시 토큰 추출했지 : {} ", cookie.getValue());
                     return Optional.of(cookie.getValue());
                 }
             }
@@ -147,20 +149,14 @@ public class JWTService {
     //토큰 유효성 체크 - AccessToken, RefreshToken 모두 검증한다
     public boolean isValidToken(String token){
         try{
-            DecodedJWT decodedJWT = decodeToken(token);
-            return isTokenNotExpired(decodedJWT);
+            JWT.require(Algorithm.HMAC512(secretKey)).build().verify(token);
+            return true;
         }catch(Exception e){
+            log.error("유효하지 않은 토큰 입니다. {}", e.getMessage());
             return false;
         }
     }
 
-    private DecodedJWT decodeToken(String token) {
-        return JWT.require(Algorithm.HMAC512(secretKey)).build().verify(token);
-    }
-
-    private boolean isTokenNotExpired(DecodedJWT decodedJWT) {
-        return decodedJWT.getExpiresAt().after(new Date());
-    }
 
 
     public Optional<Long> extractMemberId(String accessToken){

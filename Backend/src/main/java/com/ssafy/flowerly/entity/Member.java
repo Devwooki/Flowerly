@@ -9,6 +9,8 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -45,6 +47,9 @@ public class Member extends BaseTimeEntity {
     @Column(nullable = false)
     private boolean isNotification;
 
+    @OneToMany(mappedBy = "member", orphanRemoval = true)
+    private List<FCMToken> fcmTokens = new ArrayList<>();
+
     public MemberDto toDto(){
         return MemberDto.builder()
                 .id(this.memberId)
@@ -52,6 +57,7 @@ public class Member extends BaseTimeEntity {
                 .nickName(this.nickName)
                 .email(this.email)
                 .isNotification(this.isNotification)
+                .role(this.role)
                 .build();
     }
 
@@ -82,6 +88,7 @@ public class Member extends BaseTimeEntity {
     public void updateNickName(String nickname){
         this.nickName =nickname;
     }
+
 
 
 }

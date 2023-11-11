@@ -24,6 +24,7 @@ public class RequestFromChattingDto {
 
     private Long requestId;
     private Integer price;
+    private Boolean isPaid;
 
     private String recipientName;
     private String recipientPhoneNumber;
@@ -40,6 +41,7 @@ public class RequestFromChattingDto {
 
         this.requestId = request.getRequestId();
         this.price = request.getPrice();
+        this.isPaid = request.getIsPaid();
     }
 
     public void setDeliveryInfo(RequestDeliveryInfo deliveryInfo) {

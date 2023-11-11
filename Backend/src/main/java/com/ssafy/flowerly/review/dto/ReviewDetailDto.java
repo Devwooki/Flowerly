@@ -1,4 +1,4 @@
-package com.ssafy.flowerly.review.dtos;
+package com.ssafy.flowerly.review.dto;
 
 import lombok.*;
 
@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class ReviewDetailDto {
-    private String writer;
+    private String consumerNickName;
     private String content;
-    private LocalDateTime writetime;
+    private LocalDateTime createdAt;
 }
