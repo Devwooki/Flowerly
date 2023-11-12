@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useRecoilValue, useRecoilState } from "recoil";
 
-import style from "./style/MyPageStore.module.css";
+import style from "./style/MyPageStoreEdit.module.css";
 import Image from "next/image";
 import { useDaumPostcodePopup } from "react-daum-postcode";
 import axios from "axios";
@@ -11,6 +11,7 @@ import { ToastErrorMessage } from "@/model/toastMessageJHM";
 import { tokenHttp } from "@/api/tokenHttp";
 import { memberInfoState } from "@/recoil/memberInfoRecoil";
 import { sellerAddressState } from "@/recoil/tokenRecoil";
+import { ServerStoreInfo } from "@/components/mypage/MyPageStore";
 
 const MyPageStoreEdit = () => {
   const Router = useRouter();
@@ -156,7 +157,20 @@ const MyPageStoreEdit = () => {
       .put("/mypage/store", editData)
       .then((response) => {
         if (response.data.code === 200) {
-          setMemberInfo(response.data.data);
+          const serverData = response.data.data as ServerStoreInfo;
+          setMemberInfo((prevInfo) => ({
+            ...prevInfo,
+            store: {
+              ...prevInfo.store,
+              storeInfoId: serverData.storeId,
+              storeName: serverData.storeName,
+              sellerName: serverData.sellerName,
+              phoneNumber: serverData.phoneNumber,
+              storeNumber: serverData.storeNumber,
+              address: serverData.address,
+              images: prevInfo.store?.images || [],
+            },
+          }));
 
           console.log(memberInfo);
 
@@ -193,6 +207,7 @@ const MyPageStoreEdit = () => {
           <>
             <div className={style.storeInfo}>
               <div className={style.storeInfoTitle}>상호명</div>
+
               <input
                 type="text"
                 name="storeName"
@@ -213,6 +228,7 @@ const MyPageStoreEdit = () => {
             </div>
             <div className={style.storeInfo}>
               <div className={style.storeInfoTitle}>전화번호</div>
+              <div className={style.infoWithBtn}></div>
               <input
                 type="text"
                 name="phoneNumber"
@@ -224,32 +240,34 @@ const MyPageStoreEdit = () => {
             <div className={style.storeInfo}>
               <div className={style.storeInfoTitle}>사업자등록번호 확인</div>
 
-              <input
-                type="text"
-                name="storeNumber"
-                value={editData.storeNumber}
-                onChange={handleInputChange}
-                className={style.storeInfoContent}
-              />
-              <button onClick={handleCheckBusinessStatus} className={style.confirmButton}>
-                확인
-              </button>
+              <div className={style.infoWithBtn}>
+                <input
+                  type="text"
+                  name="storeNumber"
+                  value={editData.storeNumber}
+                  onChange={handleInputChange}
+                  className={style.storeInfoContent}
+                />
+                <button onClick={handleCheckBusinessStatus} className={style.confirmButton}>
+                  확인
+                </button>
+              </div>
             </div>
 
             <div className={style.storeInfo}>
               <div className={style.storeInfoTitle}>주소</div>
-
-              <input
-                type="text"
-                name="basicAddress"
-                value={addressPart ? addressPart[0] : "기본주소 없음"}
-                onChange={handleInputChange}
-                className={style.storeInfoContent}
-              />
-              <button className={style.confirmButton} onClick={handleClick}>
-                주소 검색
-              </button>
-
+              <div className={style.infoWithBtn}>
+                <input
+                  type="text"
+                  name="basicAddress"
+                  value={addressPart ? addressPart[0] : "기본주소 없음"}
+                  onChange={handleInputChange}
+                  className={style.storeInfoContent}
+                />
+                <button className={style.confirmButton} onClick={handleClick}>
+                  주소 검색
+                </button>
+              </div>
               <input
                 type="text"
                 name="detailAddress"
@@ -259,7 +277,7 @@ const MyPageStoreEdit = () => {
               />
             </div>
             <button className={style.nextButton} onClick={() => editMyStoreData()}>
-              다음
+              수정 완료
             </button>
           </>
         </div>

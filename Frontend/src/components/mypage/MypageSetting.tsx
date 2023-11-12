@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import UserTypeChangeModal from "./MyPageSettingComponent/UserTypeChangeModal";
 import { useRecoilState } from "recoil";
 import { MemberInfo, memberInfoState } from "@/recoil/memberInfoRecoil";
+import { tokenHttp } from "@/api/tokenHttp";
 
 const MypageSetting = () => {
   const [alarmState, setAlarmState] = useState<Boolean>(false);
@@ -22,6 +23,28 @@ const MypageSetting = () => {
     router.push("/mypage/setting/delivery-area");
   };
 
+  // 알림 설정
+
+  const toggleAlarm = () => {
+    const newAlarmState = !alarmState;
+    tokenHttp
+      .put("/mypage/notification", newAlarmState)
+      .then((res) => {
+        if (res.data.code === 200) {
+          setAlarmState(newAlarmState);
+
+          if (res.headers.authorization) {
+            localStorage.setItem("accessToken", res.headers.authorization);
+          }
+        }
+      })
+      .catch((err) => {
+        console.error("알림 설정 실패", err);
+        if (err.response.status === 403) {
+          router.push("/fllylogin");
+        }
+      });
+  };
   return (
     <>
       <div className={style.SettingBack}>
@@ -53,7 +76,7 @@ const MypageSetting = () => {
               </div>
             </>
           )}
-          <div className={style.SideDetail}>
+          <div className={style.SideDetail} onClick={toggleAlarm}>
             <div>
               <div>알림 설정</div>
               {alarmState ? (
