@@ -17,6 +17,7 @@ const ListBuyer = () => {
         console.log("accessToken", res.headers.authorization);
         localStorage.setItem("accessToken", res.headers.authorization);
       }
+      // return res.data.data.content[0];
       return res.data.data.content;
     },
     {
@@ -48,7 +49,7 @@ const ListBuyer = () => {
         ) : data && data.length === 1 ? (
           <BuyerCardOne card={data[0]} key={data[0].fllyId} />
         ) : (
-          // 다른 경우에 대한 처리 (예: 데이터가 없을 때)
+          // 데이터가 없을 때
           <div>텅텅!!</div>
         )}
       </div>
