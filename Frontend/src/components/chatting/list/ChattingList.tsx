@@ -1,19 +1,19 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import style from "./style/ChattingList.module.css";
-import axios from "axios";
 import Image from "next/image";
 
 import ChattingListCard from "./ChattingListCard";
-import { ToastErrorMessage } from "@/model/toastMessageJHM";
 
 import { useRecoilValue } from "recoil";
 import { memberInfoState } from "@/recoil/memberInfoRecoil";
+import { tokenHttp } from "@/api/chattingTokenHttp";
 
 type Chatting = {
   chattingId: number;
   lastChattingTime: string;
   lastChattingMessage: string;
+  unreadCnt: number;
   opponentMemberId: number;
   opponentName: string;
 };
@@ -24,35 +24,23 @@ const ChattingList = () => {
   const memberInfo = useRecoilValue(memberInfoState);
 
   const axiosHandler = () => {
-    const BaseUrl = `https://flower-ly.co.kr/api/chatting`;
-    // const accessToken = localStorage.getItem("accessToken");
-    const accessToken =
-      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcwODY4MzQ4NiwibWVtYmVySWQiOjF9.wU3IYYWErRie5E5s7oIRYMliboyumfMrCZILaKnwlxXxJXCW1kHZ5fJ-mKvsAwYuMV4-UT0F4qoUX9rVcrTiNw";
-    // const accessToken =
-    //   "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcwODc1MjUwMywibWVtYmVySWQiOjJ9.o_v_EVuucqlh2NPfHioqquPjm3U-JTP-7ZP2xJkxIxMsPBMhxnw0DL-Avnh2ryBa_J6JYS7YdCc5dZuMS_9IUw";
-    axios
-      .get(BaseUrl, {
-        headers: {
-          Authorization: "Bearer " + accessToken,
-        },
-        withCredentials: true,
-      })
+    tokenHttp
+      .get(`/chatting`)
       .then((response) => {
-        console.log(response.data);
         if (response.data.code === 200) {
+          console.log(response.data.data);
           setChattings(response.data.data);
+          //요거 필수!! (엑세스 토큰 만료로 재발급 받았다면 바꿔줘!! )
+          if (response.headers.authorization) {
+            localStorage.setItem("accessToken", response.headers.authorization);
+          }
         }
       })
-      .catch((error) => {
-        if (error.response.status === 403) {
-          console.log("잠이나 자자");
+      .catch((err) => {
+        if (err.response.status === 403) {
+          router.push("/fllylogin");
         }
-        ToastErrorMessage("서버 에러 발생!! 초비상!!!");
       });
-    // axios.get(`https://flower-ly.co.kr/api/chatting`).then((response) => {
-    //   // console.log(response.data);
-    //   setChattings(response.data.data);
-    // });
   };
 
   const [isActive, setIsActive] = useState(false);

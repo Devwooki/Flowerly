@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface StoreInfoRepository extends JpaRepository<StoreInfo, Long> {
     @Query("SELECT s.storeName FROM StoreInfo s WHERE s.seller = :seller")
-    String findStoreName(Member seller);
+    String findStoreName(@Param("seller") Member seller);
 
     Optional<StoreInfo> findBySellerMemberId(Long memberId);
 
@@ -20,5 +20,9 @@ public interface StoreInfoRepository extends JpaRepository<StoreInfo, Long> {
             " Where info.seller.memberId = :memberId "
     )
     List<Object[]> findBySellerInfo(@Param("memberId") Long memberId);
+
+    @Query(" select si.storeName from StoreInfo si " +
+            " where si.seller.memberId = :memberId ")
+    String findStoreName (@Param("memberId") Long memberId);
 
 }

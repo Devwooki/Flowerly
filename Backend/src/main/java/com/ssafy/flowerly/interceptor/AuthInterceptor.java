@@ -41,10 +41,10 @@ public class AuthInterceptor implements HandlerInterceptor {
                 .orElseThrow(() -> new AuthException(ErrorCode.UNAUTHORIZED));
 
         request.setAttribute("memberId", memberId);
-        jwtService.createAccessToken(memberId);
-        jwtService.createRefreshToken(memberId);
 
-        jwtService.sendAccessTokenAndRefreshToken(response, jwtService.createAccessToken(memberId), jwtService.createRefreshToken(memberId));
+        jwtService.sendAccessTokenAndRefreshToken(response,
+                jwtService.createAccessToken(memberId),
+                jwtService.createRefreshToken(memberId));
         return true;
     }
 }

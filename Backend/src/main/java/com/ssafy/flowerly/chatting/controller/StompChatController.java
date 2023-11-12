@@ -22,4 +22,5 @@ public class StompChatController {
         chattingService.saveChattingMessage(stompChatRequest);
         log.info("채팅 메세지 전송 성공");
     }
+
 }

@@ -61,8 +61,8 @@ dependencies {
 	implementation 'org.webjars:stomp-websocket:2.3.3-1'
 	implementation 'org.webjars:sockjs-client:1.1.2'
 
-	// 웹 통신 관련
-	//implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	//FCM - 카톡 메세지
+	implementation group: 'com.google.firebase', name: 'firebase-admin', version: '6.8.1'
 }
 
 tasks.named('test') {

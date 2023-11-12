@@ -6,9 +6,9 @@ ARG JAR_FILE=build/libs/*.jar
 COPY ${JAR_FILE} app.jar
 
 EXPOSE 6090
-
+ENV TZ Asia/Seoul
 #EntryPoint 컨테이너를 실요할 때, 실행할 명령어를 지정
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "-Duser.timezone=Asia/Seoul", "app.jar"]
 #테스트22 백 테스2 테스트22
 
 

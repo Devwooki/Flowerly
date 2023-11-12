@@ -16,7 +16,7 @@ public interface DongRepository extends JpaRepository<Dong, Long> {
 
     Optional<Dong> findByDongNameAndSigungu(String dongName, Sigungu sigungu);
 
-    Optional<Dong> findByDongCodeAndSigungu(Integer dongCode, Sigungu sigungu);
+    Optional<Dong> findByDongCodeAndSigungu(Long dongCode, Sigungu sigungu);
 
     @Query(
             "SELECT d FROM Dong d " +
