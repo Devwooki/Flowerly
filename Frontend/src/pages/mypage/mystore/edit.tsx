@@ -1,9 +1,9 @@
 import React from "react";
-
+import MyPageStoreEdit from "@/components/mypage/MyPageStoreEedit";
 const MyStoreEdit = () => {
   return (
     <>
-      <div>MyStoreEdit</div>
+      <MyPageStoreEdit />
     </>
   );
 };
