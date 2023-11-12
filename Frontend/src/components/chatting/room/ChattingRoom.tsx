@@ -98,7 +98,7 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
       "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcwODc1MjUwMywibWVtYmVySWQiOjJ9.o_v_EVuucqlh2NPfHioqquPjm3U-JTP-7ZP2xJkxIxMsPBMhxnw0DL-Avnh2ryBa_J6JYS7YdCc5dZuMS_9IUw";
 
     // SockJS와 STOMP 설정
-    // const socket = new SockJS(`http://localhost:6090/stomp-chat?token=${accessToken}`); // 로컬 테스트용
+    // const socket = new SockJS(`http://localhost:6090/stomp-chat`); // 로컬 테스트용
     const socket = new SockJS("https://flower-ly.co.kr/stomp-chat"); // 배포용
 
     stompClient.current = Stomp.over(socket);
@@ -268,6 +268,7 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
     const stompChatRequest = {
       chattingId,
       memberId: 2, // 리코일에 든 아이디로 바꾸기
+      // memberId: 1,
       type: type,
       content: content,
     };
