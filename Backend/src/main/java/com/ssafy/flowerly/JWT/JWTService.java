@@ -178,7 +178,7 @@ public class JWTService {
 
         // RefreshToken 쿠키 유효기간 0설정
         ResponseCookie refreshCookie = ResponseCookie.from(refreshHeader, refreshToken)
-                .sameSite("Lax")
+                .sameSite("None")
                 .httpOnly(true)
                 .secure(true)
                 .maxAge(0)
