@@ -20,8 +20,12 @@ interface BuyerMyPageData {
 
 const Mypage = () => {
   const [memberInfo, setMemberInfo] = useRecoilState<MemberInfo>(memberInfoState);
-  const [sellerData, setSellerData] = useState<SellerMyPageData | null>(null);
-  const [buyerData, setBuyerData] = useState<BuyerMyPageData | null>(null);
+  const [sellerData, setSellerData] = useState<SellerMyPageData | null>({
+    storeName: "",
+    imageUrl: [],
+  });
+  const [buyerData, setBuyerData] = useState<BuyerMyPageData | null>({ nickName: "" });
+
   // const [isClient, setIsClient] = useState(false);
 
   // useEffect(() => {
@@ -39,6 +43,7 @@ const Mypage = () => {
             setSellerData(response.data.data);
           } else {
             setBuyerData(response.data.data);
+            console.log(response.data.data);
           }
 
           if (response.headers.authorization) {
@@ -66,7 +71,11 @@ const Mypage = () => {
         <div className={style.MyPageTitle}>마이페이지</div>
 
         <div className={style.NameBox}>
-          <MypageName name={sellerData ? sellerData.storeName : buyerData?.nickName || ""} />
+          {(sellerData || buyerData) && (
+            <MypageName
+              data={sellerData ? sellerData.storeName : buyerData ? buyerData.nickName : ""}
+            />
+          )}
         </div>
         {memberInfo.role === "SELLER" && sellerData && (
           <div className={style.StoreImgBox}>
