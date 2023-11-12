@@ -318,10 +318,10 @@ public class SellerService {
         FllyRequestSimpleDto fllyRequest = fellyRepository.findByFllyId(fllyId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_FLLY)).toFllyRequestSimpleDto();
 
-        FllyOrderInfoDto fllyOrderInfo = requestRepository.findBySellerMemberIdAndFllyFllyId(memberId, fllyId)
+        FllyOrderInfoDto fllyOrderInfo = requestRepository.findByFllyFllyIdAndIsPaidTrue(fllyId)
                 .orElseThrow(() -> new CustomException(ErrorCode.SELLER_NOT_REQUEST)).toFllyOrderInfoDto();
 
-        String responseUrl = fllyParticipationRepository.findByFllyFllyIdAndSellerMemberId(fllyId, memberId).orElseThrow(
+        String responseUrl = fllyParticipationRepository.findByFllyFllyIdAndSellerMemberId(fllyId, fllyOrderInfo.getSellerId()).orElseThrow(
                 () -> new CustomException(ErrorCode.NOT_FIND_FLLY_PARTICIPATE)).getImageUrl();
 
         FllyDeliveryInfoDto deliveryInfo = null;
