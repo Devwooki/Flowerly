@@ -1,4 +1,4 @@
-package com.ssafy.flowerly.config.stomp;
+package com.ssafy.flowerly.chatting.service;
 
 import com.ssafy.flowerly.JWT.JWTService;
 import com.ssafy.flowerly.chatting.service.ChattingService;
@@ -30,13 +30,16 @@ public class StompHandler implements ChannelInterceptor {
         if (StompCommand.CONNECT == accessor.getCommand()) {
             log.info("CONNECT preSend");
             String accessToken = accessor.getFirstNativeHeader("Authorization");
-            Long chattingId = Long.parseLong(accessor.getFirstNativeHeader("chattingId"));
+            String chattingIdStr = accessor.getFirstNativeHeader("chattingId");
 
-            if(accessToken != null) {
+            if(accessToken != null && chattingIdStr != null) {
+                Long chattingId = Long.parseLong(chattingIdStr);
                 Long memberId = jwtService.extractMemberId(accessToken).get();
                 stompChatService.userConnected(memberId, chattingId);
                 chattingService.readChattingMessage(memberId, chattingId);
             }
+        } else if(StompCommand.SUBSCRIBE == accessor.getCommand()) {
+            log.info("SUBSCRIBE preSend");
         } else if(StompCommand.DISCONNECT == accessor.getCommand() || StompCommand.ERROR == accessor.getCommand()) {
             log.info("DISCONNECT preSend");
             String accessToken = accessor.getFirstNativeHeader("Authorization");

@@ -24,10 +24,14 @@ export interface storeDeliveryRegionType {
   dongCode: number;
 }
 
+// 배달 가능지역 code
+
 export const storeDeliveryRegionState = atom<storeDeliveryRegionType[]>({
   key: "storeDeliveryRegionState",
   default: [],
 });
+
+// 배달 가능 지역 name
 
 export const sellerDeliveryRegionState = atom<string[]>({
   key: "sellerDeliveryRegionState",

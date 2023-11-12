@@ -48,4 +48,25 @@ public class ChattingDto {
         private List<ChattingMessageDto.Response> messages;
     }
 
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class UpdateResponse {
+        private Long chattingId;
+        private String lastChattingTime;
+        private String lastChattingMessage;
+        private Integer unreadCnt;
+
+        public static ChattingDto.UpdateResponse of(Chatting chatting, Integer unreadCnt) {
+            return UpdateResponse.builder()
+                    .chattingId(chatting.getChattingId())
+                    .lastChattingMessage(chatting.getLastChattingMessage())
+                    .lastChattingTime(chatting.getLastChattingTime().format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm")))
+                    .unreadCnt(unreadCnt)
+                    .build();
+        }
+    }
+
+
 }

@@ -3,6 +3,7 @@ package com.ssafy.flowerly.config.stomp;
 import com.ssafy.flowerly.JWT.JWTService;
 import com.ssafy.flowerly.chatting.service.ChattingService;
 import com.ssafy.flowerly.chatting.service.StompChatService;
+import com.ssafy.flowerly.chatting.service.StompHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.ChannelRegistration;

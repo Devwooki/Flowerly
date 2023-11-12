@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -121,7 +122,7 @@ public class ChattingService {
     }
 
     @Transactional
-    public void saveChattingMessage(StompChatRequest messageDto) {
+    public Map<String, Object> saveChattingMessage(StompChatRequest messageDto) {
         // 채팅 메세지 MongoDB 저장
         ChattingMessage message = ChattingMessage.toEntity(messageDto);
         chattingMessageRepository.save(message);
@@ -135,11 +136,29 @@ public class ChattingService {
         Member member = memberRepository.findByMemberId(message.getMemberId()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_MEMBER));
         if(member.getRole().equals(MemberRole.SELLER)) {
             Long otherMemberId = chatting.getConsumer().getMemberId();
-            if(!stompChatService.isUserConnected(otherMemberId, chatting.getChattingId())) chatting.updateUnreadCntConsumer();
+            // 상대방이 현재 채팅방에 접속해 있지 않은 경우
+            if(!stompChatService.isUserConnected(otherMemberId, chatting.getChattingId())) {
+                chatting.updateUnreadCntConsumer();
+
+                Map<String, Object> response = new HashMap<>();
+                response.put("memberId", otherMemberId);
+                response.put("data", ChattingDto.UpdateResponse.of(chatting, chatting.getUnreadCntConsumer()));
+                return response;
+            }
         } else {
             Long otherMemberId = chatting.getSeller().getMemberId();
-            if(!stompChatService.isUserConnected(otherMemberId, chatting.getChattingId())) chatting.updateUnreadSeller();
+            // 상대방이 현재 채팅방에 접속해 있지 않은 경우
+            if(!stompChatService.isUserConnected(otherMemberId, chatting.getChattingId())) {
+                chatting.updateUnreadSeller();
+
+                Map<String, Object> response = new HashMap<>();
+                response.put("memberId", otherMemberId);
+                response.put("data", ChattingDto.UpdateResponse.of(chatting, chatting.getUnreadCntSeller()));
+                return response;
+            }
         }
+
+        return null;
     }
 
     @Transactional
