@@ -62,9 +62,10 @@
 
 #underDiv {
   position: relative;
-  z-index: -1;
+  /* z-index: -1; */
 }
 
 #upperDiv {
   transition: left 0.3s ease;
+  top: 0;
 }
