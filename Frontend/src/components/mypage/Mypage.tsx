@@ -19,10 +19,14 @@ interface BuyerMyPageData {
 }
 
 const Mypage = () => {
-  //나중에 리코일로 변경하면됩니다
   const [memberInfo, setMemberInfo] = useRecoilState<MemberInfo>(memberInfoState);
   const [sellerData, setSellerData] = useState<SellerMyPageData | null>(null);
   const [buyerData, setBuyerData] = useState<BuyerMyPageData | null>(null);
+  // const [isClient, setIsClient] = useState(false);
+
+  // useEffect(() => {
+  //   setIsClient(true);
+  // }, []);
 
   useEffect(() => {
     console.log(memberInfo);

@@ -16,6 +16,7 @@ module.exports = {
       "localhost:3000",
       "oaidalleapiprodscus.blob.core.windows.net",
       "no1flower.godohosting.com",
+      "https://dapi.kakao.com",
     ],
   },
   // reactStrictMode: false,
