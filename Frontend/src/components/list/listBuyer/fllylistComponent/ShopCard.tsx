@@ -53,7 +53,10 @@ const ShopCard = ({ shopInfo }: ShopCardProps) => {
           layoutId={`shopInfo-${shopInfo.participant.fllyParticipationId}`}
         >
           <div className={style.infoTable}>
-            <div onClick={(e) => moveToShop(1, e)} className={style.shopName}>
+            <div
+              onClick={(e) => moveToShop(shopInfo.storeInfoDto.storeInfoId, e)}
+              className={style.shopName}
+            >
               {shopInfo.storeInfoDto.storeName}
             </div>
           </div>

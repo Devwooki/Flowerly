@@ -30,6 +30,7 @@ type BuyerCard = {
   requestContent: string;
   situation: string;
   target: string;
+  storeName: string;
 };
 
 type flower = {

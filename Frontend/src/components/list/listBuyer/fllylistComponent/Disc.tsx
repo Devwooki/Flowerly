@@ -23,8 +23,6 @@ const Disc = ({ card }: DiscProps) => {
       setSelectedFlower([card.flower1, card.flower2, card.flower3]);
   }, [card]);
 
-  console.log(selectedFlower);
-
   return (
     <div className={style.discMain}>
       <div className={style.discMainShortUp}>
