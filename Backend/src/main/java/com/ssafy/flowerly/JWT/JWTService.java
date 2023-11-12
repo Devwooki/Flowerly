@@ -110,7 +110,7 @@ public class JWTService {
 
         if(refreshToken != null){
             ResponseCookie refreshCookie = ResponseCookie.from(refreshHeader, refreshToken)
-                    .sameSite("Lax")
+                    .sameSite("None")
                     .httpOnly(true)
                     .secure(true)
                     .maxAge(refreshExpiration)
