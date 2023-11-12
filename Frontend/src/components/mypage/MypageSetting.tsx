@@ -18,6 +18,10 @@ const MypageSetting = () => {
     setUserChangModalState(!userChangModalState);
   };
 
+  const deliveryAreaHandler = () => {
+    router.push("/mypage/setting/delivery-area");
+  };
+
   return (
     <>
       <div className={style.SettingBack}>
@@ -43,7 +47,7 @@ const MypageSetting = () => {
                 <div>대표 이미지 변경</div>
                 <Image src="/img/btn/right-btn.png" width={15} height={20} alt="이동" />
               </div>
-              <div className={style.SideSimple}>
+              <div className={style.SideSimple} onClick={deliveryAreaHandler}>
                 <div>배달 가능 지역 변경</div>
                 <Image src="/img/btn/right-btn.png" width={15} height={20} alt="이동" />
               </div>
