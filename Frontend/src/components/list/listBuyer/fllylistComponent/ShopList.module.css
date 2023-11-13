@@ -8,3 +8,14 @@
   grid-template-columns: repeat(2, 1fr);
   gap: 10px;
 }
+
+.moreBtn {
+  grid-column: span 2;
+}
+
+.noPages {
+  grid-column: span 2;
+  text-align: center;
+  margin: 20px;
+  font-size: 18px;
+}

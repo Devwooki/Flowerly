@@ -8,6 +8,7 @@ import { GetServerSideProps } from "next";
 import { useQuery } from "react-query";
 import { AxiosError } from "axios";
 import { tokenHttp } from "@/api/tokenHttp";
+import Image from "next/image";
 
 const ShopInfoMain = () => {
   const router = useRouter();
@@ -16,8 +17,6 @@ const ShopInfoMain = () => {
     ["ShopInfoMainQuery"],
     async () => {
       const res = await tokenHttp.get(`/flly/store/${router.query.shopId}`);
-      console.log(res.data.data);
-
       return res.data.data;
     },
   );
@@ -25,7 +24,18 @@ const ShopInfoMain = () => {
   return (
     <div className={style.ShopInfoBack}>
       <div className={style.ShopInfoHeader}>
-        <div className={style.headerTitle}>가게정보</div>
+        <div className={style.headerTitle}>
+          <Image
+            src="/img/btn/left-btn.png"
+            alt="뒤로가기"
+            width={13}
+            height={20}
+            onClick={() => {
+              router.back();
+            }}
+          />
+          <div>가게정보</div>
+        </div>
       </div>
       <div className={style.ShopInfoMain}>
         {data && (
