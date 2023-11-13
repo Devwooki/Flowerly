@@ -52,6 +52,7 @@ public class ChattingDto {
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
+    @ToString
     public static class UpdateResponse {
         private Long chattingId;
         private String lastChattingTime;
