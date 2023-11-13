@@ -17,31 +17,16 @@ const MyPageStoreEdit = () => {
   const Router = useRouter();
   const [memberInfo, setMemberInfo] = useRecoilState(memberInfoState);
 
-  // const [isClient, setIsClient] = useState(false);
-
-  // useEffect(() => {
-  //   setIsClient(true);
-  // }, []);
-
   const [editData, setEditData] = useState({
     storeName: memberInfo.store?.storeName || "",
     sellerName: memberInfo.store?.sellerName || "",
     phoneNumber: memberInfo.store?.phoneNumber || "",
     storeNumber: memberInfo.store?.storeNumber || "",
     address: memberInfo.store?.address || "",
+    sidoName: "",
+    sigunguName: "",
+    dongName: "",
   });
-
-  useEffect(() => {
-    if (memberInfo.store) {
-      setEditData({
-        storeName: memberInfo.store.storeName || "",
-        sellerName: memberInfo.store.sellerName || "",
-        phoneNumber: memberInfo.store.phoneNumber || "",
-        storeNumber: memberInfo.store.storeNumber || "",
-        address: memberInfo.store.address || "",
-      });
-    }
-  }, [memberInfo.store]);
 
   const addressPart = editData.address ? editData.address.split("T") : ["", ""];
 
@@ -128,6 +113,13 @@ const MyPageStoreEdit = () => {
     console.log(data);
     setBasicAddress(roadAddress);
 
+    setEditData({
+      ...editData,
+      sidoName: data.sido,
+      sigunguName: data.sigungu,
+      dongName: data.bname,
+    });
+
     setStoreAddressCode({
       sido: data.sido,
       sigungu: data.sigungu,
@@ -173,6 +165,7 @@ const MyPageStoreEdit = () => {
           }));
 
           console.log(memberInfo);
+          console.log(response.data.data);
 
           Router.push("/mypage");
 

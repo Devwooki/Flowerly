@@ -42,7 +42,7 @@ export const memberInfoState = atom<MemberInfo>({
     socialId: "",
     nickName: "",
     email: "",
-    role: "", // role 추가
+    role: "SELLER", // role 추가
     store: null,
     notification: false,
   },

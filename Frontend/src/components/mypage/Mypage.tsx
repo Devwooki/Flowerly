@@ -20,11 +20,8 @@ interface BuyerMyPageData {
 
 const Mypage = () => {
   const [memberInfo, setMemberInfo] = useRecoilState<MemberInfo>(memberInfoState);
-  const [sellerData, setSellerData] = useState<SellerMyPageData | null>({
-    storeName: "",
-    imageUrl: [],
-  });
-  const [buyerData, setBuyerData] = useState<BuyerMyPageData | null>({ nickName: "" });
+  const [sellerData, setSellerData] = useState<SellerMyPageData | null>(null);
+  const [buyerData, setBuyerData] = useState<BuyerMyPageData | null>(null);
 
   // const [isClient, setIsClient] = useState(false);
 
