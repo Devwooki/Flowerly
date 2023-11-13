@@ -329,20 +329,19 @@ public class ChattingService {
         return requestFromChattingDto;
     }
 
-    public Map<String, Object> getPrice(Long chattingId) {
-        Map<String, Object> responseDto = new HashMap<>();
-
+    public PaymentDto.Info getPrice(Long chattingId) {
         Chatting chatting = chattingRepository.findById(chattingId)
                 .orElseThrow(() -> new CustomException(ErrorCode.CHATTING_NOT_FOUND));
         Request request = requestRepository.findByFllyAndSeller(chatting.getFlly(), chatting.getSeller())
                 .orElseThrow(() -> new CustomException(ErrorCode.REQUEST_NOT_FOUND));
 
-        responseDto.put("requestId", request.getRequestId());
-        responseDto.put("sellerName", storeInfoRepository.findStoreName(request.getSeller()));
-        responseDto.put("price", request.getPrice());
-        responseDto.put("isPaid", request.getIsPaid());
-
-        return responseDto;
+        return PaymentDto.Info.builder()
+                .requestId(request.getRequestId())
+                .sellerId(request.getSeller().getMemberId())
+                .sellerName(storeInfoRepository.findStoreName(request.getSeller()))
+                .price(request.getPrice())
+                .isPaid(request.getIsPaid())
+                .build();
     }
 
     @Transactional

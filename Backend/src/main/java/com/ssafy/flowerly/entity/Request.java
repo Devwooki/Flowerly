@@ -100,4 +100,8 @@ public class Request extends BaseCreatedTimeEntity {
                 .createTime(super.getCreatedAt().format(Timeformatter))
                 .build();
     }
+
+    public void complete() {
+        this.isPaid = true;
+    }
 }
