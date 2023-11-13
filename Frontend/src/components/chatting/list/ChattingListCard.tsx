@@ -109,11 +109,19 @@ const ChattingListCard: React.FC<ChattingProps> = ({ chattingData, modalHandler 
           onClick={() => router.push(`/chatting/room/${chattingData.chattingId}`)}
         >
           <div className={style.cardTop}>
-            <div className={style.opponentName}>{chattingData.opponentName}</div>
+            <div className={style.opponentName}>
+              {chattingData.opponentName.length > 15
+                ? chattingData.opponentName.substring(0, 15) + "..."
+                : chattingData.opponentName}
+            </div>
             <div className={style.time}>{chattingData.lastChattingTime}</div>
           </div>
           <div className={style.cardBottom}>
-            <div>{chattingData.lastChattingMessage}</div>
+            <div>
+              {chattingData.lastChattingMessage.length > 20
+                ? chattingData.lastChattingMessage.substring(0, 20) + "..."
+                : chattingData.lastChattingMessage}
+            </div>
             {chattingData.unreadCnt > 0 && (
               <div className={style.newMsg}>{chattingData.unreadCnt}</div>
             )}
