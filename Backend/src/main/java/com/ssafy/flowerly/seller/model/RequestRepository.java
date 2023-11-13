@@ -49,4 +49,9 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
     Optional<Request> findByFllyFllyIdAndIsPaid(Long fllyId, Boolean isPaid);
 
     Optional<Request> findByFllyFllyIdAndIsPaidTrue(Long fllyId);
+    Optional<Request> findByFllyAndIsPaidTrue(Flly flly);
+
+    @Query("SELECT rdi.address FROM RequestDeliveryInfo rdi " +
+            " where rdi.request.requestId = :requestId ")
+    String getAddress(@Param("requestId") Long requestId);
 }

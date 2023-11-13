@@ -10,7 +10,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class ReviewDetailDto {
+    private Long reviewId;
     private String consumerNickName;
     private String content;
-    private LocalDateTime createdAt;
+    private String createdAt;
 }

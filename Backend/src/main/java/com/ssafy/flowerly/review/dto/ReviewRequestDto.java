@@ -11,6 +11,5 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ReviewRequestDto {
     private Long requestId;
-    private Long sellerId;
     private String content;
 }

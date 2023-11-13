@@ -1,13 +1,12 @@
 package com.ssafy.flowerly.s3.model;
 
-import com.ssafy.flowerly.entity.FileInfo;
+import com.ssafy.flowerly.entity.StoreImage;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.io.File;
 import java.util.List;
 
 @Repository
-public interface S3Repository extends JpaRepository<FileInfo, Long> {
-    void deleteByUploadFileUrl(String imgSrc);
+public interface StoreImageRepository extends JpaRepository<StoreImage, Long> {
+    List<StoreImage> findBySeller_MemberId(Long memberId);
 }

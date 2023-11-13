@@ -165,7 +165,7 @@ public class MemberService {
         Member findMember = memberRepository.findByMemberIdActivate(memberId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_MEMBER));
 
-        fcmRepository.save(new FCMToken(findMember, FCMToken));
+        fcmRepository.save(new FCMToken(findMember.getMemberId()));
     }
 
     private StoreInfoDto extractStoreInfoDto(List<Object[]> object){

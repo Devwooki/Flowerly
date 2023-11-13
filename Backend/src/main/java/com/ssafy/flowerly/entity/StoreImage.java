@@ -1,5 +1,6 @@
 package com.ssafy.flowerly.entity;
 
+import com.ssafy.flowerly.s3.vo.StoreImageResponse;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -23,4 +24,12 @@ public class StoreImage {
 
     @Column(nullable = false)
     private String imageUrl;
+
+    public void updateImage(String newUrl){
+        this.imageUrl = newUrl;
+    }
+
+    public StoreImageResponse toResponseDto(){
+        return new StoreImageResponse(this.storeImageId, this.seller.getMemberId(),this.imageUrl);
+    }
 }

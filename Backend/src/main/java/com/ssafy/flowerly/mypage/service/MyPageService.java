@@ -249,6 +249,9 @@ public class MyPageService {
                             .sidoCode(sido.getSidoCode())
                             .sigunguCode(sigungu.getSigunguCode())
                             .dongCode(dong.getDongCode())
+                            .fullAddress(savedRegion.getSido().getSidoName() + " " +
+                            savedRegion.getSigungu().getSigunguName() + " " +
+                            savedRegion.getDong().getDongName())
                             .build();
                 }).collect(Collectors.toList());
 

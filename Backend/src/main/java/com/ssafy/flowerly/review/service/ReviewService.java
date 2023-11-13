@@ -20,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.Optional;
 
@@ -42,6 +43,7 @@ public class ReviewService {
 
 
     public Page<ReviewResponseDto> getReviewByConsumerId(Pageable pageable, Long consumerId) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         return reviewRepository.findByConsumerMemberIdAndIsRemovedFalse(pageable, consumerId)
                 .map(review -> {
 
@@ -51,7 +53,7 @@ public class ReviewService {
                             .reviewId(review.getReviewId())
                             .requestId(review.getRequest().getRequestId())
                             .content(review.getContent())
-                            .createdAt(review.getCreatedAt())
+                            .createdAt(review.getCreatedAt() != null ? review.getCreatedAt().format(formatter) : null)
                             .storeName(storeName)
                             .build();
                 });
@@ -63,8 +65,9 @@ public class ReviewService {
         Request request = requestRepository.findByRequestId(reviewRequestDto.getRequestId())
                 .orElseThrow(() -> new CustomException(ErrorCode.REQUEST_NOT_FOUND));
 
-        Member seller = memberRepository.findByMemberId(reviewRequestDto.getSellerId())
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_MEMBER));
+        Member seller = request.getSeller();
+
+        System.out.println("Seller info: " + seller);
 
         Member consumer = memberRepository.findByMemberId(memberId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_MEMBER));

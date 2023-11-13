@@ -77,4 +77,7 @@ public class MemberController {
                                         HttpServletRequest request){
         return new DataResponse<>(HttpStatus.OK.value(), "더미토큰 발사!!", jwtService.makeDummyToken(memberId));
     }
+
+    //@PostMapping("")
+
 }
