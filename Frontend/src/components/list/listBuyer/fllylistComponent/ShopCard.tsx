@@ -1,14 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import style from "./ShopCard.module.css";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import ShopModal from "./ShopModal";
 import { motion } from "framer-motion";
-import { tokenHttp } from "@/api/tokenHttp";
-import { useRecoilValue } from "recoil";
-import { FllylistDiscRecoil } from "@/recoil/kdmRecoil";
-import { useQuery } from "react-query";
-import { AxiosError } from "axios";
 import ChatStart from "./ChatStart";
 
 type ShopCardProps = {
@@ -18,17 +13,18 @@ type ShopCardProps = {
 const ShopCard = ({ shopInfo }: ShopCardProps) => {
   const router = useRouter();
   const originalContent = shopInfo.participant.content;
-  const originalAdress = shopInfo.storeInfoDto.address;
   const maxLengthAD = 20; // 주소 최대 길이 설정
   const maxLengthCT = 30; // 코멘트 최대 길이 설정
   const [modal, setModal] = useState(false); // 모달창
   const [modalChat, setModalChat] = useState(false);
-  const fllyRecoil = useRecoilValue(FllylistDiscRecoil);
-  const { fllyId } = fllyRecoil;
-  const truncatedAdress =
-    originalAdress.length > maxLengthAD
-      ? `${originalAdress.substring(0, maxLengthAD)}...`
-      : originalAdress;
+  const [location, setLocation] = useState<string>();
+
+  useEffect(() => {
+    // 주소 처리를 위한 useEffect
+    const splitT = shopInfo.storeInfoDto.address.indexOf("T");
+    setLocation(shopInfo.storeInfoDto.address.substring(0, splitT));
+  }, [shopInfo]);
+
   const truncatedContent =
     originalContent.length > maxLengthCT
       ? `${originalContent.substring(0, maxLengthCT)}...`
@@ -43,41 +39,9 @@ const ShopCard = ({ shopInfo }: ShopCardProps) => {
     setModal((pre) => !pre);
   };
 
-  const { data, isError, refetch } = useQuery<chatRoomBtn, AxiosError>(
-    "ShopCardQuery",
-    async () => {
-      const res = await tokenHttp.post(`/chatting`, {
-        sellerId: shopInfo.storeInfoDto.storeInfoId,
-        fllyId: fllyId,
-        fllyParticipationId: shopInfo.participant.fllyParticipationId,
-      });
-      console.log("생성", res.data.data);
-      console.log("생성 방 ID", res.data.data.chattingId);
-
-      return res.data.data;
-    },
-    {
-      onError: (error) => {
-        console.log("에러 발생했다 임마");
-        console.log(error?.response?.status);
-      },
-      retry: false,
-      cacheTime: 0,
-      enabled: false,
-    },
-  );
-
   const createChat = (e: React.MouseEvent) => {
     e.stopPropagation();
-    console.log("생성", data?.chattingId);
-    // refetch();
     setModalChat(true);
-    // router.push({
-    //   pathname: `/chatting/room/[id]`,
-    //   query: {
-    //     id: data?.chattingId,
-    //   },
-    // });
   };
 
   const handleModalChat = () => {
@@ -111,7 +75,17 @@ const ShopCard = ({ shopInfo }: ShopCardProps) => {
           </div>
           <div className={style.infoTable}>
             <Image src={"/img/icon/seller-location.png"} alt="가게 위치" width={10} height={15} />
-            <div style={{ fontSize: "14px" }}>{truncatedAdress}</div>
+            <div style={{ fontSize: "14px" }}>
+              {location &&
+                (() => {
+                  const truncatedAdress =
+                    location.length > maxLengthAD
+                      ? `${location.substring(0, maxLengthAD)}...`
+                      : location;
+
+                  return truncatedAdress;
+                })()}
+            </div>
           </div>
           <div className={style.infoTable}>
             <Image src={"/img/icon/seller-money.png"} alt="제시 금액 " width={15} height={15} />
@@ -124,7 +98,7 @@ const ShopCard = ({ shopInfo }: ShopCardProps) => {
         </div>
       </motion.div>
       {modal && <ShopModal modal={modalState} shopInfo={shopInfo} />}
-      {modalChat && <ChatStart onCancel={handleModalChat} />}
+      {modalChat && <ChatStart onCancel={handleModalChat} shopInfo={shopInfo} />}
     </>
   );
 };
