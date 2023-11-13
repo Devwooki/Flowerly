@@ -14,6 +14,21 @@ public class ChattingDto {
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
+    public static class Request {
+        private Long consumerId;
+        private Long sellerId;
+        private Long fllyId;
+        private Long fllyParticipationId;
+
+        public void setConsumerId(Long consumerId) {
+            this.consumerId = consumerId;
+        }
+    }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
     public static class BasicResponse {
         private Long chattingId;
         private String lastChattingTime;
