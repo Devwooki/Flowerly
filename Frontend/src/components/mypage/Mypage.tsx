@@ -14,14 +14,10 @@ interface SellerMyPageData {
   imageUrl: string[];
 }
 
-interface BuyerMyPageData {
-  nickName: string;
-}
-
 const Mypage = () => {
   const [memberInfo, setMemberInfo] = useRecoilState<MemberInfo>(memberInfoState);
   const [sellerData, setSellerData] = useState<SellerMyPageData | null>(null);
-  const [buyerData, setBuyerData] = useState<BuyerMyPageData | null>(null);
+  const [buyerData, setBuyerData] = useState<string>("");
 
   // const [isClient, setIsClient] = useState(false);
 
@@ -69,9 +65,7 @@ const Mypage = () => {
 
         <div className={style.NameBox}>
           {(sellerData || buyerData) && (
-            <MypageName
-              data={sellerData ? sellerData.storeName : buyerData ? buyerData.nickName : ""}
-            />
+            <MypageName data={sellerData ? sellerData.storeName : buyerData} />
           )}
         </div>
         {memberInfo.role === "SELLER" && sellerData && (

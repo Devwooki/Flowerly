@@ -13,9 +13,8 @@ export const tokenHttp = axios.create({
 
 tokenHttp.interceptors.request.use(async (req) => {
   const accessToken = localStorage.getItem("accessToken");
-
   // const accessToken =
-  //   "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcwOTg0NTM2OSwibWVtYmVySWQiOjJ9.I3tbAUbD3kKxjiJeekvXTk3OFqrdAlVlWxsBowlZtCNhLZbJFu3q6xMWrZGaWUWZLlOmOwyKXD5qyeZ2-8O4OQ";
+  //   "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcwOTg1NDg2OSwibWVtYmVySWQiOjF9.FY4M35Nmrn2DzJBSYUKNjL25A1aLqO0ekbL3yVt3LJLbCaijtSZ-MljecCYEkPJuTz6823AFIn5bm8eU6OQIfA";
 
   // console.log("토큰Http", accessToken);
   if (!accessToken) {

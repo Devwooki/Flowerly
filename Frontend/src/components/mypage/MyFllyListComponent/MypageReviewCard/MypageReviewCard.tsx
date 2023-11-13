@@ -3,23 +3,23 @@ import style from "./MypageReviewCard.module.css";
 import Image from "next/image";
 import { useRecoilValue } from "recoil";
 import { MemberInfo, memberInfoState } from "@/recoil/memberInfoRecoil";
+import { tokenHttp } from "@/api/tokenHttp";
+import Router from "next/router";
+import { ToastSuccessMessage } from "@/model/toastMessageJHM";
 
 interface BaseReviewType {
   reviewId: number;
   content: string;
   createdAt: string;
-  type: "buyer" | "seller";
 }
 
 interface BuyerReviewType extends BaseReviewType {
   requestId: number;
   storeName: string;
-  type: "buyer";
 }
 
 interface SellerReviewType extends BaseReviewType {
   consumerNickName: string;
-  type: "seller";
 }
 
 type ReviewType = BuyerReviewType | SellerReviewType;
@@ -40,14 +40,32 @@ const MypageReviewCard = ({
   const memberInfo = useRecoilValue<MemberInfo>(memberInfoState);
 
   const DeleteBtnHandler = () => {
-    ModalChangeHandler();
-    SelectIdChangeHandler($reviewInfo.reviewId, $requestIndex);
+    tokenHttp
+      .delete(`review/delete/${$reviewInfo.reviewId}`)
+      .then((res) => {
+        if (res.data.code === 200) {
+          ModalChangeHandler();
+          SelectIdChangeHandler($reviewInfo.reviewId, $requestIndex);
+          ToastSuccessMessage("리뷰가 삭제되었습니다.");
+
+          if (res.headers.authorization) {
+            localStorage.setItem("accessToken", res.headers.authorization);
+          }
+        }
+      })
+      .catch((err) => {
+        if (err.response.status === 403) {
+          Router.push("/fllylogin");
+        }
+      });
   };
+
+  const isBuyerReview = "storeName" in $reviewInfo;
 
   return (
     <>
       <div className={style.ReviewCardBack}>
-        {$reviewInfo.type === "buyer" ? (
+        {isBuyerReview ? (
           <div className={style.BuyerReviewCardHeader}>
             <div>
               {$reviewInfo.storeName}
@@ -55,7 +73,7 @@ const MypageReviewCard = ({
                 <Image src="/img/btn/right-btn.png" width={10} height={15} alt="이동"></Image>
               </span>
             </div>
-            <div className={style.BuyerReviewDelete} onClick={DeleteBtnHandler}>
+            <div className={style.BuyerReviewDelete} onClick={() => DeleteBtnHandler()}>
               삭제
             </div>
           </div>
