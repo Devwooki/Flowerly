@@ -4,6 +4,9 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import ShopModal from "./ShopModal";
 import { motion } from "framer-motion";
+import { tokenHttp } from "@/api/tokenHttp";
+import { useRecoilValue } from "recoil";
+import { FllylistDiscRecoil } from "@/recoil/kdmRecoil";
 
 type ShopCardProps = {
   shopInfo: storeContent;
@@ -16,7 +19,7 @@ const ShopCard = ({ shopInfo }: ShopCardProps) => {
   const maxLengthAD = 20; // 주소 최대 길이 설정
   const maxLengthCT = 30; // 코멘트 최대 길이 설정
   const [modal, setModal] = useState(false); // 모달창
-
+  const fllyId = useRecoilValue(FllylistDiscRecoil);
   const truncatedAdress =
     originalAdress.length > maxLengthAD
       ? `${originalAdress.substring(0, maxLengthAD)}...`
@@ -33,6 +36,16 @@ const ShopCard = ({ shopInfo }: ShopCardProps) => {
 
   const modalState = () => {
     setModal((pre) => !pre);
+  };
+
+  const createChat = async () => {
+    const res = await tokenHttp.post(`/chatting`, {
+      sellerId: shopInfo.storeInfoDto.storeInfoId,
+      fllyId: fllyId.fllyId,
+      fllyParticipationId: shopInfo.participant.fllyParticipationId,
+    });
+    console.log(res);
+    return res;
   };
 
   return (
@@ -70,7 +83,9 @@ const ShopCard = ({ shopInfo }: ShopCardProps) => {
           </div>
           <div className={style.responseContent}>{truncatedContent}</div>
         </motion.div>
-        <div className={style.chatAction}>채팅하기</div>
+        <div className={style.chatAction} onClick={createChat}>
+          채팅하기
+        </div>
       </motion.div>
       {modal && <ShopModal modal={modalState} shopInfo={shopInfo} />}
     </>
