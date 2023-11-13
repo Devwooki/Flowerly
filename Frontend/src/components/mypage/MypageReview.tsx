@@ -9,14 +9,25 @@ import { MemberInfo, memberInfoState } from "@/recoil/memberInfoRecoil";
 import axios from "axios";
 import { tokenHttp } from "@/api/tokenHttp";
 import { ToastErrorMessage } from "@/model/toastMessageJHM";
-
-interface ReviewType {
+interface BaseReviewType {
   reviewId: number;
-  requestId: number;
-  storeName: string;
   content: string;
   createdAt: string;
+  type: "buyer" | "seller";
 }
+
+interface BuyerReviewType extends BaseReviewType {
+  requestId: number;
+  storeName: string;
+  type: "buyer";
+}
+
+interface SellerReviewType extends BaseReviewType {
+  consumerNickName: string;
+  type: "seller";
+}
+
+type ReviewType = BuyerReviewType | SellerReviewType;
 
 const MypageReview = () => {
   const router = useRouter();
@@ -52,7 +63,7 @@ const MypageReview = () => {
 
   useEffect(() => {
     tokenHttp
-      .get("/review/buyer-review")
+      .get(memberInfo.role === "USER" ? "/review/buyer-review" : "/review/store-review")
       .then((res) => {
         if (res.data.code === 200) {
           setReviewList(res.data.data.content);
