@@ -68,7 +68,9 @@ const MypageReview = () => {
         if (res.data.code === 200) {
           setReviewList(res.data.data.content);
 
-          localStorage.setItem("accessToken", res.headers.authorization);
+          if (res.headers.authorization) {
+            localStorage.setItem("accessToken", res.headers.authorization);
+          }
         }
       })
       .catch((err) => {
