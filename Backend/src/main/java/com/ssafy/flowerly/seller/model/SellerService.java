@@ -284,20 +284,18 @@ public class SellerService {
         //나의 주소를 가지고 전체 값을 찾아야한다! (시를 보내 구군의 전체를 찾고 / 시구군을 보내 동에서 전체를 찾는다 )
         if(store != null){
             Sigungu sigunguAll = sigunguRepository.findBysigunguCodeAllCode(store.getSido());
-            Dong dongAll = dongRepository.findByDongCodeAllCode(store.getSigungu());
 
+            List<Dong> dongAll = dongRepository.findByDongCodeAllCode(store.getSido());
             //픽업일경우에는 전체 + 내 주소만 보면되기때문
             List<Sigungu> pickupSigugun = new ArrayList<>();
-            List<Dong> pickupDong = new ArrayList<>();
-
             pickupSigugun.add(store.getSigungu());
             pickupSigugun.add(sigunguAll);
-            pickupDong.add(store.getDong());
-            pickupDong.add(dongAll);
+            dongAll.add(store.getDong());
+
 
             //2-2 가게의 시 군 구 와 전체 시군구 와 전체 동을 가지고 flly픽업정보에서 찾는다
             pickupAbleList =  fllyPickupRegionRepository
-                    .getSellerPickupAbleList(pickupSigugun, pickupDong, pageable, memberId)
+                    .getSellerPickupAbleList(pickupSigugun, dongAll, pageable, memberId)
                     .map(FllyPickupRegion::toPickupFllyNearDto);
 
         }
