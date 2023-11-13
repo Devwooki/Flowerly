@@ -2,7 +2,7 @@ package com.ssafy.flowerly.entity;
 
 import com.ssafy.flowerly.entity.common.BaseCreatedTimeEntity;
 import com.ssafy.flowerly.entity.type.*;
-import com.ssafy.flowerly.seller.buyer.dto.BuyerFllyDto;
+import com.ssafy.flowerly.buyer.dto.BuyerFllyDto;
 import com.ssafy.flowerly.seller.vo.FllyRequestDto;
 import com.ssafy.flowerly.seller.vo.FllyRequestSimpleDto;
 import lombok.*;
@@ -103,7 +103,7 @@ public class Flly extends BaseCreatedTimeEntity {
                 .build();
     }
 
-    public BuyerFllyDto toBuyerFlly(String storeName, String requestAddress){
+    public BuyerFllyDto toBuyerFlly(){
         DateTimeFormatter Timeformatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
         return BuyerFllyDto.builder()
@@ -123,8 +123,6 @@ public class Flly extends BaseCreatedTimeEntity {
                 .progress(this.progress.getTitle())
                 .budget(this.budget)
                 .deadline(this.deadline != null ? this.deadline.format(Timeformatter) : null)
-                .storeName(storeName)
-                .requestAddress(requestAddress)
                 .build();
     }
 

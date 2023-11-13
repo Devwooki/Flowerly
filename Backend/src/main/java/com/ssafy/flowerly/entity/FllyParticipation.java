@@ -1,15 +1,13 @@
 package com.ssafy.flowerly.entity;
 
 import com.ssafy.flowerly.entity.common.BaseCreatedTimeEntity;
-import com.ssafy.flowerly.seller.buyer.dto.FllyParticipateResponseDto;
+import com.ssafy.flowerly.buyer.dto.FllyParticipateResponseDto;
 import com.ssafy.flowerly.seller.vo.FllyResponeDto;
 import com.ssafy.flowerly.seller.vo.OrderParticipationDto;
-import com.ssafy.flowerly.seller.vo.RequestFllyParticipateDto;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Entity

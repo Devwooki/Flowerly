@@ -1,4 +1,4 @@
-package com.ssafy.flowerly.seller.buyer.dto;
+package com.ssafy.flowerly.buyer.dto;
 
 public class SellerDto {
     private Long id;
