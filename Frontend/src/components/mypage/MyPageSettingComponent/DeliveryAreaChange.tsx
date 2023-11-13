@@ -1,12 +1,17 @@
 import React from "react";
 import { tokenHttp } from "@/api/tokenHttp";
-import { sellerDeliveryRegionState, storeDeliveryRegionState } from "@/recoil/tokenRecoil";
+import {
+  sellerDeliveryRegionState,
+  storeDeliveryRegionState,
+  storeDeliveryRegionType,
+} from "@/recoil/tokenRecoil";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import style from "@/components/mypage/MyPageSettingComponent/DeliveryAreaChange.module.css";
-import { useRecoilState } from "recoil";
+
 import Image from "next/image";
+import { useRecoilState, useResetRecoilState } from "recoil";
 
 interface sidoDataType {
   sidoCode: number;
@@ -35,6 +40,10 @@ const DeliveryAreaChange = () => {
   const [deliveryRegionList, setDeliveryRegionList] = useRecoilState(sellerDeliveryRegionState);
   const [deliveryRegionCodeList, setDeliveryRegionCodeList] =
     useRecoilState(storeDeliveryRegionState);
+  const resetDeliveryRegionList = useResetRecoilState(sellerDeliveryRegionState);
+  const resetDeliveryRegionCodeList = useResetRecoilState(storeDeliveryRegionState);
+
+  // const [newDeliverRegionCodeList, setNewDeliverRegionCodeList] = useState<any[]>([]);
 
   useEffect(() => {
     const getSidoData = async () => {
@@ -114,31 +123,36 @@ const DeliveryAreaChange = () => {
             sidoCode: selectedSido.sidoCode,
             sigunguCode: selectedSigungu.sigunguCode,
             dongCode: selectedDongObj!.dongCode,
+            fullAddress: fullAddress,
           },
         ]);
       }
     }
   };
 
-  const handleRemoveDeliveryRegion = (address: string) => {
-    setDeliveryRegionList((prevList) => prevList.filter((item) => item !== address));
+  const handleRemoveDeliveryRegion = (address: storeDeliveryRegionType) => {
+    // setDeliveryRegionList((prevList) => prevList.filter((item) => item !== address));
     setDeliveryRegionCodeList((prevList) =>
       prevList.filter(
         (item) =>
-          item.sidoCode !== selectedSido?.sidoCode &&
-          item.sigunguCode !== selectedSigungu?.sigunguCode &&
-          item.dongCode !== selectedDong?.dongCode,
+          item.sidoCode !== address?.sidoCode ||
+          item.sigunguCode !== address?.sigunguCode ||
+          item.dongCode !== address?.dongCode,
       ),
     );
   };
 
   // 배달 가능 지역 조회
+
   useEffect(() => {
     const getDeliveryRegion = () => {
       tokenHttp
         .get("mypage/delivery")
         .then((response) => {
           console.log(response.data.data);
+          resetDeliveryRegionList();
+          resetDeliveryRegionCodeList();
+
           setDeliveryRegionCodeList(response.data.data);
 
           const deliveryAddress = response.data.data.map((item: any) => item.fullAddress);
@@ -156,7 +170,6 @@ const DeliveryAreaChange = () => {
           }
         });
     };
-
     getDeliveryRegion();
   }, []);
 
@@ -167,11 +180,9 @@ const DeliveryAreaChange = () => {
       .put("/mypage/delivery", deliveryRegionCodeList)
       .then((response) => {
         if (response.data.code === 200) {
-          console.log(response.data.data);
+          const updatedRegionList = response.data.data.map((item: any) => item.fullAddress);
+          setDeliveryRegionList(updatedRegionList);
           setDeliveryRegionCodeList(response.data.data);
-
-          // name으로 설정해서 인풋 창에 넣어야 함.
-
           Router.push("/mypage");
 
           if (response.headers.authorization) {
@@ -193,9 +204,9 @@ const DeliveryAreaChange = () => {
           <h3>배달 가능 지역 수정</h3>
           <div>
             <div className={style.deliveryRegionList}>
-              {deliveryRegionList.map((address, index) => (
+              {deliveryRegionCodeList.map((address, index) => (
                 <div key={index} className={style.deliveryRegionItem}>
-                  {address}
+                  {address.fullAddress}
                   <Image
                     alt="삭제"
                     src="/img/btn/gray-delete-btn.png"

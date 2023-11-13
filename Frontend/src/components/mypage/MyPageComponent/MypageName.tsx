@@ -21,8 +21,13 @@ const MypageName: React.FC<MypageNameProps> = ({ data }) => {
           </>
         ) : (
           <>
-            <div>{data}</div>
-            <Link href="/mypage/myinfo">닉네임 변경</Link>
+            <div></div>
+            <div>
+              {data}
+              <Link href="/mypage/myinfo" className={style.link}>
+                닉네임 변경
+              </Link>
+            </div>
           </>
         )}
       </div>

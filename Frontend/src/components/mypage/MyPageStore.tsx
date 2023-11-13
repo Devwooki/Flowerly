@@ -22,12 +22,6 @@ const MyPageStore = () => {
     ? memberInfo.store.address.split("T")
     : ["기본주소 없음", "상세주소 없음"];
 
-  // const [isClient, setIsClient] = useState(false);
-
-  // useEffect(() => {
-  //   setIsClient(true);
-  // }, []);
-
   useEffect(() => {
     const getMyPageStoreData = () => {
       tokenHttp
