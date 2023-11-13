@@ -90,10 +90,9 @@
   display: inline-block;
   font-size: 14px;
   margin: 0 5px 0 0;
-  color: currentColor;
+  color: black;
   width: 27px;
-  /* background-color: var(--moregray); */
-  /* display: inline; */
+  background-color: var(--moregray);
 }
 
 @media (max-width: 426px) {

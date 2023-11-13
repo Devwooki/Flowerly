@@ -14,9 +14,9 @@ export const FllylistDiscRecoil = atom<BuyerCard>({
   key: "FllylistDiscRecoil",
   default: {
     budget: 0,
-    color1: null,
-    color2: null,
-    color3: null,
+    color1: "",
+    color2: "",
+    color3: "",
     consumer: "",
     deadline: "",
     fllyId: 0,
