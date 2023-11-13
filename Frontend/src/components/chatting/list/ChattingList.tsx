@@ -4,10 +4,14 @@ import style from "./style/ChattingList.module.css";
 import Image from "next/image";
 
 import ChattingListCard from "./ChattingListCard";
+import ChattingListExitModal from "./ChattingListExitModal";
 
 import { useRecoilValue } from "recoil";
 import { memberInfoState } from "@/recoil/memberInfoRecoil";
 import { tokenHttp } from "@/api/chattingTokenHttp";
+
+import SockJS from "sockjs-client";
+import { Client, CompatClient, Stomp } from "@stomp/stompjs";
 
 type Chatting = {
   chattingId: number;
@@ -20,8 +24,12 @@ type Chatting = {
 
 const ChattingList = () => {
   const [chattings, setChattings] = useState<Chatting[]>([]);
-  const router = useRouter();
+  const [modalState, setModalState] = useState<boolean>(false);
+  const [modalChattingId, setModalChattingId] = useState<number>();
   const memberInfo = useRecoilValue(memberInfoState);
+
+  const router = useRouter();
+  const stompClient = useRef<CompatClient | null>(null);
 
   const axiosHandler = () => {
     tokenHttp
@@ -48,7 +56,41 @@ const ChattingList = () => {
 
   useEffect(() => {
     axiosHandler();
+    // SockJS와 STOMP 설정
+    // const socket = new SockJS(`http://localhost:6090/stomp-chat`); // 로컬 테스트용
+    const socket = new SockJS("https://flower-ly.co.kr/stomp-chat"); // 배포용
+
+    stompClient.current = Stomp.over(socket);
+    stompClient.current.connect({}, () => {
+      // 특정 채팅방의 메세지를 구독
+      stompClient.current?.subscribe(`/sub/list/${memberInfo.id}`, (chattingData) => {
+        console.log(chattingData);
+        const newChattingData = JSON.parse(chattingData.body);
+
+        setChattings((currentChattings) =>
+          currentChattings.map((chatting) =>
+            chatting.chattingId === newChattingData.chattingId
+              ? { ...chatting, ...newChattingData }
+              : chatting,
+          ),
+        );
+      });
+    });
+
+    // 컴포넌트 unmount 시 연결 종료
+    return () => {
+      if (stompClient.current) {
+        stompClient.current.disconnect(() => {
+          // console.log("Disconnected");
+        }, {});
+      }
+    };
   }, []);
+
+  const modalHandler = (chattingId: number, state: boolean) => {
+    setModalState(state);
+    setModalChattingId(chattingId);
+  };
 
   return (
     <>
@@ -104,9 +146,22 @@ const ChattingList = () => {
             else return chatting;
           })
           .map((chatting, idx) => {
-            return <ChattingListCard key={chatting.chattingId} chattingData={chatting} />;
+            return (
+              <ChattingListCard
+                key={chatting.chattingId}
+                chattingData={chatting}
+                modalHandler={modalHandler}
+              />
+            );
           })}
       </div>
+      {modalState && modalChattingId && (
+        <ChattingListExitModal
+          chattingId={modalChattingId}
+          modalHandler={modalHandler}
+          axiosHandler={axiosHandler}
+        />
+      )}
     </>
   );
 };

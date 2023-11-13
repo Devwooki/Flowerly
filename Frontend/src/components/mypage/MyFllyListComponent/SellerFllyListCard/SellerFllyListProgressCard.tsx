@@ -2,7 +2,18 @@ import React from "react";
 import style from "./SellerFllyListProgressCard.module.css";
 import Image from "next/image";
 
-const SellerFllyListProgressCard = () => {
+interface Order {
+  fllyId: number;
+  orderName: string;
+  orderType: string;
+  deliveryPickupTime: string;
+  progress: string;
+}
+
+interface SellerFllyListProgressCardProps {
+  data: Order;
+}
+const SellerFllyListProgressCard: React.FC<SellerFllyListProgressCardProps> = ({ data }) => {
   return (
     <>
       <div className={style.cardBack}>
@@ -17,15 +28,15 @@ const SellerFllyListProgressCard = () => {
             <div className={style.OrderInfoBox}>
               <div className={style.OrderInfoBoxHarf}>
                 <div>주문자</div>
-                <div>김동민</div>
+                <div>{data.orderName}</div>
               </div>
               <div className={style.OrderInfoBoxHarf}>
                 <div>주문유형</div>
-                <div>배달</div>
+                <div>{data.orderType}</div>
               </div>
               <div className={style.OrderInfoBoxAll}>
                 <div>배송완료 일시</div>
-                <div>23.10.21. 18:00</div>
+                <div>{data.deliveryPickupTime}</div>
               </div>
             </div>
             <div className={style.OrderFooter}>
@@ -41,7 +52,7 @@ const SellerFllyListProgressCard = () => {
               height={16}
               alt="상태이미지"
             ></Image>
-            <span>배달중</span>
+            <span>{data.progress}</span>
           </div>
           <div className={style.cardFinshBtn}>완료하기</div>
         </div>

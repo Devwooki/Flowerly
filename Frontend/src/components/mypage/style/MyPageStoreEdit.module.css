@@ -45,22 +45,26 @@
   border-radius: 15px;
   background-color: rgb(229, 233, 234, 0.3);
   font-family: "NanumSquareNeoOTF-Rg";
-  border-color: white;
+  border: none;
 }
 
 .infoWithBtn {
+  /* width: calc(100% - 80px); */
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: calc(100% - 40px);
+  margin: 2px 15px;
 }
 
-.nextButton {
-  background-color: #c1e0df;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
-  border-radius: 10px;
-  border: 0px;
-  width: 120px;
-  height: 40px;
-  font-family: NanumSquareNeoOTF-Bd;
+.infoWithBtn input {
+  flex-grow: 1;
+  margin-right: 10px;
+}
+
+.infoWithBtn button {
+  flex-shrink: 0;
 }
 
 .confirmButton {
@@ -68,10 +72,23 @@
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
   border-radius: 5px;
   border: 0px;
-  width: 64px;
-  height: 30px;
+  width: 80px;
+  height: 40px;
   font-family: NanumSquareNeoOTF-Bd;
-  margin-left: 2px;
   color: white;
   font-size: 12px;
+
+  text-align: center;
+}
+
+.nextButton {
+  padding: 18px 25px;
+  width: calc(100% - 40px);
+  margin: 2px auto;
+  border-radius: 15px;
+  background-color: #c1e0df;
+  font-family: "Pretendard-Bold";
+  text-align: center;
+  border: none;
+  font-size: 14px;
 }
