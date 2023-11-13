@@ -283,31 +283,36 @@ public class FlowerService {
         HashMap<String, Long> endIdx = new HashMap<>();
         Set<String> names = new HashSet<>();
 
-//        names.add(flowerList.get(0).getScientificName());
-//        startIdx.put(flowerList.get(0).getScientificName(), flowerList.get(0).getFlowerCode());
-//        for(int i=0; i<flowerList.size(); i++) {
-//            Flower curFlower = flowerList.get(i);
-//            if(!names.contains(curFlower)) {
-//                endIdx.put(flowerList.get(i-1).getScientificName(), flowerList.get(i-1).getFlowerCode());
-//                names.add(curFlower.getScientificName());
-//                startIdx.put(curFlower.getScientificName(),curFlower.getFlowerCode());
-//            }
-//        }
-//        endIdx.put(flowerList.get(flowerList.size()-1).getFlowerName(), flowerList.get(flowerList.size()-1).getFlowerCode());
-//
-//
-//        Set<String> selected = new HashSet<>();
-//        Random random = new Random();
-//        for(String name: names) {
-//            if(mainDtoList.size() > 9) break;
-//            if(selected.contains(name)) continue;
-//            int temp = (int)(endIdx.get(name)-startIdx.get(name));
-//            Flower flower = flowerRepository.findById(
-//                    Long.valueOf(random.nextInt((int)(endIdx.get(name)-startIdx.get(name))))+startIdx.get(name))
-//                    .orElseThrow(() -> new CustomException(ErrorCode.FLOWER_NOT_FOUND));
-//            mainDtoList.add(MainDto.of(flower));
-//            selected.add(name);
-//        }
+        names.add(flowerList.get(0).getScientificName());
+        startIdx.put(flowerList.get(0).getScientificName(), flowerList.get(0).getFlowerCode());
+        for(int i=0; i<flowerList.size(); i++) {
+            Flower curFlower = flowerList.get(i);
+            if(!names.contains(curFlower.getScientificName())) {
+                endIdx.put(flowerList.get(i-1).getScientificName(), flowerList.get(i-1).getFlowerCode());
+                names.add(curFlower.getScientificName());
+                startIdx.put(curFlower.getScientificName(),curFlower.getFlowerCode());
+            }
+        }
+        endIdx.put(flowerList.get(flowerList.size()-1).getFlowerName(), flowerList.get(flowerList.size()-1).getFlowerCode());
+
+
+        Set<String> selected = new HashSet<>();
+        Random random = new Random();
+        for(String name: names) {
+            if(selected.contains(name)) continue;
+            Flower flower = flowerRepository.findById(
+                    Long.valueOf(random.nextInt((int)(endIdx.get(name)-startIdx.get(name))+1))+startIdx.get(name))
+                    .orElseThrow(() -> new CustomException(ErrorCode.FLOWER_NOT_FOUND));
+            mainDtoList.add(MainDto.of(flower));
+            selected.add(name);
+        }
+
+        Collections.sort(mainDtoList, new Comparator<MainDto>() {
+            @Override
+            public int compare(MainDto o1, MainDto o2) {
+                return o1.getFlowerCode() < o2.getFlowerCode()? -1 : 1;
+            }
+        });
 
         return mainDtoList;
     }
