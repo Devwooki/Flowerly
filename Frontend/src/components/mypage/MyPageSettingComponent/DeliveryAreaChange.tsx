@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import style from "@/components/mypage/MyPageSettingComponent/DeliveryAreaChange.module.css";
 import { useRecoilState } from "recoil";
+import Image from "next/image";
 
 interface sidoDataType {
   sidoCode: number;
@@ -187,20 +188,22 @@ const DeliveryAreaChange = () => {
 
   return (
     <>
-      <div>
+      <div className={style.back}>
         <div className={style.container}>
-          <h3>배달 가능 지역 선택</h3>
+          <h3>배달 가능 지역 수정</h3>
           <div>
             <div className={style.deliveryRegionList}>
               {deliveryRegionList.map((address, index) => (
                 <div key={index} className={style.deliveryRegionItem}>
                   {address}
-                  <button
+                  <Image
+                    alt="삭제"
+                    src="/img/btn/gray-delete-btn.png"
+                    width={12}
+                    height={12}
                     className={style.removeButton}
                     onClick={() => handleRemoveDeliveryRegion(address)}
-                  >
-                    X
-                  </button>
+                  />
                 </div>
               ))}
             </div>
