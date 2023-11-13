@@ -8,16 +8,17 @@ import { AxiosError } from "axios";
 import { tokenHttp } from "@/api/tokenHttp";
 import Disc from "@/components/list/listBuyer/fllylistComponent/Disc";
 import ShopList from "@/components/list/listBuyer/fllylistComponent/ShopList";
+import Image from "next/image";
+import { useRouter } from "next/router";
+import { RouterContext } from "next/dist/shared/lib/router-context.shared-runtime";
 
 const FllyList = () => {
   const param = useParams();
-
+  const router = useRouter();
   const { data, isLoading, isFetching, isError } = useQuery<fllyList, AxiosError>(
     ["FllyListQuery"],
     async () => {
       const res = await tokenHttp.get(`/buyer/flist/${param.fllyId}`);
-      console.log("res", res);
-
       if (res.headers.authorization) {
         console.log("accessToken", res.headers.authorization);
         localStorage.setItem("accessToken", res.headers.authorization);
@@ -47,13 +48,24 @@ const FllyList = () => {
   return (
     <motion.div className={style.ListBuyerBack}>
       <div className={style.ListBuyerHeader}>
-        <div className={style.headerTitle}>플리스트</div>
+        <div className={style.headerTitle}>
+          <Image
+            src="/img/btn/left-btn.png"
+            alt="뒤로가기"
+            width={13}
+            height={20}
+            onClick={() => {
+              router.back();
+            }}
+          />
+          <div>플리스트</div>
+        </div>
       </div>
       <div className={style.ListBuyerMain}>
         {data && (
           <div className={style.fllyListMain}>
             <Disc card={data.flly} />
-            <ShopList shopList={data.stores.content} />
+            <ShopList fllyId={data.flly.fllyId} />
           </div>
         )}
       </div>

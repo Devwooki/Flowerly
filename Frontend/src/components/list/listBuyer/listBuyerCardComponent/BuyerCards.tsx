@@ -236,7 +236,11 @@ const BuyerCards = ({ card }: BuyerCardsProps) => {
             </div>
             <div className={style.infoTable}>
               <div className={style.infoTitle}>꽃집</div>
-              <div className={`${style.flowerShop}`}>{card.storeName}</div>
+              <div className={`${style.flowerShop}`}>
+                {card.storeName === "조율" || card.storeName === "입찰"
+                  ? card.storeName + "중"
+                  : card.storeName}
+              </div>
             </div>
           </div>
         </div>

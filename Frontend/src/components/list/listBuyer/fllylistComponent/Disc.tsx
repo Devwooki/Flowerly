@@ -17,7 +17,6 @@ const Disc = ({ card }: DiscProps) => {
   };
 
   useEffect(() => {
-    console.log("DISC", card);
     setSelectedColor([card.color1, card.color2, card.color3].filter((flower) => flower !== null)),
       setSelectedFlower(
         [card.flower1, card.flower2, card.flower3].filter((flower) => flower !== null),
