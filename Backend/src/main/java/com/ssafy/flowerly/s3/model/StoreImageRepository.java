@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface StoreImageRepository extends JpaRepository<StoreImage, Long> {
-    List<StoreImage> findByStoreInfoIdIn(int[] storeImageIDs);
+    List<StoreImage> findBySeller_MemberId(Long memberId);
 }
