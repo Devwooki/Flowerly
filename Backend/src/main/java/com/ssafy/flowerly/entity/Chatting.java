@@ -1,5 +1,6 @@
 package com.ssafy.flowerly.entity;
 
+import com.ssafy.flowerly.chatting.dto.ChattingDto;
 import com.ssafy.flowerly.entity.common.BaseCreatedTimeEntity;
 import com.ssafy.flowerly.entity.common.BaseTimeEntity;
 import com.ssafy.flowerly.member.MemberRole;
@@ -45,10 +46,10 @@ public class Chatting extends BaseCreatedTimeEntity {
     private LocalDateTime lastChattingTime;
 
     @Column(nullable = false, columnDefinition = "boolean default false")
-    private boolean isRemovedConsumer;
+    private Boolean isRemovedConsumer;
 
     @Column(nullable = false, columnDefinition = "boolean default false")
-    private boolean isRemovedSeller;
+    private Boolean isRemovedSeller;
 
     @Column(nullable = false)
     @ColumnDefault("0")
@@ -84,5 +85,18 @@ public class Chatting extends BaseCreatedTimeEntity {
 
     public void updateUnreadSeller() {
         this.unreadCntSeller++;
+    }
+
+    public Chatting toEntity(Flly flly, FllyParticipation fllyParticipation, Member consumer, Member seller) {
+        return Chatting.builder()
+                .flly(flly)
+                .fllyParticipation(fllyParticipation)
+                .consumer(consumer)
+                .seller(seller)
+                .isRemovedConsumer(false)
+                .isRemovedSeller(false)
+                .unreadCntConsumer(0)
+                .unreadCntSeller(0)
+                .build();
     }
 }

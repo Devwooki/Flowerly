@@ -25,6 +25,17 @@ public class ChattingController {
 
     private final ChattingService chattingService;
 
+    @PostMapping
+    public CustomResponse createChatting(HttpServletRequest request, @RequestBody ChattingDto.Request chattingRequestDto) {
+        Long memberId = (Long) request.getAttribute("memberId");
+        chattingRequestDto.setConsumerId(memberId);
+
+        Map<String, Object> responseMap = chattingService.createChatting(chattingRequestDto);
+
+        log.info("채팅방 생성");
+        return new DataResponse<>(200, "채팅방 생성 성공", responseMap);
+    }
+
     /**
      * 채팅방 목록 조회 API
      * @param request 로그인한 유저의 id 추출
