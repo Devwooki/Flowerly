@@ -1,0 +1,40 @@
+.mainBox {
+  box-sizing: border-box;
+  min-width: 280px;
+  max-width: 280px;
+  height: 130px;
+  background-color: #ffffff;
+  border: 1px solid var(--moregray);
+  border-radius: 5px;
+  padding: 10px 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.title {
+  width: 100%;
+  margin: 5px 0;
+  font-family: "NanumSquareNeoOTF-Bd";
+  text-align: center;
+}
+
+.infoDiv {
+  width: 100%;
+}
+
+.priceDiv {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+  font-family: "NanumSquareNeoOTF-Rg";
+}
+
+.divideDiv {
+  text-align: center;
+  border-bottom: 1px solid var(--moregray);
+  padding: 5px 0;
+  margin-bottom: 10px;
+  font-family: "NanumSquareNeoOTF-Rg";
+}
