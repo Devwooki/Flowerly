@@ -183,14 +183,13 @@ const BuyerCards = ({ card }: BuyerCardsProps) => {
         <div className={style.cardInfo}>
           <Image src={card.imageUrl} alt="꽃 이미지" width={150} height={150} />
           <div className={style.InfoText}>
-            <div className={style.infoTitle}>상품정보</div>
             <div className={style.infoTable}>
               <div className={style.infoTitle}>상황</div>
-              <div className={style.info}>{card.situation}</div>
+              <div className={style.info}>{card.situation === null ? "없음" : card.situation}</div>
             </div>
             <div className={style.infoTable}>
               <div className={style.infoTitle}>대상</div>
-              <div className={style.info}>{card.target}</div>
+              <div className={style.info}>{card.target === null ? "없음" : card.target}</div>
             </div>
             <div className={style.infoColorTable}>
               <div>주요색상</div>
@@ -221,7 +220,7 @@ const BuyerCards = ({ card }: BuyerCardsProps) => {
             </div>
             <div className={style.infoTable}>
               <div className={style.infoTitle}>꽃집</div>
-              <div className={`${style.flowerShop}`}>{card.consumer}</div>
+              <div className={`${style.flowerShop}`}>{card.storeName}</div>
             </div>
           </div>
         </div>

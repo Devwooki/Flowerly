@@ -7,10 +7,6 @@ type ShopImgProps = {
 };
 
 const ShopImg = ({ shopImg }: ShopImgProps) => {
-  useEffect(() => {
-    console.log(shopImg);
-  }, [shopImg]);
-
   return (
     <div className={style.shopImgMain}>
       <div className={style.headerTitle}>대표사진</div>

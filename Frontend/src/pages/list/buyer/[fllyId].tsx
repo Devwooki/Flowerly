@@ -16,6 +16,8 @@ const FllyList = () => {
     ["FllyListQuery"],
     async () => {
       const res = await tokenHttp.get(`/buyer/flist/${param.fllyId}`);
+      console.log("res", res);
+
       if (res.headers.authorization) {
         console.log("accessToken", res.headers.authorization);
         localStorage.setItem("accessToken", res.headers.authorization);
@@ -39,7 +41,7 @@ const FllyList = () => {
     <div>로딩중</div>;
   }
   if (isError) {
-    <div>로딩중</div>;
+    <div>에러났다 임마</div>;
   }
 
   return (

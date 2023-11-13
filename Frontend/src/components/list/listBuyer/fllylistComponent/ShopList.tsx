@@ -12,12 +12,16 @@ const ShopList = ({ shopList }: ShopListProps) => {
 
   return (
     <div className={style.shopListMain}>
-      {shopList.map((shopInfo) => (
-        <ShopCard
-          shopInfo={shopInfo}
-          key={shopInfo.participant.fllyParticipationId + shopInfo.storeInfoDto.storeInfoId}
-        />
-      ))}
+      {shopList.length > 0 ? (
+        shopList.map((shopInfo) => (
+          <ShopCard
+            shopInfo={shopInfo}
+            key={shopInfo.participant.fllyParticipationId + shopInfo.storeInfoDto.storeInfoId}
+          />
+        ))
+      ) : (
+        <div>텅</div>
+      )}
     </div>
   );
 };
