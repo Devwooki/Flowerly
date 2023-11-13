@@ -138,6 +138,7 @@ const Step2 = () => {
             sidoCode: selectedSido.sidoCode,
             sigunguCode: selectedSigungu.sigunguCode,
             dongCode: selectedDongObj!.dongCode,
+            fullAddress: fullAddress,
           },
         ]);
       }

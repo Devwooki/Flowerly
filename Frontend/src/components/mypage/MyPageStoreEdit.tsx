@@ -40,6 +40,10 @@ const MyPageStoreEdit = () => {
     setEditData({ ...editData, [name]: value });
   };
 
+  const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDetailAddress(detailAddress);
+  };
+
   const isAllDataFilled = () => {
     return (
       editData.storeName &&
@@ -265,7 +269,7 @@ const MyPageStoreEdit = () => {
                 type="text"
                 name="detailAddress"
                 value={addressPart ? addressPart[1] : "상세주소 없음"}
-                onChange={(e) => setDetailAddress(e.target.value)}
+                onChange={handleAddressChange}
                 className={style.storeInfoContent}
               />
             </div>
