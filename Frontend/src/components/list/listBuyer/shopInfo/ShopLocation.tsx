@@ -36,7 +36,7 @@ const ShopLocation = ({ ShopInfoDetail }: ShopLocationProps) => {
             },
             content: data[i].place_name,
           });
-          bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
+          bounds.extend(new kakao.maps.LatLng(parseFloat(data[i].y), parseFloat(data[i].x)));
         }
         setMarkers(markers);
         [];
