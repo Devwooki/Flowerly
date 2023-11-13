@@ -2,11 +2,16 @@ package com.ssafy.flowerly.entity;
 
 import com.ssafy.flowerly.entity.common.BaseCreatedTimeEntity;
 import com.ssafy.flowerly.entity.common.BaseTimeEntity;
+import com.ssafy.flowerly.member.MemberRole;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -39,11 +44,45 @@ public class Chatting extends BaseCreatedTimeEntity {
     private String lastChattingMessage;
     private LocalDateTime lastChattingTime;
 
-    @Column(nullable = false)
-    private boolean isRemoved;
+    @Column(nullable = false, columnDefinition = "boolean default false")
+    private boolean isRemovedConsumer;
 
-    public void updateChatting(String chattingMessage, LocalDateTime chattingTime) {
+    @Column(nullable = false, columnDefinition = "boolean default false")
+    private boolean isRemovedSeller;
+
+    @Column(nullable = false)
+    @ColumnDefault("0")
+    private Integer unreadCntConsumer;
+
+    @Column(nullable = false)
+    @ColumnDefault("0")
+    private Integer unreadCntSeller;
+
+    public void updateChatting(String chattingMessage, Date chattingTime) {
+        ZonedDateTime zdt = chattingTime.toInstant().atZone(ZoneId.of("Asia/Seoul"));
+
+        this.lastChattingTime = zdt.toLocalDateTime();
         this.lastChattingMessage = chattingMessage;
-        this.lastChattingTime = chattingTime;
+    }
+
+    public void deleteChatting(MemberRole role) {
+        if(role.equals(MemberRole.USER)) this.isRemovedConsumer = true;
+        else if(role.equals(MemberRole.SELLER)) this.isRemovedSeller = true;
+    }
+
+    public void readChatting(Member member) {
+        if(member.getRole().equals(MemberRole.USER)) {
+            this.unreadCntConsumer = 0;
+        } else if(member.getRole().equals(MemberRole.SELLER)) {
+            this.unreadCntSeller = 0;
+        }
+    }
+
+    public void updateUnreadCntConsumer() {
+        this.unreadCntConsumer++;
+    }
+
+    public void updateUnreadSeller() {
+        this.unreadCntSeller++;
     }
 }

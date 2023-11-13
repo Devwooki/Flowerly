@@ -1,0 +1,67 @@
+import React from "react";
+import style from "./style/MyPageBuyer.module.css";
+import Image from "next/image";
+import { tokenHttp } from "@/api/tokenHttp";
+import Router from "next/router";
+import { useState } from "react";
+
+const MyPageBuyer = () => {
+  const [newNickName, setNewNickName] = useState("");
+
+  const modifyNickName = () => {
+    tokenHttp
+      .put("/mypage/nickname", newNickName)
+      .then((res) => {
+        if (res.data.code === 200) {
+          setNewNickName(res.data.data);
+
+          if (res.headers.authorization) {
+            localStorage.setItem("accessToken", res.headers.authorization);
+          }
+        }
+      })
+      .catch((err) => {
+        if (err.response.status === 403) {
+          Router.push("/fllylogin");
+        }
+      });
+  };
+
+  return (
+    <>
+      <div className={style.myInfoBack}>
+        <div className={style.myInfoHeader}>
+          <Image
+            src="/img/btn/left-btn.png"
+            alt="뒤로가기"
+            width={13}
+            height={20}
+            onClick={() => {
+              Router.back();
+            }}
+          />
+          <div className={style.headerTitle}>내 정보 수정</div>
+          <div className={style.deleteBtn}>탈퇴하기</div>
+        </div>
+        <div className={style.myInfoMain}>
+          <div className={style.imgLogo}>
+            <Image src="/img/logo/temp_logo.png" alt="logo" width={200} height={200} />
+          </div>
+          <input
+            type="text"
+            name="nickName"
+            value={newNickName}
+            onChange={(e) => setNewNickName(e.target.value)}
+            className={style.nickNameInput}
+          />
+
+          <button className={style.nickNameChangeBtn} onClick={modifyNickName}>
+            수정하기
+          </button>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default MyPageBuyer;

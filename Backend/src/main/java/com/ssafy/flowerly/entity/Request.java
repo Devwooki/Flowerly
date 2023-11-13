@@ -51,6 +51,9 @@ public class Request extends BaseCreatedTimeEntity {
     @Column(nullable = false)
     private Integer price;
 
+    @Column(nullable = false, columnDefinition = "boolean default false")
+    private Boolean isPaid;
+
 
 //    public OrderSelectSimpleDto toOrderSelectSimpleDto(){
 //        DateTimeFormatter Timeformatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");

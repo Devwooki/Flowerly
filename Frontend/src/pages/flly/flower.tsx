@@ -38,17 +38,17 @@ const FllyFlower = () => {
       }
       )
       .then((response) => {
+        console.log(response);
         console.log(response.data);
         if (response.data.code === 200) {
           setFlowers(response.data.data.flowers);
           setFlowersColor(response.data.data.flowersColor);
           setFlowersMeaning(response.data.data.flowersMeaning);
-          localStorage.setItem("accessToken", response.headers.Authorization);
+          if(response.headers.authorization) localStorage.setItem("accessToken", response.headers.authorization);
         }
       })
       .catch((error) => {
         if (error.response.status === 403) {
-          ToastErrorMessage("로그인 만료되어 로그인화면으로 이동합니다.");
           router.push("/fllylogin");
         } else ToastErrorMessage("오류가 발생했습니다.");
       });
@@ -66,7 +66,7 @@ const FllyFlower = () => {
 
   const subValue = (value:flowerCardType) => {
     const updatedSelected = selected.filter(item => item != value.flowerCode);
-    const updatedFlowers = selectedFlowers.filter(item => item !== value);
+    const updatedFlowers = selectedFlowers.filter(item => item.flowerCode !== value.flowerCode);
     setSelected(updatedSelected);
     setSelcetedFlowers(updatedFlowers);
   }

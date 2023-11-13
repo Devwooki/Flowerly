@@ -24,19 +24,36 @@
   width: 100%;
   margin: 20px 0px;
 }
+@media screen and (min-width: 380px) {
+  .MypageSidBox > div {
+    width: calc(100% - 90px);
+    background-color: rgba(210, 210, 210, 0.3);
+    display: flex;
+    justify-content: space-between;
+    height: 50px;
+    line-height: 50px;
+    padding: 0px 20px;
+    margin: 0px auto;
+    font-size: 20px;
+    border-radius: 10px;
+    color: var(--dark);
+  }
+}
 
-.MypageSidBox > div {
-  width: calc(100% - 90px);
-  background-color: rgba(210, 210, 210, 0.3);
-  display: flex;
-  justify-content: space-between;
-  height: 50px;
-  line-height: 50px;
-  padding: 0px 20px;
-  margin: 0px auto;
-  font-size: 20px;
-  border-radius: 10px;
-  color: var(--dark);
+@media screen and (max-width: 379px) {
+  .MypageSidBox > div {
+    width: calc(100% - 90px);
+    background-color: rgba(210, 210, 210, 0.3);
+    display: flex;
+    justify-content: space-between;
+    height: 45px;
+    line-height: 45px;
+    padding: 0px 20px;
+    margin: 0px auto;
+    font-size: 16px;
+    border-radius: 10px;
+    color: var(--dark);
+  }
 }
 
 .StoreImgBox {

@@ -25,13 +25,13 @@ public class BuyerController {
     @GetMapping("/my-flly")
     public DataResponse<?> getMyFlly(HttpServletRequest request,
                                      @PageableDefault(size = 6) Pageable pageable){
-        Long memberId = 1L;
+        Long memberId = (Long) request.getAttribute("memberId");
         return new DataResponse<>(HttpStatus.OK.value(), "진행중인 flly를 반환합니다.", buyerService.getMyFlly(pageable, memberId));
     }
     @GetMapping("/flist/{fllyId}")
     public DataResponse<?> getFilst(HttpServletRequest request,
                                     @PathVariable Long fllyId){
-        Long memberId = request.getDateHeader("memberId");
+        Long memberId = (Long) request.getAttribute("memberId");
         return new DataResponse<>(HttpStatus.OK.value(), "fllyId :  "+ fllyId+" 의 플리스트를 조회합니다.", buyerService.getFlist(Pageable.ofSize(6), fllyId));
     }
 
@@ -40,7 +40,7 @@ public class BuyerController {
                                     @PageableDefault(size = 6) Pageable pageable,
                                     @PathVariable Long fllyId){
 
-        Long memberId = request.getDateHeader("memberId");
+        Long memberId = (Long) request.getAttribute("memberId");
         Map<String, Object> responseData = new HashMap<>();
         responseData.put("stores", buyerService.getParticipants(pageable, fllyId));
         return new DataResponse<>(HttpStatus.OK.value(), fllyId+" 의 "+ pageable.getOffset() + "페이지 플리스트 조회합니다.", responseData);

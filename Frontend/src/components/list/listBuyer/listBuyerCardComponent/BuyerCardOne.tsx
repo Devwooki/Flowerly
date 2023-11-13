@@ -7,6 +7,7 @@ import { useSetRecoilState } from "recoil";
 import { FllylistDiscRecoil } from "@/recoil/kdmRecoil";
 import Cancel from "./Cancel";
 import { ToastErrorMessage } from "@/model/toastMessageJHM";
+import { AnimatePresence, motion } from "framer-motion";
 
 type BuyerCardOneProps = {
   card: BuyerCard;
@@ -23,10 +24,7 @@ const BuyerCardOne = ({ card }: BuyerCardOneProps) => {
   const setCardProps = useSetRecoilState(FllylistDiscRecoil);
   const [selectedColor, setSelectedColor] = useState<string[]>([]);
 
-  useEffect(
-    () => setSelectedColor([`${card.color1}`, `${card.color2}`, `${card.color3}`]),
-    [selectedColor, card],
-  );
+  useEffect(() => setSelectedColor([`${card.color1}`, `${card.color2}`, `${card.color3}`]), [card]);
 
   const buttomBtnCmd = (stepNumber: number) => {
     switch (stepNumber) {
@@ -37,7 +35,7 @@ const BuyerCardOne = ({ card }: BuyerCardOneProps) => {
             <button className={style.fllistBtn} onClick={() => fllistBtn(card.fllyId)}>
               플리스트
             </button>
-            <button className={style.cancelBtn} onClick={() => handleCancel()}>
+            <button className={style.cancelBtn} onClick={handleCancel}>
               취소하기
             </button>
           </div>
@@ -168,72 +166,71 @@ const BuyerCardOne = ({ card }: BuyerCardOneProps) => {
   }, [isClient]);
 
   return (
-    <div className={style.cardBox}>
-      <div style={{ height: "40px" }}>
-        <Image
-          src="/img/icon/currentFlower.png"
-          alt="현재상태"
-          width={45}
-          height={45}
-          className={style.currentFlower}
-          style={{ marginLeft: posFlowerLeft(stepNumber) }}
-        />
-      </div>
-      <ProgressBar currentStep={stepNumber} />
-      <div className={style.cardInfo}>
-        <div className={style.cardImgBox}>
+    <>
+      <motion.div className={style.cardBox} layoutId={`cardBox-${card.fllyId}`}>
+        <div style={{ height: "40px" }}>
           <Image
-            src="https://neighbrew.s3.ap-northeast-2.amazonaws.com/FlOWER/f82c544a-7f65-4879-9293-76ceaba5a6d2069_pink_peony.jpg.jpg"
-            alt="꽃 이미지"
-            fill
+            src="/img/icon/currentFlower.png"
+            alt="현재상태"
+            width={45}
+            height={45}
+            className={style.currentFlower}
+            style={{ marginLeft: posFlowerLeft(stepNumber) }}
           />
         </div>
-        <div className={style.infoText}>
-          <div className={style.infoTitle}>상품정보</div>
-          <div className={style.infoTable}>
-            <div className={style.infoTitle}>상황</div>
-            <div className={style.info}>{card.situation}</div>
+        <ProgressBar currentStep={stepNumber} />
+        <div className={style.cardInfo}>
+          <div className={style.cardImgBox}>
+            <Image src={card.imageUrl} alt="꽃 이미지" fill />
           </div>
-          <div className={style.infoTable}>
-            <div className={style.infoTitle}>대상</div>
-            <div className={style.info}>{card.target}</div>
-          </div>
-          <div className={style.infoColorTable}>
-            <div>주요색상</div>
-            {selectedColor.map((color, idx) => {
-              const rgbColor = mapColorNameToRGB(color);
-              return (
-                <div
-                  key={idx}
-                  className={`${style.colorInfo} ${style.colorfirst}`}
-                  style={{
-                    color: isClient && windowWidth <= 426 ? rgbColor : "black",
-                    backgroundColor: isClient && windowWidth <= 426 ? rgbColor : "var(--moregray)",
-                    // backgroundColor: isClient && windowWidth <= 426 ? "" : "var(--moregray)",
-                  }}
-                >
-                  {windowWidth <= 426 ? "" : mapFlowerText(color)}
-                  {/* {windowWidth <= 426 ? "" : ""} */}
-                </div>
-                // <Image
-                //   src={`/img/flowerColor/${mapFlowerColor(color)}.png`}
-                //   alt="꽃 색상"
-                //   width={40}
-                //   height={40}
-                //   key={idx}
-                // />
-              );
-            })}
-          </div>
-          <div className={style.infoTable}>
-            <div className={style.infoTitle}>꽃집</div>
-            <div className={`${style.flowerShop}`}>{card.consumer}</div>
+          <div className={style.infoText}>
+            <div className={style.infoTitle}>상품정보</div>
+            <div className={style.infoTable}>
+              <div className={style.infoTitle}>상황</div>
+              <div className={style.info}>{card.situation === null ? "없음" : card.situation}</div>
+            </div>
+            <div className={style.infoTable}>
+              <div className={style.infoTitle}>대상</div>
+              <div className={style.info}>{card.target === null ? "없음" : card.target}</div>
+            </div>
+            <div className={style.infoColorTable}>
+              <div>주요색상</div>
+              {selectedColor.map((color, idx) => {
+                const rgbColor = mapColorNameToRGB(color);
+                return (
+                  <div
+                    key={idx}
+                    className={`${style.colorInfo} ${style.colorfirst}`}
+                    style={{
+                      color: isClient && windowWidth <= 426 ? rgbColor : "black",
+                      backgroundColor:
+                        isClient && windowWidth <= 426 ? rgbColor : "var(--moregray)",
+                      // backgroundColor: isClient && windowWidth <= 426 ? "" : "var(--moregray)",
+                    }}
+                  >
+                    {windowWidth <= 426 ? "" : mapFlowerText(color)}
+                    {/* {windowWidth <= 426 ? "" : ""} */}
+                  </div>
+                  // <Image
+                  //   src={`/img/flowerColor/${mapFlowerColor(color)}.png`}
+                  //   alt="꽃 색상"
+                  //   width={40}
+                  //   height={40}
+                  //   key={idx}
+                  // />
+                );
+              })}
+            </div>
+            <div className={style.infoTable}>
+              <div className={style.infoTitle}>꽃집</div>
+              <div className={`${style.flowerShop}`}>{card.storeName}</div>
+            </div>
           </div>
         </div>
-      </div>
-      {buttomBtnCmd(stepNumber)}
-      {cancelModal && <Cancel onCancel={handleCancel} />}
-    </div>
+        {buttomBtnCmd(stepNumber)}
+      </motion.div>
+      <AnimatePresence>{cancelModal && <Cancel onCancel={handleCancel} />}</AnimatePresence>
+    </>
   );
 };
 

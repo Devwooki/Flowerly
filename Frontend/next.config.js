@@ -11,7 +11,14 @@ module.exports = {
     // ANOTHER_VARIABLE: process.env.ANOTHER_VARIABLE,
   },
   images: {
-    domains: ["neighbrew.s3.ap-northeast-2.amazonaws.com", "localhost:3000", "oaidalleapiprodscus.blob.core.windows.net"],
+    domains: [
+      "neighbrew.s3.ap-northeast-2.amazonaws.com",
+      "localhost:3000",
+      "oaidalleapiprodscus.blob.core.windows.net",
+      "no1flower.godohosting.com",
+      "dapi.kakao.com",
+      "i.pinimg.com",
+    ],
   },
   // reactStrictMode: false,
 };

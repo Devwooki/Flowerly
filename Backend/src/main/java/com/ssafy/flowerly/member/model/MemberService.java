@@ -1,4 +1,5 @@
 package com.ssafy.flowerly.member.model;
+import com.ssafy.flowerly.FCM.FCMRepository;
 import com.ssafy.flowerly.address.repository.DongRepository;
 import com.ssafy.flowerly.address.repository.SidoRepository;
 import com.ssafy.flowerly.address.repository.SigunguRepository;
@@ -35,7 +36,7 @@ public class MemberService {
     private final SigunguRepository sigunguRepository;
     private final DongRepository dongRepository;
     private final StoreDeliveryRegionRepository storeDeliveryRegionRepository;
-    private final JWTService jwtService;
+    private final FCMRepository fcmRepository;
 
 
     public MemberDto getMemberInfo(Long memberId) {
@@ -157,6 +158,14 @@ public class MemberService {
             return storeInfoDto;
         }
         return null;
+    }
+
+    @Transactional
+    public void addFCMToken(Long memberId, String FCMToken){
+        Member findMember = memberRepository.findByMemberIdActivate(memberId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_MEMBER));
+
+        fcmRepository.save(new FCMToken(findMember, FCMToken));
     }
 
     private StoreInfoDto extractStoreInfoDto(List<Object[]> object){

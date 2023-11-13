@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import style from "./style/ChattingRoom.module.css";
 import { useRouter } from "next/router";
-import axios from "axios";
 import { useRecoilValue } from "recoil";
 
 import SockJS from "sockjs-client";
-import { Client } from "@stomp/stompjs";
+import { Client, CompatClient, Stomp } from "@stomp/stompjs";
 
 import { useInView } from "react-intersection-observer";
 
@@ -19,9 +18,10 @@ import DeliveryOrderModal from "../modal/DeliveryOrderModal";
 import RequestModal from "../modal/RequestModal";
 import ImageModal from "../modal/ImageModal";
 
-import { ToastErrorMessage } from "@/model/toastMessageJHM";
 import { memberInfoState } from "@/recoil/memberInfoRecoil";
 import Image from "next/image";
+
+import { tokenHttp } from "@/api/chattingTokenHttp";
 
 type ChattingRoomProps = {
   chattingId: number;
@@ -44,7 +44,7 @@ type ChattingMsg = {
 };
 
 const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
-  const [stompClient, setStompClient] = useState<Client | null>(null);
+  const stompClient = useRef<CompatClient | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const router = useRouter();
   const messageEndRef = useRef<HTMLDivElement | null>(null);
@@ -63,20 +63,9 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
   const [lastRequestMsgId, setLastRequestMsgId] = useState<string | null>(null);
 
   const axiosHandler = async () => {
-    const BaseUrl = `https://flower-ly.co.kr/api/chatting/${chattingId}`;
-    const accessToken =
-      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcwODY4MzQ4NiwibWVtYmVySWQiOjF9.wU3IYYWErRie5E5s7oIRYMliboyumfMrCZILaKnwlxXxJXCW1kHZ5fJ-mKvsAwYuMV4-UT0F4qoUX9rVcrTiNw";
-    // const accessToken =
-    //   "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcwODc1MjUwMywibWVtYmVySWQiOjJ9.o_v_EVuucqlh2NPfHioqquPjm3U-JTP-7ZP2xJkxIxMsPBMhxnw0DL-Avnh2ryBa_J6JYS7YdCc5dZuMS_9IUw";
-    await axios
-      .get(BaseUrl, {
-        headers: {
-          Authorization: "Bearer " + accessToken,
-        },
-        withCredentials: true,
-      })
+    tokenHttp
+      .get(`/chatting/${chattingId}`)
       .then((response) => {
-        console.log(response.data);
         if (response.data.code === 200) {
           const responseData = response.data.data;
           setChattingMsgs({
@@ -86,94 +75,88 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
             lastId: responseData.lastId,
             messages: addDateMsg(responseData.messages),
           });
+          //요거 필수!! (엑세스 토큰 만료로 재발급 받았다면 바꿔줘!! )
+          if (response.headers.authorization) {
+            localStorage.setItem("accessToken", response.headers.authorization);
+          }
         }
       })
-      .catch((error) => {
-        if (error.response.status === 403) {
-          console.log("잠이나 자자");
+      .catch((err) => {
+        if (err.response.status === 403) {
+          router.push("/fllylogin");
         }
-        ToastErrorMessage("서버 에러 발생!! 초비상!!!");
       });
-
-    // await axios.get(`https://flower-ly.co.kr/api/chatting/${chattingId}`).then((response) => {
-    //   const responseData = response.data.data;
-    //   setChattingMsgs({
-    //     chattingId: responseData.chattingId,
-    //     opponentMemberId: responseData.opponentMemberId,
-    //     opponentName: responseData.opponentName,
-    //     lastId: responseData.lastId,
-    //     messages: addDateMsg(responseData.messages),
-    //   });
-    // });
   };
 
   useEffect(() => {
-    // // console.log("첫 렌더링");
+    // console.log("첫 렌더링");
 
-    // // SockJS와 STOMP 설정
-    // // const socket = new SockJS("http://localhost:6090/stomp-chat"); // 로컬 테스트용
-    // const socket = new SockJS("https://flower-ly.co.kr/stomp-chat"); // 배포용
-    // const client = new Client({
-    //   webSocketFactory: () => socket,
-    // });
+    // const accessToken = localStorage.getItem("accessToken");
+    // const accessToken =
+    //   "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcwODY4MzQ4NiwibWVtYmVySWQiOjF9.wU3IYYWErRie5E5s7oIRYMliboyumfMrCZILaKnwlxXxJXCW1kHZ5fJ-mKvsAwYuMV4-UT0F4qoUX9rVcrTiNw";
+    const accessToken =
+      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcwODc1MjUwMywibWVtYmVySWQiOjJ9.o_v_EVuucqlh2NPfHioqquPjm3U-JTP-7ZP2xJkxIxMsPBMhxnw0DL-Avnh2ryBa_J6JYS7YdCc5dZuMS_9IUw";
 
-    // client.onConnect = () => {
-    //   axiosHandler();
+    // SockJS와 STOMP 설정
+    // const socket = new SockJS(`http://localhost:6090/stomp-chat`); // 로컬 테스트용
+    const socket = new SockJS("https://flower-ly.co.kr/stomp-chat"); // 배포용
 
-    //   console.log(chattingId, "Connected");
-    //   // 특정 채팅방의 메세지를 구독
-    //   client.subscribe(`/sub/message/${chattingId}`, (message) => {
-    //     // console.log(message.body);
-    //     const newMsgJson = JSON.parse(message.body);
-    //     const newMsg = {
-    //       messageId: "",
-    //       memberId: newMsgJson.memberId,
-    //       type: newMsgJson.type,
-    //       content: newMsgJson.content,
-    //       sendTime: String(new Date()),
-    //     };
+    stompClient.current = Stomp.over(socket);
+    stompClient.current.connect(
+      {
+        Authorization: accessToken,
+        chattingId: chattingId,
+      },
+      () => {
+        axiosHandler();
 
-    //     setChattingMsgs((prevState) => {
-    //       if (!prevState) {
-    //         return {
-    //           chattingId: 0,
-    //           opponentMemberId: 0,
-    //           lastId: "",
-    //           opponentName: "",
-    //           messages: [newMsg],
-    //         };
-    //       }
+        // 특정 채팅방의 메세지를 구독
+        stompClient.current?.subscribe(`/sub/message/${chattingId}`, (message) => {
+          const newMsgJson = JSON.parse(message.body);
+          const newMsg = {
+            messageId: "",
+            memberId: newMsgJson.memberId,
+            type: newMsgJson.type,
+            content: newMsgJson.content,
+            sendTime: String(new Date()),
+          };
 
-    //       return {
-    //         ...prevState,
-    //         messages: addDateMsg([...prevState.messages, newMsg]),
-    //       };
-    //     });
-    //   });
-    // };
+          setChattingMsgs((prevState) => {
+            if (!prevState) {
+              return {
+                chattingId: 0,
+                opponentMemberId: 0,
+                lastId: "",
+                opponentName: "",
+                messages: [newMsg],
+              };
+            }
 
-    // client.onStompError = (error) => {
-    //   console.error("STOMP Error:", error);
-    // };
+            return {
+              ...prevState,
+              messages: addDateMsg([...prevState.messages, newMsg]),
+            };
+          });
+        });
+      },
+    );
 
-    // client.onDisconnect = () => {
-    //   console.log("Disconnected");
-    // };
+    setInitialLoading(false);
+    scrollDown();
 
-    // // 연결 시작
-    // client.activate();
-    // setStompClient(client);
-
-    // setInitialLoading(false);
-    // scrollDown();
-
-    // // 컴포넌트 unmount 시 연결 종료
-    // return () => {
-    //   if (client.connected) {
-    //     client.deactivate();
-    //   }
-    // };
-    axiosHandler();
+    // 컴포넌트 unmount 시 연결 종료
+    return () => {
+      if (stompClient.current) {
+        stompClient.current.disconnect(
+          () => {
+            console.log("Disconnected");
+          },
+          {
+            Authorization: accessToken,
+          },
+        );
+      }
+    };
   }, []);
 
   useEffect(() => {
@@ -182,17 +165,27 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
       setInfiniteScrolling(true);
       setPrevLastId(chattingMsgs.lastId);
 
-      axios
-        .get(`https://flower-ly.co.kr/api/chatting/${chattingId}?lastId=${chattingMsgs?.lastId}`)
+      tokenHttp
+        .get(`/chatting/${chattingId}?lastId=${chattingMsgs.lastId}`)
         .then((response) => {
-          console.log(response.data.data);
-          setChattingMsgs((prev: any) => {
-            return {
-              ...prev,
-              lastId: response.data.data.lastId,
-              messages: addDateMsg([...response.data.data.messages, ...prev!.messages]),
-            };
-          });
+          if (response.data.code === 200) {
+            setChattingMsgs((prev: any) => {
+              return {
+                ...prev,
+                lastId: response.data.data.lastId,
+                messages: addDateMsg([...response.data.data.messages, ...prev!.messages]),
+              };
+            });
+            //요거 필수!! (엑세스 토큰 만료로 재발급 받았다면 바꿔줘!! )
+            if (response.headers.authorization) {
+              localStorage.setItem("accessToken", response.headers.authorization);
+            }
+          }
+        })
+        .catch((err) => {
+          if (err.response.status === 403) {
+            router.push("/fllylogin");
+          }
         });
     }
   }, [inView]);
@@ -204,7 +197,7 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
       requestAnimationFrame(() => {
         // containerRef.current!.scrollTop = containerRef.current!.scrollHeight - prevScrollHeight;
         const currentElement = document.getElementById(prevLastId);
-        console.log(currentElement?.id);
+        // console.log(currentElement?.id);
         currentElement?.scrollIntoView({ behavior: "auto" });
       });
     }
@@ -213,7 +206,6 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
   const addDateMsg = (messages: Message[]) => {
     // console.log("addDateMsg");
     const newMessges: Message[] = [];
-    // let lastDate = new Date(messages[0].sendTime.replaceAll(".", "/"));
     let lastDate;
 
     for (const message of messages) {
@@ -275,14 +267,15 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
     const destination = `/pub/message/${chattingId}`;
     const stompChatRequest = {
       chattingId,
-      memberId: 1,
+      memberId: 2, // 리코일에 든 아이디로 바꾸기
+      // memberId: 1,
       type: type,
       content: content,
     };
     const body = JSON.stringify(stompChatRequest);
 
-    if (stompClient && stompClient.connected) {
-      stompClient.publish({ destination, body });
+    if (stompClient && stompClient.current) {
+      stompClient.current.publish({ destination, body });
       // console.log("메세지 보내기 성공");
     }
 

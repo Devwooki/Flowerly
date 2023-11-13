@@ -172,7 +172,7 @@ const FllyTarget = () => {
 
   const submitBtn = () => {
     tokenHttp
-      .post(`/request`, {
+      .post(`/flly/request`, {
         "situation" : situation == "선택 안함"? null : situation,
         "target" : target == "선택 안함"? null : target,
         "colors": colors.includes("선택 안함")? null : colors,
@@ -191,12 +191,11 @@ const FllyTarget = () => {
         console.log(response.data);
         if (response.data.code === 200) {
           router.push("/");
-          localStorage.setItem("accessToken", response.headers.Authorization);
+          if(response.headers.authorization) localStorage.setItem("accessToken", response.headers.authorization);
         }
       })
       .catch((error) => {
         if (error.response.status === 403) {
-          ToastErrorMessage("로그인 만료되어 로그인화면으로 이동합니다.");
           router.push("/fllylogin");
         } else ToastErrorMessage("오류가 발생했습니다.");
       });

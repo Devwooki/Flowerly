@@ -1,17 +1,11 @@
-type ShopInfo = {
-  reImg: string;
-  shopId: number;
-  shopName: string;
-  shopLoc: string;
-  recommandPrice: string;
-  recommandComment: string;
-};
-
-type ShopInfoDetail = {
-  shopName: string;
-  shopLoc: string;
-  shopImg: string[];
-};
+// type ShopInfo = {
+//   reImg: string;
+//   shopId: number;
+//   shopName: string;
+//   shopLoc: string;
+//   recommandPrice: string;
+//   recommandComment: string;
+// };
 
 type markerlist = {
   position: {
@@ -21,27 +15,41 @@ type markerlist = {
   content: string;
 };
 
-type review = {
-  userName: string;
-  reviewTime: string;
-  reviewContent: string;
+type shopInfo = {
+  store: ShopInfoDetail;
+  review: review;
 };
 
-/* 현욱이가 준 값 */
+type ShopInfoDetail = {
+  storeInfoId: number;
+  storeName: string;
+  phoneNumber: string;
+  address: string;
+  images: string[];
+};
+
+type review = {
+  content: reviewlist[];
+};
+
+type reviewlist = {
+  consumerNickName: string;
+  createdAt: string;
+  content: string;
+};
 
 type fllyList = {
   flly: BuyerCard;
   stores: stores;
 };
 
+type stores = {
+  content: storeContent[];
+};
+
 type storeContent = {
   participant: participant;
   storeInfoDto: storeInfoDto;
-};
-
-// Define the type for the entire "stores" structure
-type stores = {
-  content: storeContent[];
 };
 
 type participant = {

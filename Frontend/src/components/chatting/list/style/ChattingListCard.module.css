@@ -30,11 +30,6 @@
   border-bottom-right-radius: 8px;
 }
 
-.cardTop {
-  display: flex;
-  justify-content: space-between;
-}
-
 .opponentName {
   font-weight: 700;
 }
@@ -42,6 +37,23 @@
 .cardTop,
 .cardBottom {
   padding: 3px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.newMsg {
+  box-sizing: border-box;
+  background-color: #ce2939;
+  /* padding: 3px 5px; */
+  border-radius: 50%;
+  color: white;
+  font-family: "NanumSquareNeoOTF-Bd";
+  font-size: 12px;
+  width: 22px;
+  height: 22px;
+  text-align: center;
+  line-height: 22px;
 }
 
 .time {
@@ -50,9 +62,10 @@
 
 #underDiv {
   position: relative;
-  z-index: -1;
+  /* z-index: -1; */
 }
 
 #upperDiv {
   transition: left 0.3s ease;
+  top: 0;
 }
