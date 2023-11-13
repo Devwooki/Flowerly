@@ -18,4 +18,28 @@ public interface FlowerRepository extends JpaRepository<Flower, Long> {
     List<Flower> findFlowersByColor(List<ColorType> colors, Pageable pageable);
     @Query("SELECT distinct f FROM Flower f JOIN FlowerRecommendation fr ON f = fr.flower WHERE (fr.situation IN :situation OR fr.situation IS NULL) OR (fr.target IN :target OR fr.target IS NULL)")
     List<Flower> findFlowersByMeaning(List<SituationType> situation, List<TargetType> target, Pageable pageable);
+
+    List<Flower> findByJanuaryIsTrue();
+
+    List<Flower> findByFebruaryIsTrue();
+
+    List<Flower> findByMarchIsTrue();
+
+    List<Flower> findByAprilIsTrue();
+
+    List<Flower> findByMayIsTrue();
+
+    List<Flower> findByJuneIsTrue();
+
+    List<Flower> findByJulyIsTrue();
+
+    List<Flower> findByAugustIsTrue();
+
+    List<Flower> findBySeptemberIsTrue();
+
+    List<Flower> findByOctoberIsTrue();
+
+    List<Flower> findByNovemberIsTrue();
+
+    List<Flower> findByDecemberIsTrue();
 }

@@ -10,6 +10,7 @@ import com.ssafy.flowerly.exception.ErrorCode;
 import com.ssafy.flowerly.flly.dto.FllyDto;
 import com.ssafy.flowerly.flly.dto.FlowerDto;
 import com.ssafy.flowerly.flly.dto.FlowerRequestDto;
+import com.ssafy.flowerly.flly.dto.MainDto;
 import com.ssafy.flowerly.flly.repository.FlowerRepository;
 import com.ssafy.flowerly.member.model.MemberRepository;
 import com.ssafy.flowerly.s3.model.S3Service;
@@ -22,6 +23,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -232,5 +234,81 @@ public class FlowerService {
                 fllyPickupRegionRepository.save(fllyPickupRegion);
             }
         }
+    }
+
+    public List<MainDto> getMainImages() {
+        String month = LocalDate.now().getMonth().toString();
+        List<Flower> flowerList = new ArrayList<>();
+        switch (month) {
+            case "JANUARY":
+                flowerList = flowerRepository.findByJanuaryIsTrue();
+                break;
+            case "FEBRUARY":
+                flowerList = flowerRepository.findByFebruaryIsTrue();
+                break;
+            case "MARCH":
+                flowerList = flowerRepository.findByMarchIsTrue();
+                break;
+            case "APRIL":
+                flowerList = flowerRepository.findByAprilIsTrue();
+                break;
+            case "MAY":
+                flowerList = flowerRepository.findByMayIsTrue();
+                break;
+            case "JUNE":
+                flowerList = flowerRepository.findByJuneIsTrue();
+                break;
+            case "JULY":
+                flowerList = flowerRepository.findByJulyIsTrue();
+                break;
+            case "AUGUST":
+                flowerList = flowerRepository.findByAugustIsTrue();
+                break;
+            case "SEPTEMBER":
+                flowerList = flowerRepository.findBySeptemberIsTrue();
+                break;
+            case "OCTOBER":
+                flowerList = flowerRepository.findByOctoberIsTrue();
+                break;
+            case "NOVEMBER":
+                flowerList = flowerRepository.findByNovemberIsTrue();
+                break;
+            case "DECEMBER":
+                flowerList = flowerRepository.findByDecemberIsTrue();
+                break;
+        }
+
+        List<MainDto> mainDtoList = new ArrayList<>();
+        HashMap<String, Long> startIdx = new HashMap<>();
+        HashMap<String, Long> endIdx = new HashMap<>();
+        Set<String> names = new HashSet<>();
+
+//        names.add(flowerList.get(0).getScientificName());
+//        startIdx.put(flowerList.get(0).getScientificName(), flowerList.get(0).getFlowerCode());
+//        for(int i=0; i<flowerList.size(); i++) {
+//            Flower curFlower = flowerList.get(i);
+//            if(!names.contains(curFlower)) {
+//                endIdx.put(flowerList.get(i-1).getScientificName(), flowerList.get(i-1).getFlowerCode());
+//                names.add(curFlower.getScientificName());
+//                startIdx.put(curFlower.getScientificName(),curFlower.getFlowerCode());
+//            }
+//        }
+//        endIdx.put(flowerList.get(flowerList.size()-1).getFlowerName(), flowerList.get(flowerList.size()-1).getFlowerCode());
+//
+//
+//        Set<String> selected = new HashSet<>();
+//        Random random = new Random();
+//        for(String name: names) {
+//            if(mainDtoList.size() > 9) break;
+//            if(selected.contains(name)) continue;
+//            int temp = (int)(endIdx.get(name)-startIdx.get(name));
+//            Flower flower = flowerRepository.findById(
+//                    Long.valueOf(random.nextInt((int)(endIdx.get(name)-startIdx.get(name))))+startIdx.get(name))
+//                    .orElseThrow(() -> new CustomException(ErrorCode.FLOWER_NOT_FOUND));
+//            mainDtoList.add(MainDto.of(flower));
+//            selected.add(name);
+//        }
+
+        return mainDtoList;
     }
 }
