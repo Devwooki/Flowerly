@@ -21,5 +21,11 @@ public class MyStoreInfoDto {
 
     private String address;
 
+    private String sidoName;
+
+    private String sigunguName;
+
+    private String dongName;
+
 
 }

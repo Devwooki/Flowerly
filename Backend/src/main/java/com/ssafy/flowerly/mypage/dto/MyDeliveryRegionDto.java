@@ -14,5 +14,5 @@ public class MyDeliveryRegionDto {
     private Long sidoCode;
     private Long sigunguCode;
     private Long dongCode;
-
+    private String fullAddress;
 }
