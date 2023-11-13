@@ -18,9 +18,10 @@ const Disc = ({ card }: DiscProps) => {
 
   useEffect(() => {
     console.log("DISC", card);
-
-    setSelectedColor([`${card.color1}`, `${card.color2}`, `${card.color3}`]),
-      setSelectedFlower([card.flower1, card.flower2, card.flower3]);
+    setSelectedColor([card.color1, card.color2, card.color3].filter((flower) => flower !== null)),
+      setSelectedFlower(
+        [card.flower1, card.flower2, card.flower3].filter((flower) => flower !== null),
+      );
   }, [card]);
 
   return (
@@ -53,27 +54,31 @@ const Disc = ({ card }: DiscProps) => {
             </div>
             <div className={style.discDetailTable}>
               <div className={style.detailTitle}>상황</div>
-              <div className={style.detailContent}>{card.situation}</div>
+              <div className={style.detailContent}>{card.situation || "선택안함"}</div>
             </div>
             <div className={style.discDetailTable}>
               <div className={style.detailTitle}>대상</div>
-              <div className={style.detailContent}>{card.target}</div>
+              <div className={style.detailContent}>{card.target || "선택안함"}</div>
             </div>
             <div className={style.discDetailTable}>
               <div className={style.detailTitle}>색상</div>
-              {selectedColor.map((color, idx) => (
-                <div className={style.detailContent} key={idx}>
-                  {idx > 0 && <span>&nbsp;</span>}
-                  {color}
-                </div>
-              ))}
+              {selectedColor.length > 0
+                ? selectedColor.map((color, idx) => (
+                    <div className={style.detailContent} key={idx}>
+                      {idx > 0 && <span>&nbsp;</span>}
+                      {color}
+                    </div>
+                  ))
+                : "선택안함"}
             </div>
             <div className={style.discDetailTable}>
               <div className={style.detailTitle}>선택한 꽃</div>
               <div className={style.detailContent}>
-                {selectedFlower.map(
-                  (flower, idx) => flower && <div key={idx}>{flower.flowerName}</div>,
-                )}
+                {selectedFlower.length > 0
+                  ? selectedFlower.map(
+                      (flower, idx) => flower && <div key={idx}>{flower.flowerName}</div>,
+                    )
+                  : "선택안함"}
               </div>
             </div>
             <div className={style.divider} />
@@ -81,10 +86,14 @@ const Disc = ({ card }: DiscProps) => {
               <div className={style.detailTitle}>주문유형</div>
               <div className={style.detailContent}>{card.orderType}</div>
             </div>
-            <div className={style.discDetailTable}>
-              <div className={style.detailTitle}>주소</div>
-              <div className={style.detailContent}>{card.requestAddress}</div>
-            </div>
+            {card.orderType === "배달" ? (
+              <div className={style.discDetailTable}>
+                <div className={style.detailTitle}>주소</div>
+                <div className={style.detailContent}>{card.requestAddress}</div>
+              </div>
+            ) : (
+              <></>
+            )}
             <div className={style.discDetailTable} style={{ display: "inline-block" }}>
               <div className={style.detailTitle}>요청사항</div>
               <div className={`${style.detailContent} ${style.requestContent}`}>
