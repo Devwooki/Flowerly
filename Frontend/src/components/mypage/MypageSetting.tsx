@@ -97,7 +97,7 @@ const MypageSetting = () => {
             </div>
             <div>알림 설정을 ON 하실경우 카카오톡 을 통한 플리에 대한 알림을 받을 수 있습니다</div>
           </div>
-          {memberInfo.role === "SELLER" && (
+          {/* {memberInfo.role === "SELLER" && (
             <div className={style.SideDetail} onClick={userChangModalHandler}>
               <div>
                 <div>사용자로 전환하기</div>
@@ -107,8 +107,8 @@ const MypageSetting = () => {
               </div>
               <div>사용자로 전환시 등록하신 판매자 관련 데이터는 사라집니다</div>
             </div>
-          )}
-          {memberInfo.role === "USER" && (
+          )} */}
+          {/* {memberInfo.role === "USER" && (
             <div className={style.SideDetail} onClick={userChangModalHandler}>
               <div>
                 <div>판매자로 전환하기</div>
@@ -118,7 +118,7 @@ const MypageSetting = () => {
               </div>
               <div>판매자로 전환시 사업자 등록 및 추가적인 정보를 입력하셔야 합니다</div>
             </div>
-          )}
+          )} */}
         </div>
       </div>
     </>

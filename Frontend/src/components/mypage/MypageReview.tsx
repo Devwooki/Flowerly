@@ -111,6 +111,7 @@ const MypageReview = () => {
             reviewList.map((value, index) => (
               <>
                 <MypageReviewCard
+                  key={index}
                   ModalChangeHandler={ModalChangeHandler}
                   SelectIdChangeHandler={SelectIdChangeHandler}
                   $requestIndex={index}

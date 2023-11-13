@@ -25,3 +25,10 @@
 .MypageNameBack > div:nth-child(2) > div:nth-child(2):hover {
   cursor: pointer;
 }
+
+.link {
+  font-size: 14px;
+  align-items: flex-end;
+  display: flex;
+  margin-left: 5px;
+}

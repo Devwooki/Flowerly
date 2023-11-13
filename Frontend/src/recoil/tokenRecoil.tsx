@@ -22,6 +22,7 @@ export interface storeDeliveryRegionType {
   sidoCode: number;
   sigunguCode: number;
   dongCode: number;
+  fullAddress: string;
 }
 
 // 배달 가능지역 code
