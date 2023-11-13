@@ -26,7 +26,7 @@ public class StompChatController {
         log.info("채팅 메세지 전송 성공");
 
         if(response != null) {
-            updateList((Long) response.get("memberid"), (ChattingDto.UpdateResponse) response.get("data"));
+            updateList((Long) response.get("memberId"), (ChattingDto.UpdateResponse) response.get("data"));
         }
     }
 
