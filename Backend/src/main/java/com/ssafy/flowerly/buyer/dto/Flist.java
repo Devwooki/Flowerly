@@ -1,9 +1,7 @@
-package com.ssafy.flowerly.seller.buyer.dto;
+package com.ssafy.flowerly.buyer.dto;
 
 import com.ssafy.flowerly.member.vo.StoreInfoDto;
-import com.ssafy.flowerly.seller.vo.RequestFllyParticipateDto;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
