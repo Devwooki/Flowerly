@@ -25,6 +25,12 @@ public class ChattingController {
 
     private final ChattingService chattingService;
 
+    /**
+     * 채팅방 생성 API
+     * @param request 로그인한 유저의 id 추출
+     * @param chattingRequestDto sellerId, fllyId, fllyParticipationId
+     * @return isNew, chattingId
+     */
     @PostMapping
     public CustomResponse createChatting(HttpServletRequest request, @RequestBody ChattingDto.Request chattingRequestDto) {
         Long memberId = (Long) request.getAttribute("memberId");
