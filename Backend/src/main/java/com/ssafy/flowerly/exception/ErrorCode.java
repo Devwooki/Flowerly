@@ -31,6 +31,7 @@ public enum ErrorCode {
     NOT_FIND_STOREINFO(-4011, "가게 정보를 찾을 수 없습니다."),
     NOT_FIND_REVIEW(-4012, "리뷰 정보를 찾을 수 없습니다"),
     CONSUMER_NOT_REVIEWER(-4013, "리뷰 작성자가 아닙니다"),
+    NOT_FOUND_REQUSET_ADDRESS(-4014, "플리의 배달 주소를 찾을 수 없습니다."),
 
     SELLER_PARTICIPATE_FAIL(-5000, "플리 참여에 실패하였습니다"),
     SELLER_ALREADY_PARTICIPATE(-5001, "이미 참가하신 플리입니다"),
@@ -49,6 +50,7 @@ public enum ErrorCode {
     INVALID_ADDRESS_FORMAT(-8004,"유효하지 않은 주소 형식입니다."),
     INVALID_IMAGE_URL(-8005, "이미지 URL이 유효하지 않습니다."),
     IOException(-8006, "이미지 URL Encoding중 에러가 발생했습니다."),
+    INVALID_UPLOAD_FILE_CNT(-8007, "대표사진은 최대 3개까지 업로드 가능합니다."),
 
     INVALID_REFRESH_TOKEN(-9000, "RefreshToken을 찾을 수 없습니다."),
     INVALID_ACCESS_TOKEN(-9001, "AccessToken이 유효하지 않습니다."),

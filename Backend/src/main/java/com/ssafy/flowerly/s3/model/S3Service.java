@@ -4,9 +4,14 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.ssafy.flowerly.entity.FileInfo;
+import com.ssafy.flowerly.entity.Member;
+import com.ssafy.flowerly.entity.StoreImage;
+import com.ssafy.flowerly.entity.StoreInfo;
 import com.ssafy.flowerly.entity.type.UploadType;
 import com.ssafy.flowerly.exception.CustomException;
 import com.ssafy.flowerly.exception.ErrorCode;
+import com.ssafy.flowerly.member.model.MemberRepository;
+import com.ssafy.flowerly.s3.vo.StoreImageResponse;
 import com.ssafy.flowerly.util.CustomMultipartFile;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,10 +25,12 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.imageio.ImageIO;
 import javax.transaction.Transactional;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URL;
 import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,20 +40,89 @@ public class S3Service {
 
     private final AmazonS3Client amazonS3Client;
     private final S3Repository s3Repository;
+    private final StoreImageRepository storeImageRepository;
+    private final MemberRepository memberRepository;
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    public List<FileInfo> upload(MultipartFile[] mFiles, UploadType uploadType) {
-        return Arrays.stream(mFiles)
+    @Transactional
+    public List<String> upload(MultipartFile[] mFiles, UploadType uploadType) {
+        //파일 업로드
+        List<FileInfo> uploadImage = Arrays.stream(mFiles)
                 .filter(mFile -> mFile.getSize() > 0)
                 .map(mFile -> multiPartToFileInfoAndResize(mFile, uploadType))
                 .collect(Collectors.toList());
+        s3Repository.saveAll(uploadImage);
+        //이후 이미지 src만 반환한다.
+        return uploadImage.stream().map(fileInfo -> {return fileInfo.getUploadFileUrl();})
+                .collect(Collectors.toList());
     }
 
+    @Transactional
     public String uploadOneImage(MultipartFile uploadImg, UploadType uploadType) {
         FileInfo temp = multiPartToFileInfoAndResize(uploadImg, uploadType);
         s3Repository.save(temp);
         return temp.getUploadFileUrl();
+    }
+
+    public List<StoreImageResponse> updateStoreImage(Long memberId, List<Long> imageIDs, List<String> uploadImgs){
+        List<StoreImage> storeImages = storeImageRepository.findBySeller_MemberId(memberId);
+        Member seller = memberRepository.findByMemberId(memberId).orElseThrow(()-> new CustomException(ErrorCode.NOT_FIND_MEMBER));
+
+        //기존에 이미지가 없으면 모두 반환한다.
+        if(storeImages.size() == 0){
+            List<StoreImage> update = new ArrayList<>();
+            for(String uploadImg :  uploadImgs){
+                update.add(StoreImage.builder()
+                                .seller(seller)
+                                .imageUrl(uploadImg)
+                                .build());
+            }
+
+            return storeImageRepository.saveAll(storeImages).stream()
+                    .map(StoreImage::toResponseDto)
+                    .collect(Collectors.toList());
+        }else{//저장된 이미지가 있으면 찾아 수정한다.
+
+            //업로드한 이미지 수 > 디비에 저장된 수
+            //순차적으로 바꾸고 마지막에 컬럼 추가한다.
+            if(uploadImgs.size() > storeImages.size()){
+                int uploadImageIdx = 0;
+
+                //순차적으로 이미지 변경
+                for(int i = 0 ; i < storeImages.size() ; ++i){
+                    storeImages.get(i).updateImage(uploadImgs.get(uploadImageIdx++));
+                }
+                //없는 데이터는 추가한다
+                for(int i = 0; i < uploadImgs.size() - storeImages.size()  ; ++i)
+                    storeImages.add(StoreImage.builder()
+                                    .imageUrl(uploadImgs.get(uploadImageIdx++))
+                                    .seller(seller)
+                                    .build());
+
+            }else{
+                //업로드한 이미지 수 <= 디비에 저장된 수
+                //ID 같은 것만 찾아서 업데이트한다.
+                Collections.sort(imageIDs);
+
+                int imageIDsIdx = 0;
+                for(int i = 0 ; i < storeImages.size() ; ++i){
+                    if(imageIDsIdx == uploadImgs.size()){
+                        break;
+                    }
+                    if(imageIDs.get(imageIDsIdx) == storeImages.get(i).getStoreImageId()) {
+                        storeImages.get(i).updateImage(uploadImgs.get(imageIDsIdx++));
+                    }
+                }
+
+                for(StoreImage st : storeImages){
+                    log.info("{}", st.getStoreImageId());
+                }
+            }
+            return storeImageRepository.saveAll(storeImages).stream()
+                    .map(StoreImage::toResponseDto)
+                    .collect(Collectors.toList());
+        }
     }
 
     public String uploadBase64Image(String base64, UploadType uploadType) {
