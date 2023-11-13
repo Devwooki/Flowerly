@@ -20,6 +20,7 @@ interface Props {
 
 const BuyerFllyListProgressCard = ({ $fllyInfo }: Props) => {
   const [progressStep, setProgressStep] = useState<number>(0);
+  console.log($fllyInfo);
 
   useEffect(() => {
     //나중에 백에서 들어올값
@@ -46,7 +47,7 @@ const BuyerFllyListProgressCard = ({ $fllyInfo }: Props) => {
             <div className={style.OrderInfoBox}>
               <div className={style.OrderInfoBoxHarf}>
                 <div>주문자</div>
-                <div>김동민</div>
+                <div>{$fllyInfo.buyerNickName}</div>
               </div>
               <div className={style.OrderInfoBoxHarf}>
                 <div>구매처</div>
@@ -54,7 +55,7 @@ const BuyerFllyListProgressCard = ({ $fllyInfo }: Props) => {
               </div>
               <div className={style.OrderInfoBoxHarf}>
                 <div>주문유형</div>
-                <div>배달</div>
+                <div>{$fllyInfo.fllyOrderType}</div>
               </div>
             </div>
             <div className={style.OrderFooter}>
