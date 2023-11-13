@@ -14,9 +14,9 @@ type BuyerCardStong = {
 
 type BuyerCard = {
   budget: number;
-  color1: string | null;
-  color2: string | null;
-  color3: string | null;
+  color1: string;
+  color2: string;
+  color3: string;
   consumer: string;
   deadline: string;
   fllyId: number;
