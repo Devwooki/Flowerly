@@ -65,6 +65,7 @@ const ChattingList = () => {
       // 특정 채팅방의 메세지를 구독
       // stompClient.current?.subscribe(`/sub/list/${memberInfo.id}`, (chattingData) => {
       stompClient.current?.subscribe(`/sub/list/2`, (chattingData) => {
+        // stompClient.current?.subscribe(`/sub/list/1`, (chattingData) => {
         console.log(chattingData);
         const newChattingData = JSON.parse(chattingData.body);
 
