@@ -7,15 +7,13 @@ type DiscProps = {
 };
 
 const Disc = ({ card }: DiscProps) => {
-  console.log(card.requestAddress);
-
   const [moreBtn, setMoreBtn] = useState(false);
   const [selectedColor, setSelectedColor] = useState<string[]>([]);
   const [selectedFlower, setSelectedFlower] = useState<flower[]>([]);
+  const [location, setLocation] = useState<string>();
 
   const handlerMoreBtn = () => {
     setMoreBtn((pre) => !pre);
-    console.log(moreBtn);
   };
 
   useEffect(() => {
@@ -23,6 +21,18 @@ const Disc = ({ card }: DiscProps) => {
       setSelectedFlower(
         [card.flower1, card.flower2, card.flower3].filter((flower) => flower !== null),
       );
+  }, [card]);
+
+  useEffect(() => {
+    // 주소 처리를 위한 useEffect
+    if (card.requestAddress) {
+      const splitT = card.requestAddress.indexOf("T");
+      if (splitT === -1) {
+        setLocation(card.requestAddress);
+        return;
+      }
+      setLocation(card.requestAddress.substring(0, splitT));
+    }
   }, [card]);
 
   return (
@@ -90,7 +100,7 @@ const Disc = ({ card }: DiscProps) => {
             {card.orderType === "배달" ? (
               <div className={style.discDetailTable}>
                 <div className={style.detailTitle}>주소</div>
-                <div className={style.detailContent}>{card.requestAddress}</div>
+                <div className={style.detailContent}>{location}</div>
               </div>
             ) : (
               <></>
