@@ -17,7 +17,7 @@ public class ReviewResponseDto {
     private Long requestId;
     private String storeName;
     private String content;
-    private LocalDateTime createdAt;
+    private String createdAt;
 
 
 
