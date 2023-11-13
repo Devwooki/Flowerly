@@ -29,7 +29,8 @@ const Temp = () => {
 
   const getMemberinfo = async (tempToken: string) => {
     try {
-      const response = await axios.get("https://flower-ly.co.kr/api/member", {
+      //const response = await axios.get("https://flower-ly.co.kr/api/member", {
+        const response = await axios.get("http://localhost:6090/api/member", {
         withCredentials: true,
         headers: {
           Authorization: `Bearer ${tempToken}`,

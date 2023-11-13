@@ -44,6 +44,7 @@ const PaymentMsg: React.FC<PaymentMsgProps> = ({ chattingId }) => {
     //   // console.log(response);
     //   setPaymentInfo(response.data.data);
     // });
+
   }, []);
 
   return (
