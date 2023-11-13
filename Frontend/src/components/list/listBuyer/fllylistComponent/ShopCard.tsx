@@ -70,7 +70,7 @@ const ShopCard = ({ shopInfo }: ShopCardProps) => {
   const createChat = (e: React.MouseEvent) => {
     e.stopPropagation();
     console.log("생성", data?.chattingId);
-    refetch();
+    // refetch();
     setModalChat(true);
     // router.push({
     //   pathname: `/chatting/room/[id]`,
@@ -78,6 +78,10 @@ const ShopCard = ({ shopInfo }: ShopCardProps) => {
     //     id: data?.chattingId,
     //   },
     // });
+  };
+
+  const handleModalChat = () => {
+    setModalChat((pre) => !pre);
   };
 
   return (
@@ -120,7 +124,7 @@ const ShopCard = ({ shopInfo }: ShopCardProps) => {
         </div>
       </motion.div>
       {modal && <ShopModal modal={modalState} shopInfo={shopInfo} />}
-      {modalChat && <ChatStart />}
+      {modalChat && <ChatStart onCancel={handleModalChat} />}
     </>
   );
 };
