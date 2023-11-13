@@ -11,13 +11,13 @@ const ListBuyer = () => {
     ["listBuyerQuery"],
     async () => {
       const res = await tokenHttp.get("/buyer/my-flly");
-      console.log(res.data.data.content);
+      console.log("플리스트", [res.data.data.content]);
 
       if (res.headers.authorization) {
         console.log("accessToken", res.headers.authorization);
         localStorage.setItem("accessToken", res.headers.authorization);
       }
-      // return res.data.data.content[0];
+      // return [res.data.data.content[3]];
       return res.data.data.content;
     },
     {
