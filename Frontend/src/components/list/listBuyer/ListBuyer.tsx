@@ -25,7 +25,7 @@ const ListBuyer = () => {
         console.log("에러 발생했다 임마");
         console.log(error?.response?.status);
       },
-      retry: 2,
+      retry: false,
       cacheTime: 0,
     },
   );

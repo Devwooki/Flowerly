@@ -7,6 +7,8 @@ type DiscProps = {
 };
 
 const Disc = ({ card }: DiscProps) => {
+  console.log(card.requestAddress);
+
   const [moreBtn, setMoreBtn] = useState(false);
   const [selectedColor, setSelectedColor] = useState<string[]>([]);
   const [selectedFlower, setSelectedFlower] = useState<flower[]>([]);

@@ -6,6 +6,7 @@
   padding: 15px;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: 375px; /* 각 그리드 항목의 높이를 100px로 설정 */
   gap: 10px;
 }
 

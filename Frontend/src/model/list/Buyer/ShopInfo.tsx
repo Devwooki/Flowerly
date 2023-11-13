@@ -69,3 +69,8 @@ type storeInfoDto = {
   member: null | string;
   images: null | string[];
 };
+
+type chatRoomBtn = {
+  chattingId: number;
+  isNew: boolean;
+};

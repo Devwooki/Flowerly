@@ -4,6 +4,12 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import ShopModal from "./ShopModal";
 import { motion } from "framer-motion";
+import { tokenHttp } from "@/api/tokenHttp";
+import { useRecoilValue } from "recoil";
+import { FllylistDiscRecoil } from "@/recoil/kdmRecoil";
+import { useQuery } from "react-query";
+import { AxiosError } from "axios";
+import ChatStart from "./ChatStart";
 
 type ShopCardProps = {
   shopInfo: storeContent;
@@ -16,7 +22,9 @@ const ShopCard = ({ shopInfo }: ShopCardProps) => {
   const maxLengthAD = 20; // 주소 최대 길이 설정
   const maxLengthCT = 30; // 코멘트 최대 길이 설정
   const [modal, setModal] = useState(false); // 모달창
-
+  const [modalChat, setModalChat] = useState(false);
+  const fllyRecoil = useRecoilValue(FllylistDiscRecoil);
+  const { fllyId } = fllyRecoil;
   const truncatedAdress =
     originalAdress.length > maxLengthAD
       ? `${originalAdress.substring(0, maxLengthAD)}...`
@@ -33,6 +41,47 @@ const ShopCard = ({ shopInfo }: ShopCardProps) => {
 
   const modalState = () => {
     setModal((pre) => !pre);
+  };
+
+  const { data, isError, refetch } = useQuery<chatRoomBtn, AxiosError>(
+    "ShopCardQuery",
+    async () => {
+      const res = await tokenHttp.post(`/chatting`, {
+        sellerId: shopInfo.storeInfoDto.storeInfoId,
+        fllyId: fllyId,
+        fllyParticipationId: shopInfo.participant.fllyParticipationId,
+      });
+      console.log("생성", res.data.data);
+      console.log("생성 방 ID", res.data.data.chattingId);
+
+      return res.data.data;
+    },
+    {
+      onError: (error) => {
+        console.log("에러 발생했다 임마");
+        console.log(error?.response?.status);
+      },
+      retry: false,
+      cacheTime: 0,
+      enabled: false,
+    },
+  );
+
+  const createChat = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    console.log("생성", data?.chattingId);
+    // refetch();
+    setModalChat(true);
+    // router.push({
+    //   pathname: `/chatting/room/[id]`,
+    //   query: {
+    //     id: data?.chattingId,
+    //   },
+    // });
+  };
+
+  const handleModalChat = () => {
+    setModalChat((pre) => !pre);
   };
 
   return (
@@ -70,9 +119,12 @@ const ShopCard = ({ shopInfo }: ShopCardProps) => {
           </div>
           <div className={style.responseContent}>{truncatedContent}</div>
         </motion.div>
-        <div className={style.chatAction}>채팅하기</div>
+        <div className={style.chatAction} onClick={(e) => createChat(e)}>
+          채팅하기
+        </div>
       </motion.div>
       {modal && <ShopModal modal={modalState} shopInfo={shopInfo} />}
+      {modalChat && <ChatStart onCancel={handleModalChat} />}
     </>
   );
 };

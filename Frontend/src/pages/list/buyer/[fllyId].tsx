@@ -2,7 +2,6 @@ import style from "./fllyId.module.css";
 import { motion } from "framer-motion";
 import { GetServerSideProps } from "next";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { AxiosError } from "axios";
 import { tokenHttp } from "@/api/tokenHttp";
@@ -10,7 +9,6 @@ import Disc from "@/components/list/listBuyer/fllylistComponent/Disc";
 import ShopList from "@/components/list/listBuyer/fllylistComponent/ShopList";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { RouterContext } from "next/dist/shared/lib/router-context.shared-runtime";
 
 const FllyList = () => {
   const param = useParams();
@@ -23,6 +21,8 @@ const FllyList = () => {
         console.log("accessToken", res.headers.authorization);
         localStorage.setItem("accessToken", res.headers.authorization);
       }
+      console.log(res.data.data);
+
       return res.data.data;
     },
     {

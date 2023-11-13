@@ -12,13 +12,13 @@ type ShopListProps = {
 
 const ShopList = ({ fllyId }: ShopListProps) => {
   const { ref, inView } = useInView();
+
   const fetchshopList = async (pageParam: number) => {
     const res = await tokenHttp.get(`/buyer/flist-page/${fllyId}?page=${pageParam}`);
-
     return res.data.data.stores;
   };
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } = useInfiniteQuery(
+  const { data, fetchNextPage, isFetchingNextPage, status } = useInfiniteQuery(
     "ShopListQuery",
     ({ pageParam = 0 }) => fetchshopList(pageParam),
     {
@@ -48,13 +48,19 @@ const ShopList = ({ fllyId }: ShopListProps) => {
       ) : (
         <div>텅</div>
       )} */}
-      {data?.pages?.map((page) =>
-        page.content.map((shopInfo: storeContent) => (
-          <ShopCard
-            shopInfo={shopInfo}
-            key={shopInfo.participant.fllyParticipationId + "-" + shopInfo.storeInfoDto.storeInfoId}
-          />
-        )),
+      {data?.pages.length === 1 && data?.pages[0].content.length === 0 ? (
+        <div>텅</div>
+      ) : (
+        data?.pages?.map((page) =>
+          page.content.map((shopInfo: storeContent) => (
+            <ShopCard
+              shopInfo={shopInfo}
+              key={
+                shopInfo.participant.fllyParticipationId + "-" + shopInfo.storeInfoDto.storeInfoId
+              }
+            />
+          )),
+        )
       )}
       {isLastPage ? (
         <></>
