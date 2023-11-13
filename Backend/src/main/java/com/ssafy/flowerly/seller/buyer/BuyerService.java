@@ -35,40 +35,36 @@ public class BuyerService {
     private final FllyRepository fllyRepository;
     private final RequestRepository requestRepository;
     private final FllyParticipationRepository fllyParticipationRepository;
+    private final FllyDeliveryRegionRepository fllyDeliveryRegionRepository;
     private final StoreInfoRepository storeInfoRepository;
     private final RequestDeliveryInfoRepository requestDeliveryInfoRepository;
 
     //진행중인 플리목록
     public Page<BuyerFllyDto> getMyFlly(Pageable pageable, Long memberId) {
-        // 주문 완료면 뺀다.
-        // if orderType.getTiltle == 입찰, 조율 그대로 반환
-        // else if process = 가게 이름으로
-
-
         return fllyRepository.findFllyByConsumerMemberIdNotLikeFinish(pageable, memberId, ProgressType.FINISH_DELIVERY).map(flly -> {
             Long fllyId = flly.getFllyId();
 
             // 결제한 회사가 없으면 아직 조율이 완료된 것이 아니다.
             Request request = requestRepository.findByFllyFllyIdAndIsPaidTrue(fllyId).orElse(null);
-            String address = "";
-            if(request != null) address = requestDeliveryInfoRepository.findAddressByRequestId(request.getRequestId()).orElse(null);
+
+            //String address = "";
+            //if(request != null) address = requestDeliveryInfoRepository.findAddressByRequestId(request.getRequestId()).orElse(null);
+
+            String address2 = fllyDeliveryRegionRepository.findAddressByFllyId(fllyId).orElse("");
             //입찰, 조욜중일 떈 업체 정보가 출력되지 않는다
             if(flly.getProgress().getTitle().equals("입찰")||flly.getProgress().getTitle().equals("조율")){
                 return flly.toBuyerFlly(
-                        flly.getProgress().getTitle(),
-                        flly.getOrderType().getTitle().equals("픽업") ? "" : address);
+                        flly.getProgress().getTitle(), address2);
             }
             else{
                 //입찰된 건이 없으면 기존 정보를 입력한다
                 if(request == null)
                     return flly.toBuyerFlly(
-                            flly.getProgress().getTitle(),
-                            flly.getOrderType().getTitle().equals("픽업") ? "" : address);
+                            flly.getProgress().getTitle(), address2);
 
                 //입찰된 건이 있으므로 주소를 입력한다.
                 return flly.toBuyerFlly(
-                        storeInfoRepository.findStoreName(request.getSeller().getMemberId()),
-                        flly.getOrderType().getTitle().equals("픽업") ? "" : address);
+                        storeInfoRepository.findStoreName(request.getSeller().getMemberId()), address2);
             }
         });
     }

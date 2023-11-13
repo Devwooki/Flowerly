@@ -18,9 +18,7 @@ import java.util.List;
 public class FCMToken {
     @Id
     private Long id;
-
     private Long memberId;
-
     private List<String> token;
 
     public FCMToken(Long member) {
