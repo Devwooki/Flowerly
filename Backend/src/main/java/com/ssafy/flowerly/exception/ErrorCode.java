@@ -43,6 +43,8 @@ public enum ErrorCode {
     REQUEST_DELIVERY_NOT_FOUND(-6003, "주문 배달 정보를 찾을 수 없습니다."),
     REQUEST_PRICE_EXIST(-604, "결제 금액이 존재하는 주문은 수정할 수 없습니다."),
     REQUEST_ALREADY_PAID(-605, "이미 결제가 완료된 주문입니다."),
+    KAKAO_PAY_APPROVAL_FAIL(-606, "카카오 페이 승인이 실패하였습니다."),
+    PAYMENT_NOT_FOUND(-607, "결제 정보를 찾을 수 없습니다."),
 
     INVALID_UPLOAD_FILE(-8001, "업로드한 파일을 찾을 수 없습니다."),
     INVALID_UPLOAD_TYPE(-8002, "업로드 요청 타입을 찾을 수 없습니다."),
