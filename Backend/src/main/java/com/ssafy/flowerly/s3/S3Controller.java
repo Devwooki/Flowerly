@@ -48,7 +48,7 @@ public class S3Controller {
         Long memberId = (Long) request.getAttribute("memberId");
 
         List<Long> longIds = updateDto.getImageIDs().stream().map(Long::valueOf).collect(Collectors.toList());
-        log.info("{}, 업로드 파일 수 {}", updateDto.getImageIDs().toString(), updateDto.getImageIDs().size());
+        log.info("{}, 업로드 파일 수 {}", updateDto.getImageIDs().toString(), updateDto.getUploadImgs().size());
         return new DataResponse<>(HttpStatus.OK.value(),
                 "대표사진 수정 완",
                 s3Service.updateStoreImage(memberId, longIds, updateDto.getUploadImgs())

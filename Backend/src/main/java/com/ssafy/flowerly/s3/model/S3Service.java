@@ -11,6 +11,7 @@ import com.ssafy.flowerly.entity.type.UploadType;
 import com.ssafy.flowerly.exception.CustomException;
 import com.ssafy.flowerly.exception.ErrorCode;
 import com.ssafy.flowerly.member.model.MemberRepository;
+import com.ssafy.flowerly.s3.vo.StoreImageResponse;
 import com.ssafy.flowerly.util.CustomMultipartFile;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -64,7 +65,7 @@ public class S3Service {
         return temp.getUploadFileUrl();
     }
 
-    public List<StoreImage> updateStoreImage(Long memberId, List<Long> imageIDs, List<String> uploadImgs){
+    public List<StoreImageResponse> updateStoreImage(Long memberId, List<Long> imageIDs, List<String> uploadImgs){
         List<StoreImage> storeImages = storeImageRepository.findBySeller_MemberId(memberId);
         Member seller = memberRepository.findByMemberId(memberId).orElseThrow(()-> new CustomException(ErrorCode.NOT_FIND_MEMBER));
 
@@ -78,7 +79,9 @@ public class S3Service {
                                 .build());
             }
 
-            return storeImageRepository.saveAll(update);
+            return storeImageRepository.saveAll(storeImages).stream()
+                    .map(StoreImage::toResponseDto)
+                    .collect(Collectors.toList());
         }else{//저장된 이미지가 있으면 찾아 수정한다.
 
             //업로드한 이미지 수 > 디비에 저장된 수
@@ -91,9 +94,9 @@ public class S3Service {
                     storeImages.get(i).updateImage(uploadImgs.get(uploadImageIdx++));
                 }
                 //없는 데이터는 추가한다
-                for(int i = uploadImgs.size() - storeImages.size() ; i < uploadImgs.size() ; ++i)
+                for(int i = 0; i < uploadImgs.size() - storeImages.size()  ; ++i)
                     storeImages.add(StoreImage.builder()
-                                    .imageUrl(uploadImgs.get(i))
+                                    .imageUrl(uploadImgs.get(uploadImageIdx++))
                                     .seller(seller)
                                     .build());
 
@@ -104,12 +107,21 @@ public class S3Service {
 
                 int imageIDsIdx = 0;
                 for(int i = 0 ; i < storeImages.size() ; ++i){
+                    if(imageIDsIdx == uploadImgs.size()){
+                        break;
+                    }
                     if(imageIDs.get(imageIDsIdx) == storeImages.get(i).getStoreImageId()) {
                         storeImages.get(i).updateImage(uploadImgs.get(imageIDsIdx++));
                     }
                 }
+
+                for(StoreImage st : storeImages){
+                    log.info("{}", st.getStoreImageId());
+                }
             }
-            return storeImageRepository.saveAll(storeImages);
+            return storeImageRepository.saveAll(storeImages).stream()
+                    .map(StoreImage::toResponseDto)
+                    .collect(Collectors.toList());
         }
     }
 
