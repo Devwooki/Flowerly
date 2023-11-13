@@ -31,8 +31,8 @@ public class StompChatController {
     }
 
     public void updateList(Long memberId, ChattingDto.UpdateResponse data) {
-        simpMessagingTemplate.convertAndSend("/sub/list" + memberId, data);
-        log.info("채팅 목록 업데이트 메세지 전송");
+        simpMessagingTemplate.convertAndSend("/sub/list/" + memberId, data);
+        log.info("{}: 채팅 목록 업데이트 메세지 전송", memberId);
     }
 
 }

@@ -12,6 +12,8 @@ import com.ssafy.flowerly.member.MemberRole;
 import com.ssafy.flowerly.member.model.MemberRepository;
 import com.ssafy.flowerly.member.model.StoreInfoRepository;
 import com.ssafy.flowerly.seller.model.FllyDeliveryRegionRepository;
+import com.ssafy.flowerly.seller.model.FllyParticipationRepository;
+import com.ssafy.flowerly.seller.model.FllyRepository;
 import com.ssafy.flowerly.seller.model.RequestRepository;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
@@ -38,6 +40,39 @@ public class ChattingService {
     private final RequestRepository requestRepository;
     private final RequestDeliveryInfoRepository requestDeliveryInfoRepository;
     private final FllyDeliveryRegionRepository fllyDeliveryRegionRepository;
+    private final FllyRepository fllyRepository;
+    private final FllyParticipationRepository fllyParticipationRepository;
+
+    @Transactional
+    public Map<String, Object> createChatting(ChattingDto.Request chattingRequestDto) {
+        Optional<Chatting> prevChatting = chattingRepository.findByFllyParticipationFllyParticipationId(chattingRequestDto.getFllyParticipationId());
+
+        Map<String, Object> responseMap = new HashMap<>();
+        if(prevChatting.isPresent()) {
+            // 이미 채팅방이 존재하는 경우
+            responseMap.put("isNew", false);
+            responseMap.put("chattingId", prevChatting.get().getChattingId());
+        } else {
+            // 새로운 채팅방 생성
+            Flly flly = fllyRepository.getReferenceById(chattingRequestDto.getFllyId());
+            FllyParticipation fllyParticipation = fllyParticipationRepository.getReferenceById(chattingRequestDto.getFllyParticipationId());
+            Member consumer = memberRepository.getReferenceById(chattingRequestDto.getConsumerId());
+            Member seller = memberRepository.getReferenceById(chattingRequestDto.getSellerId());
+
+            Chatting newChatting = new Chatting();
+            newChatting = chattingRepository.save(newChatting.toEntity(flly, fllyParticipation, consumer, seller));  // 저장
+            saveChattingMessage(new StompChatRequest(
+                    newChatting.getChattingId(),
+                    chattingRequestDto.getConsumerId(),
+                    "PARTICIPATION",
+                    "해당 상품에 관심을 가지고 있습니다."));
+
+            responseMap.put("isNew", true);
+            responseMap.put("chattingId", newChatting.getChattingId());
+        }
+
+        return responseMap;
+    }
 
     public List<ChattingDto.BasicResponse> getChattingList(Long memberId) {
         Member member = memberRepository.findByMemberId(memberId).orElseThrow();
@@ -51,7 +86,8 @@ public class ChattingService {
             for(Chatting chatting : chattingList) {
                 Member opponent = chatting.getSeller();
                 String opponentName = storeInfoRepository.findStoreName(opponent);
-                ChattingDto.BasicResponse chattingDto = ChattingDto.BasicResponse.of(chatting, chatting.getUnreadCntConsumer(), opponent.getMemberId(), opponentName);
+                String imageUrl = chatting.getFlly().getImageUrl();
+                ChattingDto.BasicResponse chattingDto = ChattingDto.BasicResponse.of(chatting, chatting.getUnreadCntConsumer(), opponent.getMemberId(), opponentName, imageUrl);
                 chattingDtoList.add(chattingDto);
             }
         } else if(member.getRole().equals(MemberRole.SELLER)) {  // 판매자 입장인 경우
@@ -59,7 +95,8 @@ public class ChattingService {
 
             for(Chatting chatting : chattingList) {
                 Member opponent = chatting.getConsumer();
-                ChattingDto.BasicResponse chattingDto = ChattingDto.BasicResponse.of(chatting, chatting.getUnreadCntSeller(), opponent.getMemberId(), opponent.getNickName());
+                String imageUrl = chatting.getFllyParticipation().getImageUrl();
+                ChattingDto.BasicResponse chattingDto = ChattingDto.BasicResponse.of(chatting, chatting.getUnreadCntSeller(), opponent.getMemberId(), opponent.getNickName(), imageUrl);
                 chattingDtoList.add(chattingDto);
             }
         } else {
