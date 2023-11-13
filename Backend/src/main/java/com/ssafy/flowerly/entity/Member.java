@@ -47,8 +47,6 @@ public class Member extends BaseTimeEntity {
     @Column(nullable = false)
     private boolean isNotification;
 
-    @OneToMany(mappedBy = "member", orphanRemoval = true)
-    private List<FCMToken> fcmTokens = new ArrayList<>();
 
     public MemberDto toDto(){
         return MemberDto.builder()

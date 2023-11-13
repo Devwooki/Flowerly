@@ -4,6 +4,8 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.ssafy.flowerly.entity.FileInfo;
+import com.ssafy.flowerly.entity.StoreImage;
+import com.ssafy.flowerly.entity.StoreInfo;
 import com.ssafy.flowerly.entity.type.UploadType;
 import com.ssafy.flowerly.exception.CustomException;
 import com.ssafy.flowerly.exception.ErrorCode;
@@ -20,10 +22,12 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.imageio.ImageIO;
 import javax.transaction.Transactional;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URL;
 import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,13 +37,18 @@ public class S3Service {
 
     private final AmazonS3Client amazonS3Client;
     private final S3Repository s3Repository;
+    private final StoreImageRepository storeImageRepository;
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    public List<FileInfo> upload(MultipartFile[] mFiles, UploadType uploadType) {
-        return Arrays.stream(mFiles)
+    public List<String> upload(MultipartFile[] mFiles, UploadType uploadType) {
+        //파일 업로드
+        List<FileInfo> uploadImage = Arrays.stream(mFiles)
                 .filter(mFile -> mFile.getSize() > 0)
                 .map(mFile -> multiPartToFileInfoAndResize(mFile, uploadType))
+                .collect(Collectors.toList());
+        //이후 이미지 src만 반환한다.
+        return uploadImage.stream().map(fileInfo -> {return fileInfo.getUploadFileUrl();})
                 .collect(Collectors.toList());
     }
 
@@ -47,6 +56,28 @@ public class S3Service {
         FileInfo temp = multiPartToFileInfoAndResize(uploadImg, uploadType);
         s3Repository.save(temp);
         return temp.getUploadFileUrl();
+    }
+
+    public List<String> updateStoreImage(int[] imageIDs, MultipartFile[] mFiles){
+        //배열이 비어 있으면 대표사진이 없다는 것 -> 모두 추가하고 url을 던져준다.
+        if(imageIDs.length == 0){
+            return upload(mFiles, UploadType.STORE_THUMBNAIL);
+        }else{//배열이 있으면 이미지들을 찾아서 수정한다.
+            List<String> uploadUrls = upload(mFiles, UploadType.STORE_THUMBNAIL);
+            List<StoreImage> findStoreThumbNail = storeImageRepository.findByStoreInfoIdIn(imageIDs);
+
+            //이미지를 교체하고
+            for(int i = 0 ; i < imageIDs.length; ++i){
+                findStoreThumbNail.get(i).updateImage(uploadUrls.get(i));
+            }
+            //벌크 연산처리한다.
+            storeImageRepository.saveAll(findStoreThumbNail);
+
+            //수정된 이미지 url만 반환한다.
+            return findStoreThumbNail.stream()
+                    .map(image -> {return image.getImageUrl();})
+                    .collect(Collectors.toList());
+        }
     }
 
     public String uploadBase64Image(String base64, UploadType uploadType) {

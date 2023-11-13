@@ -23,4 +23,8 @@ public class StoreImage {
 
     @Column(nullable = false)
     private String imageUrl;
+
+    public void updateImage(String newUrl){
+        this.imageUrl = newUrl;
+    }
 }

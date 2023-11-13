@@ -49,6 +49,7 @@ public enum ErrorCode {
     INVALID_ADDRESS_FORMAT(-8004,"유효하지 않은 주소 형식입니다."),
     INVALID_IMAGE_URL(-8005, "이미지 URL이 유효하지 않습니다."),
     IOException(-8006, "이미지 URL Encoding중 에러가 발생했습니다."),
+    INVALID_UPLOAD_FILE_CNT(-8007, "대표사진은 최대 3개까지 업로드 가능합니다."),
 
     INVALID_REFRESH_TOKEN(-9000, "RefreshToken을 찾을 수 없습니다."),
     INVALID_ACCESS_TOKEN(-9001, "AccessToken이 유효하지 않습니다."),

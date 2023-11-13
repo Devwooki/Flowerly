@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Map;
 
 @RestController
@@ -24,10 +25,26 @@ public class S3Controller {
     @PostMapping("/upload/store")
     public DataResponse<?>  uploadStoreThumbnail(@RequestPart("image") MultipartFile[] uploadImgs) {
         if(uploadImgs == null || uploadImgs.length == 0) throw new CustomException(ErrorCode.INVALID_UPLOAD_FILE);
+        if(uploadImgs.length > 3) throw new CustomException(ErrorCode.INVALID_UPLOAD_FILE_CNT);
+
         log.info("업로드 파일 크기 : {}", uploadImgs.length );
         return new DataResponse<>(HttpStatus.OK.value(),
                 "대표사진 업로드 완",
                 s3Service.upload(uploadImgs, UploadType.STORE_THUMBNAIL)
+        );
+    }
+
+    @PutMapping("/update/store")
+    public DataResponse<?>  updateStoreThumbnail(
+            int[] imageIDs,
+            @RequestPart("image") MultipartFile[] uploadImgs) {
+        if(uploadImgs == null || uploadImgs.length == 0) throw new CustomException(ErrorCode.INVALID_UPLOAD_FILE);
+        if(uploadImgs.length > 3) throw new CustomException(ErrorCode.INVALID_UPLOAD_FILE_CNT);
+
+        log.info("{}, 업로드 파일 수 {}", Arrays.toString(imageIDs), uploadImgs.length);
+        return new DataResponse<>(HttpStatus.OK.value(),
+                "대표사진 수정 완",
+                s3Service.updateStoreImage(imageIDs, uploadImgs)
         );
     }
     @PostMapping("/upload/flower")
