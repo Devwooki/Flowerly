@@ -21,6 +21,8 @@ const FllyList = () => {
         console.log("accessToken", res.headers.authorization);
         localStorage.setItem("accessToken", res.headers.authorization);
       }
+      console.log(res.data.data);
+
       return res.data.data;
     },
     {

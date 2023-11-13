@@ -15,8 +15,6 @@ const ShopList = ({ fllyId }: ShopListProps) => {
 
   const fetchshopList = async (pageParam: number) => {
     const res = await tokenHttp.get(`/buyer/flist-page/${fllyId}?page=${pageParam}`);
-    console.log(res.data.data);
-
     return res.data.data.stores;
   };
 
