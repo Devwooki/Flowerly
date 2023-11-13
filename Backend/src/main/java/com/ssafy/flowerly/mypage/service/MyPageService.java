@@ -173,6 +173,24 @@ public class MyPageService {
         storeInfo.updateAddress(myStoreInfoDto.getAddress());
         storeInfo.updatePhoneNumber(myStoreInfoDto.getPhoneNumber());
 
+
+        // 시도, 시군구, 동 코드 조회
+
+        Sido sido = sidoRepository.findBySidoName(myStoreInfoDto.getSidoName())
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_SIDO));
+
+        Sigungu sigungu = sigunguRepository.findBySigunguNameAndSido(myStoreInfoDto.getSigunguName(), sido)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_SIGUNGU));
+
+        Dong dong = dongRepository.findByDongNameAndSigungu(myStoreInfoDto.getDongName(), sigungu)
+                .orElseThrow(() -> new CustomException((ErrorCode.NOT_FIND_DONG)));
+
+
+        storeInfo.updateSido(sido);
+        storeInfo.updateSigungu(sigungu);
+        storeInfo.updateDong(dong);
+
+
         storeInfoRepository.save(storeInfo);
 
         myStoreInfoDto.setStoreId(storeInfo.getStoreInfoId());
@@ -190,6 +208,9 @@ public class MyPageService {
                         .sidoCode(myDeliveryRegion.getSido().getSidoCode())
                         .sigunguCode(myDeliveryRegion.getSigungu().getSigunguCode())
                         .dongCode(myDeliveryRegion.getDong().getDongCode())
+                        .fullAddress(myDeliveryRegion.getSido().getSidoName() + " " +
+                                myDeliveryRegion.getSigungu().getSigunguName() + " " +
+                                myDeliveryRegion.getDong().getDongName())
                         .build())
                 .collect(Collectors.toList());
 
