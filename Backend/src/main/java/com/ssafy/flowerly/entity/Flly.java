@@ -103,7 +103,7 @@ public class Flly extends BaseCreatedTimeEntity {
                 .build();
     }
 
-    public BuyerFllyDto toBuyerFlly(String storeName){
+    public BuyerFllyDto toBuyerFlly(String storeName, String requestAddress){
         DateTimeFormatter Timeformatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
         return BuyerFllyDto.builder()
@@ -124,6 +124,7 @@ public class Flly extends BaseCreatedTimeEntity {
                 .budget(this.budget)
                 .deadline(this.deadline != null ? this.deadline.format(Timeformatter) : null)
                 .storeName(storeName)
+                .requestAddress(requestAddress)
                 .build();
     }
 

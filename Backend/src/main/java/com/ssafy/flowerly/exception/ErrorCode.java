@@ -31,6 +31,7 @@ public enum ErrorCode {
     NOT_FIND_STOREINFO(-4011, "가게 정보를 찾을 수 없습니다."),
     NOT_FIND_REVIEW(-4012, "리뷰 정보를 찾을 수 없습니다"),
     CONSUMER_NOT_REVIEWER(-4013, "리뷰 작성자가 아닙니다"),
+    NOT_FOUND_REQUSET_ADDRESS(-4014, "플리의 배달 주소를 찾을 수 없습니다."),
 
     SELLER_PARTICIPATE_FAIL(-5000, "플리 참여에 실패하였습니다"),
     SELLER_ALREADY_PARTICIPATE(-5001, "이미 참가하신 플리입니다"),
