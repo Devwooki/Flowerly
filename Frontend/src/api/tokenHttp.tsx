@@ -13,6 +13,8 @@ export const tokenHttp = axios.create({
 
 tokenHttp.interceptors.request.use(async (req) => {
   const accessToken = localStorage.getItem("accessToken");
+  // const accessToken =
+  //   "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcwOTg2MDU3OSwibWVtYmVySWQiOjF9.01HlXxxmv2-j89VeFEVBp8fDGvpORbee7sA2FEJmnKARx88f-u9r04CcoWAWupl1wqU_8h2emFeXEGpwxdrVog";
 
   // console.log("토큰Http", accessToken);
   if (!accessToken) {

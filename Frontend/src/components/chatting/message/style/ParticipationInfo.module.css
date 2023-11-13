@@ -45,6 +45,7 @@
 .contentItem {
   line-height: 20px;
   display: flex;
+  align-items: center;
 }
 #comment {
   min-height: 60px;

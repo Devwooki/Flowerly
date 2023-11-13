@@ -1,19 +1,28 @@
+.back {
+  width: 100%;
+  height: calc(100vh - 60px);
+  display: flex;
+  overflow: scroll;
+}
+
 .container {
+  overflow: scroll;
+  margin: auto auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-top: 100px;
 }
 
 .welcomeMent {
-  font-family: Pretendard-Bold;
+  font-family: "Pretendard-Bold";
   text-align: center;
 }
 
 .guideMent {
   margin-top: 40px;
   font-family: Pretendard;
+  margin-bottom: 50px;
 }
 
 .cardContainer {
