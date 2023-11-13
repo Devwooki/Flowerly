@@ -42,8 +42,8 @@ const FllySellerCard = ({ $FllyDeliveryNear }: { $FllyDeliveryNear: FllyNearType
             <Image
               src={imageSrc}
               onError={errImageChangHandler}
-              width={190}
-              height={190}
+              width={170}
+              height={170}
               alt="이미지"
             ></Image>
             <div className={style.cardMainImgInfo}>{$FllyDeliveryNear.progress}중</div>
