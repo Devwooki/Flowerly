@@ -71,6 +71,12 @@ public class StoreInfo {
 
     public void updateAddress(String address) {this.address = address;}
 
+    public void updateSido(Sido sido) {this.sido = sido;}
+
+    public void updateSigungu(Sigungu sigungu) {this.sigungu = sigungu;}
+
+    public void updateDong(Dong dong) {this.dong = dong;}
+
 
 
 

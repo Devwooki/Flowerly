@@ -72,7 +72,7 @@ public class Member extends BaseTimeEntity {
 //    }
 
     public String notificationToggle(){
-        this.isNotification ^= this.isNotification;
+        this.isNotification = !this.isNotification;
 //        dataUpdate();
         return this.isNotification ?  "이제부터 알림을 받습니다" : "이제부터 알림을 받지 않습니다.";
     }
