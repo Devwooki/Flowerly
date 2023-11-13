@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import style from "./style/ChattingRoom.module.css";
 import { useRouter } from "next/router";
-import { useRecoilValue } from "recoil";
 
 import SockJS from "sockjs-client";
 import { Client, CompatClient, Stomp } from "@stomp/stompjs";
@@ -19,9 +18,12 @@ import RequestModal from "../modal/RequestModal";
 import ImageModal from "../modal/ImageModal";
 
 import { memberInfoState } from "@/recoil/memberInfoRecoil";
+import { paymentErrorRecoil } from "@/recoil/paymentRecoil";
+import { useRecoilValue, useResetRecoilState } from "recoil";
 import Image from "next/image";
 
 import { tokenHttp } from "@/api/chattingTokenHttp";
+import { ToastErrorMessage } from "@/model/toastMessageJHM";
 
 type ChattingRoomProps = {
   chattingId: number;
@@ -88,6 +90,9 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
       });
   };
 
+  const paymentError = useRecoilValue(paymentErrorRecoil);
+  const resetPaymentError = useResetRecoilState(paymentErrorRecoil);
+
   useEffect(() => {
     // 첫 렌더링
 
@@ -142,6 +147,11 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
 
     setInitialLoading(false);
     scrollDown();
+
+    if (paymentError.isError == true) {
+      ToastErrorMessage(paymentError.errorMsg);
+      resetPaymentError();
+    }
 
     return () => {
       if (stompClient.current) {
@@ -253,7 +263,7 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
   };
 
   const moveBack = () => {
-    router.back();
+    router.push("/chatting");
   };
 
   const scrollDown = () => {

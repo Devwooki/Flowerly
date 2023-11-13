@@ -6,9 +6,12 @@ import { tokenHttp } from "@/api/chattingTokenHttp";
 import { useRouter } from "next/router";
 
 import { ToastErrorMessage } from "@/model/toastMessageJHM";
+import { useSetRecoilState } from "recoil";
+import { paymentInfoRecoil } from "@/recoil/paymentRecoil";
 
 type PaymentInfo = {
   requestId: number;
+  sellerId: number;
   sellerName: string;
   price: number;
   isPaid: boolean;
@@ -21,6 +24,7 @@ type PaymentMsgProps = {
 const PaymentMsg: React.FC<PaymentMsgProps> = ({ chattingId }) => {
   const router = useRouter();
   const [paymentInfo, setPaymentInfo] = useState<PaymentInfo>();
+  const setPaymentInfoRecoil = useSetRecoilState(paymentInfoRecoil);
 
   useEffect(() => {
     tokenHttp
@@ -46,6 +50,50 @@ const PaymentMsg: React.FC<PaymentMsgProps> = ({ chattingId }) => {
     // });
   }, []);
 
+  const payAxiosHandler = () => {
+    // console.log("카카오페이 버튼 클릭");
+    // console.log(window.location.origin);
+
+    const body = {
+      domain: window.location.origin,
+      requestId: paymentInfo?.requestId,
+      sellerId: paymentInfo?.sellerId,
+      price: paymentInfo?.price,
+    };
+    tokenHttp
+      .post(`/chatting/kakaopay`, body)
+      .then((response) => {
+        if (response.data.code === 200) {
+          const isMobile = /Mobi/i.test(window.navigator.userAgent); // 모바일인지 pc인지
+          const resData = response.data.data;
+
+          setPaymentInfoRecoil({
+            chattingId: chattingId,
+            paymentId: resData.paymentId,
+          });
+          window.location.href = isMobile
+            ? resData.nextRedirectMobileUrl
+            : resData.nextRedirectPcUrl;
+
+          //요거 필수!! (엑세스 토큰 만료로 재발급 받았다면 바꿔줘!! )
+          if (response.headers.authorization) {
+            localStorage.setItem("accessToken", response.headers.authorization);
+          }
+        } else if (response.data.code == "-604") {
+          ToastErrorMessage("이미 진행중인 주문이 있습니다.");
+          //요거 필수!! (엑세스 토큰 만료로 재발급 받았다면 바꿔줘!! )
+          if (response.headers.authorization) {
+            localStorage.setItem("accessToken", response.headers.authorization);
+          }
+        }
+      })
+      .catch((err) => {
+        if (err.response.status === 403) {
+          router.push("/fllylogin");
+        }
+      });
+  };
+
   return (
     <>
       <div className={style.mainBox}>
@@ -62,7 +110,7 @@ const PaymentMsg: React.FC<PaymentMsgProps> = ({ chattingId }) => {
             <div
               className={style.btnDiv}
               onClick={() => {
-                console.log("카카오페이 연결해야함!");
+                payAxiosHandler();
               }}
             >
               <Image src="/img/btn/kakao-pay-btn.png" width={80} height={30} alt="카카오페이" />
