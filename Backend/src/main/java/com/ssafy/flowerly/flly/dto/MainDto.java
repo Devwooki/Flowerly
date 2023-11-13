@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MainDto {
+    private Long flowerCode;
     private String flowerName;
     private String imageUrl;
     private String meaning;
@@ -19,6 +20,7 @@ public class MainDto {
 
     public static MainDto of(Flower flower) {
         return MainDto.builder()
+                .flowerCode(flower.getFlowerCode())
                 .flowerName(flower.getFlowerName())
                 .imageUrl(flower.getImageUrl())
                 .meaning(flower.getMeaning())
