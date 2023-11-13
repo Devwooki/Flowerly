@@ -9,15 +9,24 @@ import { useQuery } from "react-query";
 import { AxiosError } from "axios";
 import { tokenHttp } from "@/api/tokenHttp";
 import Image from "next/image";
+import { ToastErrorMessage } from "@/model/toastMessageJHM";
 
 const ShopInfoMain = () => {
   const router = useRouter();
 
-  const { data, isLoading, isFetching, isError } = useQuery<shopInfo, AxiosError>(
+  const { data } = useQuery<shopInfo, AxiosError>(
     ["ShopInfoMainQuery"],
     async () => {
       const res = await tokenHttp.get(`/flly/store/${router.query.shopId}`);
       return res.data.data;
+    },
+    {
+      onError: (error) => {
+        if (error?.response?.status === 403) {
+          router.push("/fllylogin");
+        } else ToastErrorMessage("오류가 발생했습니다.");
+      },
+      retry: false,
     },
   );
 
