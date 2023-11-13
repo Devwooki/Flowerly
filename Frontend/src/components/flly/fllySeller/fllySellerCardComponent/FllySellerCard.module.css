@@ -228,3 +228,7 @@
     font-family: "NanumSquareNeoOTF-Rg";
   }
 }
+
+.cardfooter:focus {
+  cursor: pointer;
+}
