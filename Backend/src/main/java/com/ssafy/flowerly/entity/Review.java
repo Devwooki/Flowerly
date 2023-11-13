@@ -7,6 +7,7 @@ import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Getter
@@ -39,10 +40,12 @@ public class Review extends BaseTimeEntity {
     private Boolean isRemoved;
 
     public ReviewDetailDto toDetailDto(){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         return ReviewDetailDto.builder()
+                .reviewId(this.reviewId)
                 .consumerNickName(this.consumer.getNickName())
                 .content(this.content)
-                .createdAt(this.getCreatedAt())
+                .createdAt(this.getCreatedAt() != null ? this.getCreatedAt().format(formatter) : null)
                 .build();
     }
 
