@@ -89,15 +89,14 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
   };
 
   useEffect(() => {
-    // console.log("첫 렌더링");
+    // 첫 렌더링
 
     // const accessToken = localStorage.getItem("accessToken");
-    // const accessToken =
-    //   "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcwODY4MzQ4NiwibWVtYmVySWQiOjF9.wU3IYYWErRie5E5s7oIRYMliboyumfMrCZILaKnwlxXxJXCW1kHZ5fJ-mKvsAwYuMV4-UT0F4qoUX9rVcrTiNw";
     const accessToken =
-      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcwODc1MjUwMywibWVtYmVySWQiOjJ9.o_v_EVuucqlh2NPfHioqquPjm3U-JTP-7ZP2xJkxIxMsPBMhxnw0DL-Avnh2ryBa_J6JYS7YdCc5dZuMS_9IUw";
+      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcwODY4MzQ4NiwibWVtYmVySWQiOjF9.wU3IYYWErRie5E5s7oIRYMliboyumfMrCZILaKnwlxXxJXCW1kHZ5fJ-mKvsAwYuMV4-UT0F4qoUX9rVcrTiNw";
+    // const accessToken =
+    //   "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcwODc1MjUwMywibWVtYmVySWQiOjJ9.o_v_EVuucqlh2NPfHioqquPjm3U-JTP-7ZP2xJkxIxMsPBMhxnw0DL-Avnh2ryBa_J6JYS7YdCc5dZuMS_9IUw";
 
-    // SockJS와 STOMP 설정
     // const socket = new SockJS(`http://localhost:6090/stomp-chat`); // 로컬 테스트용
     const socket = new SockJS("https://flower-ly.co.kr/stomp-chat"); // 배포용
 
@@ -144,7 +143,6 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
     setInitialLoading(false);
     scrollDown();
 
-    // 컴포넌트 unmount 시 연결 종료
     return () => {
       if (stompClient.current) {
         stompClient.current.disconnect(
@@ -160,7 +158,7 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
   }, []);
 
   useEffect(() => {
-    // console.log("무한스크롤");
+    // 무한스크롤
     if (inView && !initialLoading && chattingMsgs?.lastId) {
       setInfiniteScrolling(true);
       setPrevLastId(chattingMsgs.lastId);
@@ -191,20 +189,21 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
   }, [inView]);
 
   useEffect(() => {
+    // 무한 스크롤 시 위치 조정
     if (prevLastId && !initialLoading && inView) {
-      // console.log("스크롤 위치 조정");
-
       requestAnimationFrame(() => {
         // containerRef.current!.scrollTop = containerRef.current!.scrollHeight - prevScrollHeight;
+
         const currentElement = document.getElementById(prevLastId);
-        // console.log(currentElement?.id);
         currentElement?.scrollIntoView({ behavior: "auto" });
       });
+    } else {
+      scrollDown();
     }
   }, [chattingMsgs]);
 
   const addDateMsg = (messages: Message[]) => {
-    // console.log("addDateMsg");
+    // 날짜 표시를 위한 함수
     const newMessges: Message[] = [];
     let lastDate;
 
@@ -220,7 +219,6 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
         sendTime.getMonth() != lastDate.getMonth() ||
         sendTime.getDate() != lastDate.getDate()
       ) {
-        // 새로운 날짜가 시작될 때 그룹을 추가
         newMessges.push({
           messageId: "",
           memberId: -1,
@@ -246,8 +244,8 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
   };
 
   const imageLoadHandler = () => {
-    // console.log("imageLoadHandler");
-    if (!infiniteScrolling) scrollDown(); // 이미지  로딩 완료되면 스크롤 조정
+    // 이미지 로딩 완료되면 스크롤 조정
+    if (!infiniteScrolling) scrollDown();
     if (sendImage) {
       scrollDown();
       setSendImage(false);
@@ -259,10 +257,31 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
   };
 
   const scrollDown = () => {
-    // console.log("scrollDown");
+    // 스크롤 제일 아래로 조정하는 함수
     messageEndRef.current?.scrollIntoView({ behavior: "auto" });
   };
 
+  const changeMenuOpen = () => {
+    setMenuOpen(!menuOpen);
+
+    if (menuOpen) {
+      containerRef.current!.scrollTop -= 120;
+    } else {
+      if (
+        containerRef.current!.scrollTop >=
+        containerRef.current!.scrollHeight - containerRef.current!.clientHeight - 120
+      ) {
+        // 스크롤이 최대 크기를 넘어가는 경우
+        requestAnimationFrame(() => {
+          scrollDown();
+        });
+      } else {
+        containerRef.current!.scrollTop += 120;
+      }
+    }
+  };
+
+  // ====== 메세지 전송 관련 ======
   const sendMessage = (type: string, content: string) => {
     const destination = `/pub/message/${chattingId}`;
     const stompChatRequest = {
@@ -280,34 +299,16 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
     }
 
     if (type === "IMAGE") setSendImage(true);
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        scrollDown();
-      });
-    });
+
+    // requestAnimationFrame(() => {
+    //   requestAnimationFrame(() => {
+    //     scrollDown();
+    //   });
+    // });
   };
 
-  // 타입별 메세지 전송 관련
   const sendTextMessage = (content: string) => {
     sendMessage("TEXT", content);
-  };
-  const changeMenuOpen = () => {
-    setMenuOpen(!menuOpen);
-
-    if (menuOpen) {
-      containerRef.current!.scrollTop -= 120;
-    } else {
-      if (
-        containerRef.current!.scrollTop >=
-        containerRef.current!.scrollHeight - containerRef.current!.clientHeight - 120
-      ) {
-        requestAnimationFrame(() => {
-          scrollDown(); // 스크롤이 최대 크기를 넘어가는 경우
-        });
-      } else {
-        containerRef.current!.scrollTop += 120;
-      }
-    }
   };
   const sendOrderForm = () => {
     sendMessage("ORDER_FORM", "주문 유형을 선택해주세요.");
@@ -316,14 +317,13 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
     sendMessage("ORDER_COMPLETE", "주문서가 도착했습니다.");
   };
   const sendPaymentReqMsg = () => {
-    // console.log("sendPaymentReqMsg");
     sendMessage("PAYMENT_FORM", "결제를 요청하였습니다.");
   };
   const sendImageMsg = (imgUrl: string) => {
     sendMessage("IMAGE", imgUrl);
   };
 
-  // 모달 상태 관련
+  // ======= 모달 상태 관련 =======
   const [fllyModalState, setFllyModalState] = useState(false);
   const [pickupModalState, setPickupModalState] = useState(false);
   const [deliveryModalState, setDeliveryModalState] = useState(false);
