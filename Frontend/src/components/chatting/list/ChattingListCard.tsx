@@ -12,6 +12,7 @@ type ChattingProps = {
     unreadCnt: number;
     opponentMemberId: number;
     opponentName: string;
+    imageUrl: string;
   };
   modalHandler: Function;
 };
@@ -104,24 +105,28 @@ const ChattingListCard: React.FC<ChattingProps> = ({ chattingData, modalHandler 
         onTouchEnd={touchEndHandler}
         ref={upperDivRef}
       >
+        <div className={style.contentImg}>
+          <Image
+            width={70}
+            height={70}
+            src={chattingData.imageUrl}
+            alt="의뢰 이미지"
+            onClick={() => router.push(`/chatting/room/${chattingData.chattingId}`)}
+            onError={(e) => {
+              e.currentTarget.src = "/img/etc/no-image.jpg";
+            }}
+          ></Image>
+        </div>
         <div
-          className={style.contentDiv}
+          className={style.contentDivMain}
           onClick={() => router.push(`/chatting/room/${chattingData.chattingId}`)}
         >
           <div className={style.cardTop}>
-            <div className={style.opponentName}>
-              {chattingData.opponentName.length > 15
-                ? chattingData.opponentName.substring(0, 15) + "..."
-                : chattingData.opponentName}
-            </div>
+            <div className={style.opponentName}>{chattingData.opponentName}</div>
             <div className={style.time}>{chattingData.lastChattingTime}</div>
           </div>
           <div className={style.cardBottom}>
-            <div>
-              {chattingData.lastChattingMessage.length > 20
-                ? chattingData.lastChattingMessage.substring(0, 20) + "..."
-                : chattingData.lastChattingMessage}
-            </div>
+            <div>{chattingData.lastChattingMessage}</div>
             {chattingData.unreadCnt > 0 && (
               <div className={style.newMsg}>{chattingData.unreadCnt}</div>
             )}

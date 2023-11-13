@@ -20,6 +20,7 @@ type Chatting = {
   unreadCnt: number;
   opponentMemberId: number;
   opponentName: string;
+  imageUrl: string;
 };
 
 const ChattingList = () => {
@@ -96,72 +97,74 @@ const ChattingList = () => {
 
   return (
     <>
-      <div className={style.header}>
-        <div className={style.headerTitle}>플리 채팅</div>
-        <div
-          className={style.right}
-          style={{
-            width: isActive ? "45%" : "40px",
-          }}
-        >
-          {isActive && (
-            <input
-              type="text"
-              value={searchKeyword}
-              autoFocus
-              placeholder="이름 검색"
-              onChange={(e) => {
-                setSearchKeyword(e.target.value);
-              }}
-              onBlur={(e) => {
-                if (e.target.value.trim() === "") {
-                  setIsActive(false);
-                  setSearchKeyword(e.target.value.trim());
-                }
-              }}
-            />
-          )}
-          <div className={style.icon}>
-            <Image
-              src="/img/btn/search-btn.png"
-              width={20}
-              height={20}
-              alt="상태이미지"
-              onClick={() => {
-                if (!isActive) {
-                  setIsActive(true);
-                }
-              }}
-            />
+      <div className={style.back}>
+        {modalState && modalChattingId && (
+          <ChattingListExitModal
+            chattingId={modalChattingId}
+            modalHandler={modalHandler}
+            axiosHandler={axiosHandler}
+          />
+        )}
+        <div className={style.header}>
+          <div className={style.headerTitle}>플리 채팅</div>
+          <div
+            className={style.right}
+            style={{
+              width: isActive ? "45%" : "40px",
+            }}
+          >
+            {isActive && (
+              <input
+                type="text"
+                value={searchKeyword}
+                autoFocus
+                placeholder="이름 검색"
+                onChange={(e) => {
+                  setSearchKeyword(e.target.value);
+                }}
+                onBlur={(e) => {
+                  if (e.target.value.trim() === "") {
+                    setIsActive(false);
+                    setSearchKeyword(e.target.value.trim());
+                  }
+                }}
+              />
+            )}
+            <div className={style.icon}>
+              <Image
+                src="/img/btn/search-btn.png"
+                width={20}
+                height={20}
+                alt="상태이미지"
+                onClick={() => {
+                  if (!isActive) {
+                    setIsActive(true);
+                  }
+                }}
+              />
+            </div>
           </div>
         </div>
+        <div className={style.container}>
+          {chattings
+            .filter((chatting) => {
+              if (searchKeyword?.trim())
+                return chatting.opponentName
+                  .toLowerCase()
+                  .includes(searchKeyword?.trim().toLowerCase());
+              else return chatting;
+            })
+            .map((chatting, idx) => {
+              return (
+                <ChattingListCard
+                  key={chatting.chattingId}
+                  chattingData={chatting}
+                  modalHandler={modalHandler}
+                />
+              );
+            })}
+        </div>
       </div>
-      <div className={style.container}>
-        {chattings
-          .filter((chatting) => {
-            if (searchKeyword?.trim())
-              return chatting.opponentName
-                .toLowerCase()
-                .includes(searchKeyword?.trim().toLowerCase());
-            else return chatting;
-          })
-          .map((chatting, idx) => {
-            return (
-              <ChattingListCard
-                key={chatting.chattingId}
-                chattingData={chatting}
-                modalHandler={modalHandler}
-              />
-            );
-          })}
-      </div>
-      {modalState && modalChattingId && (
-        <ChattingListExitModal
-          chattingId={modalChattingId}
-          modalHandler={modalHandler}
-          axiosHandler={axiosHandler}
-        />
-      )}
     </>
   );
 };
