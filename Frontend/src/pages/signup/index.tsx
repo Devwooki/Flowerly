@@ -25,7 +25,7 @@ const Signup = () => {
     router.push("/signup/seller/step1");
   };
   return (
-    <div>
+    <div className={style.back}>
       <div className={style.container}>
         <div className={style.welcomeMent}>
           <h1>환영합니다!</h1>
