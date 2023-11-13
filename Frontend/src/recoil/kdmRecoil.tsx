@@ -39,6 +39,7 @@ export const FllylistDiscRecoil = atom<BuyerCard>({
     requestContent: "",
     situation: "",
     target: "",
+    storeName: "",
   },
   effects_UNSTABLE: [persistAtomSession],
 });

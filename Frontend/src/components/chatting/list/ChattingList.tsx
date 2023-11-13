@@ -63,7 +63,8 @@ const ChattingList = () => {
     stompClient.current = Stomp.over(socket);
     stompClient.current.connect({}, () => {
       // 특정 채팅방의 메세지를 구독
-      stompClient.current?.subscribe(`/sub/list/${memberInfo.id}`, (chattingData) => {
+      // stompClient.current?.subscribe(`/sub/list/${memberInfo.id}`, (chattingData) => {
+      stompClient.current?.subscribe(`/sub/list/2`, (chattingData) => {
         console.log(chattingData);
         const newChattingData = JSON.parse(chattingData.body);
 
@@ -128,8 +129,6 @@ const ChattingList = () => {
               onClick={() => {
                 if (!isActive) {
                   setIsActive(true);
-                } else {
-                  // 검색 버튼 역할
                 }
               }}
             />
