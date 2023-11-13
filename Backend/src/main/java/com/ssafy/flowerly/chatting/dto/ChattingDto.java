@@ -37,8 +37,9 @@ public class ChattingDto {
 
         private Long opponentMemberId;
         private String opponentName;  // 채팅 상대 이름 (소비자인 경우 가게 이름, 판매자인 경우 소비자 닉네임?)
+        private String imageUrl;
 
-        public static ChattingDto.BasicResponse of(Chatting chatting, Integer unreadCnt, Long opponentMemberId, String opponentName) {
+        public static ChattingDto.BasicResponse of(Chatting chatting, Integer unreadCnt, Long opponentMemberId, String opponentName, String imageUrl) {
             return BasicResponse.builder()
                     .chattingId(chatting.getChattingId())
                     .lastChattingMessage(chatting.getLastChattingMessage())
@@ -46,6 +47,7 @@ public class ChattingDto {
                     .unreadCnt(unreadCnt)
                     .opponentMemberId(opponentMemberId)
                     .opponentName(opponentName)
+                    .imageUrl(imageUrl)
                     .build();
         }
     }

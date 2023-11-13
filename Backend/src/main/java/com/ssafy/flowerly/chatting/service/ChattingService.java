@@ -86,7 +86,8 @@ public class ChattingService {
             for(Chatting chatting : chattingList) {
                 Member opponent = chatting.getSeller();
                 String opponentName = storeInfoRepository.findStoreName(opponent);
-                ChattingDto.BasicResponse chattingDto = ChattingDto.BasicResponse.of(chatting, chatting.getUnreadCntConsumer(), opponent.getMemberId(), opponentName);
+                String imageUrl = chatting.getFlly().getImageUrl();
+                ChattingDto.BasicResponse chattingDto = ChattingDto.BasicResponse.of(chatting, chatting.getUnreadCntConsumer(), opponent.getMemberId(), opponentName, imageUrl);
                 chattingDtoList.add(chattingDto);
             }
         } else if(member.getRole().equals(MemberRole.SELLER)) {  // 판매자 입장인 경우
@@ -94,7 +95,8 @@ public class ChattingService {
 
             for(Chatting chatting : chattingList) {
                 Member opponent = chatting.getConsumer();
-                ChattingDto.BasicResponse chattingDto = ChattingDto.BasicResponse.of(chatting, chatting.getUnreadCntSeller(), opponent.getMemberId(), opponent.getNickName());
+                String imageUrl = chatting.getFllyParticipation().getImageUrl();
+                ChattingDto.BasicResponse chattingDto = ChattingDto.BasicResponse.of(chatting, chatting.getUnreadCntSeller(), opponent.getMemberId(), opponent.getNickName(), imageUrl);
                 chattingDtoList.add(chattingDto);
             }
         } else {
