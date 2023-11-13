@@ -5,6 +5,7 @@ import com.ssafy.flowerly.address.repository.DongRepository;
 import com.ssafy.flowerly.address.repository.SigunguRepository;
 import com.ssafy.flowerly.chatting.repository.RequestDeliveryInfoRepository;
 import com.ssafy.flowerly.entity.*;
+import com.ssafy.flowerly.entity.type.OrderType;
 import com.ssafy.flowerly.entity.type.ProgressType;
 import com.ssafy.flowerly.exception.CustomException;
 import com.ssafy.flowerly.exception.ErrorCode;
@@ -43,6 +44,8 @@ public class BuyerService {
     public Page<BuyerFllyDto> getMyFlly(Pageable pageable, Long memberId) {
         return fllyRepository.findFllyByConsumerMemberIdNotLikeFinish(pageable, memberId, ProgressType.FINISH_DELIVERY).map(flly -> {
             Long fllyId = flly.getFllyId();
+            Flly curFlly = fllyRepository.findByFllyId(fllyId)
+                    .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_FLLY));
 
             // 결제한 회사가 없으면 아직 조율이 완료된 것이 아니다.
             Request request = requestRepository.findByFllyFllyIdAndIsPaidTrue(fllyId).orElse(null);
@@ -50,7 +53,16 @@ public class BuyerService {
             //String address = "";
             //if(request != null) address = requestDeliveryInfoRepository.findAddressByRequestId(request.getRequestId()).orElse(null);
 
-            String address2 = fllyDeliveryRegionRepository.findAddressByFllyId(fllyId).orElse("");
+            String address2 = "";
+            if(curFlly.getOrderType().equals(OrderType.DELIVERY)) {
+                FllyDeliveryRegion fllyDeliveryRegion = fllyDeliveryRegionRepository.findByFllyFllyId(fllyId)
+                        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_FLLY_DELIVERYREGION));
+                String sido = fllyDeliveryRegion.getSido().getSidoName();
+                String sigugun = fllyDeliveryRegion.getSigungu().getSigunguName();
+                String dong = fllyDeliveryRegion.getDong().getDongName();
+                address2 = sido + " " + sigugun + " " + dong;
+            }
+
             //입찰, 조욜중일 떈 업체 정보가 출력되지 않는다
             if(flly.getProgress().getTitle().equals("입찰")||flly.getProgress().getTitle().equals("조율")){
                 return flly.toBuyerFlly(
