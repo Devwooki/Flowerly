@@ -20,6 +20,7 @@ interface participationType {
   fllybudget: number;
   fllyDeadline: string;
   fllyResponeDto: fllyResponeDtoType;
+  fllyProgress: string;
 }
 
 interface Props {
@@ -94,7 +95,7 @@ const ListParticipationCard = ({ $participationInfo }: Props) => {
             </div>
           </div>
         </div>
-        <div className={style.footerBox}>이거 넣어야함</div>
+        <div className={style.footerBox}>{$participationInfo.fllyProgress}</div>
       </div>
     </>
   );

@@ -35,6 +35,7 @@ interface participationType {
   fllybudget: number;
   fllyDeadline: string;
   fllyResponeDto: fllyResponeDtoType;
+  fllyProgress: string;
 }
 
 const ListSeller = () => {
