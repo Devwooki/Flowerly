@@ -24,7 +24,7 @@ const ShopInfoMain = () => {
       onError: (error) => {
         if (error?.response?.status === 403) {
           router.push("/fllylogin");
-        } else ToastErrorMessage("오류가 발생했습니다.");
+        }
       },
       retry: false,
     },

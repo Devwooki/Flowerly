@@ -1,5 +1,6 @@
 import { ToastErrorMessage } from "@/model/toastMessageJHM";
 import axios from "axios";
+import Router from "next/router";
 
 const baseURL = "https://flower-ly.co.kr/api";
 //const baseURL = "http://localhost:6090/api";
@@ -33,6 +34,7 @@ tokenHttp.interceptors.response.use(
       // 토큰 만료된 경우 처리를 합니다.
       ToastErrorMessage("로그인 만료되어 로그인 화면으로 이동합니다.");
       localStorage.removeItem("accessToken");
+      // Router.push("/fllylogin");
     } else {
       console.log(error);
     }
