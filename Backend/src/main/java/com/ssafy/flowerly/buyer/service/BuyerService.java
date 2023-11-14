@@ -66,10 +66,15 @@ public class BuyerService {
 
         StringBuilder fllyRequestAddress = new StringBuilder();
         if(curFlly.getOrderType().equals(OrderType.DELIVERY)){
-            fllyRequestAddress.append(fllyDeliveryRegionRepository.findAddressByFllyId(curFlly)
-                    .orElseGet(null));
-        }
+            FllyDeliveryRegion addressInfo = fllyDeliveryRegionRepository.findByFlly(curFlly)
+                    .orElseGet(null);
 
+            fllyRequestAddress
+                    .append( addressInfo.getSido().getSidoName() + " ")
+                    .append( addressInfo.getSigungu().getSigunguName() + " ")
+                    .append( addressInfo.getDong().getDongName() + " ")
+                    .append((String) addressInfo.getDeliveryAddress());
+        }
         buyerFlly.setRequestAddress(fllyRequestAddress.toString());
 
         //Progress : "입찰" || "조율" -> 업체 이름 "입찰" || "조율"

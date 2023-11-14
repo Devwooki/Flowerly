@@ -32,9 +32,6 @@ public interface FllyDeliveryRegionRepository extends JpaRepository<FllyDelivery
     Optional<FllyDeliveryRegion> findByFllyFllyId(Long fllyId);
 
     Optional<FllyDeliveryRegion> findByFlly(Flly flly);
-
-    @Query("SELECT fdr.deliveryAddress FROM FllyDeliveryRegion fdr WHERE fdr.flly = :flly ")
-    Optional<String> findAddressByFllyId(@Param("flly") Flly flly);
 }
 
 

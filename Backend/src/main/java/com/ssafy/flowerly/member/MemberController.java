@@ -81,7 +81,7 @@ public class MemberController {
     @DeleteMapping("/signout")
     public CustomResponse signOut(HttpServletRequest request, HttpServletResponse response){
         Long memberId = (Long) request.getAttribute("memberId");
-
+        log.info("{}", memberId);
         memberService.signout(memberId);
         jwtService.sendDeleteToken(request, response);
 
