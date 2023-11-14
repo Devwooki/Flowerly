@@ -8,6 +8,8 @@ import { useRecoilState } from "recoil";
 import { tokenHttp } from "@/api/tokenHttp";
 import Router from "next/router";
 import { ToastErrorMessage } from "@/model/toastMessageJHM";
+import { useResetRecoilState } from "recoil";
+import axios from "axios";
 
 interface SellerMyPageData {
   storeName: string;
@@ -19,11 +21,7 @@ const Mypage = () => {
   const [sellerData, setSellerData] = useState<SellerMyPageData | null>(null);
   const [buyerData, setBuyerData] = useState<string>("");
 
-  // const [isClient, setIsClient] = useState(false);
-
-  // useEffect(() => {
-  //   setIsClient(true);
-  // }, []);
+  const resetMemberInfo = useResetRecoilState(memberInfoState);
 
   useEffect(() => {
     console.log(memberInfo);
@@ -58,6 +56,28 @@ const Mypage = () => {
     Router.push("/mypage/mystore");
   };
 
+  const handleMyInfo = () => {
+    Router.push("/mypage/myinfo");
+  };
+
+  const handleLogout = () => {
+    tokenHttp
+      .get("/member/logout")
+      .then((res) => {
+        if (res.status === 200) {
+          ToastErrorMessage("로그아웃 되었습니다.");
+          localStorage.removeItem("accessToken");
+          resetMemberInfo();
+          Router.push("/");
+        }
+      })
+      .catch((err) => {
+        if (err.response.status === 403) {
+          Router.push("/fllylogin");
+        }
+      });
+  };
+
   return (
     <>
       <div className={style.MyPageBack}>
@@ -86,13 +106,19 @@ const Mypage = () => {
           </div>
         )}
         {memberInfo.role === "USER" && (
-          <div className={style.MypageSidBox}>
+          <div className={style.MypageSidBox} onClick={() => handleMyInfo()}>
             <div>
-              <div>내정보 수정 </div>
+              <div>내정보 수정</div>
               <div> &gt;</div>
             </div>
           </div>
         )}
+        <div className={style.MypageSidBox} onClick={() => handleLogout()}>
+          <div>
+            <div>로그아웃</div>
+            <div> &gt;</div>
+          </div>
+        </div>
       </div>
     </>
   );

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import style from "./BuyerFllyListCompletedCard.module.css";
+import Router from "next/router";
 
 interface BuyerFillListType {
   fllyId: number;
@@ -30,12 +31,17 @@ const BuyerFllyListCompletedCard = ({
     ModalChangeHandler();
   };
 
+  const handleFllyDetail = () => {
+    Router.push(`/flly/detail/${$fllyInfo.fllyId}`);
+    console.log($fllyInfo);
+  };
+
   return (
     <>
       <div className={style.cardBack}>
         <div className={style.ImgBox} style={{ backgroundImage: `url(/test/horizental.jpg)` }} />
         <div className={style.InfoBox}>
-          <div className={style.OrderAddBox}>
+          <div className={style.OrderAddBox} onClick={() => handleFllyDetail()}>
             <div>
               주문서 보기 <span> &gt;</span>
             </div>
