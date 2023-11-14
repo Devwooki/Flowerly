@@ -57,6 +57,9 @@ public class KakaoPayService {
 
     @Transactional
     public PaymentDto.ReadyResponse ready(PaymentDto.PayReq payReq, Long memberId) {
+        if(requestRepository.findSameFllyRequest(payReq.getRequestId()).size() > 0) {
+            throw new CustomException(ErrorCode.REQUEST_ALREADY_DONE);
+        }
         if(requestRepository.findByRequestId(payReq.getRequestId()).get().getIsPaid()) {
             throw new CustomException(ErrorCode.REQUEST_ALREADY_PAID);
         }
