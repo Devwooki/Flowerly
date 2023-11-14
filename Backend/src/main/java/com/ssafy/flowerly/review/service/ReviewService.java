@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.format.DateTimeFormatter;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -70,11 +69,19 @@ public class ReviewService {
         System.out.println("Seller info: " + seller);
 
         Member consumer = memberRepository.findByMemberId(memberId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_MEMBER));
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
         // consumer 검증
         if (!consumer.equals(request.getFlly().getConsumer())) {
             throw new CustomException(ErrorCode.CONSUMER_NOT_REVIEWER);
+        }
+
+        // 리뷰 중복 등록 방지
+
+        Optional<Review> existingReview = reviewRepository.findByRequestAndConsumerAndIsRemovedFalse(request, consumer);
+        if (existingReview.isPresent()) {
+            throw new CustomException(ErrorCode.REVIEW_ALREADY_EXISTS);
+
         }
 
         Review review = Review.builder()
@@ -91,11 +98,13 @@ public class ReviewService {
 
     }
 
-    public void deleteReview(Long reviewId, Long consumerId) {
-        Review review = reviewRepository.findByConsumerMemberIdAndReviewIdAndIsRemovedFalse(reviewId, consumerId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_REVIEW));
+    public void deleteReview(Long reviewId) {
+        Review review = reviewRepository.findByReviewIdAndIsRemovedFalse(reviewId)
+                .orElseThrow(() -> new CustomException(ErrorCode.REVIEW_NOT_FOUND));
 
         review.markAsRemoved();
         reviewRepository.save(review);
+
+        System.out.println("Review info: " + review);
     }
 }

@@ -59,26 +59,24 @@ public class FCMConfig {
                 .setNotification(new Notification(title, body))
                 .setToken(token)
                 .build()).collect(Collectors.toList());
-
         // 요청에 대한 응답을 받을 response
-        BatchResponse response;
-        try {
 
+        try {
             // 알림 발송
-            response = FirebaseMessaging.getInstance().sendAll(messages);
+            BatchResponse response = FirebaseMessaging.getInstance().sendAll(messages);
 
             // 요청에 대한 응답 처리
-            if (response.getFailureCount() > 0) {
-                List<SendResponse> responses = response.getResponses();
-                List<String> failedTokens = new ArrayList<>();
-
-                for (int i = 0; i < responses.size(); i++) {
-                    if (!responses.get(i).isSuccessful()) {
-                        failedTokens.add(tokenList.get(i));
-                    }
-                }
-                log.error("List of tokens are not valid FCM token : " + failedTokens);
-            }
+//            if (response.getFailureCount() > 0) {
+//                List<SendResponse> responses = response.getResponses();
+//                List<String> failedTokens = new ArrayList<>();
+//
+//                for (int i = 0; i < responses.size(); i++) {
+//                    if (!responses.get(i).isSuccessful()) {
+//                        failedTokens.add(tokenList.get(i));
+//                    }
+//                }
+//                log.error("List of tokens are not valid FCM token : " + failedTokens);
+//            }
         } catch (FirebaseMessagingException e) {
             log.error("cannot send to memberList push message. error info : {}", e.getMessage());
             throw new CustomException(ErrorCode.INIT_FCM_ERROR);

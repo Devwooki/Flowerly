@@ -48,8 +48,8 @@ public class ReviewController {
 
     @DeleteMapping("/delete/{reviewId}")
     public CustomResponse deleteReview(HttpServletRequest request, @PathVariable Long reviewId) {
-        Long consumerId = (Long) request.getAttribute("memberId");
-        reviewService.deleteReview(reviewId, consumerId);
+        Long memberId = (Long) request.getAttribute("memberId");
+        reviewService.deleteReview(reviewId);
 
         return new CustomResponse(200, "리뷰 삭제 성공");
     }

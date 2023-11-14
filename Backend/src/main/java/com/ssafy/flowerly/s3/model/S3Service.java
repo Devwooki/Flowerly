@@ -6,7 +6,6 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.ssafy.flowerly.entity.FileInfo;
 import com.ssafy.flowerly.entity.Member;
 import com.ssafy.flowerly.entity.StoreImage;
-import com.ssafy.flowerly.entity.StoreInfo;
 import com.ssafy.flowerly.entity.type.UploadType;
 import com.ssafy.flowerly.exception.CustomException;
 import com.ssafy.flowerly.exception.ErrorCode;
@@ -25,7 +24,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.imageio.ImageIO;
 import javax.transaction.Transactional;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URL;
@@ -67,7 +65,7 @@ public class S3Service {
 
     public List<StoreImageResponse> updateStoreImage(Long memberId, List<Long> imageIDs, List<String> uploadImgs){
         List<StoreImage> storeImages = storeImageRepository.findBySeller_MemberId(memberId);
-        Member seller = memberRepository.findByMemberId(memberId).orElseThrow(()-> new CustomException(ErrorCode.NOT_FIND_MEMBER));
+        Member seller = memberRepository.findByMemberId(memberId).orElseThrow(()-> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
         //기존에 이미지가 없으면 모두 반환한다.
         if(storeImages.size() == 0){

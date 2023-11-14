@@ -1,6 +1,6 @@
-package com.ssafy.flowerly.seller.buyer;
+package com.ssafy.flowerly.buyer.controller;
 
-import com.ssafy.flowerly.seller.buyer.BuyerService;
+import com.ssafy.flowerly.buyer.service.BuyerService;
 import com.ssafy.flowerly.util.DataResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

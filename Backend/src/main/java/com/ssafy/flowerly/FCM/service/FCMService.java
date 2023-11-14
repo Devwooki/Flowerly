@@ -23,6 +23,15 @@ public class FCMService {
     public FCMToken addToken(Long memberId, String fcmToken) {
         return fcmRepository.findByMemberId(memberId)
                 .map(temp -> {
+                    //현재 토큰이 존재하는 것인지 체크
+                    List<String> memberTokens = temp.getTokens();
+                    for(String hasToken : memberTokens){
+                        //같은 토큰을 보유하고 있으면 종료
+                        if(fcmToken.equals(hasToken)){
+                            return temp;
+                        }
+                    }
+                    //없으면 추가하고 업데이트
                     temp.addToken(fcmToken);
                     return fcmRepository.save(temp);
                 })
@@ -32,8 +41,8 @@ public class FCMService {
                         });
     }
 
-    public void sendPushMessage(Long memberId, String title, String body){
-        FCMToken memberTokenInfo = fcmRepository.findByMemberId(memberId)
+    public void sendPushMessage(Long receiverId, String title, String body){
+        FCMToken memberTokenInfo = fcmRepository.findByMemberId(receiverId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_MEMBER));
 
         fcmConfig.sendByTokenList(memberTokenInfo.getTokens(), title, body);

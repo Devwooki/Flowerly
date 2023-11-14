@@ -41,7 +41,7 @@ public class MyPageService {
     public Object getNickName(Long memberId) {
 
         Member member = memberRepository.findByMemberId(memberId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_MEMBER));
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
         return member.getNickName();
     }
@@ -49,7 +49,7 @@ public class MyPageService {
     public Object updateNickName(Long memberId, String newNickName) {
 
         Member member = memberRepository.findByMemberId(memberId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_MEMBER));
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
         member.updateNickName(newNickName);
         memberRepository.save(member);
@@ -62,7 +62,7 @@ public class MyPageService {
     public Object updateNotification(Long memberId) {
 
         Member member = memberRepository.findByMemberId(memberId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_MEMBER));
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
         String newNotificationStatus = member.notificationToggle();
         memberRepository.save(member);
@@ -78,7 +78,7 @@ public class MyPageService {
         List<Object[]> results = storeInfoRepository.findBySellerInfo(memberId);
 
         if (results.isEmpty()) {
-            throw new CustomException(ErrorCode.NOT_FIND_MEMBER);
+            throw new CustomException(ErrorCode.MEMBER_NOT_FOUND);
         }
 
 
@@ -150,7 +150,7 @@ public class MyPageService {
     public MyStoreInfoDto getMyStoreInfo(Long memberId) {
 
         StoreInfo storeInfo = storeInfoRepository.findBySellerMemberId(memberId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_STOREINFO));
+                .orElseThrow(() -> new CustomException(ErrorCode.STOREINFO_NOT_FOUND));
 
         return MyStoreInfoDto.builder()
                 .storeId(storeInfo.getStoreInfoId())
@@ -165,7 +165,7 @@ public class MyPageService {
     @Transactional
     public MyStoreInfoDto updateMyStoreInfo(Long memberId, MyStoreInfoDto myStoreInfoDto) {
         StoreInfo storeInfo = storeInfoRepository.findBySellerMemberId(memberId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_STOREINFO));
+                .orElseThrow(() -> new CustomException(ErrorCode.STOREINFO_NOT_FOUND));
 
         storeInfo.updateStoreName(myStoreInfoDto.getStoreName());
         storeInfo.updateStoreNumber(myStoreInfoDto.getStoreNumber());
@@ -177,13 +177,13 @@ public class MyPageService {
         // 시도, 시군구, 동 코드 조회
 
         Sido sido = sidoRepository.findBySidoName(myStoreInfoDto.getSidoName())
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_SIDO));
+                .orElseThrow(() -> new CustomException(ErrorCode.SIDO_NOT_FOUND));
 
         Sigungu sigungu = sigunguRepository.findBySigunguNameAndSido(myStoreInfoDto.getSigunguName(), sido)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_SIGUNGU));
+                .orElseThrow(() -> new CustomException(ErrorCode.SIGUNGU_NOT_FOUND));
 
         Dong dong = dongRepository.findByDongNameAndSigungu(myStoreInfoDto.getDongName(), sigungu)
-                .orElseThrow(() -> new CustomException((ErrorCode.NOT_FIND_DONG)));
+                .orElseThrow(() -> new CustomException((ErrorCode.DONG_NOT_FOUND)));
 
 
         storeInfo.updateSido(sido);
@@ -226,13 +226,13 @@ public class MyPageService {
         List<MyDeliveryRegionDto> savedDtos = myDeliveryRegionDtos.stream()
                 .map(dto -> {
                     Sido sido = sidoRepository.findBySidoCode(dto.getSidoCode())
-                            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_SIDO));
+                            .orElseThrow(() -> new CustomException(ErrorCode.SIDO_NOT_FOUND));
                     Sigungu sigungu = sigunguRepository.findBySigunguCodeAndSido(dto.getSigunguCode(), sido)
-                            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_SIGUNGU));
+                            .orElseThrow(() -> new CustomException(ErrorCode.SIGUNGU_NOT_FOUND));
                     Dong dong = dongRepository.findByDongCodeAndSigungu(dto.getDongCode(), sigungu)
-                            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_DONG));
+                            .orElseThrow(() -> new CustomException(ErrorCode.DONG_NOT_FOUND));
                     Member seller = memberRepository.findById(memberId)
-                            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_MEMBER));
+                            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
                     StoreDeliveryRegion newRegion = StoreDeliveryRegion.builder()
                             .seller(seller)
@@ -249,6 +249,9 @@ public class MyPageService {
                             .sidoCode(sido.getSidoCode())
                             .sigunguCode(sigungu.getSigunguCode())
                             .dongCode(dong.getDongCode())
+                            .fullAddress(savedRegion.getSido().getSidoName() + " " +
+                            savedRegion.getSigungu().getSigunguName() + " " +
+                            savedRegion.getDong().getDongName())
                             .build();
                 }).collect(Collectors.toList());
 

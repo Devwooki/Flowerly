@@ -2,8 +2,10 @@ package com.ssafy.flowerly.chatting.controller;
 
 import com.ssafy.flowerly.chatting.dto.ChattingDto;
 import com.ssafy.flowerly.chatting.dto.FllyFromChattingDto;
+import com.ssafy.flowerly.chatting.dto.PaymentDto;
 import com.ssafy.flowerly.chatting.dto.RequestFromChattingDto;
 import com.ssafy.flowerly.chatting.service.ChattingService;
+import com.ssafy.flowerly.chatting.service.KakaoPayService;
 import com.ssafy.flowerly.exception.CustomException;
 import com.ssafy.flowerly.exception.ErrorCode;
 import com.ssafy.flowerly.util.CustomResponse;
@@ -24,6 +26,7 @@ import java.util.Map;
 public class ChattingController {
 
     private final ChattingService chattingService;
+    private final KakaoPayService kakaoPayService;
 
     /**
      * 채팅방 생성 API
@@ -159,7 +162,7 @@ public class ChattingController {
      */
     @GetMapping("/price/{chattingId}")
     public CustomResponse getPrice(@PathVariable Long chattingId) {
-        Map<String, Object> responseDto = chattingService.getPrice(chattingId);
+        PaymentDto.Info responseDto = chattingService.getPrice(chattingId);
 
         return new DataResponse<>(200, "결제 정보 조회 성공", responseDto);
     }
@@ -177,4 +180,35 @@ public class ChattingController {
 
         return new CustomResponse(200, "채팅방 나가기 성공");
     }
+
+    @PostMapping("/kakaopay")
+    public CustomResponse payMoney(HttpServletRequest request, @RequestBody PaymentDto.PayReq payRequest) {
+        log.info("KakaoPay Ready");
+        Long memberId = (Long) request.getAttribute("memberId");
+        PaymentDto.ReadyResponse readyResponse = kakaoPayService.ready(payRequest, memberId);
+
+        return new DataResponse<PaymentDto.ReadyResponse>(200, "카카오페이 결제 준비 성공", readyResponse);
+    }
+
+    @PostMapping("/kakaopay/approve")
+    public CustomResponse approvePay(HttpServletRequest request, @RequestBody PaymentDto.ApproveReq approveReq) {
+        log.info("KakaoPay Approve");
+        Long memberId = (Long) request.getAttribute("memberId");
+        kakaoPayService.approve(memberId, approveReq);
+
+        return new CustomResponse(200, "카카오페이 결제 승인 성공");
+    }
+
+    @PostMapping("/kakaopay/cancel")
+    public CustomResponse cancelPay() {
+        log.info("KakaoPay Cancel");
+        return new CustomResponse(200, "카카오페이 결제 취소");
+    }
+
+    @PostMapping("/kakaopay/fail")
+    public CustomResponse failPay() {
+        log.info("KakaoPay Fail");
+        return new CustomResponse(200, "카카오페이 결제 실패");
+    }
+
 }

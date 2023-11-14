@@ -15,7 +15,7 @@ import java.util.List;
 public interface FllyPickupRegionRepository extends JpaRepository<FllyPickupRegion, Long> {
 
     @Query(
-            "SELECT pr FROM PickupRegion pr " +
+            "SELECT pr FROM FllyPickupRegion pr " +
                     "Left Join Flly fy ON fy.fllyId = pr.flly.fllyId " +
                     " LEFT JOIN FllyParticipation fp ON fp.flly.fllyId = fy.fllyId " +
                     "WHere ( pr.sigungu IN :sigunguList OR pr.dong IN :dongList ) " +

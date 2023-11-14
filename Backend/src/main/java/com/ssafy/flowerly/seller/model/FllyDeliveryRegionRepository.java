@@ -29,12 +29,12 @@ public interface FllyDeliveryRegionRepository extends JpaRepository<FllyDelivery
     Page<FllyDeliveryRegion> getSellerDeliverAbleList(List<Sido> sidoList, List<Sigungu> sigunguList, List<Dong> dongList, Pageable pageable, Long memberId);
 
 
-    Optional<FllyDeliveryRegion> findByFllyFllyId(Long aLong);
+    Optional<FllyDeliveryRegion> findByFllyFllyId(Long fllyId);
 
     Optional<FllyDeliveryRegion> findByFlly(Flly flly);
 
-    @Query("SELECT fdr.deliveryAddress FROM FllyDeliveryRegion fdr WHERE fdr.flly.fllyId = :fllyId ")
-    Optional<String> findAddressByFllyId(@Param("fllyId") Long fllyId);
+    @Query("SELECT fdr.deliveryAddress FROM FllyDeliveryRegion fdr WHERE fdr.flly = :flly ")
+    Optional<String> findAddressByFllyId(@Param("flly") Flly flly);
 }
 
 
