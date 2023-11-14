@@ -1,6 +1,6 @@
 .home {
   position: relative;
-  border: 1px solid black;
+  /* border: 1px solid black; */
 }
 
 .mainHeader {
@@ -27,7 +27,7 @@
 }
 
 .mainBody {
-  width: 90%;
+  width: 80%;
   margin: 0 auto;
   height: 80vh;
   margin-top: 20px;
@@ -48,6 +48,10 @@
   border-radius: 40px;
   object-position: center;
   object-fit: cover;
+}
+
+.swiper-slide {
+  margin: 20px;
 }
 
 .imgDisc {
