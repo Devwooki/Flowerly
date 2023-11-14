@@ -21,8 +21,8 @@ const ListBuyer = () => {
         console.log("accessToken", res.headers.authorization);
         localStorage.setItem("accessToken", res.headers.authorization);
       }
-      return [res.data.data.content[11]];
-      // return res.data.data.content;
+      // return [res.data.data.content[11]];
+      return res.data.data.content;
     },
     {
       onError: (error) => {
