@@ -33,10 +33,6 @@ const ShopInfoMain = () => {
 
   return (
     <>
-      <Head>
-        <title>{data?.store.storeName}의 정보</title>
-        <meta property="og:title" content={`${data?.store.storeName}의 가게 정보입니다.`} />
-      </Head>
       <div className={style.ShopInfoBack}>
         <div className={style.ShopInfoHeader}>
           <div className={style.headerTitle}>
