@@ -7,6 +7,8 @@ import { ToastErrorMessage } from "@/model/toastMessageJHM";
 import { useRouter } from "next/router";
 import { backIn } from "framer-motion";
 import { tokenHttp } from "@/api/tokenHttp";
+import { useRecoilValue } from "recoil";
+import { MemberInfo, memberInfoState } from "@/recoil/memberInfoRecoil";
 
 interface flowerInfoType {
   flowerName: string;
@@ -37,6 +39,7 @@ const FllySellerDetail = () => {
   const [fllyRequestInfo, setFllyRequestInfo] = useState<fllyReqeustDeatilType>();
   const fllyId = useParams();
   const router = useRouter();
+  const memberInfo = useRecoilValue<MemberInfo>(memberInfoState);
 
   useEffect(() => {
     console.log(fllyId.fllyId);
@@ -80,7 +83,9 @@ const FllySellerDetail = () => {
     <>
       <div className={style.detailBack}>
         <div
-          className={style.detailHeader}
+          className={
+            memberInfo.role === "SELLER" ? style.detailSellerHeader : style.detailBuyerHeader
+          }
           style={{ backgroundImage: `url(${fllyRequestInfo?.imageUrl})` }}
         >
           <Image
@@ -88,18 +93,21 @@ const FllySellerDetail = () => {
             alt="뒤로가기"
             width={15}
             height={25}
+            className={style.backImg}
             onClick={() => {
               router.back();
             }}
           />
-          <Image
-            className={style.partBtn}
-            src="/img/btn/participate-btn2.png"
-            alt="참여하기"
-            width={80}
-            height={100}
-            onClick={pageMoveHandelr}
-          />
+          {memberInfo.role === "SELLER" && (
+            <Image
+              className={style.partBtn}
+              src="/img/btn/participate-btn2.png"
+              alt="참여하기"
+              width={80}
+              height={100}
+              onClick={pageMoveHandelr}
+            />
+          )}
         </div>
         <div className={style.detailMain}>
           {fllyRequestInfo && <RequestDetail $fllyRequestInfo={fllyRequestInfo} />}

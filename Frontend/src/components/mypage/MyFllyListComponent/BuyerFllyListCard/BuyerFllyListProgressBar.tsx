@@ -8,7 +8,7 @@ const BuyerFllyListProgressBar: React.FC<ProgressBarProps> = ({ currentStep }) =
   const [barWidth, setBarWidth] = useState("0");
 
   useEffect(() => {
-    const stepWidths = ["0", "20%", "40%", "60%", "100%"];
+    const stepWidths = ["0", "20%", "40%", "62%", "100%"];
     setBarWidth(stepWidths[currentStep]);
   }, [currentStep]);
 

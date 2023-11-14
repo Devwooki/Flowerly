@@ -16,8 +16,8 @@ const ResponseDetail = ({ $fllyResponseInfo }: { $fllyResponseInfo: fllyResponeT
           <div className={style.detailInfo}>
             <div>제안금액</div>
             <div>
-              {$fllyResponseInfo.requestPrice}
-              <span>원</span>
+              {Number($fllyResponseInfo.requestPrice).toLocaleString()}
+              <span> 원</span>
             </div>
           </div>
           <div className={style.detailInfo}>
