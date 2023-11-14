@@ -83,6 +83,27 @@ const DeliveryModal = ({ ModalChangeHandler, pickupCodeList, setPickupCodeList, 
   const handleSigunguClick = (sigunguCode: number) => {
     const selectedSigunguObj = sigunguData.find((sigungu) => sigungu.sigunguCode === sigunguCode);
     setSelectedSigungu(selectedSigunguObj || null);
+
+    if(selectedSigunguObj?.sigunguName === "전체") {
+      if(selectedSido && selectedSigunguObj) {
+        const fullAddress = `${selectedSido.sidoName} ${selectedSigunguObj.sigunguName}`;
+        // 이미 리스트에 있는지 확인
+        if (!pickupList.includes(fullAddress)) {
+
+          setPickupList((prevList) => [...prevList, fullAddress]);
+
+          // deliveryRegionCodeList에 추가
+          setPickupCodeList((prevList) => [
+            ...prevList,
+            {
+              sidoCode: selectedSido.sidoCode,
+              sigunguCode: selectedSigunguObj.sigunguCode,
+              dongCode: null,
+            },
+          ]);
+        }
+      }
+    }
   };
 
   const handleDongClick = (dongName: string) => {
