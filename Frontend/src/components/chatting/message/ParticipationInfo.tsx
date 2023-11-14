@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import style from "./style/ParticipationInfo.module.css";
 import Image from "next/image";
 
-import { tokenHttp } from "@/api/chattingTokenHttp";
+import { tokenHttp } from "@/api/tokenHttp";
 
 type ParticipationFormProps = {
   chattingId: number;

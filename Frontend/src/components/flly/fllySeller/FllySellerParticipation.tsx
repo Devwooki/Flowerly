@@ -14,6 +14,9 @@ const FllySellerParticipation = () => {
   const fllyId = useParams();
   const router = useRouter();
 
+  //여러번 클릭안되게 하기위한 로직
+  const [debouncedClick, setDebouncedClick] = useState<boolean>(true);
+
   const [money, setMoney] = useState<string>();
   const [content, setContent] = useState<String>();
   const [fileInfo, setFileInfo] = useState<File>();
@@ -76,6 +79,9 @@ const FllySellerParticipation = () => {
   };
 
   const submitHandler = async () => {
+    if (!debouncedClick) return;
+    setDebouncedClick(false);
+
     const options = {
       maxSizeMB: 0.2,
       maxWidthOrHeight: 1920,

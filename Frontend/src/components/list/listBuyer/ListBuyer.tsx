@@ -5,8 +5,11 @@ import { useQuery } from "react-query";
 import axios, { AxiosError } from "axios";
 import BuyerCards from "./listBuyerCardComponent/BuyerCards";
 import { tokenHttp } from "@/api/tokenHttp";
+import { useRouter } from "next/router";
+import { ToastErrorMessage } from "@/model/toastMessageJHM";
 
 const ListBuyer = () => {
+  const router = useRouter();
   const { data, isLoading, isFetching, isError } = useQuery<BuyerCard[], AxiosError>(
     ["listBuyerQuery"],
     async () => {
@@ -17,15 +20,18 @@ const ListBuyer = () => {
         console.log("accessToken", res.headers.authorization);
         localStorage.setItem("accessToken", res.headers.authorization);
       }
-      // return [res.data.data.content[3]];
+      // return [res.data.data.content[1]];
       return res.data.data.content;
     },
     {
       onError: (error) => {
         console.log("에러 발생했다 임마");
         console.log(error?.response?.status);
+        if (error?.response?.status === 403) {
+          router.push("/fllylogin");
+        } else ToastErrorMessage("오류가 발생했습니다.");
       },
-      retry: 2,
+      retry: false,
       cacheTime: 0,
     },
   );

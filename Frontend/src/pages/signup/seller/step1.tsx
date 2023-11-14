@@ -125,7 +125,7 @@ const Step1 = () => {
   }, [basicAddress, detailAddress, setSellerInput]);
 
   return (
-    <div>
+    <div className={style.back}>
       <div className={style.container}>
         <h2>회원가입</h2>
         <div className={style.inputContainer}>

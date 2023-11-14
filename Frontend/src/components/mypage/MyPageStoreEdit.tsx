@@ -17,31 +17,16 @@ const MyPageStoreEdit = () => {
   const Router = useRouter();
   const [memberInfo, setMemberInfo] = useRecoilState(memberInfoState);
 
-  // const [isClient, setIsClient] = useState(false);
-
-  // useEffect(() => {
-  //   setIsClient(true);
-  // }, []);
-
   const [editData, setEditData] = useState({
     storeName: memberInfo.store?.storeName || "",
     sellerName: memberInfo.store?.sellerName || "",
     phoneNumber: memberInfo.store?.phoneNumber || "",
     storeNumber: memberInfo.store?.storeNumber || "",
     address: memberInfo.store?.address || "",
+    sidoName: "",
+    sigunguName: "",
+    dongName: "",
   });
-
-  useEffect(() => {
-    if (memberInfo.store) {
-      setEditData({
-        storeName: memberInfo.store.storeName || "",
-        sellerName: memberInfo.store.sellerName || "",
-        phoneNumber: memberInfo.store.phoneNumber || "",
-        storeNumber: memberInfo.store.storeNumber || "",
-        address: memberInfo.store.address || "",
-      });
-    }
-  }, [memberInfo.store]);
 
   const addressPart = editData.address ? editData.address.split("T") : ["", ""];
 
@@ -53,6 +38,10 @@ const MyPageStoreEdit = () => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setEditData({ ...editData, [name]: value });
+  };
+
+  const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDetailAddress(detailAddress);
   };
 
   const isAllDataFilled = () => {
@@ -128,6 +117,13 @@ const MyPageStoreEdit = () => {
     console.log(data);
     setBasicAddress(roadAddress);
 
+    setEditData({
+      ...editData,
+      sidoName: data.sido,
+      sigunguName: data.sigungu,
+      dongName: data.bname,
+    });
+
     setStoreAddressCode({
       sido: data.sido,
       sigungu: data.sigungu,
@@ -173,6 +169,7 @@ const MyPageStoreEdit = () => {
           }));
 
           console.log(memberInfo);
+          console.log(response.data.data);
 
           Router.push("/mypage");
 
@@ -272,7 +269,7 @@ const MyPageStoreEdit = () => {
                 type="text"
                 name="detailAddress"
                 value={addressPart ? addressPart[1] : "상세주소 없음"}
-                onChange={(e) => setDetailAddress(e.target.value)}
+                onChange={handleAddressChange}
                 className={style.storeInfoContent}
               />
             </div>

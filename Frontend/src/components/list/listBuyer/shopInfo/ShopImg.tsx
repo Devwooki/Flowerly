@@ -11,10 +11,10 @@ const ShopImg = ({ shopImg }: ShopImgProps) => {
     <div className={style.shopImgMain}>
       <div className={style.headerTitle}>대표사진</div>
       <div className={style.imgList}>
-        {shopImg.map((src) => (
+        {shopImg.map((src, idx) => (
           <Image
             src={src}
-            key={src}
+            key={src + "-" + idx}
             alt="대표 이미지"
             width={120}
             height={120}

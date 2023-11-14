@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { useEffect } from "react";
+import Head from "next/head";
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -15,18 +15,27 @@ export default function App({ Component, pageProps }: AppProps) {
   const queryClient = new QueryClient();
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <ToastContainer />
-      <RecoilRoot>
-        {isChattingRoom || fllyLogin ? (
-          <Component {...pageProps} />
-        ) : (
-          <>
+    <>
+      <Head>
+        <link type="image" rel="icon" href="/test/vertical.jpg" />
+        <title>플리의 특별한 선물</title>
+        <meta property="og:image" content={"/test/test-flower-img.png"} />
+        <meta property="og:url" content={"/test/test-flower-img.png"} />
+        <meta property="og:title" content="플리 - 세상에 하나뿐인 꽃다발" />
+      </Head>
+      <QueryClientProvider client={queryClient}>
+        <ToastContainer />
+        <RecoilRoot>
+          {isChattingRoom || fllyLogin ? (
             <Component {...pageProps} />
-            <Navi />
-          </>
-        )}
-      </RecoilRoot>
-    </QueryClientProvider>
+          ) : (
+            <>
+              <Component {...pageProps} />
+              <Navi />
+            </>
+          )}
+        </RecoilRoot>
+      </QueryClientProvider>
+    </>
   );
 }

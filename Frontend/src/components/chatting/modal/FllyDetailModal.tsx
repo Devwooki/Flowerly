@@ -3,7 +3,7 @@ import style from "./style/FllyDetailModal.module.css";
 import Image from "next/image";
 import axios from "axios";
 
-import { tokenHttp } from "@/api/chattingTokenHttp";
+import { tokenHttp } from "@/api/tokenHttp";
 import { useRouter } from "next/router";
 
 type FllyDetailProps = {

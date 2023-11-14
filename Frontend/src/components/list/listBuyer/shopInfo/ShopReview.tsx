@@ -13,7 +13,6 @@ const ShopReview = ({ review }: ShopReviewProps) => {
         review.map((review, idx) => {
           const splitT = review.createdAt.split("T");
           const date = splitT[0];
-          console.log(date);
 
           return (
             <div className={style.review} key={review.createdAt + idx}>

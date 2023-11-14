@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import style from "./step2.module.css";
 import { useRouter } from "next/router";
@@ -10,6 +10,7 @@ import {
   tempTokenState,
   sellerAddressState,
 } from "@/recoil/tokenRecoil";
+import Image from "next/image";
 
 interface sidoDataType {
   sidoCode: number;
@@ -37,6 +38,7 @@ const Step2 = () => {
   const [selectedSigungu, setSelectedSigungu] = useState<sigunguDataType | null>(null);
   const [dongData, setDongData] = useState<dongDataType[]>([]);
   const [selectedDong, setSelectedDong] = useState<dongDataType | null>(null);
+  const deliveryListRef = useRef<HTMLDivElement>(null);
 
   const [deliveryRegionList, setDeliveryRegionList] = useRecoilState(sellerDeliveryRegionState);
   const [deliveryRegionCodeList, setDeliveryRegionCodeList] =
@@ -77,6 +79,12 @@ const Step2 = () => {
   }, [selectedSigungu]);
 
   useEffect(() => {
+    if (deliveryListRef.current) {
+      deliveryListRef.current.scrollLeft = deliveryListRef.current.scrollWidth;
+    }
+  }, [deliveryRegionList]);
+
+  useEffect(() => {
     setPath(window.location.pathname);
     setHost(window.location.host);
     console.log(path, host);
@@ -106,6 +114,7 @@ const Step2 = () => {
     const selectedCode = Number(event.target.value);
     const selectedSidoObj = sidoData.find((sido) => sido.sidoCode === selectedCode);
     setSelectedSido(selectedSidoObj || null);
+    setDongData([]);
   };
 
   const handleSigunguClick = (sigunguCode: number) => {
@@ -129,6 +138,7 @@ const Step2 = () => {
             sidoCode: selectedSido.sidoCode,
             sigunguCode: selectedSigungu.sigunguCode,
             dongCode: selectedDongObj!.dongCode,
+            fullAddress: fullAddress,
           },
         ]);
       }
@@ -186,20 +196,22 @@ const Step2 = () => {
   };
 
   return (
-    <div>
+    <div className={style.back}>
       <div className={style.container}>
         <h3>배달 가능 지역 선택</h3>
         <div>
-          <div className={style.deliveryRegionList}>
+          <div className={style.deliveryRegionList} ref={deliveryListRef}>
             {deliveryRegionList.map((address, index) => (
               <div key={index} className={style.deliveryRegionItem}>
                 {address}
-                <button
+                <Image
+                  alt="삭제"
+                  src="/img/btn/gray-delete-btn.png"
+                  width={12}
+                  height={12}
                   className={style.removeButton}
                   onClick={() => handleRemoveDeliveryRegion(address)}
-                >
-                  X
-                </button>
+                />
               </div>
             ))}
           </div>

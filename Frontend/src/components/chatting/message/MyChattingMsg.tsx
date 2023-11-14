@@ -6,6 +6,7 @@ import OrderFormMsg from "./OrderFormMsg";
 import RequestMsg from "./RequestMsg";
 import PaymentMsg from "./PaymentMsg";
 import ImageMsg from "./ImageMsg";
+import PaymentCompleteMsg from "./PaymentCompleteMsg";
 
 type ChattingMsgProps = {
   message: {
@@ -72,6 +73,8 @@ const MyChattingMsg: React.FC<ChattingMsgProps> = ({
           onImageLoad={imageLoadHandler}
           modalHandler={modalHandler}
         />
+      ) : message.type === "PAYMENT_COMPLETE" ? (
+        <PaymentCompleteMsg chattingId={chattingId} />
       ) : (
         <div className={style.contentDiv}>{message.content}</div>
       )}

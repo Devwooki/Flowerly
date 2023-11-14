@@ -11,7 +11,7 @@ import "dayjs/locale/ko";
 
 import DaumPostcode from "react-daum-postcode";
 import { ToastErrorMessage } from "@/model/toastMessageJHM";
-import { tokenHttp } from "@/api/chattingTokenHttp";
+import { tokenHttp } from "@/api/tokenHttp";
 import { useRouter } from "next/router";
 
 type DeliveryOrderProps = {

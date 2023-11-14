@@ -24,7 +24,9 @@ const BuyerCardOne = ({ card }: BuyerCardOneProps) => {
   const setCardProps = useSetRecoilState(FllylistDiscRecoil);
   const [selectedColor, setSelectedColor] = useState<string[]>([]);
 
-  useEffect(() => setSelectedColor([`${card.color1}`, `${card.color2}`, `${card.color3}`]), [card]);
+  useEffect(() => {
+    setSelectedColor([card.color1, card.color2, card.color3].filter((color) => color !== null));
+  }, [card]);
 
   const buttomBtnCmd = (stepNumber: number) => {
     switch (stepNumber) {
@@ -83,7 +85,7 @@ const BuyerCardOne = ({ card }: BuyerCardOneProps) => {
         return "#F67828";
       case "분홍색":
         return "#FFC5BF";
-      case "노랑색":
+      case "노란색":
         return "#FBE870";
       case "파란색":
         return "#0489DD";
@@ -106,7 +108,7 @@ const BuyerCardOne = ({ card }: BuyerCardOneProps) => {
         return "주황";
       case "분홍색":
         return "분홍";
-      case "노랑색":
+      case "노란색":
         return "노랑";
       case "파란색":
         return "파랑";
@@ -195,31 +197,44 @@ const BuyerCardOne = ({ card }: BuyerCardOneProps) => {
             </div>
             <div className={style.infoColorTable}>
               <div>주요색상</div>
-              {selectedColor.map((color, idx) => {
-                const rgbColor = mapColorNameToRGB(color);
-                return (
-                  <div
-                    key={idx}
-                    className={`${style.colorInfo} ${style.colorfirst}`}
-                    style={{
-                      color: isClient && windowWidth <= 426 ? rgbColor : "black",
-                      backgroundColor:
-                        isClient && windowWidth <= 426 ? rgbColor : "var(--moregray)",
-                      // backgroundColor: isClient && windowWidth <= 426 ? "" : "var(--moregray)",
-                    }}
-                  >
-                    {windowWidth <= 426 ? "" : mapFlowerText(color)}
-                    {/* {windowWidth <= 426 ? "" : ""} */}
-                  </div>
-                  // <Image
-                  //   src={`/img/flowerColor/${mapFlowerColor(color)}.png`}
-                  //   alt="꽃 색상"
-                  //   width={40}
-                  //   height={40}
-                  //   key={idx}
-                  // />
-                );
-              })}
+              {selectedColor.length > 0 ? (
+                selectedColor.map((color, idx) => {
+                  const rgbColor = mapColorNameToRGB(color);
+                  return (
+                    <div
+                      key={idx}
+                      className={`${style.colorInfo} ${style.colorfirst}`}
+                      style={{
+                        color: isClient && windowWidth <= 426 ? rgbColor : "black",
+                        backgroundColor: isClient && windowWidth <= 426 ? rgbColor : "",
+                        // backgroundColor: isClient && windowWidth <= 426 ? "" : "var(--moregray)",
+                      }}
+                    >
+                      {windowWidth <= 426 ? "" : mapFlowerText(color)}
+                      {/* {windowWidth <= 426 ? "" : ""} */}
+                    </div>
+                    // <Image
+                    //   src={`/img/flowerColor/${mapFlowerColor(color)}.png`}
+                    //   alt="꽃 색상"
+                    //   width={40}
+                    //   height={40}
+                    //   key={idx}
+                    // />
+                  );
+                })
+              ) : (
+                <div
+                  className={`${style.colorInfo} ${style.colorfirst}`}
+                  style={{
+                    color: isClient && windowWidth <= 426 ? "black" : "black",
+                    backgroundColor: isClient && windowWidth <= 426 ? "grey" : "",
+                    // backgroundColor: isClient && windowWidth <= 426 ? "" : "var(--moregray)",
+                  }}
+                >
+                  {windowWidth <= 426 ? "" : "없음"}
+                  {/* {windowWidth <= 426 ? "" : ""} */}
+                </div>
+              )}
             </div>
             <div className={style.infoTable}>
               <div className={style.infoTitle}>꽃집</div>

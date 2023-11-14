@@ -12,6 +12,7 @@ type ChattingProps = {
     unreadCnt: number;
     opponentMemberId: number;
     opponentName: string;
+    imageUrl: string;
   };
   modalHandler: Function;
 };
@@ -104,8 +105,20 @@ const ChattingListCard: React.FC<ChattingProps> = ({ chattingData, modalHandler 
         onTouchEnd={touchEndHandler}
         ref={upperDivRef}
       >
+        <div className={style.contentImg}>
+          <Image
+            width={70}
+            height={70}
+            src={chattingData.imageUrl}
+            alt="의뢰 이미지"
+            onClick={() => router.push(`/chatting/room/${chattingData.chattingId}`)}
+            onError={(e) => {
+              e.currentTarget.src = "/img/etc/no-image.jpg";
+            }}
+          ></Image>
+        </div>
         <div
-          className={style.contentDiv}
+          className={style.contentDivMain}
           onClick={() => router.push(`/chatting/room/${chattingData.chattingId}`)}
         >
           <div className={style.cardTop}>

@@ -17,5 +17,5 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     Boolean existsByRequestRequestId(Long requestId);
 
-    Optional<Review> findByConsumerMemberIdAndReviewIdAndIsRemovedFalse(Long reviewId, Long consumerId);
+    Optional<Review> findByConsumerMemberIdAndReviewIdAndIsRemovedFalse(Long reviewId, Long memberId);
 }
