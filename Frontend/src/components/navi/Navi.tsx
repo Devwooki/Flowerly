@@ -21,8 +21,6 @@ const Navi = () => {
 
   const determineInitialButton = () => {
     const pathSegments = router.pathname.split("/").filter(Boolean);
-    console.log("pathSegments", pathSegments);
-
     switch (pathSegments[0]) {
       case "list":
         return "list";
