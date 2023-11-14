@@ -1,6 +1,9 @@
 import React from "react";
 import style from "./SellerFllyListProgressCard.module.css";
 import Image from "next/image";
+import { useRouter } from "next/router";
+import { tokenHttp } from "@/api/chattingTokenHttp";
+import { ToastSuccessMessage } from "@/model/toastMessageJHM";
 
 interface Order {
   fllyId: number;
@@ -12,8 +15,46 @@ interface Order {
 
 interface SellerFllyListProgressCardProps {
   data: Order;
+  updateHandler: (index: number, newProgress: string) => void;
+  index: number;
 }
-const SellerFllyListProgressCard: React.FC<SellerFllyListProgressCardProps> = ({ data }) => {
+const SellerFllyListProgressCard: React.FC<SellerFllyListProgressCardProps> = ({
+  data,
+  updateHandler,
+  index,
+}) => {
+  const router = useRouter();
+  const handleMoveToOrder = () => {
+    router.push(`/flly/detail/${data.fllyId}`);
+  };
+
+  const handleFinish = () => {
+    tokenHttp
+      .patch(`/seller/flly/update/${data.fllyId}`)
+      .then((res) => {
+        if (res.data.code === 200) {
+          // 수정필요
+          console.log(res.data.data);
+          updateHandler(index, res.data.data.fllyUpdateProgress);
+
+          ToastSuccessMessage("플리가 완료되었습니다.");
+
+          if (res.headers.authorization) {
+            localStorage.setItem("accessToken", res.headers.authorization);
+          }
+        }
+      })
+      .catch((err) => {
+        if (err.response.status === 403) {
+          router.push("/fllylogin");
+        }
+      });
+  };
+
+  const handleMoveToFllyList = () => {
+    router.push("/list");
+  };
+
   return (
     <>
       <div className={style.cardBack}>
@@ -21,7 +62,7 @@ const SellerFllyListProgressCard: React.FC<SellerFllyListProgressCardProps> = ({
           <div className={style.ImgBox} style={{ backgroundImage: `url(/test/horizental.jpg)` }} />
           <div className={style.InfoBox}>
             <div className={style.OrderAddBox}>
-              <div>
+              <div onClick={handleMoveToOrder}>
                 주문서 보기 <span> &gt;</span>
               </div>
             </div>
@@ -39,7 +80,7 @@ const SellerFllyListProgressCard: React.FC<SellerFllyListProgressCardProps> = ({
                 <div>{data.deliveryPickupTime}</div>
               </div>
             </div>
-            <div className={style.OrderFooter}>
+            <div className={style.OrderFooter} onClick={handleMoveToFllyList}>
               <div>진행중 플리 이동</div>
             </div>
           </div>
@@ -54,7 +95,9 @@ const SellerFllyListProgressCard: React.FC<SellerFllyListProgressCardProps> = ({
             ></Image>
             <span>{data.progress}</span>
           </div>
-          <div className={style.cardFinshBtn}>완료하기</div>
+          <div className={style.cardFinshBtn} onClick={handleFinish}>
+            완료하기
+          </div>
         </div>
       </div>
     </>

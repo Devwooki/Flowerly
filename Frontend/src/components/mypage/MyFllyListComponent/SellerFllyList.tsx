@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import SellerFllyListCompletedCard from "./SellerFllyListCard/SellerFllyListCompletedCard";
 import SellerFllyListProgressCard from "./SellerFllyListCard/SellerFllyListProgressCard";
 import { tokenHttp } from "@/api/tokenHttp";
-import Router from "next/router";
-
+import { useRouter } from "next/router";
 export interface Order {
   fllyId: number;
   orderName: string;
@@ -13,8 +12,15 @@ export interface Order {
 }
 
 const SellerFllyList = () => {
-  const [completedOrders, setCompletedOrders] = useState<Order[]>([]);
-  const [progressOrders, setProgressOrders] = useState<Order[]>([]);
+  const router = useRouter();
+
+  const [sellerFllyList, setSellerFllyList] = useState<Order[]>([]);
+
+  const updateHandler = (index: number, newProgress: string) => {
+    const updateSellerFllyList = [...sellerFllyList];
+    updateSellerFllyList[index].progress = newProgress;
+    setSellerFllyList(updateSellerFllyList);
+  };
 
   useEffect(() => {
     const getSellerFllyList = () => {
@@ -22,13 +28,8 @@ const SellerFllyList = () => {
         .get("/mypage/seller/flly")
         .then((res) => {
           if (res.data.code === 200) {
-            const orders: Order[] = res.data.data;
-
-            const completed = orders.filter((order) => order.progress === "픽업/배달완료");
-            const inProgress = orders.filter((order) => order.progress !== "픽업/배달완료");
-
-            setCompletedOrders(completed);
-            setProgressOrders(inProgress);
+            setSellerFllyList(res.data.data);
+            console.log(res.data.data);
 
             if (res.headers.authorization) {
               localStorage.setItem("accessToken", res.headers.authorization);
@@ -37,7 +38,7 @@ const SellerFllyList = () => {
         })
         .catch((err) => {
           if (err.res.status === 403) {
-            Router.push("fllylogin");
+            router.push("fllylogin");
           }
         });
     };
@@ -47,12 +48,18 @@ const SellerFllyList = () => {
   return (
     <>
       <div className="SellerFllyListBack">
-        {completedOrders.map((order) => (
-          <SellerFllyListCompletedCard key={order.fllyId} data={order} />
-        ))}
-        {progressOrders.map((order) => (
-          <SellerFllyListProgressCard key={order.fllyId} data={order} />
-        ))}
+        {sellerFllyList.map((order, index) =>
+          order.progress === "픽업/배달완료" ? (
+            <SellerFllyListCompletedCard key={order.fllyId + order.orderName} data={order} />
+          ) : (
+            <SellerFllyListProgressCard
+              key={order.fllyId + order.orderName}
+              data={order}
+              updateHandler={updateHandler}
+              index={index}
+            />
+          ),
+        )}
       </div>
     </>
   );

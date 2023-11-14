@@ -1,5 +1,6 @@
 import React from "react";
 import style from "./SellerFllyListCompletedCard.module.css";
+import Router from "next/router";
 
 interface Order {
   fllyId: number;
@@ -14,13 +15,16 @@ interface SellerFllyListCompletedCardProps {
 }
 
 const SellerFllyListCompletedCard: React.FC<SellerFllyListCompletedCardProps> = ({ data }) => {
+  const handleMoveToOrder = () => {
+    Router.push(`/flly/detail/${data.fllyId}`);
+  };
   return (
     <>
       <div className={style.cardBack}>
         <div className={style.ImgBox} style={{ backgroundImage: `url(/test/horizental.jpg)` }} />
         <div className={style.InfoBox}>
           <div className={style.OrderAddBox}>
-            <div>
+            <div onClick={handleMoveToOrder}>
               주문서 보기 <span> &gt;</span>
             </div>
           </div>
