@@ -173,6 +173,18 @@ const ChattingList = () => {
                 />
               );
             })}
+          {chattings.length == 0 && (
+            <div className={style.noDataDiv}>
+              <Image
+                className={style.noDataImg}
+                src="/img/etc/no-chatting-image.png"
+                width={200}
+                height={200}
+                alt="채팅 없음 이미지"
+              />
+              <div>채팅이 없습니다.</div>
+            </div>
+          )}
         </div>
       </div>
     </>
