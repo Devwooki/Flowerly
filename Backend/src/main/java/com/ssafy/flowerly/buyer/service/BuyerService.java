@@ -4,7 +4,6 @@ package com.ssafy.flowerly.buyer.service;
 import com.ssafy.flowerly.buyer.dto.BuyerFllyDto;
 import com.ssafy.flowerly.chatting.repository.RequestDeliveryInfoRepository;
 import com.ssafy.flowerly.entity.*;
-import com.ssafy.flowerly.entity.type.OrderType;
 import com.ssafy.flowerly.entity.type.ProgressType;
 import com.ssafy.flowerly.exception.CustomException;
 import com.ssafy.flowerly.exception.ErrorCode;
@@ -12,7 +11,6 @@ import com.ssafy.flowerly.member.model.StoreInfoRepository;
 import com.ssafy.flowerly.buyer.dto.BuyerFlly;
 import com.ssafy.flowerly.buyer.dto.Flist;
 import com.ssafy.flowerly.seller.model.*;
-import com.ssafy.flowerly.seller.vo.FllyRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -56,7 +54,7 @@ public class BuyerService {
     private BuyerFllyDto getFllyResponseDto(Long fllyId) {
         return fllyRepository.findByFllyIdAndActivate(fllyId)
                 .map(curFlly -> fllyToBuyerDto(curFlly))
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_FLLY));
+                .orElseThrow(() -> new CustomException(ErrorCode.FLLY_NOT_FOUND));
     }
 
     private BuyerFllyDto fllyToBuyerDto(Flly curFlly){
@@ -66,7 +64,7 @@ public class BuyerService {
         BuyerFllyDto buyerFlly = curFlly.toBuyerFlly();
 
         String fllyRequestAddress = fllyDeliveryRegionRepository.findAddressByFllyId(curFlly)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_FLLY_DELIVERYREGION));
+                .orElseThrow(() -> new CustomException(ErrorCode.FLLY_DELIVERYREGION_NOT_FOUND));
         buyerFlly.setRequestAddress(fllyRequestAddress);
 
         //Progress : "입찰" || "조율" -> 업체 이름 "입찰" || "조율"
@@ -88,7 +86,7 @@ public class BuyerService {
                         });
             }catch(Exception e){
                 log.error("플리조회중 예외 발생 {}", e.getMessage());
-                throw new CustomException(ErrorCode.DUPLICATE_REQUET_PAID);
+                throw new CustomException(ErrorCode.DUPLICATE_REQUEST_PAID);
             }
 
         }

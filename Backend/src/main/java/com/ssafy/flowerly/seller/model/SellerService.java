@@ -54,7 +54,7 @@ public class SellerService {
 
     public Flly getFllyInfo(Long fllyId){
         Flly fllyInfo = fellyRepository.findByFllyIdAndActivate(fllyId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_FLLY));
+                .orElseThrow(() -> new CustomException(ErrorCode.FLLY_NOT_FOUND));
         return fllyInfo;
     }
 
@@ -63,7 +63,7 @@ public class SellerService {
      */
     public Member getMemberInfo(Long memberId, MemberRole memberRole){
         Member member = memberRepository.findByMemberId(memberId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_MEMBER));
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
         //유저가 판매자가 아니라면?
         if(member.getRole() != memberRole){
             throw new CustomException(ErrorCode.MEMBER_NOT_SELLER);
@@ -77,11 +77,11 @@ public class SellerService {
     public FllyRequestDto getRequestLetter(Long fllyId) {
         //여기선 flly 검증 x
         FllyRequestDto fllyRequest = fellyRepository.findByFllyId(fllyId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_FLLY)).toFllyRequestDto();
+                .orElseThrow(() -> new CustomException(ErrorCode.FLLY_NOT_FOUND)).toFllyRequestDto();
         //배달 일때만 주소 세팅
         if(fllyRequest.getOrderType().equals(OrderType.DELIVERY.getTitle())) {
             FllyDeliveryRegion fllyDelivery = fllyDeliveryRegionRepository
-                    .findByFllyFllyId(fllyId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_FLLY_DELIVERYREGION));
+                    .findByFllyFllyId(fllyId).orElseThrow(() -> new CustomException(ErrorCode.FLLY_DELIVERYREGION_NOT_FOUND));
             fllyRequest.setRequestAddress(fllyDelivery.getSido().getSidoName() + " " + fllyDelivery.getSigungu().getSigunguName());
         }
 
@@ -133,7 +133,7 @@ public class SellerService {
                         .map(OrderRequestDto::toOrderSelectSimpleDto);
         //채택된 주문이 없을경우
         if(oderBySelect.getContent().isEmpty()){
-            throw new CustomException(ErrorCode.NOT_FIND_ORDERLIST);
+            throw new CustomException(ErrorCode.ORDERLIST_NOT_FOUND);
         }
 
         return oderBySelect;
@@ -175,7 +175,7 @@ public class SellerService {
                         .map(FllyParticipation::toOrderParticipationDto);
 
         if(orderParticipation.getContent().isEmpty()){
-            throw new CustomException(ErrorCode.NOT_FIND_FLLY_PARTICIPATE);
+            throw new CustomException(ErrorCode.FLLY_PARTICIPATION_NOT_FOUND);
         }
         return orderParticipation;
     }
@@ -314,13 +314,13 @@ public class SellerService {
 
         Map<String, Object> result = new HashMap<>();
         FllyRequestSimpleDto fllyRequest = fellyRepository.findByFllyId(fllyId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_FLLY)).toFllyRequestSimpleDto();
+                .orElseThrow(() -> new CustomException(ErrorCode.FLLY_NOT_FOUND)).toFllyRequestSimpleDto();
 
         FllyOrderInfoDto fllyOrderInfo = requestRepository.findByFllyFllyIdAndIsPaidTrue(fllyId)
                 .orElseThrow(() -> new CustomException(ErrorCode.SELLER_NOT_REQUEST)).toFllyOrderInfoDto();
 
         String responseUrl = fllyParticipationRepository.findByFllyFllyIdAndSellerMemberId(fllyId, fllyOrderInfo.getSellerId()).orElseThrow(
-                () -> new CustomException(ErrorCode.NOT_FIND_FLLY_PARTICIPATE)).getImageUrl();
+                () -> new CustomException(ErrorCode.FLLY_PARTICIPATION_NOT_FOUND)).getImageUrl();
 
         FllyDeliveryInfoDto deliveryInfo = null;
 

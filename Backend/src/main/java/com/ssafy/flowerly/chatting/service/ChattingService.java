@@ -19,7 +19,6 @@ import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -170,7 +169,7 @@ public class ChattingService {
         String msgContent = message.getType().equals("IMAGE") ? "사진을 보냈습니다." : message.getContent();
         chatting.updateChatting(msgContent, message.getSendTime());
 
-        Member member = memberRepository.findByMemberId(message.getMemberId()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_MEMBER));
+        Member member = memberRepository.findByMemberId(message.getMemberId()).orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
         if(member.getRole().equals(MemberRole.SELLER)) {
             Long otherMemberId = chatting.getConsumer().getMemberId();
             // 상대방이 현재 채팅방에 접속해 있지 않은 경우
@@ -201,7 +200,7 @@ public class ChattingService {
     @Transactional
     public void readChattingMessage(Long memberId, Long chattingId) {
         Member member = memberRepository.findByMemberId(memberId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_MEMBER));
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
         Chatting chatting = chattingRepository.findById(chattingId)
                 .orElseThrow(() -> new CustomException(ErrorCode.CHATTING_NOT_FOUND));
 
