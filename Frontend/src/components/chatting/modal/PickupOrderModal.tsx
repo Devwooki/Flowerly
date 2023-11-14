@@ -69,6 +69,7 @@ const PickupOrderModal: React.FC<PcikupOrderProps> = ({
         tokenHttp
           .post(`/chatting/request/${chattingId}`, updatedInputs)
           .then((response) => {
+            console.log(response.data);
             if (response.data.code === 200) {
               sendHandler();
               //요거 필수!! (엑세스 토큰 만료로 재발급 받았다면 바꿔줘!! )
