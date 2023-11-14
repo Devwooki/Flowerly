@@ -137,7 +137,6 @@ public class JWTService {
 
         if (cookies != null) {
             for (Cookie cookie : cookies) {
-                log.info("쿠키 : {}, 값 : {}", cookie.getName(), cookie.getValue());
                 if (refreshHeader.equals(cookie.getName())) {
                     log.info("리프레시 토큰 추출했지 : {} ", cookie.getValue());
                     return Optional.of(cookie.getValue());

@@ -36,7 +36,6 @@ public class BuyerService {
      * @Param MemberId : 플리 조회하는 유저 목록
      */
     public Page<BuyerFllyDto> getMyFlly(Pageable pageable, Long memberId) {
-        log.info("memberId : {} ", memberId);
         return fllyRepository.findFllyByConsumerMemberIdNotLikeFinish(pageable, memberId, ProgressType.FINISH_DELIVERY)
                 .map(curFlly -> fllyToBuyerDto(curFlly));
     }
@@ -59,7 +58,6 @@ public class BuyerService {
     }
 
     private BuyerFllyDto fllyToBuyerDto(Flly curFlly) {
-        log.info("fllyId : {}", curFlly.getFllyId());
 
         //반환할 BuyerFllyDto 객체 생성
         BuyerFllyDto buyerFlly = curFlly.toBuyerFlly();
