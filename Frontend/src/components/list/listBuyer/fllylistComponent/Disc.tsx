@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import style from "./Disc.module.css";
 import Image from "next/image";
+import { motion } from "framer-motion";
 
 type DiscProps = {
   card: BuyerCard;
@@ -51,13 +52,24 @@ const Disc = ({ card }: DiscProps) => {
         </div>
       </div>
       {!moreBtn && (
-        <div className={style.detailPlus} onClick={() => handlerMoreBtn()}>
+        <motion.div
+          className={style.detailPlus}
+          onClick={() => handlerMoreBtn()}
+          layoutId={`detailPlus-${card.fllyId}`}
+        >
           상세 보기
-        </div>
+        </motion.div>
       )}
       {moreBtn && (
-        <>
-          <div className={` ${style.discTextPlus} ${moreBtn ? style.open : ""}`}>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0, transition: { duration: 0.05 } }}
+        >
+          <motion.div
+            className={` ${style.discTextPlus} ${moreBtn ? style.open : ""}`}
+            layoutId={`discTextPlus-${card.fllyId}`}
+          >
             <div className={style.divider} />
             <div className={style.discDetailTable}>
               <div className={style.detailTitle}>의뢰인</div>
@@ -111,11 +123,11 @@ const Disc = ({ card }: DiscProps) => {
                 {card.requestContent}
               </div>
             </div>
-          </div>
-          <div className={style.detailMius} onClick={() => handlerMoreBtn()}>
+          </motion.div>
+          <motion.div className={style.detailMius} onClick={() => handlerMoreBtn()}>
             접기
-          </div>
-        </>
+          </motion.div>
+        </motion.div>
       )}
     </div>
   );

@@ -80,7 +80,7 @@ const BuyerFllyList = () => {
       {buyerFllyList &&
         buyerFllyList.map((value, index) => (
           <>
-            {value.progress === "제작완료" ? (
+            {value.progress === "픽업/배달완료" ? (
               <BuyerFllyListCompletedCard
                 ModalChangeHandler={ModalChangeHandler}
                 $fllyInfo={value}

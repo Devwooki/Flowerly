@@ -47,7 +47,6 @@ const ShopCard = ({ shopInfo }: ShopCardProps) => {
   const handleModalChat = () => {
     setModalChat((pre) => !pre);
   };
-
   return (
     <>
       <motion.div
@@ -97,7 +96,7 @@ const ShopCard = ({ shopInfo }: ShopCardProps) => {
           채팅하기
         </div>
       </motion.div>
-      {modal && <ShopModal modal={modalState} shopInfo={shopInfo} />}
+      {modal && <ShopModal modal={modalState} shopInfo={shopInfo} chatModal={handleModalChat} />}
       {modalChat && <ChatStart onCancel={handleModalChat} shopInfo={shopInfo} />}
     </>
   );

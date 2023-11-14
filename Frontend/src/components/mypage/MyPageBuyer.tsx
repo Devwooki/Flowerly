@@ -5,9 +5,12 @@ import { tokenHttp } from "@/api/tokenHttp";
 import Router from "next/router";
 import { useState } from "react";
 import { ToastSuccessMessage } from "@/model/toastMessageJHM";
+import { useRecoilValue } from "recoil";
+import { memberInfoState } from "@/recoil/memberInfoRecoil";
 
 const MyPageBuyer = () => {
   const [newNickName, setNewNickName] = useState("");
+  const memberInfo = useRecoilValue(memberInfoState);
 
   const modifyNickName = () => {
     tokenHttp
@@ -54,6 +57,7 @@ const MyPageBuyer = () => {
             type="text"
             name="nickName"
             value={newNickName}
+            placeholder={memberInfo.nickName}
             onChange={(e) => setNewNickName(e.target.value)}
             className={style.nickNameInput}
           />

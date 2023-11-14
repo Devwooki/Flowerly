@@ -10,7 +10,6 @@ import { AxiosError } from "axios";
 import { tokenHttp } from "@/api/tokenHttp";
 import Image from "next/image";
 import { ToastErrorMessage } from "@/model/toastMessageJHM";
-import Head from "next/head";
 
 const ShopInfoMain = () => {
   const router = useRouter();

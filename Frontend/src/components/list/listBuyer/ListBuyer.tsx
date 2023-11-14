@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import style from "./ListBuyer.module.css";
 import BuyerCardOne from "./listBuyerCardComponent/BuyerCardOne";
 import { useQuery } from "react-query";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import BuyerCards from "./listBuyerCardComponent/BuyerCards";
 import { tokenHttp } from "@/api/tokenHttp";
 import { useRouter } from "next/router";
 import { ToastErrorMessage } from "@/model/toastMessageJHM";
+import Image from "next/image";
 
 const ListBuyer = () => {
   const router = useRouter();
@@ -56,7 +57,12 @@ const ListBuyer = () => {
           <BuyerCardOne card={data[0]} key={data[0].fllyId} />
         ) : (
           // 데이터가 없을 때
-          <div>텅텅!!</div>
+          <>
+            <div className={style.noData}>
+              <Image src="/img/etc/no-list-image.png" alt="플리" width={200} height={200} />
+            </div>
+            <div className={style.noDataText}>아직 생성된 플리가 없습니다.</div>
+          </>
         )}
       </div>
     </div>

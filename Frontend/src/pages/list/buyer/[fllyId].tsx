@@ -14,15 +14,13 @@ import { ToastErrorMessage } from "@/model/toastMessageJHM";
 const FllyList = () => {
   const param = useParams();
   const router = useRouter();
-  const { data, isLoading, isFetching, isError } = useQuery<fllyList, AxiosError>(
+  const { data, isError } = useQuery<fllyList, AxiosError>(
     ["FllyListQuery"],
     async () => {
       const res = await tokenHttp.get(`/buyer/flist/${param.fllyId}`);
       if (res.headers.authorization) {
-        console.log("accessToken", res.headers.authorization);
         localStorage.setItem("accessToken", res.headers.authorization);
       }
-      console.log(res.data.data);
 
       return res.data.data;
     },
@@ -39,12 +37,6 @@ const FllyList = () => {
     },
   );
 
-  if (isLoading) {
-    <div>로딩중</div>;
-  }
-  if (isFetching) {
-    <div>로딩중</div>;
-  }
   if (isError) {
     <div>에러났다 임마</div>;
   }

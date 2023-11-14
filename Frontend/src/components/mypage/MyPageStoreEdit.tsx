@@ -12,6 +12,7 @@ import { tokenHttp } from "@/api/tokenHttp";
 import { memberInfoState } from "@/recoil/memberInfoRecoil";
 import { sellerAddressState } from "@/recoil/tokenRecoil";
 import { ServerStoreInfo } from "@/components/mypage/MyPageStore";
+import { ToastSuccessMessage } from "@/model/toastMessageJHM";
 
 const MyPageStoreEdit = () => {
   const Router = useRouter();
@@ -41,7 +42,7 @@ const MyPageStoreEdit = () => {
   };
 
   const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDetailAddress(detailAddress);
+    setDetailAddress(e.target.value);
   };
 
   const isAllDataFilled = () => {
@@ -82,7 +83,7 @@ const MyPageStoreEdit = () => {
         const b_stt_cd = data.data[0].b_stt_cd;
 
         if (b_stt_cd === "01") {
-          ToastErrorMessage("사업자등록번호가 확인되었습니다.");
+          ToastSuccessMessage("사업자등록번호가 확인되었습니다.");
           setIsStoreNumberValid(true);
         } else {
           ToastErrorMessage("존재하지 않는 사업자등록번호입니다. 다시 입력해주세요");
@@ -136,10 +137,12 @@ const MyPageStoreEdit = () => {
     open({ onComplete: handleComplete });
   };
 
+  // finalAddress 설정
+
   useEffect(() => {
     const finalAddress = `${basicAddress}T${detailAddress}`;
     setEditData((prevEditData) => ({ ...prevEditData, address: finalAddress }));
-  }, [basicAddress, detailAddress, setEditData]);
+  }, [basicAddress, detailAddress]);
 
   // 가게 정보 수정
 
@@ -170,6 +173,8 @@ const MyPageStoreEdit = () => {
 
           console.log(memberInfo);
           console.log(response.data.data);
+
+          ToastSuccessMessage("가게 정보가 수정되었습니다.");
 
           Router.push("/mypage");
 

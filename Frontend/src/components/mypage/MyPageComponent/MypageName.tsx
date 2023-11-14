@@ -3,6 +3,7 @@ import style from "./style/MypageName.module.css";
 import { memberInfoState, MemberInfo } from "@/recoil/memberInfoRecoil";
 import { useRecoilValue } from "recoil";
 import Link from "next/link";
+import Router from "next/router";
 
 interface MypageNameProps {
   data: string;
@@ -11,22 +12,26 @@ interface MypageNameProps {
 const MypageName: React.FC<MypageNameProps> = ({ data }) => {
   const memberInfo = useRecoilValue<MemberInfo>(memberInfoState);
 
+  const handleStoreDetail = () => {
+    Router.push(`/list/shop/${memberInfo.id}`);
+  };
+
   return (
     <>
       <div className={style.MypageNameBack}>
         {memberInfo.role === "SELLER" ? (
           <>
             <div>판매자님 반갑습니다</div>
-            <div>{data}</div>
+            <div onClick={handleStoreDetail}>{data}</div>
           </>
         ) : (
           <>
             <div></div>
             <div>
               {data}
-              <Link href="/mypage/myinfo" className={style.link}>
+              {/* <Link href="/mypage/myinfo" className={style.link}>
                 닉네임 변경
-              </Link>
+              </Link> */}
             </div>
           </>
         )}

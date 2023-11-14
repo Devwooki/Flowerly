@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import style from "./ShopReview.module.css";
+import Image from "next/image";
 
 type ShopReviewProps = {
   review: reviewlist[];
@@ -25,7 +26,12 @@ const ShopReview = ({ review }: ShopReviewProps) => {
           );
         })
       ) : (
-        <div>텅</div>
+        <>
+          <div className={style.noData}>
+            <Image src="/img/etc/no-review-image.png" alt="플리" width={150} height={150} />
+          </div>
+          <div className={style.noDataText}>리뷰가 없습니다.</div>
+        </>
       )}
     </div>
   );
