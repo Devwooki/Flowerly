@@ -54,4 +54,10 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
     @Query("SELECT rdi.address FROM RequestDeliveryInfo rdi " +
             " where rdi.request.requestId = :requestId ")
     String getAddress(@Param("requestId") Long requestId);
+
+    @Query("SELECT rqO " +
+            "FROM Request rqO " +
+            "WHERE rqO.flly.fllyId = (SELECT rqJ.flly.fllyId FROM Request rqJ WHERE rqJ.requestId = :requestId) " +
+            "AND rqO.isPaid = true")
+    List<Request> findSameFllyRequest(Long requestId);
 }

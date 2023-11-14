@@ -24,6 +24,7 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -56,6 +57,10 @@ public class KakaoPayService {
 
     @Transactional
     public PaymentDto.ReadyResponse ready(PaymentDto.PayReq payReq, Long memberId) {
+        if(requestRepository.findByRequestId(payReq.getRequestId()).get().getIsPaid()) {
+            throw new CustomException(ErrorCode.REQUEST_ALREADY_PAID);
+        }
+
         // 카카오페이 api 호출
         PaymentDto.KakaoReadyResponse kakaoReadyResponse = kakaoReady(payReq);
 
