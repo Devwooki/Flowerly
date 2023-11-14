@@ -36,7 +36,7 @@ const SellerFllyList = () => {
           }
         })
         .catch((err) => {
-          if (err.response.status === 403) {
+          if (err.res.status === 403) {
             Router.push("fllylogin");
           }
         });

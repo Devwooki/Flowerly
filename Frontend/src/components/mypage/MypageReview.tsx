@@ -81,6 +81,13 @@ const MypageReview = () => {
       });
   }, []);
 
+  // 리뷰 정렬
+  const sortReviewsDescending = (reviews: ReviewType[]) => {
+    return reviews.sort((a, b) => b.reviewId - a.reviewId);
+  };
+
+  const sortedReviews: ReviewType[] = sortReviewsDescending(reviewList);
+
   return (
     <>
       <div className={style.fllyReviewBack}>
@@ -107,11 +114,11 @@ const MypageReview = () => {
           {memberInfo.role === "USER" ? <div>내가 쓴 리뷰</div> : <div>우리 가게 리뷰</div>}
         </div>
         <div className={style.fllyReviewMain}>
-          {reviewList &&
-            reviewList.map((value, index) => (
+          {sortedReviews &&
+            sortedReviews.map((value, index) => (
               <>
                 <MypageReviewCard
-                  key={index}
+                  key={value.reviewId}
                   ModalChangeHandler={ModalChangeHandler}
                   SelectIdChangeHandler={SelectIdChangeHandler}
                   $requestIndex={index}

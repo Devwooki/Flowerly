@@ -8,6 +8,7 @@ import { initializeApp } from "firebase/app";
 import { onMessage, getToken } from "firebase/messaging";
 import { getMessaging } from "firebase/messaging/sw";
 import { tokenHttp } from "@/api/chattingTokenHttp";
+import { ToastErrorMessage, ToastSuccessMessage } from "@/model/toastMessageJHM";
 
 const Temp = () => {
   const [path, setPath] = useState<string | null>(null);
@@ -109,8 +110,10 @@ const Temp = () => {
         }
         router.replace("/");
         console.log("로그인 성공", response.data.data);
+        ToastSuccessMessage("로그인 성공!");
       } else {
         console.error("로그인 실패: ", response.data.message);
+        ToastErrorMessage("로그인 실패");
       }
     } catch (error) {
       console.error(error);
