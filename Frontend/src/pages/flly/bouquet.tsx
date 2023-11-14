@@ -46,13 +46,13 @@ const FllyBouquet = () => {
   }, [bouquets]);
 
   const handleNextClick = () => {
-    // if(bouquet !== null) setShowNextModal(true);
-    // else ToastErrorMessage("항목을 선택해 주세요.");
-    setShowNextModal(true); // 삭제하기=========================================
+    if(bouquet !== null) setShowNextModal(true);
+    else ToastErrorMessage("항목을 선택해 주세요.");
   };
 
   const handlePrevClick = () => {
-    setShowPrevModal(true);
+    if (cnt > 0) setShowPrevModal(true);
+    else ToastErrorMessage("남은 생성 횟수가 없습니다.");
   };
 
   const handleAgainClick = () => {

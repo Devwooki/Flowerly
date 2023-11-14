@@ -58,3 +58,7 @@
   .modalBtnBox > div:nth-child(2) {
     background-color: var(--blue);
   }
+
+  .modalBack .modalBtnBox .noSelect {
+    background-color: var(--gray);
+  }
