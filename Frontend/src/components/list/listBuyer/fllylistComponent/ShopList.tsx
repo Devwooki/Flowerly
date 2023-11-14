@@ -5,6 +5,9 @@ import { motion } from "framer-motion";
 import { tokenHttp } from "@/api/chattingTokenHttp";
 import { useInfiniteQuery } from "react-query";
 import { useInView } from "react-intersection-observer";
+import { AxiosError } from "axios";
+import { ToastErrorMessage } from "@/model/toastMessageJHM";
+import { useRouter } from "next/router";
 
 type ShopListProps = {
   fllyId: number;
@@ -12,13 +15,13 @@ type ShopListProps = {
 
 const ShopList = ({ fllyId }: ShopListProps) => {
   const { ref, inView } = useInView();
-
+  const router = useRouter();
   const fetchshopList = async (pageParam: number) => {
     const res = await tokenHttp.get(`/buyer/flist-page/${fllyId}?page=${pageParam}`);
     return res.data.data.stores;
   };
 
-  const { data, fetchNextPage, isFetchingNextPage, status } = useInfiniteQuery(
+  const { data, fetchNextPage, isFetchingNextPage } = useInfiniteQuery<any, AxiosError>(
     "ShopListQuery",
     ({ pageParam = 0 }) => fetchshopList(pageParam),
     {
@@ -26,8 +29,14 @@ const ShopList = ({ fllyId }: ShopListProps) => {
         return lastPage.last === true ? undefined : allPages.length;
       },
       retry: false,
+      onError: (error) => {
+        if (error?.response?.status === 403) {
+          router.push("/fllylogin");
+        } else ToastErrorMessage("오류가 발생했습니다.");
+      },
     },
   );
+
   const isLastPage = data?.pages?.[data.pages.length - 1]?.last ?? false;
 
   useEffect(() => {

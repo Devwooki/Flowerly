@@ -9,6 +9,7 @@ import Disc from "@/components/list/listBuyer/fllylistComponent/Disc";
 import ShopList from "@/components/list/listBuyer/fllylistComponent/ShopList";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { ToastErrorMessage } from "@/model/toastMessageJHM";
 
 const FllyList = () => {
   const param = useParams();
@@ -29,8 +30,11 @@ const FllyList = () => {
       onError: (error) => {
         console.log("에러 발생했다 임마");
         console.log(error?.response?.status);
+        if (error?.response?.status === 403) {
+          router.push("/fllylogin");
+        } else ToastErrorMessage("오류가 발생했습니다.");
       },
-      retry: 2,
+      retry: false,
       cacheTime: 0,
     },
   );

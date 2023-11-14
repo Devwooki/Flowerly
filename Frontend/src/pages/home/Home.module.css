@@ -1,7 +1,6 @@
 .home {
   position: relative;
-  height: 100vh;
-  /* border: 1px solid black; */
+  border: 1px solid black;
 }
 
 .mainHeader {
@@ -30,32 +29,27 @@
 .mainBody {
   width: 90%;
   margin: 0 auto;
-  height: 65vh;
-  margin-top: 15px;
-  /* border: 1px solid black; */
+  height: 80vh;
+  margin-top: 20px;
 }
 
 .bannerImg {
   position: relative;
   border-radius: 40px;
-  /* margin-bottom: 20px; */
 }
 
 .imgDiv {
   border-radius: 40px;
   object-position: center;
+  object-fit: cover;
 }
 
 .imgDiv img {
   border-radius: 40px;
   object-position: center;
+  object-fit: cover;
 }
 
-.divider {
-  /* width: 40%; */
-  border: 1px solid white;
-  margin-left: 5%;
-}
 .imgDisc {
   width: 100%;
   font-family: "NanumSquareNeoOTF-Rg";
@@ -68,9 +62,15 @@
 }
 
 .imgDisc div {
-  width: 60%;
+  width: auto;
   padding-left: 5%;
   margin-bottom: 5px;
+}
+
+.imgDisc div:nth-child(3) {
+  width: 60%;
+  border: 1px solid white;
+  margin-left: 5%;
 }
 
 .imgDisc div:nth-child(1) {

@@ -1,5 +1,4 @@
 import style from "./Home.module.css";
-import { motion } from "framer-motion";
 import Image from "next/image";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -7,13 +6,13 @@ import { Swiper, SwiperSlide } from "swiper/react";
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/effect-creative";
-
 // import required modules
 import { EffectCreative } from "swiper/modules";
 import { useEffect, useState } from "react";
 import { tokenHttp } from "@/api/tokenHttp";
 import { ToastErrorMessage } from "@/model/toastMessageJHM";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 interface cardResponse {
   flowerCode: number;
@@ -35,100 +34,18 @@ interface card {
 export default function Home() {
   const [cards, setCards] = useState([] as card[]);
   const router = useRouter();
-  // const cards = [
-  //   {
-  //     id: 1,
-  //     imgSrc:
-  //       "https://neighbrew.s3.ap-northeast-2.amazonaws.com/FlOWER/9ab5e8bb-56f9-4cff-967b-22075b73e37a010_pink_gookhwa.jpg.jpg",
-  //     alt: "호접란",
-  //     date: "11월 ~ 3월",
-  //     desc: "빨간색 호접란",
-  //     message: "강렬한 사랑과 매력",
-  //   },
-  //   {
-  //     id: 2,
-  //     imgSrc:
-  //       "https://neighbrew.s3.ap-northeast-2.amazonaws.com/FlOWER/da3f0e9f-0c1e-45d8-ba34-86e57331687b011_yellow_gookhwa.jpg.jpg",
-  //     alt: "글라디올러스",
-  //     date: "5월 ~ 11월",
-  //     desc: "보라색 글라디올러스",
-  //     message: "우아함, 고귀함, 아름다움",
-  //   },
-  //   {
-  //     id: 3,
-  //     imgSrc:
-  //       "https://neighbrew.s3.ap-northeast-2.amazonaws.com/FlOWER/f82c544a-7f65-4879-9293-76ceaba5a6d2069_pink_peony.jpg.jpg",
-  //     alt: "천일홍",
-  //     date: "7월 ~ 12월",
-  //     desc: "분홍색 천일홍",
-  //     message: "우아함, 달콤함, 치절, 애정",
-  //   },
-  //   {
-  //     id: 4,
-  //     imgSrc:
-  //       "https://neighbrew.s3.ap-northeast-2.amazonaws.com/FlOWER/f82c544a-7f65-4879-9293-76ceaba5a6d2069_pink_peony.jpg.jpg",
-  //     alt: "천일홍",
-  //     date: "7월 ~ 12월",
-  //     desc: "분홍색 천일홍",
-  //     message: "우아함, 달콤함, 치절, 애정",
-  //   },
-  //   {
-  //     id: 5,
-  //     imgSrc:
-  //       "https://neighbrew.s3.ap-northeast-2.amazonaws.com/FlOWER/f82c544a-7f65-4879-9293-76ceaba5a6d2069_pink_peony.jpg.jpg",
-  //     alt: "천일홍",
-  //     date: "7월 ~ 12월",
-  //     desc: "분홍색 천일홍",
-  //     message: "우아함, 달콤함, 치절, 애정",
-  //   },
-  //   {
-  //     id: 6,
-  //     imgSrc:
-  //       "https://neighbrew.s3.ap-northeast-2.amazonaws.com/FlOWER/f82c544a-7f65-4879-9293-76ceaba5a6d2069_pink_peony.jpg.jpg",
-  //     alt: "천일홍",
-  //     date: "7월 ~ 12월",
-  //     desc: "분홍색 천일홍",
-  //     message: "우아함, 달콤함, 치절, 애정",
-  //   },
-  //   {
-  //     id: 7,
-  //     imgSrc:
-  //       "https://neighbrew.s3.ap-northeast-2.amazonaws.com/FlOWER/f82c544a-7f65-4879-9293-76ceaba5a6d2069_pink_peony.jpg.jpg",
-  //     alt: "천일홍",
-  //     date: "7월 ~ 12월",
-  //     desc: "분홍색 천일홍",
-  //     message: "우아함, 달콤함, 치절, 애정",
-  //   },
-  //   {
-  //     id: 8,
-  //     imgSrc:
-  //       "https://neighbrew.s3.ap-northeast-2.amazonaws.com/FlOWER/f82c544a-7f65-4879-9293-76ceaba5a6d2069_pink_peony.jpg.jpg",
-  //     alt: "천일홍",
-  //     date: "7월 ~ 12월",
-  //     desc: "분홍색 천일홍",
-  //     message: "우아함, 달콤함, 치절, 애정",
-  //   },
-  //   {
-  //     id: 9,
-  //     imgSrc:
-  //       "https://neighbrew.s3.ap-northeast-2.amazonaws.com/FlOWER/f82c544a-7f65-4879-9293-76ceaba5a6d2069_pink_peony.jpg.jpg",
-  //     alt: "천일홍",
-  //     date: "7월 ~ 12월",
-  //     desc: "분홍색 천일홍",
-  //     message: "우아함, 달콤함, 치절, 애정",
-  //   },
-  // ];
+  const today = new Date();
+  console.log(today.getMonth() + 1);
 
   const axiosHandler = () => {
     tokenHttp
       .get(`/main`)
       .then((response) => {
-        console.log(response);
-        console.log(response.data);
+        // console.log(response);
+        // console.log(response.data);
         if (response.data.code === 200) {
           const temp = [] as card[];
           response.data.data.map((item: cardResponse) => {
-            
             const newObj = {
               id: item.flowerCode,
               desc: item.flowerName,
@@ -137,11 +54,12 @@ export default function Home() {
               date: item.period,
               alt: item.flowerName,
             };
-          
+
             temp.push(newObj);
           });
           setCards(temp);
-          if(response.headers.authorization) localStorage.setItem("accessToken", response.headers.authorization);
+          if (response.headers.authorization)
+            localStorage.setItem("accessToken", response.headers.authorization);
         }
       })
       .catch((error) => {
@@ -153,10 +71,15 @@ export default function Home() {
 
   useEffect(() => {
     axiosHandler();
-  },[]);
+  }, []);
 
   return (
     <>
+      <Head>
+        <title>{`${today.getMonth() + 1}월의 꽃을 만나보세요`} </title>
+        <meta property="og:image" content={"/img/homeBanner/121_pink_gomphrena.jpg"} />
+        <meta property="og:title" content={`${today.getMonth() + 1}월의 꽃을 만나보세요`} />
+      </Head>
       <div className={style.home}>
         <div className={style.mainHeader}>
           <div className={style.header}>플리로고</div>
@@ -164,8 +87,10 @@ export default function Home() {
           <div className={style.title}>가을의 꽃을 만나보세요</div>
         </div>
         <Swiper
+          loop={true}
           direction={"vertical"}
           grabCursor={true}
+          slidesPerView={1.2}
           effect={"creative"}
           creativeEffect={{
             prev: {

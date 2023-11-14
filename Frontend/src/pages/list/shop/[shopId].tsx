@@ -9,44 +9,60 @@ import { useQuery } from "react-query";
 import { AxiosError } from "axios";
 import { tokenHttp } from "@/api/tokenHttp";
 import Image from "next/image";
+import { ToastErrorMessage } from "@/model/toastMessageJHM";
+import Head from "next/head";
 
 const ShopInfoMain = () => {
   const router = useRouter();
 
-  const { data, isLoading, isFetching, isError } = useQuery<shopInfo, AxiosError>(
+  const { data } = useQuery<shopInfo, AxiosError>(
     ["ShopInfoMainQuery"],
     async () => {
       const res = await tokenHttp.get(`/flly/store/${router.query.shopId}`);
       return res.data.data;
     },
+    {
+      onError: (error) => {
+        if (error?.response?.status === 403) {
+          router.push("/fllylogin");
+        } else ToastErrorMessage("오류가 발생했습니다.");
+      },
+      retry: false,
+    },
   );
 
   return (
-    <div className={style.ShopInfoBack}>
-      <div className={style.ShopInfoHeader}>
-        <div className={style.headerTitle}>
-          <Image
-            src="/img/btn/left-btn.png"
-            alt="뒤로가기"
-            width={13}
-            height={20}
-            onClick={() => {
-              router.back();
-            }}
-          />
-          <div>가게정보</div>
+    <>
+      <Head>
+        <title>{data?.store.storeName}의 정보</title>
+        <meta property="og:title" content={`${data?.store.storeName}의 가게 정보입니다.`} />
+      </Head>
+      <div className={style.ShopInfoBack}>
+        <div className={style.ShopInfoHeader}>
+          <div className={style.headerTitle}>
+            <Image
+              src="/img/btn/left-btn.png"
+              alt="뒤로가기"
+              width={13}
+              height={20}
+              onClick={() => {
+                router.back();
+              }}
+            />
+            <div>가게정보</div>
+          </div>
+        </div>
+        <div className={style.ShopInfoMain}>
+          {data && (
+            <>
+              <ShopLocation ShopInfoDetail={data?.store} />
+              <ShopImg shopImg={data?.store.images} />
+              <ShopReview review={data?.review.content} />
+            </>
+          )}
         </div>
       </div>
-      <div className={style.ShopInfoMain}>
-        {data && (
-          <>
-            <ShopLocation ShopInfoDetail={data?.store} />
-            <ShopImg shopImg={data?.store.images} />
-            <ShopReview review={data?.review.content} />
-          </>
-        )}
-      </div>
-    </div>
+    </>
   );
 };
 

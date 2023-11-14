@@ -7,6 +7,7 @@ import { useRecoilValue } from "recoil";
 import { FllylistDiscRecoil } from "@/recoil/kdmRecoil";
 import { AxiosError } from "axios";
 import { useRouter } from "next/router";
+import { ToastErrorMessage } from "@/model/toastMessageJHM";
 
 type CancelProps = {
   onCancel: () => void;
@@ -53,6 +54,9 @@ const ChatStart = ({ onCancel, shopInfo }: CancelProps) => {
       onError: (error) => {
         console.log("에러 발생했다 임마");
         console.log(error?.response?.status);
+        if (error?.response?.status === 403) {
+          router.push("/fllylogin");
+        } else ToastErrorMessage("오류가 발생했습니다.");
       },
       onSuccess: () => {
         if (data?.isNew) {
