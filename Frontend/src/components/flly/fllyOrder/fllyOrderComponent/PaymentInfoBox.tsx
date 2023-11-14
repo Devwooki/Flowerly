@@ -10,7 +10,7 @@ const PaymentInfoBox = ({ $orderPrice }: { $orderPrice: number }) => {
           <div className={style.detailInfo}>
             <div>결제금액</div>
             <div>
-              {$orderPrice}
+              {Number($orderPrice).toLocaleString()}
               <span>원</span>
             </div>
           </div>

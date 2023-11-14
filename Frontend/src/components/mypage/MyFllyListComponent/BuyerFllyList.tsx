@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import BuyerFllyListCompletedCard from "./BuyerFllyListCard/BuyerFllyListCompletedCard";
 import BuyerFllyListProgressCard from "./BuyerFllyListCard/BuyerFllyListProgressCard";
 import MypageReviewModal from "./MypageReviewCard/MypageReviewModal";
-import axios from "axios";
+import style from "./style/BuyerFllyList.module.css";
 import { tokenHttp } from "@/api/tokenHttp";
 import router from "next/router";
 import { ToastErrorMessage } from "@/model/toastMessageJHM";
@@ -68,7 +68,7 @@ const BuyerFllyList = () => {
           ToastErrorMessage("로그인 만료되어 로그인화면으로 이동합니다.");
         }
       });
-  });
+  }, []);
 
   return (
     <>
@@ -79,21 +79,23 @@ const BuyerFllyList = () => {
           UpdateFllyList={UpdateFllyList}
         />
       )}
-      {buyerFllyList &&
-        buyerFllyList.map((value, index) => (
-          <>
-            {value.progress === "픽업/배달완료" ? (
-              <BuyerFllyListCompletedCard
-                ModalChangeHandler={ModalChangeHandler}
-                $fllyInfo={value}
-                SelectIdChangeHandler={SelectIdChangeHandler}
-                $index={index}
-              />
-            ) : (
-              <BuyerFllyListProgressCard $fllyInfo={value} />
-            )}
-          </>
-        ))}
+      <div className={style.buyerBack}>
+        {buyerFllyList &&
+          buyerFllyList.map((value, index) => (
+            <>
+              {value.progress === "픽업/배달완료" ? (
+                <BuyerFllyListCompletedCard
+                  ModalChangeHandler={ModalChangeHandler}
+                  $fllyInfo={value}
+                  SelectIdChangeHandler={SelectIdChangeHandler}
+                  $index={index}
+                />
+              ) : (
+                <BuyerFllyListProgressCard $fllyInfo={value} />
+              )}
+            </>
+          ))}
+      </div>
     </>
   );
 };

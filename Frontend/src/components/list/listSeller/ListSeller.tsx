@@ -7,6 +7,7 @@ import { ToastErrorMessage } from "@/model/toastMessageJHM";
 import { tokenHttp } from "@/api/tokenHttp";
 import { useRouter } from "next/router";
 import { useInView } from "react-intersection-observer";
+import Image from "next/image";
 
 interface adoptType {
   requestId: number;
@@ -194,9 +195,29 @@ const ListSeller = () => {
             </>
           ) : (
             <>
-              {participationData.map((value, index) => (
-                <ListParticipationCard key={value.fllyId + index} $participationInfo={value} />
-              ))}
+              {participationData.length > 0 ? (
+                participationData.map((value, index) => (
+                  <ListParticipationCard key={value.fllyId + index} $participationInfo={value} />
+                ))
+              ) : (
+                <div className={style.noListBox}>
+                  <div>
+                    <Image
+                      src={
+                        ListState === "adopt"
+                          ? "/img/etc/no-selection-image.png"
+                          : "/img/etc/no-participation-image.png"
+                      }
+                      width={200}
+                      height={200}
+                      alt="플리가 없습니다"
+                    ></Image>
+                    <div>
+                      {ListState === "adopt" ? "채택된 플리가 없습니다" : "참여한 플리가 없습니다"}
+                    </div>
+                  </div>
+                </div>
+              )}
             </>
           )}
           {
