@@ -66,6 +66,8 @@ const PickupOrderModal: React.FC<PcikupOrderProps> = ({
           deliveryPickupTime: date.format("YYYY-MM-DD") + " " + time.format("HH:mm"),
         };
 
+        console.log(updatedInputs);
+
         tokenHttp
           .post(`/chatting/request/${chattingId}`, updatedInputs)
           .then((response) => {
@@ -85,6 +87,7 @@ const PickupOrderModal: React.FC<PcikupOrderProps> = ({
             }
           })
           .catch((err) => {
+            console.log(err);
             if (err.response.status === 403) {
               router.push("/fllylogin");
             }
