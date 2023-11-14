@@ -26,6 +26,7 @@ public interface FllyRepository extends JpaRepository<Flly, Long> {
     @Query("select f from Flly f " +
             " where f.consumer.memberId = :memberId " +
             " and f.progress != :process " +
+            " AND f.deadline > current_timestamp " +
             " order by f.createdAt desc ")
     Page<Flly> findFllyByConsumerMemberIdNotLikeFinish(Pageable pageable, @Param("memberId") Long memberId,
                                                        @Param("process")ProgressType pt);

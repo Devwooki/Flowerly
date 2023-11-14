@@ -29,34 +29,45 @@ public class BuyerService {
     private final StoreInfoRepository storeInfoRepository;
     private final RequestDeliveryInfoRepository requestDeliveryInfoRepository;
 
-    /**
-     * 진행중인 플리 목록
-     *
+    /**진행중인 플리 목록
      * @Param pageable : 페이지네이션 적용
-     * @Param MemberId : 플리 조회하는 유저 목록
+     * @Param MemberId : 진행중인 플리 조회할 유저 id
      */
     public Page<BuyerFllyDto> getMyFlly(Pageable pageable, Long memberId) {
         return fllyRepository.findFllyByConsumerMemberIdNotLikeFinish(pageable, memberId, ProgressType.FINISH_DELIVERY)
                 .map(curFlly -> fllyToBuyerDto(curFlly));
     }
 
-    //플리스트 찾기
+    /** 플리스트 조회
+     * @Param pageable : 페이지네이션 적용
+     * @Param fllyId : 조회하려는 플리 ID
+     * */
     public BuyerFlly getFlist(Pageable pageable, Long fllyId) {
         return new BuyerFlly(getFllyResponseDto(fllyId),
                 getParticipants(pageable, fllyId));
     }
 
+    /** 플리 참여자 조회
+     * @Param pageable : 페이지네이션 적용
+     * @Param fllyId : 조회하려는 플리 ID
+     * */
     public Page<Flist> getParticipants(Pageable pageable, Long fllyId) {
         return fllyParticipationRepository.findFlistByFllyId(pageable, fllyId)
                 .map(obj -> new Flist(((FllyParticipation) obj[1]).toResponseDto(), ((StoreInfo) obj[0]).toDto()));
     }
 
+    /** 플리 상세 조회 - getMyFlly의 개별 결과와 같음
+     * @Param fllyId : 조회하려는 fllyId
+     * */
     private BuyerFllyDto getFllyResponseDto(Long fllyId) {
         return fllyRepository.findByFllyIdAndActivate(fllyId)
                 .map(curFlly -> fllyToBuyerDto(curFlly))
                 .orElseThrow(() -> new CustomException(ErrorCode.FLLY_NOT_FOUND));
     }
 
+    /** flly to 구매자 Dto
+     * @Param : 변환할 FllyEntity
+     * */
     private BuyerFllyDto fllyToBuyerDto(Flly curFlly) {
 
         //반환할 BuyerFllyDto 객체 생성
