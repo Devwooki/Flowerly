@@ -4,8 +4,10 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.ssafy.flowerly.FCM.repository.FCMRepository;
 import com.ssafy.flowerly.config.FCMConfig;
 import com.ssafy.flowerly.entity.FCMToken;
+import com.ssafy.flowerly.entity.Member;
 import com.ssafy.flowerly.exception.CustomException;
 import com.ssafy.flowerly.exception.ErrorCode;
+import com.ssafy.flowerly.member.model.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +18,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FCMService {
     private final FCMRepository fcmRepository;
-
     private final FCMConfig fcmConfig;
+    private final MemberRepository memberRepository;
 
     @Transactional
     public FCMToken addToken(Long memberId, String fcmToken) {
@@ -41,7 +43,18 @@ public class FCMService {
                         });
     }
 
+    /** 알림 전송 매소드
+     * @Param receiverId : 알림 받을 대상
+     * @Param title : Push 알림 헤더
+     * @Parma body : push 내용
+     * */
     public void sendPushMessage(Long receiverId, String title, String body){
+
+        Member findMember = memberRepository.findByMemberId(receiverId).orElse(null);
+
+        //알림을 수신받지 않으면 종료시킨다
+        if(!findMember.isNotification()) return;
+
         FCMToken memberTokenInfo = fcmRepository.findByMemberId(receiverId)
                 .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
