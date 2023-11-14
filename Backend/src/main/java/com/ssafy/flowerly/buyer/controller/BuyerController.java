@@ -24,7 +24,7 @@ public class BuyerController {
 
     @GetMapping("/my-flly")
     public DataResponse<?> getMyFlly(HttpServletRequest request,
-                                     @PageableDefault(size = 6) Pageable pageable){
+                                     @PageableDefault(size = 50) Pageable pageable){
         Long memberId = (Long) request.getAttribute("memberId");
         return new DataResponse<>(HttpStatus.OK.value(), "진행중인 flly를 반환합니다.", buyerService.getMyFlly(pageable, memberId));
     }
