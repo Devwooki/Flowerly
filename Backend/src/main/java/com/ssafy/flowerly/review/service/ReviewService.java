@@ -21,8 +21,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.format.DateTimeFormatter;
-import java.util.Map;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -70,7 +68,7 @@ public class ReviewService {
         System.out.println("Seller info: " + seller);
 
         Member consumer = memberRepository.findByMemberId(memberId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_MEMBER));
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
         // consumer 검증
         if (!consumer.equals(request.getFlly().getConsumer())) {
@@ -93,7 +91,7 @@ public class ReviewService {
 
     public void deleteReview(Long reviewId, Long consumerId) {
         Review review = reviewRepository.findByConsumerMemberIdAndReviewIdAndIsRemovedFalse(reviewId, consumerId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_REVIEW));
+                .orElseThrow(() -> new CustomException(ErrorCode.REVIEW_NOT_FOUND));
 
         review.markAsRemoved();
         reviewRepository.save(review);

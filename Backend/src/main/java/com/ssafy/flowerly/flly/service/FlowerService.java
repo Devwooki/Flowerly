@@ -187,18 +187,18 @@ public class FlowerService {
         flly.setCanceled(false);
         flly.setProgress(ProgressType.START);
         Member member = memberRepository.findByMemberId(memberId)
-                        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_MEMBER));
+                        .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
         flly.setConsumer(member);
 
         Flly savedFlly = fllyRepository.save(flly);
         if(fllyDto.getOrderType().equals(OrderType.DELIVERY)) {
             Sido sido = sidoRepository.findBySidoName(fllyDto.getDelivery().getSido())
-                            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_SIDO));
+                            .orElseThrow(() -> new CustomException(ErrorCode.SIDO_NOT_FOUND));
             Sigungu sigungu = sigunguRepository.findBySigunguNameAndSido(fllyDto.getDelivery().getSigungu(), sido)
-                    .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_SIGUNGU));
+                    .orElseThrow(() -> new CustomException(ErrorCode.SIGUNGU_NOT_FOUND));
 
             Dong dong = dongRepository.findByDongNameAndSigungu(fllyDto.getDelivery().getDong(), sigungu)
-                    .orElseThrow(() -> new CustomException((ErrorCode.NOT_FIND_DONG)));
+                    .orElseThrow(() -> new CustomException((ErrorCode.DONG_NOT_FOUND)));
 
             FllyDeliveryRegion fllyDeliveryRegion = FllyDeliveryRegion.builder()
                     .flly(savedFlly)
@@ -216,13 +216,13 @@ public class FlowerService {
                 Long dongCode = pickup.getDongCode();
 
                 Sido pickupSido = sidoRepository.findBySidoCode(sidoCode)
-                        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_SIDO));
+                        .orElseThrow(() -> new CustomException(ErrorCode.SIDO_NOT_FOUND));
 
                 Sigungu pickupSigungu = sigunguRepository.findBySigunguCodeAndSido(sigunguCode, pickupSido)
-                        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_SIGUNGU));
+                        .orElseThrow(() -> new CustomException(ErrorCode.SIGUNGU_NOT_FOUND));
 
                 Dong pickupDong = dongRepository.findByDongCodeAndSigungu(dongCode, pickupSigungu)
-                        .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_DONG));
+                        .orElseThrow(() -> new CustomException(ErrorCode.DONG_NOT_FOUND));
 
                 FllyPickupRegion fllyPickupRegion = FllyPickupRegion.builder()
                         .flly(savedFlly)

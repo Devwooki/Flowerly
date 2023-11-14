@@ -15,25 +15,25 @@ public enum ErrorCode {
 
     INIT_FCM_ERROR(-3000, "FCM 설정 중 에러가 발생했습니다."),
 
-    NOT_FIND_MEMBER(-4000, "유저 정보를 찾을 수 없습니다"),
+    MEMBER_NOT_FOUND(-4000, "유저 정보를 찾을 수 없습니다"),
 
-    NOT_FIND_FLLY(-4001, "플리 정보를 찾을 수 없습니다."),
+    FLLY_NOT_FOUND(-4001, "플리 정보를 찾을 수 없습니다."),
     NOT_SELLER_DELIVERY_REGION(-4002, "배달 가능 지역을 설정해주세요"),
     MEMBER_NOT_SELLER(-4003, "해당 유저는 판매자가 아닙니다"),
     NOT_SELLER_SEARCH_NEAR(-4004, "주변에 가능한 플리가 없습니다."),
-    NOT_FIND_FLLY_DELIVERYREGION(-4005, "해당 플리의 배달 정보를 찾을수 없습니다"),
-    NOT_FIND_ORDERLIST(-4006, "채택된 주문을 찾을수 없습니다"),
-    NOT_FIND_FLLY_PARTICIPATE(-4007, "참가하신 플리목록을 찾을수 없습니다"),
+    FLLY_DELIVERYREGION_NOT_FOUND(-4005, "해당 플리의 배달 정보를 찾을수 없습니다"),
+    ORDERLIST_NOT_FOUND(-4006, "채택된 주문을 찾을수 없습니다"),
+    FLLY_PARTICIPATION_NOT_FOUND(-4007, "참가하신 플리목록을 찾을수 없습니다"),
 
 
-    NOT_FIND_SIDO(-4008, "시도 정보를 찾을 수 없습니다"),
-    NOT_FIND_SIGUNGU(-4009, "시군구 정보를 찾을 수 없습니다."),
-    NOT_FIND_DONG(-4010, "동 정보를 찾을 수 없습니다."),
-    NOT_FIND_STOREINFO(-4011, "가게 정보를 찾을 수 없습니다."),
-    NOT_FIND_REVIEW(-4012, "리뷰 정보를 찾을 수 없습니다"),
+    SIDO_NOT_FOUND(-4008, "시도 정보를 찾을 수 없습니다"),
+    SIGUNGU_NOT_FOUND(-4009, "시군구 정보를 찾을 수 없습니다."),
+    DONG_NOT_FOUND(-4010, "동 정보를 찾을 수 없습니다."),
+    STOREINFO_NOT_FOUND(-4011, "가게 정보를 찾을 수 없습니다."),
+    REVIEW_NOT_FOUND(-4012, "리뷰 정보를 찾을 수 없습니다"),
     CONSUMER_NOT_REVIEWER(-4013, "리뷰 작성자가 아닙니다"),
-    NOT_FOUND_REQUSET_ADDRESS(-4014, "플리의 배달 주소를 찾을 수 없습니다."),
-    DUPLICATE_REQUET_PAID(-4015, "중복 결제된 플리가 있습니다. 고객센터로 문의주세요"),
+    REQUEST_ADDRESS_NOT_FOUND(-4014, "플리의 배달 주소를 찾을 수 없습니다."),
+    DUPLICATE_REQUEST_PAID(-4015, "중복 결제된 플리가 있습니다. 고객센터로 문의주세요"),
 
     SELLER_PARTICIPATE_FAIL(-5000, "플리 참여에 실패하였습니다"),
     SELLER_ALREADY_PARTICIPATE(-5001, "이미 참가하신 플리입니다"),
