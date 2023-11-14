@@ -30,7 +30,7 @@ const FllyList = () => {
         console.log(error?.response?.status);
         if (error?.response?.status === 403) {
           router.push("/fllylogin");
-        } else ToastErrorMessage("오류가 발생했습니다.");
+        }
       },
       retry: false,
       cacheTime: 0,

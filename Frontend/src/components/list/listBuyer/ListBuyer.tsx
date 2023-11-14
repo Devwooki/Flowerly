@@ -27,23 +27,14 @@ const ListBuyer = () => {
     {
       onError: (error) => {
         console.log("에러 발생했다 임마");
-        console.log(error?.response?.status);
         if (error?.response?.status === 403) {
           router.push("/fllylogin");
-        } else ToastErrorMessage("오류가 발생했습니다.");
+        }
       },
       retry: false,
       cacheTime: 0,
     },
   );
-
-  if (isLoading) {
-    return <div>로딩중</div>;
-  }
-
-  if (isError) {
-    return <div>에러 발생</div>;
-  }
 
   return (
     <div className={style.ListBuyerBack}>
