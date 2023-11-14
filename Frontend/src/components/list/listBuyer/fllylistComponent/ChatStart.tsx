@@ -45,9 +45,6 @@ const ChatStart = ({ onCancel, shopInfo }: CancelProps) => {
         fllyId: fllyId,
         fllyParticipationId: shopInfo.participant.fllyParticipationId,
       });
-      console.log("생성", res.data.data);
-      console.log("생성 방 ID", res.data.data.chattingId);
-
       return res.data.data;
     },
     {
@@ -58,7 +55,7 @@ const ChatStart = ({ onCancel, shopInfo }: CancelProps) => {
           router.push("/fllylogin");
         } else ToastErrorMessage("오류가 발생했습니다.");
       },
-      onSuccess: () => {
+      onSuccess: (data) => {
         if (data?.isNew) {
           console.log("새거");
           setTitle(`${shopInfo.storeInfoDto.storeName}와 채팅이 생성되었습니다. `);

@@ -20,3 +20,17 @@
   height: calc(100vh - 130px);
   overflow: scroll;
 }
+
+.noData {
+  display: flex;
+  margin-top: 30%;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.8;
+}
+
+.noDataText {
+  margin-top: 15px;
+  text-align: center;
+  font-family: "NanumSquareNeoOTF-Lt";
+}

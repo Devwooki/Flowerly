@@ -8,6 +8,7 @@ import { useInView } from "react-intersection-observer";
 import { AxiosError } from "axios";
 import { ToastErrorMessage } from "@/model/toastMessageJHM";
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 type ShopListProps = {
   fllyId: number;
@@ -58,7 +59,12 @@ const ShopList = ({ fllyId }: ShopListProps) => {
         <div>텅</div>
       )} */}
       {data?.pages.length === 1 && data?.pages[0].content.length === 0 ? (
-        <div>텅</div>
+        <div className={style.noDataTable}>
+          <div className={style.noData}>
+            <Image src="/img/etc/bouquet-image1.png" alt="플리" width={200} height={200} />
+          </div>
+          <div className={style.noDataText}>아직 참여한 가게가 없습니다.</div>
+        </div>
       ) : (
         data?.pages?.map((page) =>
           page.content.map((shopInfo: storeContent) => (
