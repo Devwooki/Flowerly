@@ -24,7 +24,8 @@ public interface FllyDeliveryRegionRepository extends JpaRepository<FllyDelivery
                     " AND fy.isCanceled = false AND fy.deadline > current_timestamp " +
                     " AND (fy.progress = 'START' OR fy.progress = 'DISCUSSION') " +
                     " AND NOT EXISTS(SELECT 1 FROM FllyParticipation  fp " +
-                    " WHERE fp.flly.fllyId = fy.fllyId AND fp.seller.memberId = :memberId )" +
+                    " WHERE fp.flly.fllyId = fy.fllyId AND fp.seller.memberId = :memberId ) " +
+                    "AND fy.consumer.role != 'DELETE' " +
                     " order by fy.deadline "
     )
     Page<FllyDeliveryRegion> getSellerDeliverAbleList(List<Sido> sidoList, List<Sigungu> sigunguList, List<Dong> dongList, Pageable pageable, Long memberId);

@@ -21,7 +21,7 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
     @Query(
             value = "SELECT NEW com.ssafy.flowerly.seller.vo.OrderRequestDto(r, " +
                     "(SELECT fp.imageUrl FROM FllyParticipation fp " +
-                    "WHERE fp.flly.fllyId = r.flly.fllyId AND fp.seller.memberId = :memberId)) " +
+                    "WHERE fp.flly.fllyId = r.flly.fllyId AND fp.seller.memberId = :memberId AND fp.flly.consumer.role != 'DELETE' )) " +
                     "FROM Request r " +
                     "LEFT JOIN r.flly fl " +
                     "WHERE r.seller.memberId = :memberId " +
