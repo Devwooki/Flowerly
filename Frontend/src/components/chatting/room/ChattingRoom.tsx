@@ -165,6 +165,7 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
         );
       }
     };
+
   }, []);
 
   useEffect(() => {

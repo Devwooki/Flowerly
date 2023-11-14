@@ -2,7 +2,7 @@ import { ToastErrorMessage } from "@/model/toastMessageJHM";
 import axios from "axios";
 
 const baseURL = "https://flower-ly.co.kr/api";
-// const baseURL = "http://localhost:6090/api";
+//const baseURL = "http://localhost:6090/api";
 
 export const tokenHttp = axios.create({
   baseURL,
