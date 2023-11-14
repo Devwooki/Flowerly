@@ -8,7 +8,7 @@ import ChattingListExitModal from "./ChattingListExitModal";
 
 import { useRecoilValue } from "recoil";
 import { memberInfoState } from "@/recoil/memberInfoRecoil";
-import { tokenHttp } from "@/api/chattingTokenHttp";
+import { tokenHttp } from "@/api/tokenHttp";
 
 import SockJS from "sockjs-client";
 import { Client, CompatClient, Stomp } from "@stomp/stompjs";
@@ -37,7 +37,7 @@ const ChattingList = () => {
       .get(`/chatting`)
       .then((response) => {
         if (response.data.code === 200) {
-          console.log(response.data.data);
+          // console.log(response.data.data);
           setChattings(response.data.data);
           //요거 필수!! (엑세스 토큰 만료로 재발급 받았다면 바꿔줘!! )
           if (response.headers.authorization) {
@@ -64,10 +64,10 @@ const ChattingList = () => {
     stompClient.current = Stomp.over(socket);
     stompClient.current.connect({}, () => {
       // 특정 채팅방의 메세지를 구독
-      // stompClient.current?.subscribe(`/sub/list/${memberInfo.id}`, (chattingData) => {
-      stompClient.current?.subscribe(`/sub/list/2`, (chattingData) => {
+      stompClient.current?.subscribe(`/sub/list/${memberInfo.id}`, (chattingData) => {
+        // stompClient.current?.subscribe(`/sub/list/2`, (chattingData) => {
         // stompClient.current?.subscribe(`/sub/list/1`, (chattingData) => {
-        console.log(chattingData);
+        // console.log(chattingData);
         const newChattingData = JSON.parse(chattingData.body);
 
         setChattings((currentChattings) =>

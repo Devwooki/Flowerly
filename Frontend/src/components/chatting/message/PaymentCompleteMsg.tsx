@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 
 import style from "./style/PaymentCompleteMsg.module.css";
-import { tokenHttp } from "@/api/chattingTokenHttp";
+import { tokenHttp } from "@/api/tokenHttp";
 
 type PaymentInfo = {
   requestId: number;

@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import style from "./style/ChattingListExitModal.module.css";
-import { tokenHttp } from "@/api/chattingTokenHttp";
+import { tokenHttp } from "@/api/tokenHttp";
 
 type ChattingListExitModalProps = {
   chattingId: number;

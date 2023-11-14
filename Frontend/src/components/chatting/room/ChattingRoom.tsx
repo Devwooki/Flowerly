@@ -22,7 +22,7 @@ import { paymentErrorRecoil } from "@/recoil/paymentRecoil";
 import { useRecoilValue, useResetRecoilState } from "recoil";
 import Image from "next/image";
 
-import { tokenHttp } from "@/api/chattingTokenHttp";
+import { tokenHttp } from "@/api/tokenHttp";
 import { ToastErrorMessage } from "@/model/toastMessageJHM";
 
 type ChattingRoomProps = {
@@ -96,11 +96,11 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
   useEffect(() => {
     // 첫 렌더링
 
-    // const accessToken = localStorage.getItem("accessToken");
+    const accessToken = localStorage.getItem("accessToken")?.substring(7); // Bearer 제거
     // const accessToken =
     //   "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcwODY4MzQ4NiwibWVtYmVySWQiOjF9.wU3IYYWErRie5E5s7oIRYMliboyumfMrCZILaKnwlxXxJXCW1kHZ5fJ-mKvsAwYuMV4-UT0F4qoUX9rVcrTiNw"; // 1번
-    const accessToken =
-      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcwODc1MjUwMywibWVtYmVySWQiOjJ9.o_v_EVuucqlh2NPfHioqquPjm3U-JTP-7ZP2xJkxIxMsPBMhxnw0DL-Avnh2ryBa_J6JYS7YdCc5dZuMS_9IUw"; // 2번
+    // const accessToken =
+    //   "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcwODc1MjUwMywibWVtYmVySWQiOjJ9.o_v_EVuucqlh2NPfHioqquPjm3U-JTP-7ZP2xJkxIxMsPBMhxnw0DL-Avnh2ryBa_J6JYS7YdCc5dZuMS_9IUw"; // 2번
 
     // const socket = new SockJS(`http://localhost:6090/stomp-chat`); // 로컬 테스트용
     const socket = new SockJS("https://flower-ly.co.kr/stomp-chat"); // 배포용
@@ -154,7 +154,7 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
     }
 
     return () => {
-      if (stompClient.current) {
+      if (stompClient.current && accessToken) {
         stompClient.current.disconnect(
           () => {
             console.log("Disconnected");
@@ -296,8 +296,9 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
     const destination = `/pub/message/${chattingId}`;
     const stompChatRequest = {
       chattingId,
-      memberId: 2, // 리코일에 든 아이디로 바꾸기
+      // memberId: 2, // 리코일에 든 아이디로 바꾸기
       // memberId: 1,
+      memberId: memberInfo.id,
       type: type,
       content: content,
     };
