@@ -4,6 +4,7 @@ import Image from "next/image";
 import { tokenHttp } from "@/api/tokenHttp";
 import Router from "next/router";
 import { useState } from "react";
+import { ToastSuccessMessage } from "@/model/toastMessageJHM";
 
 const MyPageBuyer = () => {
   const [newNickName, setNewNickName] = useState("");
@@ -14,6 +15,8 @@ const MyPageBuyer = () => {
       .then((res) => {
         if (res.data.code === 200) {
           setNewNickName(res.data.data);
+          ToastSuccessMessage("닉네임이 변경되었습니다.");
+          Router.push("/mypage");
 
           if (res.headers.authorization) {
             localStorage.setItem("accessToken", res.headers.authorization);

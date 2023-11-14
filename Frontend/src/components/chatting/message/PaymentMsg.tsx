@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import style from "./style/PaymentMsg.module.css";
 import Image from "next/image";
 import axios from "axios";
-import { tokenHttp } from "@/api/chattingTokenHttp";
+import { tokenHttp } from "@/api/tokenHttp";
 import { useRouter } from "next/router";
 
 import { ToastErrorMessage } from "@/model/toastMessageJHM";

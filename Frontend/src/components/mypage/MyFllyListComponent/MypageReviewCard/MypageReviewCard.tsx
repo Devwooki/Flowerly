@@ -40,24 +40,8 @@ const MypageReviewCard = ({
   const memberInfo = useRecoilValue<MemberInfo>(memberInfoState);
 
   const DeleteBtnHandler = () => {
-    tokenHttp
-      .delete(`review/delete/${$reviewInfo.reviewId}`)
-      .then((res) => {
-        if (res.data.code === 200) {
-          ModalChangeHandler();
-          SelectIdChangeHandler($reviewInfo.reviewId, $requestIndex);
-          ToastSuccessMessage("리뷰가 삭제되었습니다.");
-
-          if (res.headers.authorization) {
-            localStorage.setItem("accessToken", res.headers.authorization);
-          }
-        }
-      })
-      .catch((err) => {
-        if (err.response.status === 403) {
-          Router.push("/fllylogin");
-        }
-      });
+    ModalChangeHandler();
+    SelectIdChangeHandler($reviewInfo.reviewId, $requestIndex);
   };
 
   const isBuyerReview = "storeName" in $reviewInfo;

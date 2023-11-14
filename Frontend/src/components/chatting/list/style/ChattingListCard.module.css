@@ -1,6 +1,7 @@
 .wrapper {
   position: relative;
   width: calc(100% - 30px);
+  min-height: 80px;
   overflow: hidden;
 }
 

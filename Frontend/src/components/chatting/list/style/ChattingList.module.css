@@ -41,7 +41,7 @@
   padding-top: 10px;
   width: 100%;
   overflow: scroll;
-  height: calc(100vh - 135px);
+  height: calc(100vh - 150px);
   display: flex;
   flex-direction: column;
   align-items: center;
