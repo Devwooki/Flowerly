@@ -75,16 +75,22 @@ public class BuyerService {
             buyerFlly.setStoreName(curFlly.getProgress().getTitle());
         } else {
             // 결제한 회사가 없으면 아직 조율이 완료된 것이 아니다.
-            requestRepository.findByFllyAndIsPaidTrue(curFlly)
-                    .map(request -> { //조율된 업체가 있으면 Store이름을 바꾸고
-                        String requestStoreName = storeInfoRepository.findStoreName(request.getSeller().getMemberId());
-                        buyerFlly.setStoreName(requestStoreName);
-                        return request;
-                    })
-                    .orElseGet(() -> { //조율된 업체가 없으면 Process 그대로
-                        buyerFlly.setStoreName(curFlly.getProgress().getTitle());
-                        return null;
-                    });
+            try{
+                requestRepository.findByFllyAndIsPaidTrue(curFlly)
+                        .map(request -> { //조율된 업체가 있으면 Store이름을 바꾸고
+                            String requestStoreName = storeInfoRepository.findStoreName(request.getSeller().getMemberId());
+                            buyerFlly.setStoreName(requestStoreName);
+                            return request;
+                        })
+                        .orElseGet(() -> { //조율된 업체가 없으면 Process 그대로
+                            buyerFlly.setStoreName(curFlly.getProgress().getTitle());
+                            return null;
+                        });
+            }catch(Exception e){
+                log.error("플리조회중 예외 발생 {}", e.getMessage());
+                throw new CustomException(ErrorCode.DUPLICATE_REQUET_PAID);
+            }
+
         }
         return buyerFlly;
     }
