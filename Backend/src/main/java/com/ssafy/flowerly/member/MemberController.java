@@ -78,6 +78,11 @@ public class MemberController {
         return new DataResponse<>(HttpStatus.OK.value(), "더미토큰 발사!!", jwtService.makeDummyToken(memberId));
     }
 
-    //@PostMapping("")
+    @DeleteMapping("/signout")
+    public CustomResponse signOut(HttpServletRequest request){
+        Long memberId = (Long) request.getAttribute("memberId");
+        memberService.signout(memberId);
+        return new CustomResponse(HttpStatus.OK.value(), "회원탈퇴 성공");
+    }
 
 }

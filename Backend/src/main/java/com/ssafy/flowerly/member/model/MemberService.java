@@ -167,4 +167,12 @@ public class MemberService {
     private String extractImageUrl(Object[] o){
         return ((StoreImage) o[1]).getImageUrl();
     }
+
+    public void signout(Long memberId) {
+        Member findMember = memberRepository.findByMemberId(memberId)
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+
+        findMember.signOut();
+        memberRepository.save(findMember);
+    }
 }

@@ -65,9 +65,6 @@ public class Member extends BaseTimeEntity {
         System.out.println(this);
         return this;
     }
-//    private void dataUpdate(){
-//        this.updatedAt = LocalDateTime.now();
-//    }
 
     public String notificationToggle(){
         this.isNotification = !this.isNotification;
@@ -87,6 +84,10 @@ public class Member extends BaseTimeEntity {
         this.nickName =nickname;
     }
 
-
-
+    public void signOut(){
+        this.socialId = null;
+        this.isNotification = false;
+        this.role = MemberRole.DELETE;
+        this.email = null;
+    }
 }

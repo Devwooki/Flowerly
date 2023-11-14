@@ -108,7 +108,7 @@ public class JWTAuthenticationProcessingFilter extends OncePerRequestFilter {
         log.info("accessToken 검증 시작");
 
         jwtService.extractMemberId(accessToken)
-                .flatMap(memberRepository::findByMemberIdActivate)
+                .flatMap(memberRepository::findByMemberId)
                 .ifPresent(member -> {
                     log.info("{}", member.getMemberId());
                     request.setAttribute("memberId", member.getMemberId());
