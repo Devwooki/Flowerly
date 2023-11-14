@@ -131,7 +131,7 @@ const FllyDetailModal: React.FC<FllyDetailProps> = ({ chattingId, modalHandler }
               <div className={style.partDiv}>
                 <div
                   className={style.imgDiv}
-                  style={{ backgroundImage: `url(${"/test/test-flower-img.png"})` }}
+                  style={{ backgroundImage: `url(${fllyDetail?.participationDto.imageUrl})` }}
                 ></div>
                 <div className={style.textDiv}>
                   <div id={style.price}>

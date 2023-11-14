@@ -55,7 +55,7 @@ const ParticipationForm: React.FC<ParticipationFormProps> = ({ chattingId, modal
         <div className={style.middle}>
           <div
             className={style.imgDiv}
-            style={{ backgroundImage: `url(${"/test/test-flower-img.png"})` }}
+            style={{ backgroundImage: `url(${participationInfo?.imageUrl})` }}
           ></div>
           <div className={style.contentDiv}>
             <div className={style.contentItem}>
