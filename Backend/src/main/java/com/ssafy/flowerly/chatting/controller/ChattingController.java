@@ -93,7 +93,7 @@ public class ChattingController {
      */
     @PostMapping("/request/{chattingId}")
     public CustomResponse saveRequestInfo(@PathVariable Long chattingId, @RequestBody RequestFromChattingDto requestDto) {
-        Long requestId = chattingService.saveRequestPrice(requestDto, chattingId);
+        Long requestId = chattingService.saveRequest(requestDto, chattingId);
 
         if(requestId == null) throw new CustomException(ErrorCode.REQUEST_PRICE_EXIST);
         return new DataResponse<Long>(200, "주문서 저장 성공", requestId);
@@ -106,7 +106,7 @@ public class ChattingController {
      */
     @PostMapping("/request/price")
     public CustomResponse saveRequestPrice(@RequestBody Map<String, Object> requestBody) {
-        chattingService.saveRequestPrice(
+        chattingService.saveRequest(
                 Long.parseLong(requestBody.get("requestId").toString()),
                 Integer.parseInt(requestBody.get("price").toString())
         );

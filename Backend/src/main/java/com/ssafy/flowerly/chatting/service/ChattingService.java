@@ -215,7 +215,7 @@ public class ChattingService {
     }
 
     @Transactional
-    public Long saveRequestPrice(RequestFromChattingDto requestDto, Long chattingId) {
+    public Long saveRequest(RequestFromChattingDto requestDto, Long chattingId) {
         Chatting chatting = chattingRepository.findById(chattingId)
                 .orElseThrow(() -> new CustomException(ErrorCode.CHATTING_NOT_FOUND));
 
@@ -258,6 +258,7 @@ public class ChattingService {
                     .deliveryPickupTime(stringToTime(requestDto.getDeliveryPickupTime()))
                     .requestContent(requestDto.getRequestContent())
                     .price(-1)
+                    .isPaid(false)
                     .build();
             request = requestRepository.save(request);
 
@@ -283,7 +284,7 @@ public class ChattingService {
     }
 
     @Transactional
-    public void saveRequestPrice(Long requestId, Integer price) {
+    public void saveRequest(Long requestId, Integer price) {
         Request request = requestRepository.findById(requestId)
                 .orElseThrow(() -> new CustomException(ErrorCode.REQUEST_NOT_FOUND));
 
