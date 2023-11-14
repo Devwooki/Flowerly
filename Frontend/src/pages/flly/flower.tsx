@@ -65,7 +65,7 @@ const FllyFlower = () => {
       subValue(e);
     } else if (selected.length < 3) {
       addValue(e);
-    }
+    } else ToastErrorMessage("3개까지 선택 가능합니다.");
   };
 
   const subValue = (value: flowerCardType) => {
