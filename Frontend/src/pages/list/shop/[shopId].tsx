@@ -10,6 +10,7 @@ import { AxiosError } from "axios";
 import { tokenHttp } from "@/api/tokenHttp";
 import Image from "next/image";
 import { ToastErrorMessage } from "@/model/toastMessageJHM";
+import Head from "next/head";
 
 const ShopInfoMain = () => {
   const router = useRouter();
@@ -31,31 +32,37 @@ const ShopInfoMain = () => {
   );
 
   return (
-    <div className={style.ShopInfoBack}>
-      <div className={style.ShopInfoHeader}>
-        <div className={style.headerTitle}>
-          <Image
-            src="/img/btn/left-btn.png"
-            alt="뒤로가기"
-            width={13}
-            height={20}
-            onClick={() => {
-              router.back();
-            }}
-          />
-          <div>가게정보</div>
+    <>
+      <Head>
+        <title>{data?.store.storeName}의 정보</title>
+        <meta property="og:title" content={`${data?.store.storeName}의 가게 정보입니다.`} />
+      </Head>
+      <div className={style.ShopInfoBack}>
+        <div className={style.ShopInfoHeader}>
+          <div className={style.headerTitle}>
+            <Image
+              src="/img/btn/left-btn.png"
+              alt="뒤로가기"
+              width={13}
+              height={20}
+              onClick={() => {
+                router.back();
+              }}
+            />
+            <div>가게정보</div>
+          </div>
+        </div>
+        <div className={style.ShopInfoMain}>
+          {data && (
+            <>
+              <ShopLocation ShopInfoDetail={data?.store} />
+              <ShopImg shopImg={data?.store.images} />
+              <ShopReview review={data?.review.content} />
+            </>
+          )}
         </div>
       </div>
-      <div className={style.ShopInfoMain}>
-        {data && (
-          <>
-            <ShopLocation ShopInfoDetail={data?.store} />
-            <ShopImg shopImg={data?.store.images} />
-            <ShopReview review={data?.review.content} />
-          </>
-        )}
-      </div>
-    </div>
+    </>
   );
 };
 

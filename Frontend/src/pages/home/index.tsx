@@ -1,5 +1,4 @@
 import style from "./Home.module.css";
-import { delay, motion } from "framer-motion";
 import Image from "next/image";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -13,6 +12,7 @@ import { useEffect, useState } from "react";
 import { tokenHttp } from "@/api/tokenHttp";
 import { ToastErrorMessage } from "@/model/toastMessageJHM";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 interface cardResponse {
   flowerCode: number;
@@ -34,13 +34,15 @@ interface card {
 export default function Home() {
   const [cards, setCards] = useState([] as card[]);
   const router = useRouter();
+  const today = new Date();
+  console.log(today.getMonth() + 1);
 
   const axiosHandler = () => {
     tokenHttp
       .get(`/main`)
       .then((response) => {
-        console.log(response);
-        console.log(response.data);
+        // console.log(response);
+        // console.log(response.data);
         if (response.data.code === 200) {
           const temp = [] as card[];
           response.data.data.map((item: cardResponse) => {
@@ -73,6 +75,11 @@ export default function Home() {
 
   return (
     <>
+      <Head>
+        <title>{`${today.getMonth() + 1}월의 꽃을 만나보세요`} </title>
+        <meta property="og:image" content={"/img/homeBanner/121_pink_gomphrena.jpg"} />
+        <meta property="og:title" content={`${today.getMonth() + 1}월의 꽃을 만나보세요`} />
+      </Head>
       <div className={style.home}>
         <div className={style.mainHeader}>
           <div className={style.header}>플리로고</div>
