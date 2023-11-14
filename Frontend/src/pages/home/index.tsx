@@ -75,11 +75,6 @@ export default function Home() {
 
   return (
     <>
-      <Head>
-        <title>{`${today.getMonth() + 1}월의 꽃을 만나보세요`} </title>
-        <meta property="og:image" content={"/img/homeBanner/121_pink_gomphrena.jpg"} />
-        <meta property="og:title" content={`${today.getMonth() + 1}월의 꽃을 만나보세요`} />
-      </Head>
       <div className={style.home}>
         <div className={style.mainHeader}>
           <div className={style.header}>플리로고</div>
