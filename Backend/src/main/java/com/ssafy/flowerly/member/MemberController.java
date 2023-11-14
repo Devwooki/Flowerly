@@ -79,9 +79,12 @@ public class MemberController {
     }
 
     @DeleteMapping("/signout")
-    public CustomResponse signOut(HttpServletRequest request){
+    public CustomResponse signOut(HttpServletRequest request, HttpServletResponse response){
         Long memberId = (Long) request.getAttribute("memberId");
+
         memberService.signout(memberId);
+        jwtService.sendDeleteToken(request, response);
+
         return new CustomResponse(HttpStatus.OK.value(), "회원탈퇴 성공");
     }
 
