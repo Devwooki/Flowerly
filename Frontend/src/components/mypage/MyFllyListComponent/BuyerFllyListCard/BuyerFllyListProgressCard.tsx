@@ -24,7 +24,7 @@ const BuyerFllyListProgressCard = ({ $fllyInfo }: Props) => {
 
   useEffect(() => {
     //나중에 백에서 들어올값
-    const progress: string = "주문완료";
+    const progress: string = $fllyInfo.progress;
 
     if (progress === "입찰") setProgressStep(0);
     else if (progress === "조율") setProgressStep(1);

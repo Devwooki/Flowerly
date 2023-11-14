@@ -101,7 +101,7 @@ const MypageSetting = () => {
                 ></span>
               </label>
             </div>
-            <div>알림 설정을 ON 하실경우 카카오톡 을 통한 플리에 대한 알림을 받을 수 있습니다</div>
+            <div>알림 설정을 ON 하실경우 플리에 대한 푸시 알림을 받을 수 있습니다</div>
           </div>
           {/* {memberInfo.role === "SELLER" && (
             <div className={style.SideDetail} onClick={userChangModalHandler}>

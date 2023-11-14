@@ -45,29 +45,41 @@ const RequestDetail = ({ $fllyRequestInfo }: { $fllyRequestInfo: fllyReqeustDeat
       <div className={style.detailMainBox}>
         <div>색상</div>
         <div>
-          <span>{$fllyRequestInfo.color1},</span>
-          <span>{$fllyRequestInfo.color2},</span>
-          <span>{$fllyRequestInfo.color3} </span>
+          {$fllyRequestInfo.color1 && <span>{$fllyRequestInfo.color1}</span>}
+          {$fllyRequestInfo.color2 && <span>, {$fllyRequestInfo.color2}</span>}
+          {$fllyRequestInfo.color3 && <span>, {$fllyRequestInfo.color3} </span>}
+          {$fllyRequestInfo.color1 === null &&
+            $fllyRequestInfo.color2 === null &&
+            $fllyRequestInfo === null && <span>랜덤</span>}
         </div>
       </div>
       <div className={style.detailMainBox}>
         <div>선택한 꽃</div>
         <div>
-          <div>
-            {$fllyRequestInfo.flower1?.flowerName} - {$fllyRequestInfo.flower1?.meaning}
-          </div>
-          <div>
-            {$fllyRequestInfo.flower2?.flowerName} - {$fllyRequestInfo.flower2?.meaning} 꿈
-          </div>
-          <div>
-            {$fllyRequestInfo.flower3?.flowerName} - {$fllyRequestInfo.flower3?.meaning}
-          </div>
+          {$fllyRequestInfo.flower1 && (
+            <div>
+              {$fllyRequestInfo.flower1?.flowerName} - {$fllyRequestInfo.flower1?.meaning}
+            </div>
+          )}
+          {$fllyRequestInfo.flower2 && (
+            <div>
+              {$fllyRequestInfo.flower2?.flowerName} - {$fllyRequestInfo.flower2?.meaning}
+            </div>
+          )}
+          {$fllyRequestInfo.flower3 && (
+            <div>
+              {$fllyRequestInfo.flower3?.flowerName} - {$fllyRequestInfo.flower3?.meaning}
+            </div>
+          )}
+          {$fllyRequestInfo.flower1 === null &&
+            $fllyRequestInfo.flower2 === null &&
+            $fllyRequestInfo.flower3 === null && <div>랜덤</div>}
         </div>
       </div>
       <div className={style.detailMainBox}>
         <div>예산</div>
         <div>
-          <span>{$fllyRequestInfo.budget}</span>
+          <span>{Number($fllyRequestInfo.budget).toLocaleString()} </span>
           <span> 원</span>
         </div>
       </div>

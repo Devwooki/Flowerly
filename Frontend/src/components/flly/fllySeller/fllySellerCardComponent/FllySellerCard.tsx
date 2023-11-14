@@ -70,7 +70,7 @@ const FllySellerCard = ({ $FllyDeliveryNear }: { $FllyDeliveryNear: FllyNearType
             </div>
             <div>
               <Image src="/img/icon/seller-money.png" alt="돈" width={22} height={22}></Image>
-              <span>{$FllyDeliveryNear.budget} 원</span>
+              <span> {Number($FllyDeliveryNear.budget).toLocaleString()} 원</span>
             </div>
             <div>
               <Image src="/img/icon/seller-time.png" alt="마감" width={22} height={22}></Image>
