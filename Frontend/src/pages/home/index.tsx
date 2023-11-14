@@ -90,12 +90,14 @@ export default function Home() {
           loop={true}
           direction={"vertical"}
           grabCursor={true}
+          // spaceBetween={40}
           slidesPerView={1.2}
           effect={"creative"}
+          speed={800}
           creativeEffect={{
             prev: {
-              shadow: true,
-              translate: [0, 0, -200],
+              // shadow: true,
+              translate: [0, "20%", -200],
             },
             next: {
               translate: [0, "100%", 0],

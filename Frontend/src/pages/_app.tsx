@@ -19,7 +19,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <Head>
         <link type="image" rel="icon" href="/test/vertical.jpg" />
         <title>플리의 특별한 선물</title>
-        <meta property="og:image" content={"/test/test-flower-img.jpg"} />
+        <meta property="og:image" content={"/test/test-flower-img.png"} />
         <meta property="og:title" content="특별한 날, 특별한 선물을 해보세요" />
       </Head>
       <QueryClientProvider client={queryClient}>
