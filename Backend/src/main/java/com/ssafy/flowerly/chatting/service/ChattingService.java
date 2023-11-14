@@ -6,6 +6,7 @@ import com.ssafy.flowerly.entity.*;
 import com.ssafy.flowerly.chatting.repository.ChattingMessageRepository;
 import com.ssafy.flowerly.chatting.repository.ChattingRepository;
 import com.ssafy.flowerly.entity.type.OrderType;
+import com.ssafy.flowerly.entity.type.ProgressType;
 import com.ssafy.flowerly.exception.CustomException;
 import com.ssafy.flowerly.exception.ErrorCode;
 import com.ssafy.flowerly.member.MemberRole;
@@ -52,19 +53,25 @@ public class ChattingService {
             responseMap.put("isNew", false);
             responseMap.put("chattingId", prevChatting.get().getChattingId());
         } else {
-            // 새로운 채팅방 생성
             Flly flly = fllyRepository.getReferenceById(chattingRequestDto.getFllyId());
             FllyParticipation fllyParticipation = fllyParticipationRepository.getReferenceById(chattingRequestDto.getFllyParticipationId());
             Member consumer = memberRepository.getReferenceById(chattingRequestDto.getConsumerId());
             Member seller = memberRepository.getReferenceById(chattingRequestDto.getSellerId());
 
+            // 새로운 채팅방 생성
             Chatting newChatting = new Chatting();
-            newChatting = chattingRepository.save(newChatting.toEntity(flly, fllyParticipation, consumer, seller));  // 저장
+            newChatting = chattingRepository.save(newChatting.toEntity(flly, fllyParticipation, consumer, seller));
+            // 플리 상태 변경
+            if(flly.getProgress().equals(ProgressType.START)) {
+                flly.setProgress(ProgressType.DISCUSSION);
+            }
+            // 기본 메세지 전송
             saveChattingMessage(new StompChatRequest(
                     newChatting.getChattingId(),
                     chattingRequestDto.getConsumerId(),
                     "PARTICIPATION",
-                    "해당 상품에 관심을 가지고 있습니다."));
+                    "해당 상품에 관심을 가지고 있습니다.")
+            );
 
             responseMap.put("isNew", true);
             responseMap.put("chattingId", newChatting.getChattingId());
