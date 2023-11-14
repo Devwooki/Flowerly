@@ -54,6 +54,8 @@ const FllyTarget = () => {
   const [pickupCodeList, setPickupCodeList] = useRecoilState<regionType[]>(regionState);
   const [showPrevModal, setShowPrevModal] = useState<boolean>(false);
   const [showNextModal, setShowNextModal] = useState<boolean>(false);
+  
+  const [checkSubmitted, setCheckSubmitted] = useState<boolean>(false);
 
   const handleBasicAddressUpdate = (newAddress: string) => {
     setBasicAddress(newAddress);
@@ -170,34 +172,37 @@ const FllyTarget = () => {
   };
 
   const submitBtn = () => {
-    tokenHttp
-      .post(`/flly/request`, {
-        situation: situation == "선택 안함" ? null : situation,
-        target: target == "선택 안함" ? null : target,
-        colors: colors.includes("선택 안함") ? null : colors,
-        flowers: flowers,
-        orderType: checkDelivery ? "DELIVERY" : "PICKUP",
-        delivery: addressCode,
-        detailAddress: detailAddress,
-        pickup: pickupCodeList,
-        deadline: dateTime,
-        requestContent: requestText,
-        imageUrl: bouquet?.url,
-        budget: price,
-      })
-      .then((response) => {
-        console.log(response.data);
-        if (response.data.code === 200) {
-          router.push("/");
-          if (response.headers.authorization)
-            localStorage.setItem("accessToken", response.headers.authorization);
-        }
-      })
-      .catch((error) => {
-        if (error.response.status === 403) {
-          router.push("/fllylogin");
-        } else ToastErrorMessage("오류가 발생했습니다.");
-      });
+    if(checkSubmitted === false) {
+      setCheckSubmitted(true);
+      tokenHttp
+        .post(`/flly/request`, {
+          situation: situation == "선택 안함" ? null : situation,
+          target: target == "선택 안함" ? null : target,
+          colors: colors.includes("선택 안함") ? null : colors,
+          flowers: flowers,
+          orderType: checkDelivery ? "DELIVERY" : "PICKUP",
+          delivery: addressCode,
+          detailAddress: detailAddress,
+          pickup: pickupCodeList,
+          deadline: dateTime,
+          requestContent: requestText,
+          imageUrl: bouquet?.url,
+          budget: price,
+        })
+        .then((response) => {
+          console.log(response.data);
+          if (response.data.code === 200) {
+            router.push("/");
+            if (response.headers.authorization)
+              localStorage.setItem("accessToken", response.headers.authorization);
+          } else setCheckSubmitted(false);
+        })
+        .catch((error) => {
+          if (error.response.status === 403) {
+            router.push("/fllylogin");
+          } else ToastErrorMessage("오류가 발생했습니다.");
+        });
+    } else ToastErrorMessage("의뢰서를 저장하고 있습니다.")
   };
 
   useEffect(() => {
@@ -256,7 +261,7 @@ const FllyTarget = () => {
               <div className={styleModal.explain}>페이지가 이동합니다.</div>
               <div className={styleModal.modalBtnBox}>
                 <div onClick={nextBtnHandler}>취소</div>
-                <div onClick={submitBtn}>확인</div>
+                <div className={checkSubmitted? styleModal.noSelect : ""} onClick={submitBtn}>확인</div>
               </div>
             </div>
           </div>
