@@ -3,6 +3,8 @@ import style from "components/navi/Navi.module.css";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
+import { useResetRecoilState } from "recoil";
+import { bouquetState, bouquetsState, colorState, deliveryAddressState, flowerState, randomFlowerState, regionState, situationState, targetState } from "@/recoil/fllyRecoil";
 
 const Navi = () => {
   const router = useRouter();
@@ -30,6 +32,28 @@ const Navi = () => {
     return `/navi/${baseName}${selectedButton === baseName ? "-dark" : "-white"}.png`;
   };
 
+  const resetSituation = useResetRecoilState(situationState);
+  const resetTarget = useResetRecoilState(targetState);
+  const resetColor = useResetRecoilState(colorState);
+  const resetFlower = useResetRecoilState(flowerState);
+  const resetRandom = useResetRecoilState(randomFlowerState);
+  const resetBouquets = useResetRecoilState(bouquetsState);
+  const resetBouquet = useResetRecoilState(bouquetState);
+  const resetDelivery = useResetRecoilState(deliveryAddressState);
+  const resetRegion = useResetRecoilState(regionState);
+
+  const resetFlly = () => {
+    resetSituation();
+    resetTarget();
+    resetColor();
+    resetFlower();
+    resetRandom();
+    resetBouquets();
+    resetBouquet();
+    resetDelivery();
+    resetRegion();
+  };
+
   const moveNavi = (loc: string) => {
     setSelectedButton(loc);
     if (loc === "home") {
@@ -37,6 +61,7 @@ const Navi = () => {
     } else if (loc === "list") {
       router.push("/list");
     } else if (loc === "flly") {
+      resetFlly();
       router.push("/flly");
     } else if (loc === "chat") {
       router.push("/chatting");

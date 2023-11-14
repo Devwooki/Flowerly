@@ -29,7 +29,7 @@
 .mainBody {
   width: 80%;
   margin: 0 auto;
-  height: 80vh;
+  height: 70vh;
   margin-top: 20px;
 }
 
@@ -90,4 +90,9 @@
 
 .btnPakage {
   display: flex;
+}
+
+.swiper-pagination-bullet {
+  background-color: #ff0404;
+  margin: 0 10px;
 }

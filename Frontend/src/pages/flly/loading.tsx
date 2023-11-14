@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import style from "@/components/flly/fllyUser/FllyLoading.module.css";
 import Image from "next/image";
@@ -24,34 +23,38 @@ const FllyLoading = () => {
   const [bouquets, setBouquets] = useRecoilState(bouquetsState);
 
   const generateOrder = async () => {
-    if(flowers.length > 0) {
+    if (flowers.length > 0) {
       const flowerStringArray = flowers.map((flower) => {
         return `${flower.color} ${flower.engName}`;
       });
       const flowerString = flowerStringArray.join(", ");
-      setOrder(`a bouquet of ${flowerString}, on Light Bluish Gray background`);
+      setOrder(
+        `a pretty and beautiful bouquet wrapped in paper of ${flowerString}, on Light Bluish Gray background, Place the bouquet in the middle, more distant, overall,`,
+      );
     } else {
       const flowerStringArray = randoms.map((flower) => {
         return `${flower.color} ${flower.engName}`;
       });
       const flowerString = flowerStringArray.join(", ");
-      setOrder(`a bouquet of ${flowerString}, on Light Bluish Gray background`);
+      setOrder(
+        `“a pretty and beautiful bouquet wrapped in paper of ${flowerString}, on Light Bluish Gray background, Place the bouquet in the middle, more distant, overall,`,
+      );
     }
-
   };
 
   const generateImage = async () => {
     try {
       const response = await openai.images.generate({
+        model: "dall-e-2",
         prompt: order,
-        n: 4,
+        n: 2,
         size: "1024x1024",
       });
       console.log("dalle 생성 이미지 ", response);
       const NewImage: bouquetType[] = [];
       if (response) {
         response.data.forEach((image) => {
-          if(image.url) NewImage.push({ url: image.url });
+          if (image.url) NewImage.push({ url: image.url });
         });
         setImgList(NewImage);
       }
@@ -76,11 +79,11 @@ const FllyLoading = () => {
   useEffect(() => {
     console.log(order);
     // router.push("bouquet"); // 지우기
-    if(order != "") generateImage();
-  },[order]);
+    if (order != "") generateImage();
+  }, [order]);
 
   useEffect(() => {
-    if(imgList.length !== 0) router.push("bouquet");
+    if (imgList.length !== 0) router.push("bouquet");
   }, [bouquets]);
 
   return (
@@ -88,12 +91,7 @@ const FllyLoading = () => {
       <div className={style.fllyBox}>
         <div className={style.contentBox}>
           <div className={style.guide}>하나뿐인 꽃다발을 생성중입니다.</div>
-          <Image
-            src="/img/etc/loading.gif"
-            width={200}
-            height={200}
-            alt="로딩"
-          ></Image>
+          <Image src="/img/etc/loading.gif" width={200} height={200} alt="로딩"></Image>
         </div>
       </div>
     </>
