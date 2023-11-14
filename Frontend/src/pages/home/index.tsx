@@ -6,13 +6,14 @@ import { Swiper, SwiperSlide } from "swiper/react";
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/effect-creative";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 // import required modules
-import { EffectCreative } from "swiper/modules";
+import { Autoplay, EffectCreative, Pagination } from "swiper/modules";
 import { useEffect, useState } from "react";
 import { tokenHttp } from "@/api/tokenHttp";
 import { ToastErrorMessage } from "@/model/toastMessageJHM";
 import { useRouter } from "next/router";
-import Head from "next/head";
 
 interface cardResponse {
   flowerCode: number;
@@ -68,7 +69,6 @@ export default function Home() {
         } else ToastErrorMessage("오류가 발생했습니다.");
       });
   };
-
   useEffect(() => {
     axiosHandler();
   }, []);
@@ -82,23 +82,23 @@ export default function Home() {
           <div className={style.title}>가을의 꽃을 만나보세요</div>
         </div>
         <Swiper
-          loop={true}
+          // loop={true}
+          autoplay={{ delay: 2000, disableOnInteraction: false }}
           direction={"vertical"}
-          grabCursor={true}
-          // spaceBetween={40}
-          slidesPerView={1.2}
-          effect={"creative"}
           speed={800}
+          effect={"creative"}
+          loopAdditionalSlides={1}
+          pagination={{ clickable: true, type: "bullets" }}
           creativeEffect={{
             prev: {
-              // shadow: true,
-              translate: [0, "20%", -200],
+              opacity: 0.7,
+              translate: [0, 0, -200],
             },
             next: {
               translate: [0, "100%", 0],
             },
           }}
-          modules={[EffectCreative]}
+          modules={[EffectCreative, Autoplay, Pagination]}
           className={style.mainBody}
         >
           {cards.map((card) => (
