@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -75,6 +76,14 @@ public class ReviewService {
             throw new CustomException(ErrorCode.CONSUMER_NOT_REVIEWER);
         }
 
+        // 리뷰 중복 등록 방지
+
+        Optional<Review> existingReview = reviewRepository.findByRequestAndConsumerAndIsRemovedFalse(request, consumer);
+        if (existingReview.isPresent()) {
+            throw new CustomException(ErrorCode.REVIEW_ALREADY_EXISTS);
+
+        }
+
         Review review = Review.builder()
                 .consumer(consumer)
                 .request(request)
@@ -89,11 +98,13 @@ public class ReviewService {
 
     }
 
-    public void deleteReview(Long reviewId, Long consumerId) {
-        Review review = reviewRepository.findByConsumerMemberIdAndReviewIdAndIsRemovedFalse(reviewId, consumerId)
+    public void deleteReview(Long reviewId) {
+        Review review = reviewRepository.findByReviewIdAndIsRemovedFalse(reviewId)
                 .orElseThrow(() -> new CustomException(ErrorCode.REVIEW_NOT_FOUND));
 
         review.markAsRemoved();
         reviewRepository.save(review);
+
+        System.out.println("Review info: " + review);
     }
 }
