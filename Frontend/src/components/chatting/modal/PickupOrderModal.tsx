@@ -10,7 +10,7 @@ import { Dayjs } from "dayjs";
 import "dayjs/locale/ko";
 import { ToastErrorMessage } from "@/model/toastMessageJHM";
 
-import { tokenHttp } from "@/api/chattingTokenHttp";
+import { tokenHttp } from "@/api/tokenHttp";
 import { useRouter } from "next/router";
 
 type PcikupOrderProps = {
