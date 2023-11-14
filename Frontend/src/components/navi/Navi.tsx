@@ -4,13 +4,25 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import { useResetRecoilState } from "recoil";
-import { bouquetState, bouquetsState, colorState, deliveryAddressState, flowerState, randomFlowerState, regionState, situationState, targetState } from "@/recoil/fllyRecoil";
+import {
+  bouquetState,
+  bouquetsState,
+  colorState,
+  deliveryAddressState,
+  flowerState,
+  randomFlowerState,
+  regionState,
+  situationState,
+  targetState,
+} from "@/recoil/fllyRecoil";
 
 const Navi = () => {
   const router = useRouter();
 
   const determineInitialButton = () => {
     const pathSegments = router.pathname.split("/").filter(Boolean);
+    console.log("pathSegments", pathSegments);
+
     switch (pathSegments[0]) {
       case "list":
         return "list";
@@ -20,11 +32,12 @@ const Navi = () => {
         return "chat";
       case "mypage":
         return "my";
+      case "home":
+        return "home";
       default:
         return "home";
     }
   };
-
   const [selectedButton, setSelectedButton] = useState<string>(determineInitialButton());
 
   // 이미지 경로를 동적으로 반환하는 helper 함수
@@ -68,12 +81,13 @@ const Navi = () => {
     } else if (loc === "my") {
       router.push("/mypage");
     }
+    console.log("selectedButton", selectedButton);
   };
 
   useEffect(() => {
     // 라우터 경로가 변경될 때마다 setSelectedButton을 업데이트
     setSelectedButton(determineInitialButton());
-  }, []);
+  }, [router.pathname]);
 
   return (
     <div className={style.naviMain}>

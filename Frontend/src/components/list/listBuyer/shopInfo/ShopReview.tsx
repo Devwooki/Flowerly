@@ -28,7 +28,7 @@ const ShopReview = ({ review }: ShopReviewProps) => {
       ) : (
         <>
           <div className={style.noData}>
-            <Image src="/img/etc/no-review-image.png" alt="플리" width={150} height={150} />
+            <Image src="/img/etc/no-review-image.png" alt="플리" width={80} height={80} />
           </div>
           <div className={style.noDataText}>리뷰가 없습니다.</div>
         </>
