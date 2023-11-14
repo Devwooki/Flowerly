@@ -162,7 +162,7 @@ const FllySellerParticipation = () => {
             ></input>
             {!userImgSrc ? (
               <Image
-                src="/img/btn/img-select-btn.png"
+                src="/img/btn/Img-select-btn.png"
                 alt="이미지 선택"
                 width={150}
                 height={70}

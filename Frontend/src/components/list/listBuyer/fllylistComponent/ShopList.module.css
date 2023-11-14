@@ -20,3 +20,19 @@
   margin: 20px;
   font-size: 18px;
 }
+
+.noDataTable {
+  grid-column: span 2;
+}
+
+.noData {
+  display: flex;
+  margin-top: 30%;
+  align-items: center;
+  justify-content: center;
+}
+
+.noDataText {
+  text-align: center;
+  font-family: "NanumSquareNeoOTF-Lt";
+}

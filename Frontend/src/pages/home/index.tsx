@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import { tokenHttp } from "@/api/tokenHttp";
 import { ToastErrorMessage } from "@/model/toastMessageJHM";
 import { useRouter } from "next/router";
+import { motion } from "framer-motion";
 
 interface cardResponse {
   flowerCode: number;
@@ -74,7 +75,7 @@ export default function Home() {
   }, []);
 
   return (
-    <>
+    <div>
       <div className={style.home}>
         <div className={style.mainHeader}>
           <div className={style.header}>플리로고</div>
@@ -116,6 +117,6 @@ export default function Home() {
           ))}
         </Swiper>
       </div>
-    </>
+    </div>
   );
 }
