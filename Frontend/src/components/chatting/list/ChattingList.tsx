@@ -70,13 +70,23 @@ const ChattingList = () => {
         // console.log(chattingData);
         const newChattingData = JSON.parse(chattingData.body);
 
-        setChattings((currentChattings) =>
-          currentChattings.map((chatting) =>
-            chatting.chattingId === newChattingData.chattingId
-              ? { ...chatting, ...newChattingData }
-              : chatting,
-          ),
-        );
+        setChattings((currentChattings) => {
+          // 기존 채팅 목록에서 newChattingData와 chattingId가 동일한 요소를 찾습니다.
+          const existingChattingIndex = currentChattings.findIndex(
+            (chatting) => chatting.chattingId === newChattingData.chattingId,
+          );
+
+          // 새로운 채팅 데이터를 기존 데이터와 결합합니다.
+          let updatedChatting = newChattingData;
+          if (existingChattingIndex !== -1) {
+            updatedChatting = { ...currentChattings[existingChattingIndex], ...newChattingData };
+          }
+
+          const filteredChattings = currentChattings.filter(
+            (chatting) => chatting.chattingId !== newChattingData.chattingId,
+          );
+          return [updatedChatting, ...filteredChattings];
+        });
       });
     });
 

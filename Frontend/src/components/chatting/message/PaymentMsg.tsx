@@ -79,8 +79,14 @@ const PaymentMsg: React.FC<PaymentMsgProps> = ({ chattingId }) => {
           if (response.headers.authorization) {
             localStorage.setItem("accessToken", response.headers.authorization);
           }
-        } else if (response.data.code == "-604") {
-          ToastErrorMessage("이미 진행중인 주문이 있습니다.");
+        } else if (response.data.code == "-605") {
+          ToastErrorMessage("이미 결제 완료된 주문입니다.");
+          //요거 필수!! (엑세스 토큰 만료로 재발급 받았다면 바꿔줘!! )
+          if (response.headers.authorization) {
+            localStorage.setItem("accessToken", response.headers.authorization);
+          }
+        } else if (response.data.code == "-608") {
+          ToastErrorMessage("결제 완료된 주문이 존재합니다. 주문은 하나만 가능합니다.");
           //요거 필수!! (엑세스 토큰 만료로 재발급 받았다면 바꿔줘!! )
           if (response.headers.authorization) {
             localStorage.setItem("accessToken", response.headers.authorization);
