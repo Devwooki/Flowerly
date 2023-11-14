@@ -41,6 +41,7 @@ type ChattingMsg = {
   chattingId: number;
   opponentMemberId: number;
   opponentName: string;
+  isValidRoom: boolean;
   lastId: string;
   messages: Message[];
 };
@@ -68,12 +69,14 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
     tokenHttp
       .get(`/chatting/${chattingId}`)
       .then((response) => {
+        console.log(response.data.data);
         if (response.data.code === 200) {
           const responseData = response.data.data;
           setChattingMsgs({
             chattingId: responseData.chattingId,
             opponentMemberId: responseData.opponentMemberId,
             opponentName: responseData.opponentName,
+            isValidRoom: responseData.isValid,
             lastId: responseData.lastId,
             messages: addDateMsg(responseData.messages),
           });
@@ -84,6 +87,7 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
         }
       })
       .catch((err) => {
+        console.log(err);
         if (err.response.status === 403) {
           router.push("/fllylogin");
         }
@@ -132,6 +136,7 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
                 opponentMemberId: 0,
                 lastId: "",
                 opponentName: "",
+                isValidRoom: true,
                 messages: [newMsg],
               };
             }
@@ -165,7 +170,6 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
         );
       }
     };
-
   }, []);
 
   useEffect(() => {
@@ -192,6 +196,7 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
           }
         })
         .catch((err) => {
+          console.log(err);
           if (err.response.status === 403) {
             router.push("/fllylogin");
           }
@@ -222,13 +227,14 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
       if (message.type == "DATE") continue;
       if (message.type == "ORDER_COMPLETE") setLastRequestMsgId(message.messageId);
 
-      const sendTime = new Date(message.sendTime.replaceAll(".", "/"));
+      const sendTime = new Date(message.sendTime?.replaceAll(".", "/"));
 
       if (
-        !lastDate ||
-        sendTime.getFullYear() != lastDate.getFullYear() ||
-        sendTime.getMonth() != lastDate.getMonth() ||
-        sendTime.getDate() != lastDate.getDate()
+        message.sendTime &&
+        (!lastDate ||
+          sendTime.getFullYear() != lastDate.getFullYear() ||
+          sendTime.getMonth() != lastDate.getMonth() ||
+          sendTime.getDate() != lastDate.getDate())
       ) {
         newMessges.push({
           messageId: "",
@@ -392,6 +398,10 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
             chattingMsgs.messages.map((message, idx) => {
               return message.type == "DATE" ? (
                 <div className={style.dateDiv}>{message.content}</div>
+              ) : message.type == "INFORMATION" ? (
+                <div className={style.informationWrapper}>
+                  <div className={style.informationDiv}>{message.content}</div>
+                </div>
               ) : message.memberId == chattingMsgs.opponentMemberId ? (
                 <YourChattingMsg
                   key={idx}

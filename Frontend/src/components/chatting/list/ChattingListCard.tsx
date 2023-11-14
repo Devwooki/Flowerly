@@ -10,6 +10,7 @@ type ChattingProps = {
     lastChattingTime: string;
     lastChattingMessage: string;
     unreadCnt: number;
+    chattingStatus: string;
     opponentMemberId: number;
     opponentName: string;
     imageUrl: string;
