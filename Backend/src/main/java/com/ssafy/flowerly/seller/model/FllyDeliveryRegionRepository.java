@@ -21,7 +21,8 @@ public interface FllyDeliveryRegionRepository extends JpaRepository<FllyDelivery
                     " Where ( fr.dong IN :dongList " +
                     " OR fr.sigungu IN :sigunguList " +
                     " OR fr.sido IN :sidoList )" +
-                    " AND fy.isCanceled = false AND fy.deadline > current_timestamp" +
+                    " AND fy.isCanceled = false AND fy.deadline > current_timestamp " +
+                    " AND (fy.progress = 'START' OR fy.progress = 'DISCUSSION') " +
                     " AND NOT EXISTS(SELECT 1 FROM FllyParticipation  fp " +
                     " WHERE fp.flly.fllyId = fy.fllyId AND fp.seller.memberId = :memberId )" +
                     " order by fy.deadline "
