@@ -1,123 +1,156 @@
 .fllyBox {
-    width: 100%;
-    height: calc(100vh - 60px);
-    overflow: scroll;
-    position: relative;
-    background-color: var(--gray);
+  width: 100%;
+  height: calc(100vh - 60px);
+  overflow: scroll;
+  position: relative;
+  background-color: var(--gray);
 }
 
 .contentBox {
-    padding: 30px 10px;
+  padding: 30px 10px;
 }
 
 .headerTitle {
-    display: flex;
-    flex-direction: column;
-    margin: 0 20px;
+  display: flex;
+  flex-direction: column;
+  margin: 0 20px;
 }
 
 .guide {
-    line-height: 24px;
-    font-size: 20px;
-    font-family: "NanumSquareNeoOTF-Bd";
+  line-height: 24px;
+  font-size: 20px;
+  font-family: "NanumSquareNeoOTF-Bd";
 }
 
 .selectAreaBox {
-    margin: 60px 0 13px 0;
-    height: 526px;
+  margin: 60px 0 13px 0;
+  height: 650px;
+}
+
+.selectedImgBox {
+  display: flex;
+}
+
+.selectedImgBox > .imgBoxImg {
+  content: "";
+  border-radius: 20px;
+  margin: 0px auto;
+  width: 300px;
+  height: 300px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .selectBox {
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 170px 170px;
-    justify-content: center;
-    justify-items: center;
-    height: 340px;
-    overflow-y: scroll;
+  margin: 20px auto 40px auto;
+  height: 100px;
+  width: 305px;
+}
+
+.selectBox > div {
+  width: 100%;
+  padding-left: 2px;
 }
 
 .selectImg {
-    margin-top: 10px;
-    border-radius: 10px;
-    width: 160px;
-    height: 160px;
-    position: relative;
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
+  /* margin-top: 10px; */
+  border-radius: 10px;
+  width: 95px;
+  height: 95px;
+  position: relative;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .selectedImg {
-    width: 160px;
-    height: 160px;
-    opacity: 0.5;
+  position: relative;
+  width: 95px;
+  height: 95px;
+  display: flex;
+  overflow: hidden;
+  /* box-shadow: 0px 0px -10px rgba(0, 0, 0, 1); */
 }
 
 .selectedImg img {
-    width: 60px;
-    height: 45px;
-    margin: 42px 35px;
+  position: absolute;
+  width: 32px;
+  height: 28px;
+  margin: 30px 30px;
 }
 
-.selectCheck {
-    width: 50px;
-    height: 50px;
-    background-color: rgba(255, 255, 255, 0.5);
-    border-radius: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.selectedImg > div {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
 }
+
+/* .selectCheck {
+  width: 50px;
+  height: 50px;
+  background-color: rgba(0, 0, 0, 0.9);
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+} */
 
 .againBtn {
-    background-color: var(--mint);
-    width: 60px;
-    height: 60px;
-    transform: rotate(45deg);
-    border-radius: 5px;
-    margin: 50px auto 0;
+  background-color: var(--mint);
+  width: 60px;
+  height: 60px;
+  transform: rotate(45deg);
+  border-radius: 5px;
+  margin: 50px auto 0 auto;
+  transition: all 0.2s;
 }
 
 .againBtn img {
-    margin: 10px;
-    width: 40px;
-    height: 40px;
+  margin: 10px;
+  width: 40px;
+  height: 40px;
+}
+
+.againBtn:hover {
+  cursor: pointer;
+  scale: 1.2;
 }
 
 .btnCount {
-    margin-top: 20px;
-    text-align: center;
-    font-family: "NanumSquareNeoOTF-Bd";
+  margin-top: 30px;
+  text-align: center;
+  font-family: "NanumSquareNeoOTF-Bd";
 }
 
 .btnBox {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .prevBtn {
-    background-color: var(--moregray);
-    color: var(--dark);
-    width: 20px;
-    padding: 12px;
-    border-radius: 12px;
-    margin-right: 10px;
-    text-align: center;
-    font-family: "NanumSquareNeoOTF-Bd";
+  background-color: var(--moregray);
+  color: var(--dark);
+  width: 20px;
+  padding: 12px;
+  border-radius: 12px;
+  margin-right: 10px;
+  text-align: center;
+  font-family: "NanumSquareNeoOTF-Bd";
 }
 
 .nextBtn {
-    background-color: var(--blue);   
-    width: 80px;
-    padding: 12px;
-    border-radius: 16px;
-    color: var(--gray);
-    text-align: center;
-    font-family: "NanumSquareNeoOTF-Bd";
+  background-color: var(--blue);
+  width: 80px;
+  padding: 12px;
+  border-radius: 16px;
+  color: var(--gray);
+  text-align: center;
+  font-family: "NanumSquareNeoOTF-Bd";
 }
 
 .contentBox a {
-    text-decoration-line: none;
+  text-decoration-line: none;
 }

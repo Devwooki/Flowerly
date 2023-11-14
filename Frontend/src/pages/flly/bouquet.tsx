@@ -6,6 +6,21 @@ import { bouquetsState, bouquetState, bouquetType } from "@/recoil/fllyRecoil";
 import Image from "next/image";
 import CheckModal from "@/components/flly/fllyUser/CheckModal";
 import { ToastErrorMessage } from "@/model/toastMessageJHM";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
+const settings = {
+  slide: "div",
+  dots: true,
+  infinite: false,
+  speed: 500,
+  slidesToShow: 3,
+  slidesToScroll: 1,
+  autoplaySpeed: 1000,
+  cssEase: "linear",
+  arrows: false,
+};
 
 const FllyBouquet = () => {
   const [showPrevModal, setShowPrevModal] = useState<boolean>(false);
@@ -23,6 +38,11 @@ const FllyBouquet = () => {
 
   useEffect(() => {
     setCnt(3 - bouquets.length / 2);
+    if (bouquets && bouquet === null) {
+      handleSelect(bouquets[0]);
+    } else if (bouquet) {
+      setSelected(bouquet);
+    }
   }, [bouquets]);
 
   const handleNextClick = () => {
@@ -84,7 +104,15 @@ const FllyBouquet = () => {
             <div className={style.guide}>원하는 시안을 선택해주세요.</div>
           </div>
           <div className={style.selectAreaBox}>
-            <div className={style.selectBox}>
+            <div className={style.selectedImgBox}>
+              <div
+                className={style.imgBoxImg}
+                style={{
+                  backgroundImage: `url(${selected ? selected.url : "/img/etc/loading.gif"})`,
+                }}
+              />
+            </div>
+            <Slider {...settings} className={style.selectBox}>
               {bouquets.map((item, index) => (
                 <div
                   key={index}
@@ -99,12 +127,20 @@ const FllyBouquet = () => {
                     style={{ backgroundImage: `url(${item.url})` }}
                   >
                     {selected == item && (
-                      <Image src="/img/icon/check.png" width={60} height={45} alt="check"></Image>
+                      <>
+                        <div />
+                        <Image
+                          src="/img/icon/select-check.png"
+                          width={35}
+                          height={30}
+                          alt="check"
+                        ></Image>
+                      </>
                     )}
                   </div>
                 </div>
               ))}
-            </div>
+            </Slider>
             <div onClick={handleAgainClick} className={style.againBtn}>
               <Image src="/img/icon/again.png" width={40} height={40} alt="again"></Image>
             </div>
