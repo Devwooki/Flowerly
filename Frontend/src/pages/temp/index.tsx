@@ -5,7 +5,6 @@ import { useRouter } from "next/router";
 import { useSetRecoilState } from "recoil";
 import { memberInfoState } from "../../recoil/memberInfoRecoil";
 import { initializeApp } from 'firebase/app'
-//import { getMessaging, onMessage, getToken } from 'firebase/messaging'
 import { onMessage, getToken } from 'firebase/messaging'
 import { getMessaging } from 'firebase/messaging/sw'
 import { tokenHttp } from "@/api/chattingTokenHttp";
