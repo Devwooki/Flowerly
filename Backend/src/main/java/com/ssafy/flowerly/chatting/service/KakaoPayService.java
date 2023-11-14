@@ -5,8 +5,10 @@ import com.ssafy.flowerly.chatting.dto.PaymentDto;
 import com.ssafy.flowerly.chatting.dto.StompChatRequest;
 import com.ssafy.flowerly.chatting.repository.ChattingRepository;
 import com.ssafy.flowerly.chatting.repository.PaymentRepository;
+import com.ssafy.flowerly.entity.Flly;
 import com.ssafy.flowerly.entity.Payment;
 import com.ssafy.flowerly.entity.Request;
+import com.ssafy.flowerly.entity.type.ProgressType;
 import com.ssafy.flowerly.exception.CustomException;
 import com.ssafy.flowerly.exception.ErrorCode;
 import com.ssafy.flowerly.member.model.MemberRepository;
@@ -129,6 +131,8 @@ public class KakaoPayService {
         payment.addApprovalInfo(kakaoApproveResponse.getAid(), approveReq.getPgToken(), kakaoApproveResponse.getApproved_at());
         // 주문 결제 완료 여부 업데이트
         request.complete();
+        // 플리 진행 상태 변경
+        request.getFlly().setProgress(ProgressType.FINISH_ORDER);
         // 결제 완료 메세지 전송
         chattingService.saveChattingMessage(
                 new StompChatRequest(approveReq.getChattingId(), memberId, "PAYMENT_COMPLETE", "결제가 완료되었습니다.")

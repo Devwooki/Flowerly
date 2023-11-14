@@ -5,6 +5,7 @@ import com.ssafy.flowerly.chatting.repository.RequestDeliveryInfoRepository;
 import com.ssafy.flowerly.entity.*;
 import com.ssafy.flowerly.chatting.repository.ChattingMessageRepository;
 import com.ssafy.flowerly.chatting.repository.ChattingRepository;
+import com.ssafy.flowerly.entity.type.ChattingType;
 import com.ssafy.flowerly.entity.type.OrderType;
 import com.ssafy.flowerly.entity.type.ProgressType;
 import com.ssafy.flowerly.exception.CustomException;
@@ -91,7 +92,12 @@ public class ChattingService {
 
             for(Chatting chatting : chattingList) {
                 Member opponent = chatting.getSeller();
-                String opponentName = storeInfoRepository.findStoreName(opponent);
+                String opponentName = null;
+                if(opponent.getRole().equals(MemberRole.DELETE)) {
+                    opponentName = "알수없음";
+                } else {
+                    opponentName = storeInfoRepository.findStoreName(opponent);
+                }
                 String imageUrl = chatting.getFlly().getImageUrl();
                 ChattingDto.BasicResponse chattingDto = ChattingDto.BasicResponse.of(chatting, chatting.getUnreadCntConsumer(), opponent.getMemberId(), opponentName, imageUrl);
                 chattingDtoList.add(chattingDto);
@@ -101,8 +107,14 @@ public class ChattingService {
 
             for(Chatting chatting : chattingList) {
                 Member opponent = chatting.getConsumer();
+                String opponentName = null;
+                if(opponent.getRole().equals(MemberRole.DELETE)) {
+                    opponentName = "알수없음";
+                } else {
+                    opponentName = opponent.getNickName();
+                }
                 String imageUrl = chatting.getFllyParticipation().getImageUrl();
-                ChattingDto.BasicResponse chattingDto = ChattingDto.BasicResponse.of(chatting, chatting.getUnreadCntSeller(), opponent.getMemberId(), opponent.getNickName(), imageUrl);
+                ChattingDto.BasicResponse chattingDto = ChattingDto.BasicResponse.of(chatting, chatting.getUnreadCntSeller(), opponent.getMemberId(), opponentName, imageUrl);
                 chattingDtoList.add(chattingDto);
             }
         } else {
@@ -116,17 +128,20 @@ public class ChattingService {
         Member member = memberRepository.findByMemberId(memberId).orElseThrow();
         Chatting chatting = chattingRepository.findById(chattingId).orElseThrow();
 
+        Member opponent = null;
         Long opponentMemberId = null;
         String opponentName = null;
+        Boolean isValidRoom = true;
+
         if(member.getRole().equals(MemberRole.USER)) {
-            Member opponent = chatting.getSeller();
-            opponentMemberId = opponent.getMemberId();
+            opponent = chatting.getSeller();
             opponentName = storeInfoRepository.findStoreName(opponent);
         } else if(member.getRole().equals(MemberRole.SELLER)) {
-            Member opponent = chatting.getConsumer();
-            opponentMemberId = opponent.getMemberId();
+            opponent = chatting.getConsumer();
             opponentName = opponent.getNickName();
         }
+        opponentMemberId = opponent.getMemberId();
+
 
         PageRequest pageRequest = PageRequest.of(0, size, Sort.Direction. DESC, "sendTime");
         List<ChattingMessage> messages = chattingMessageRepository.findAllByChattingId(chattingId, pageRequest).getContent();
@@ -137,10 +152,27 @@ public class ChattingService {
             messageDtos.add(ChattingMessageDto.Response.of(message));
         }
 
+        if(opponent.getRole().equals(MemberRole.DELETE)) {
+            // 상대방이 탈퇴한 경우
+            isValidRoom = false;
+            messageDtos.add(new ChattingMessageDto.Response(
+                    null, null, "INFORMATION", "삭제된 사용자입니다.", null));
+        }
+        if(chatting.getChattingStatus().equals(ChattingType.CANCELED)) {
+            isValidRoom = false;
+            messageDtos.add(new ChattingMessageDto.Response(
+                    null, null, "INFORMATION", "취소된 플리입니다.", null));
+        } else if(chatting.getChattingStatus().equals(ChattingType.COMPLETED)) {
+            isValidRoom = false;
+            messageDtos.add(new ChattingMessageDto.Response(
+                    null, null, "INFORMATION", "완료된 주문입니다.", null));
+        }
+
         return new ChattingDto.RoomResponse(
                 chattingId,
                 opponentMemberId,
                 opponentName,
+                isValidRoom,
                 sortedMessages.size() > 0 ? sortedMessages.get(0).getId() : null,
                 messageDtos
         );
@@ -284,7 +316,7 @@ public class ChattingService {
     }
 
     @Transactional
-    public void saveRequest(Long requestId, Integer price) {
+    public void saveRequestPrice(Long requestId, Integer price) {
         Request request = requestRepository.findById(requestId)
                 .orElseThrow(() -> new CustomException(ErrorCode.REQUEST_NOT_FOUND));
 
