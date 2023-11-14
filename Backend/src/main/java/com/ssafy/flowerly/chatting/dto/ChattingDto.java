@@ -34,6 +34,7 @@ public class ChattingDto {
         private String lastChattingTime;
         private String lastChattingMessage;
         private Integer unreadCnt;
+        private String chattingStatus;
 
         private Long opponentMemberId;
         private String opponentName;  // 채팅 상대 이름 (소비자인 경우 가게 이름, 판매자인 경우 소비자 닉네임?)
@@ -45,6 +46,7 @@ public class ChattingDto {
                     .lastChattingMessage(chatting.getLastChattingMessage())
                     .lastChattingTime(chatting.getLastChattingTime().format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm")))
                     .unreadCnt(unreadCnt)
+                    .chattingStatus(String.valueOf(chatting.getChattingStatus()))
                     .opponentMemberId(opponentMemberId)
                     .opponentName(opponentName)
                     .imageUrl(imageUrl)
@@ -61,7 +63,8 @@ public class ChattingDto {
         private Long chattingId;
         private Long opponentMemberId;
         private String opponentName;
-        private String lastId;
+        private Boolean isValidRoom;  // 활성화된 채팅방인지 여부
+        private String lastId;  // for pagination
         private List<ChattingMessageDto.Response> messages;
     }
 

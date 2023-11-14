@@ -106,7 +106,7 @@ public class ChattingController {
      */
     @PostMapping("/request/price")
     public CustomResponse saveRequestPrice(@RequestBody Map<String, Object> requestBody) {
-        chattingService.saveRequest(
+        chattingService.saveRequestPrice(
                 Long.parseLong(requestBody.get("requestId").toString()),
                 Integer.parseInt(requestBody.get("price").toString())
         );

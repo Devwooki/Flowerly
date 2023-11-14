@@ -3,6 +3,7 @@ package com.ssafy.flowerly.entity;
 import com.ssafy.flowerly.chatting.dto.ChattingDto;
 import com.ssafy.flowerly.entity.common.BaseCreatedTimeEntity;
 import com.ssafy.flowerly.entity.common.BaseTimeEntity;
+import com.ssafy.flowerly.entity.type.ChattingType;
 import com.ssafy.flowerly.member.MemberRole;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -59,6 +60,11 @@ public class Chatting extends BaseCreatedTimeEntity {
     @ColumnDefault("0")
     private Integer unreadCntSeller;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    @ColumnDefault("'NORMAL'")
+    private ChattingType chattingStatus;  // 채팅 상태 추가-NORMAL, CANCELED, COMPLETED
+
     public void updateChatting(String chattingMessage, Date chattingTime) {
         ZonedDateTime zdt = chattingTime.toInstant().atZone(ZoneId.of("Asia/Seoul"));
 
@@ -97,6 +103,7 @@ public class Chatting extends BaseCreatedTimeEntity {
                 .isRemovedSeller(false)
                 .unreadCntConsumer(0)
                 .unreadCntSeller(0)
+                .chattingStatus(ChattingType.NORMAL)
                 .build();
     }
 }
