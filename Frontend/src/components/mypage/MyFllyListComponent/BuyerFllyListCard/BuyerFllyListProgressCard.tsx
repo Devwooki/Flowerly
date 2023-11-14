@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import style from "./BuyerFllyListProgressCard.module.css";
 import Image from "next/image";
 import BuyerFllyListProgressBar from "./BuyerFllyListProgressBar";
+import Router from "next/router";
 
 interface BuyerFillListType {
   fllyId: number;
@@ -20,7 +21,6 @@ interface Props {
 
 const BuyerFllyListProgressCard = ({ $fllyInfo }: Props) => {
   const [progressStep, setProgressStep] = useState<number>(0);
-  console.log($fllyInfo);
 
   useEffect(() => {
     //나중에 백에서 들어올값
@@ -33,6 +33,14 @@ const BuyerFllyListProgressCard = ({ $fllyInfo }: Props) => {
     else if (progress === "픽업/배달완료") setProgressStep(4);
   }, []);
 
+  const handleFllyList = () => {
+    Router.push("/list");
+  };
+
+  const handleFllyDetail = () => {
+    Router.push(`/flly/detail/${$fllyInfo.fllyId}`);
+  };
+
   return (
     <>
       <div className={style.cardBack}>
@@ -40,7 +48,7 @@ const BuyerFllyListProgressCard = ({ $fllyInfo }: Props) => {
           <div className={style.ImgBox} style={{ backgroundImage: `url(/test/horizental.jpg)` }} />
           <div className={style.InfoBox}>
             <div className={style.OrderAddBox}>
-              <div>
+              <div onClick={() => handleFllyDetail()}>
                 주문서 보기 <span> &gt;</span>
               </div>
             </div>
@@ -51,14 +59,14 @@ const BuyerFllyListProgressCard = ({ $fllyInfo }: Props) => {
               </div>
               <div className={style.OrderInfoBoxHarf}>
                 <div>구매처</div>
-                <div>구매처 선택중 ...</div>
+                <div>{progressStep >= 2 ? $fllyInfo.storeName : "구매처 선택중"}</div>
               </div>
               <div className={style.OrderInfoBoxHarf}>
                 <div>주문유형</div>
                 <div>{$fllyInfo.fllyOrderType}</div>
               </div>
             </div>
-            <div className={style.OrderFooter}>
+            <div className={style.OrderFooter} onClick={() => handleFllyList()}>
               <div>진행중 플리 이동</div>
             </div>
           </div>
