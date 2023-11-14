@@ -167,11 +167,9 @@ public class SellerService {
         참여한 플리
      */
     public Page<OrderParticipationDto> getParticipation(Long memberId ,Pageable pageable){
-        //입찰인지 조율이지 + 경매마감시간이 안지난것만 보여져야한다
-        LocalDateTime currentDateTime = LocalDateTime.now();
-        log.info(currentDateTime.toString());
+        //입찰인지 조율이지 + 경매마감시간이 안지난것만 보여져야한다(X)
         Page<OrderParticipationDto> orderParticipation =
-                fllyParticipationRepository.findBySellerMemberIdParticipationDto(memberId, pageable, currentDateTime)
+                fllyParticipationRepository.findBySellerMemberIdParticipationDto(memberId, pageable)
                         .map(FllyParticipation::toOrderParticipationDto);
 
         if(orderParticipation.getContent().isEmpty()){
