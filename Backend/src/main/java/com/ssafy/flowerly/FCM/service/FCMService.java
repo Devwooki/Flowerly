@@ -43,7 +43,7 @@ public class FCMService {
 
     public void sendPushMessage(Long receiverId, String title, String body){
         FCMToken memberTokenInfo = fcmRepository.findByMemberId(receiverId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_MEMBER));
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
         fcmConfig.sendByTokenList(memberTokenInfo.getTokens(), title, body);
     }
