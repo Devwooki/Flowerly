@@ -70,7 +70,7 @@ const ParticipationForm: React.FC<ParticipationFormProps> = ({ chattingId, modal
                 {participationInfo && participationInfo.offerPrice.toLocaleString()} 원
               </div>
             </div>
-            <div className={style.contentItem}>
+            <div className={style.contentItem} id={style.comment}>
               <div>{participationInfo && participationInfo.content}</div>
             </div>
           </div>
