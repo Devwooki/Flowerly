@@ -137,7 +137,6 @@ public class JWTService {
 
         if (cookies != null) {
             for (Cookie cookie : cookies) {
-                log.info("쿠키 : {}, 값 : {}", cookie.getName(), cookie.getValue());
                 if (refreshHeader.equals(cookie.getName())) {
                     log.info("리프레시 토큰 추출했지 : {} ", cookie.getValue());
                     return Optional.of(cookie.getValue());
@@ -188,9 +187,19 @@ public class JWTService {
 
         //Redis의 RefreshToken 제거
         redisTemplate.delete(refreshToken);
+
+        //쿠키 전체 제거
+        DeleteCookies(request,response);
         response.setStatus(HttpServletResponse.SC_OK);
     }
 
+    private void DeleteCookies(HttpServletRequest request, HttpServletResponse response){
+        Cookie[] cookies = request.getCookies();
+        for(Cookie cki : cookies){
+            cki.setMaxAge(0);
+            response.addCookie(cki);
+        }
+    }
     //=======================
     //    테스트용 더미 토큰 생성
     //=======================
