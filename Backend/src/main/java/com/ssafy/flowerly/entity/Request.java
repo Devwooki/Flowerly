@@ -104,4 +104,5 @@ public class Request extends BaseCreatedTimeEntity {
     public void complete() {
         this.isPaid = true;
     }
+
 }

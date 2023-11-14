@@ -291,17 +291,13 @@ public class SellerService {
             pickupSigugun.add(sigunguAll);
             dongAll.add(store.getDong());
 
-//            for(Sigungu tmp : pickupSigugun){
-//                log.info(tmp.toString());
-//            }
-//            for(Dong tmp2 : dongAll){
-//                log.info(tmp2.getDongCode() +" ");
-//            }
-
             //2-2 가게의 시 군 구 와 전체 시군구 와 전체 동을 가지고 flly픽업정보에서 찾는다
+//            pickupAbleList = fllyPickupRegionRepository
+//                    .getSellerPickupAbleList(pickupSigugun, dongAll, pageable, memberId)
+//                    .map(FllyPickupRegion::toPickupFllyNearDto);
             pickupAbleList = fllyPickupRegionRepository
                     .getSellerPickupAbleList(pickupSigugun, dongAll, pageable, memberId)
-                    .map(FllyPickupRegion::toPickupFllyNearDto);
+                    .map(Flly::toPickupFllyNearDto);
 
         }
 
