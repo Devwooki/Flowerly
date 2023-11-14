@@ -10,6 +10,6 @@ import java.util.Optional;
 
 public interface ChattingRepository extends JpaRepository<Chatting, Long> {
     Optional<Chatting> findByFllyParticipationFllyParticipationId(Long participationId);
-    List<Chatting> findAllByConsumerAndIsRemovedConsumerFalse(Member consumer);
-    List<Chatting> findAllBySellerAndIsRemovedSellerFalse(Member seller);
+    List<Chatting> findAllByConsumerAndIsRemovedConsumerFalseOrderByLastChattingTimeDesc(Member consumer);
+    List<Chatting> findAllBySellerAndIsRemovedSellerFalseOrderByLastChattingTimeDesc(Member seller);
 }
