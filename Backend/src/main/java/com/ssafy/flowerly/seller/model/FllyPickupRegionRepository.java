@@ -22,6 +22,7 @@ public interface FllyPickupRegionRepository extends JpaRepository<FllyPickupRegi
                     "WHere ( pr.sigungu IN :sigunguList OR pr.dong IN :dongList ) " +
                     "AND fy.deadline > current_timestamp AND fy.isCanceled = false " +
                     "AND (fp.seller.memberId IS NULL OR fp.seller.memberId != :memberId) " +
+                    "AND fy.consumer.role != 'DELETE' " +
                     "order by fy.deadline "
     )
     Page<Flly> getSellerPickupAbleList(List<Sigungu> sigunguList, List<Dong> dongList, Pageable pageable, Long memberId);

@@ -221,7 +221,7 @@ public class SellerService {
     }
     
     /*
-        주변 플리 정보 불러오기
+        주변 플리 정보 불러오기(빼달)
      */
     public Page<FllyNearDto> getNearFllyDeliverylist(Long memberId, Pageable pageable) {
 
@@ -268,7 +268,7 @@ public class SellerService {
     }
 
     /*
-        주변 플리 정보 불러오기
+        주변 플리 정보 불러오기(픽업)
      */
     public Page<FllyNearDto> getNearFllyPickuplist(Long memberId, Pageable pageable) {
 
