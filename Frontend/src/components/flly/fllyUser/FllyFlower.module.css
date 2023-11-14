@@ -1,162 +1,162 @@
 .fllyBox {
-    width: 100%;
-    height: calc(100vh - 60px);
-    overflow: scroll;
-    position: relative;
-    background-color: var(--gray);
+  width: 100%;
+  height: calc(100vh - 60px);
+  position: relative;
+  background-color: var(--gray);
 }
 
 .contentBox {
-    padding: 30px 10px;
+  padding: 30px 10px;
+  height: calc(100% - 130px);
+  overflow: hidden;
 }
 
 .headerTitle {
-    display: flex;
-    flex-direction: column;
-    margin: 0 20px;
+  display: flex;
+  flex-direction: column;
+  margin: 0 20px;
 }
 
 .guide {
-    line-height: 24px;
-    font-size: 20px;
-    font-family: "NanumSquareNeoOTF-Bd";
+  line-height: 24px;
+  font-size: 20px;
+  font-family: "NanumSquareNeoOTF-Bd";
 }
 
 .guidePlus {
-    margin: 4px 0 0 16px;
-    font-size: 12px;
-    color: var(--dark);
-    height: 16px;
-    font-family: "NanumSquareNeoOTF-Rg";
-    color: #757575;
+  margin: 4px 0 0 16px;
+  font-size: 12px;
+  color: var(--dark);
+  height: 16px;
+  font-family: "NanumSquareNeoOTF-Rg";
+  color: #757575;
 }
 
 .selectAreaBox {
-    margin: 10px 0 13px 0;
-    height: calc(100vh - 220px);
-    overflow: scroll;
+  margin: 10px 0 13px 0;
+  height: calc(100% - 30px);
+  overflow: scroll;
 }
 
 .selectLoading {
-    margin-top: 50px;
-    text-align: center;
-    font-family: "NanumSquareNeoOTF-Bd";
+  margin-top: 50px;
+  text-align: center;
+  font-family: "NanumSquareNeoOTF-Bd";
 }
 
 .selectBox {
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 160px 160px;
-    justify-content: center;
-    justify-items: center;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 160px 160px;
+  justify-content: center;
+  justify-items: center;
 }
 
 .selectCard {
-    display: flex;
-    flex-direction: column;
-    width: 130px;
-    height: 175px;
-    border-radius: 16px;
-    margin: 10px;
-    box-shadow: 0 3px 3px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  width: 130px;
+  height: 175px;
+  border-radius: 16px;
+  margin: 10px;
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.2);
 }
 
 .selectImg {
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    width: 130px;
-    height: 130px;
-    position: relative;
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  width: 130px;
+  height: 130px;
+  position: relative;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .selectedImg {
-    width: 130px;
-    height: 125.5px;
-    opacity: 0.5;
+  width: 130px;
+  height: 125.5px;
+  opacity: 0.5;
 }
 
 .selectedImg img {
-    width: 60px;
-    height: 45px;
-    margin: 42px 35px;
+  width: 60px;
+  height: 45px;
+  margin: 42px 35px;
 }
 
 .selectWord {
-    height: 54px;
-    width: 130px;
-    background-color: white;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-    text-align: center;
-    padding: 6px 0 0;
-    word-break: keep-all;
+  height: 54px;
+  width: 130px;
+  background-color: white;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  text-align: center;
+  padding: 6px 0 0;
+  word-break: keep-all;
 }
 
 .flowerName {
-    font-family: "NanumSquareNeoOTF-Bd";
+  font-family: "NanumSquareNeoOTF-Bd";
 }
 
 .flowerMeaning {
-    font-size: 12px;
-    margin-top: 2px;
-    font-family: "NanumSquareNeoOTF-Rg";
-    color: #757575;
+  font-size: 12px;
+  margin-top: 2px;
+  font-family: "NanumSquareNeoOTF-Rg";
+  color: #757575;
 }
 
 .selectCheck {
-    width: 50px;
-    height: 50px;
-    background-color: rgba(255, 255, 255, 0.5);
-    border-radius: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  width: 50px;
+  height: 50px;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .selectCheckWhite {
-    width: 50px;
-    height: 50px;
-    background-color: rgba(229, 229, 229, 0.5);
-    border-radius: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  width: 50px;
+  height: 50px;
+  background-color: rgba(229, 229, 229, 0.5);
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .sentence {
-    margin: 20px 0 0 30px;
-    font-family: "NanumSquareNeoOTF-Bd";
+  margin: 20px 0 0 30px;
+  font-family: "NanumSquareNeoOTF-Bd";
 }
 
 .btnBox {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: fixed;
-    bottom: 80px;
-    width: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  bottom: 80px;
 }
 
 .prevBtn {
-    background-color: var(--moregray);
-    color: var(--dark);
-    width: 20px;
-    padding: 12px;
-    border-radius: 12px;
-    margin-right: 10px;
-    text-align: center;
-    font-family: "NanumSquareNeoOTF-Bd";
+  background-color: var(--moregray);
+  color: var(--dark);
+  width: 20px;
+  padding: 12px;
+  border-radius: 12px;
+  margin-right: 10px;
+  text-align: center;
+  font-family: "NanumSquareNeoOTF-Bd";
 }
 
 .nextBtn {
-    background-color: var(--blue);   
-    width: 80px;
-    padding: 12px;
-    border-radius: 16px;
-    color: var(--gray);
-    text-align: center;
-    font-family: "NanumSquareNeoOTF-Bd";
+  background-color: var(--blue);
+  width: 80px;
+  padding: 12px;
+  border-radius: 16px;
+  color: var(--gray);
+  text-align: center;
+  font-family: "NanumSquareNeoOTF-Bd";
 }

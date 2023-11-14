@@ -11,7 +11,7 @@ import {
   bouquetState,
   regionState,
   regionType,
-  deliveryAddressType
+  deliveryAddressType,
 } from "@/recoil/fllyRecoil";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -38,7 +38,7 @@ const FllyTarget = () => {
   const [twoDaysLater, setTwoDaysLater] = useState(new Date());
   const [dates, setDates] = useState([] as string[]);
   const [dateIdx, setDateIdx] = useState<number>(0);
-  const [time, setTime] = useState<string>("")
+  const [time, setTime] = useState<string>("");
   const [requestText, setRequestText] = useState<string>("");
   const [dateTime, setDateTime] = useState<Date>(new Date());
   const [showDelieveryModal, setShowDelieveryModal] = useState<boolean>(false);
@@ -55,43 +55,42 @@ const FllyTarget = () => {
   const [showPrevModal, setShowPrevModal] = useState<boolean>(false);
   const [showNextModal, setShowNextModal] = useState<boolean>(false);
 
-  const handleBasicAddressUpdate = (newAddress:string) => {
+  const handleBasicAddressUpdate = (newAddress: string) => {
     setBasicAddress(newAddress);
-  }
+  };
 
-  const handleDetailAddresUpdate = (newAddress:string) => {
+  const handleDetailAddresUpdate = (newAddress: string) => {
     setDetailAddress(newAddress);
-  }
+  };
 
   const deliveryModalHandler = () => {
     setShowDelieveryModal(!showDelieveryModal);
-  }
+  };
 
   const pickupModalHandler = () => {
     setShowPickupModal(!showPickupModal);
-  }
-  
+  };
+
   const handleClickPrev = () => {
     setShowPrevModal(true);
-  }
+  };
 
   const handleClickNext = () => {
-    if(checkDelivery && basicAddress==="") {
+    if (checkDelivery && basicAddress === "") {
       ToastErrorMessage("주소를 입력해 주세요.");
-    } else if(!checkDelivery && pickupCodeList.length===0) {
+    } else if (!checkDelivery && pickupCodeList.length === 0) {
       ToastErrorMessage("주소를 입력해 주세요.");
     } else {
-      if(price == undefined) ToastErrorMessage("가격을 입력해 주세요.");
+      if (price == undefined) ToastErrorMessage("가격을 입력해 주세요.");
       else {
-        if(time === "") {
+        if (time === "") {
           ToastErrorMessage("시간을 입력해 주세요.");
         } else {
           setShowNextModal(true);
         }
       }
     }
-  }
-
+  };
 
   const prevBtnHandler = () => {
     setShowPrevModal(!showPrevModal);
@@ -116,16 +115,16 @@ const FllyTarget = () => {
   const handleDate = (idx: number) => {
     setDateIdx(idx);
     const time = new Date();
-    
-    if(idx == 0) {
+
+    if (idx == 0) {
       time.setFullYear(currentDate.getFullYear());
       time.setMonth(currentDate.getMonth());
       time.setDate(currentDate.getDate());
-    } else if(idx == 1) {
+    } else if (idx == 1) {
       time.setFullYear(oneDayLater.getFullYear());
       time.setMonth(oneDayLater.getMonth());
       time.setDate(oneDayLater.getDate());
-    } else if(idx == 2) {
+    } else if (idx == 2) {
       time.setFullYear(twoDaysLater.getFullYear());
       time.setMonth(twoDaysLater.getMonth());
       time.setDate(twoDaysLater.getDate());
@@ -137,12 +136,12 @@ const FllyTarget = () => {
 
   const handleText = (e: any) => {
     setRequestText(e.target.value);
-  }
+  };
 
   const handleTimeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTime(event.target.value);
 
-    const timeParts = event.target.value.split(':');
+    const timeParts = event.target.value.split(":");
     if (timeParts.length === 2) {
       const hours = parseInt(timeParts[0]);
       const minutes = parseInt(timeParts[1]);
@@ -159,7 +158,7 @@ const FllyTarget = () => {
   };
 
   const handleAdress = () => {
-    if(checkDelivery) {
+    if (checkDelivery) {
       setShowDelieveryModal(true);
     } else {
       setShowPickupModal(true);
@@ -173,25 +172,25 @@ const FllyTarget = () => {
   const submitBtn = () => {
     tokenHttp
       .post(`/flly/request`, {
-        "situation" : situation == "선택 안함"? null : situation,
-        "target" : target == "선택 안함"? null : target,
-        "colors": colors.includes("선택 안함")? null : colors,
-        "flowers": flowers,
-        "orderType": checkDelivery? "DELIVERY": "PICKUP",
-        "delivery": addressCode,
-        "detailAddress": detailAddress,
-        "pickup": pickupCodeList,
-        "deadline": dateTime,
-        "requestContent": requestText,
-        "imageUrl": bouquet?.url,
-        "budget": price,
-      }
-      )
+        situation: situation == "선택 안함" ? null : situation,
+        target: target == "선택 안함" ? null : target,
+        colors: colors.includes("선택 안함") ? null : colors,
+        flowers: flowers,
+        orderType: checkDelivery ? "DELIVERY" : "PICKUP",
+        delivery: addressCode,
+        detailAddress: detailAddress,
+        pickup: pickupCodeList,
+        deadline: dateTime,
+        requestContent: requestText,
+        imageUrl: bouquet?.url,
+        budget: price,
+      })
       .then((response) => {
         console.log(response.data);
         if (response.data.code === 200) {
           router.push("/");
-          if(response.headers.authorization) localStorage.setItem("accessToken", response.headers.authorization);
+          if (response.headers.authorization)
+            localStorage.setItem("accessToken", response.headers.authorization);
         }
       })
       .catch((error) => {
@@ -213,38 +212,44 @@ const FllyTarget = () => {
   }, []);
 
   useEffect(() => {
-    setDates([`${currentDate.getMonth()+1}.${currentDate.getDate()}`, `${oneDayLater.getMonth()+1}.${oneDayLater.getDate()}`, `${twoDaysLater.getMonth()+1}.${twoDaysLater.getDate()}`]);
+    setDates([
+      `${currentDate.getMonth() + 1}.${currentDate.getDate()}`,
+      `${oneDayLater.getMonth() + 1}.${oneDayLater.getDate()}`,
+      `${twoDaysLater.getMonth() + 1}.${twoDaysLater.getDate()}`,
+    ]);
   }, [currentDate, oneDayLater, twoDaysLater]);
 
   return (
     <>
       <div className={style.fllyBox}>
-        {showDelieveryModal && 
-        <DeliveryModal
-          ModalChangeHandler={deliveryModalHandler}
-          UpdateBasicAddress={handleBasicAddressUpdate}
-          initialAddress={basicAddress}
-          initialDetailAddress={detailAddress}
-          UpdateDetailAddress={handleDetailAddresUpdate}
-          setAddressCode={setAddressCode}
-        />}
-        {showPickupModal && 
-        <PickupModal
-          ModalChangeHandler={pickupModalHandler}
-          pickupCodeList={pickupCodeList}
-          setPickupCodeList={setPickupCodeList}
-          pickupList={pickupList}
-          setPickupList={setPickupList}
-        />}
-        {showPrevModal && 
-        <CheckModal
-          ModalChangeHandler={prevBtnHandler}
-          question={"꽃다발 선택 페이지로 이동하시겠습니까?"}
-          explain={"입력했던 정보는 모두 사라집니다."}
-          routerHref={"flower"}
-        />
-        }
-        {showNextModal && 
+        {showDelieveryModal && (
+          <DeliveryModal
+            ModalChangeHandler={deliveryModalHandler}
+            UpdateBasicAddress={handleBasicAddressUpdate}
+            initialAddress={basicAddress}
+            initialDetailAddress={detailAddress}
+            UpdateDetailAddress={handleDetailAddresUpdate}
+            setAddressCode={setAddressCode}
+          />
+        )}
+        {showPickupModal && (
+          <PickupModal
+            ModalChangeHandler={pickupModalHandler}
+            pickupCodeList={pickupCodeList}
+            setPickupCodeList={setPickupCodeList}
+            pickupList={pickupList}
+            setPickupList={setPickupList}
+          />
+        )}
+        {showPrevModal && (
+          <CheckModal
+            ModalChangeHandler={prevBtnHandler}
+            question={"꽃다발 선택 페이지로 이동하시겠습니까?"}
+            explain={"입력했던 정보는 모두 사라집니다."}
+            routerHref={"flower"}
+          />
+        )}
+        {showNextModal && (
           <div className={styleModal.checkBack} onClick={nextBtnHandler}>
             <div className={styleModal.modalBack} onClick={NotClickEventHandler}>
               <div className={styleModal.question}>플리 의뢰서 작성을 완료하시겠습니까?</div>
@@ -255,14 +260,14 @@ const FllyTarget = () => {
               </div>
             </div>
           </div>
-        }
+        )}
         <div className={style.contentBox}>
           <div className={style.headerTitle}>
             <div className={style.guide}>플리 의뢰서</div>
           </div>
           <div className={style.imageBox}>
             <Image
-              src={bouquet ? bouquet.url : "/img/homeBanner/121_pink_gomphrena.jpg"}
+              src={bouquet ? bouquet.url : ""}
               alt="flower image"
               width={320}
               height={320}
@@ -326,7 +331,10 @@ const FllyTarget = () => {
               <tr>
                 <th>주소</th>
                 <td>
-                  <span onClick={handleAdress} className={style.address}><Image src="/img/icon/search.png" alt="icon" height={16} width={16}/>&nbsp;주소 설정하기</span>
+                  <span onClick={handleAdress} className={style.address}>
+                    <Image src="/img/icon/search.png" alt="icon" height={16} width={16} />
+                    &nbsp;주소 설정하기
+                  </span>
                 </td>
               </tr>
               <tr>
@@ -363,13 +371,20 @@ const FllyTarget = () => {
                   <br />
                   (150자)
                 </th>
-                <td><textarea maxLength={149} value={requestText} onChange={handleText}/><div className={style.textCount}>{requestText?.length}/150자</div></td>
+                <td>
+                  <textarea maxLength={149} value={requestText} onChange={handleText} />
+                  <div className={style.textCount}>{requestText?.length}/150자</div>
+                </td>
               </tr>
             </table>
           </div>
           <div className={style.btnBox}>
-            <div onClick={handleClickPrev} className={style.prevBtn}>&lt;</div>
-            <div onClick={handleClickNext} className={style.nextBtn}>확인</div>
+            <div onClick={handleClickPrev} className={style.prevBtn}>
+              &lt;
+            </div>
+            <div onClick={handleClickNext} className={style.nextBtn}>
+              확인
+            </div>
           </div>
         </div>
       </div>
