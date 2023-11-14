@@ -4,6 +4,7 @@ package com.ssafy.flowerly.buyer.service;
 import com.ssafy.flowerly.buyer.dto.BuyerFllyDto;
 import com.ssafy.flowerly.chatting.repository.RequestDeliveryInfoRepository;
 import com.ssafy.flowerly.entity.*;
+import com.ssafy.flowerly.entity.type.OrderType;
 import com.ssafy.flowerly.entity.type.ProgressType;
 import com.ssafy.flowerly.exception.CustomException;
 import com.ssafy.flowerly.exception.ErrorCode;
@@ -63,9 +64,13 @@ public class BuyerService {
         //반환할 BuyerFllyDto 객체 생성
         BuyerFllyDto buyerFlly = curFlly.toBuyerFlly();
 
-        String fllyRequestAddress = fllyDeliveryRegionRepository.findAddressByFllyId(curFlly)
-                .orElseThrow(() -> new CustomException(ErrorCode.FLLY_DELIVERYREGION_NOT_FOUND));
-        buyerFlly.setRequestAddress(fllyRequestAddress);
+        StringBuilder fllyRequestAddress = new StringBuilder();
+        if(curFlly.getOrderType().equals(OrderType.DELIVERY)){
+            fllyRequestAddress.append(fllyDeliveryRegionRepository.findAddressByFllyId(curFlly)
+                    .orElseGet(null));
+        }
+
+        buyerFlly.setRequestAddress(fllyRequestAddress.toString());
 
         //Progress : "입찰" || "조율" -> 업체 이름 "입찰" || "조율"
         if (curFlly.getProgress().equals(ProgressType.START)
