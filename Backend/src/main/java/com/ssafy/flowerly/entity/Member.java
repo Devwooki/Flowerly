@@ -85,9 +85,9 @@ public class Member extends BaseTimeEntity {
     }
 
     public void signOut(){
-        this.socialId = null;
+        this.socialId = "";
         this.isNotification = false;
         this.role = MemberRole.DELETE;
-        this.email = null;
+        this.email = "";
     }
 }

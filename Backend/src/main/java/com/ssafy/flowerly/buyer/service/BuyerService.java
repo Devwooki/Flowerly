@@ -58,21 +58,21 @@ public class BuyerService {
                 .orElseThrow(() -> new CustomException(ErrorCode.FLLY_NOT_FOUND));
     }
 
-    private BuyerFllyDto fllyToBuyerDto(Flly curFlly){
+    private BuyerFllyDto fllyToBuyerDto(Flly curFlly) {
         log.info("fllyId : {}", curFlly.getFllyId());
 
         //반환할 BuyerFllyDto 객체 생성
         BuyerFllyDto buyerFlly = curFlly.toBuyerFlly();
 
         StringBuilder fllyRequestAddress = new StringBuilder();
-        if(curFlly.getOrderType().equals(OrderType.DELIVERY)){
+        if (curFlly.getOrderType().equals(OrderType.DELIVERY)) {
             FllyDeliveryRegion addressInfo = fllyDeliveryRegionRepository.findByFlly(curFlly)
                     .orElseGet(null);
 
             fllyRequestAddress
-                    .append( addressInfo.getSido().getSidoName() + " ")
-                    .append( addressInfo.getSigungu().getSigunguName() + " ")
-                    .append( addressInfo.getDong().getDongName() + " ")
+                    .append(addressInfo.getSido().getSidoName() + " ")
+                    .append(addressInfo.getSigungu().getSigunguName() + " ")
+                    .append(addressInfo.getDong().getDongName() + " ")
                     .append((String) addressInfo.getDeliveryAddress());
         }
         buyerFlly.setRequestAddress(fllyRequestAddress.toString());
@@ -83,7 +83,7 @@ public class BuyerService {
             buyerFlly.setStoreName(curFlly.getProgress().getTitle());
         } else {
             // 결제한 회사가 없으면 아직 조율이 완료된 것이 아니다.
-            try{
+            try {
                 requestRepository.findByFllyAndIsPaidTrue(curFlly)
                         .map(request -> { //조율된 업체가 있으면 Store이름을 바꾸고
                             String requestStoreName = storeInfoRepository.findStoreName(request.getSeller().getMemberId());
@@ -94,7 +94,7 @@ public class BuyerService {
                             buyerFlly.setStoreName(curFlly.getProgress().getTitle());
                             return null;
                         });
-            }catch(Exception e){
+            } catch (Exception e) {
                 log.error("플리조회중 예외 발생 {}", e.getMessage());
                 throw new CustomException(ErrorCode.DUPLICATE_REQUEST_PAID);
             }
