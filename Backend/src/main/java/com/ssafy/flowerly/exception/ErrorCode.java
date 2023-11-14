@@ -34,6 +34,7 @@ public enum ErrorCode {
     CONSUMER_NOT_REVIEWER(-4013, "리뷰 작성자가 아닙니다"),
     REQUEST_ADDRESS_NOT_FOUND(-4014, "플리의 배달 주소를 찾을 수 없습니다."),
     DUPLICATE_REQUEST_PAID(-4015, "중복 결제된 플리가 있습니다. 고객센터로 문의주세요"),
+    REVIEW_ALREADY_EXISTS(-4016, "이미 리뷰가 작성되었습니다."),
 
     SELLER_PARTICIPATE_FAIL(-5000, "플리 참여에 실패하였습니다"),
     SELLER_ALREADY_PARTICIPATE(-5001, "이미 참가하신 플리입니다"),
