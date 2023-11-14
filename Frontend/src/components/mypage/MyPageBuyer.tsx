@@ -5,12 +5,13 @@ import { tokenHttp } from "@/api/tokenHttp";
 import Router from "next/router";
 import { useState } from "react";
 import { ToastSuccessMessage } from "@/model/toastMessageJHM";
-import { useRecoilValue } from "recoil";
-import { memberInfoState } from "@/recoil/memberInfoRecoil";
+import { useRecoilValue, SetRecoilState, useRecoilState } from "recoil";
+import { MemberInfo, memberInfoState } from "@/recoil/memberInfoRecoil";
 
 const MyPageBuyer = () => {
-  const [newNickName, setNewNickName] = useState("");
-  const memberInfo = useRecoilValue(memberInfoState);
+  const [memberInfo, setMemberInfo] = useRecoilState<MemberInfo>(memberInfoState);
+
+  const [newNickName, setNewNickName] = useState(memberInfo.nickName);
 
   const modifyNickName = () => {
     tokenHttp
@@ -20,6 +21,12 @@ const MyPageBuyer = () => {
           setNewNickName(res.data.data);
           ToastSuccessMessage("닉네임이 변경되었습니다.");
           Router.push("/mypage");
+
+          const updatedMemberInfo = {
+            ...memberInfo,
+            nickName: res.data.data,
+          };
+          setMemberInfo(updatedMemberInfo);
 
           if (res.headers.authorization) {
             localStorage.setItem("accessToken", res.headers.authorization);
@@ -57,7 +64,6 @@ const MyPageBuyer = () => {
             type="text"
             name="nickName"
             value={newNickName}
-            placeholder={memberInfo.nickName}
             onChange={(e) => setNewNickName(e.target.value)}
             className={style.nickNameInput}
           />

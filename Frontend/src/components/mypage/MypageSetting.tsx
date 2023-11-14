@@ -9,9 +9,13 @@ import { tokenHttp } from "@/api/tokenHttp";
 import { ToastSuccessMessage } from "@/model/toastMessageJHM";
 
 const MypageSetting = () => {
-  const [alarmState, setAlarmState] = useState<Boolean>(true);
   const [memberInfo, setMemberInfo] = useRecoilState<MemberInfo>(memberInfoState);
+  const [alarmState, setAlarmState] = useState<Boolean>();
   const router = useRouter();
+
+  useEffect(() => {
+    setAlarmState(memberInfo.notification);
+  }, []);
 
   //우저정보 변경 모달확인
   const [userChangModalState, setUserChangModalState] = useState<Boolean>(false);
@@ -34,6 +38,8 @@ const MypageSetting = () => {
         if (res.data.code === 200) {
           ToastSuccessMessage(res.data.data);
           setAlarmState(newAlarmState);
+          setMemberInfo({ ...memberInfo, notification: newAlarmState });
+          console.log(res.data.data);
 
           if (res.headers.authorization) {
             localStorage.setItem("accessToken", res.headers.authorization);
@@ -69,10 +75,10 @@ const MypageSetting = () => {
         <div className={style.SettingMain}>
           {memberInfo.role === "SELLER" && (
             <>
-              <div className={style.SideSimple}>
+              {/* <div className={style.SideSimple}>
                 <div>대표 이미지 변경</div>
                 <Image src="/img/btn/right-btn.png" width={15} height={20} alt="이동" />
-              </div>
+              </div> */}
               <div className={style.SideSimple} onClick={deliveryAreaHandler}>
                 <div>배달 가능 지역 변경</div>
                 <Image src="/img/btn/right-btn.png" width={15} height={20} alt="이동" />

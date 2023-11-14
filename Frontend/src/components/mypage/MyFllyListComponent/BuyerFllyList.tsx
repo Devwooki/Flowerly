@@ -57,7 +57,9 @@ const BuyerFllyList = () => {
         if (res.data.code === 200) {
           setBuyerFllyList(res.data.data);
 
-          localStorage.setItem("accessToekn", res.headers.authorization);
+          if (res.headers.authorization) {
+            localStorage.setItem("accessToken", res.headers.authorization);
+          }
         }
       })
       .catch((err) => {
