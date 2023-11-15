@@ -128,30 +128,27 @@ const StoreImgModal = ({ ModalChangeHandler, imageInfo, UpdateImg, index }: Prop
   };
 
   const deleteHandler = () => {
-    if (index !== null && imageInfo[index]?.id) {
-      const updatedImageData = {
-        imageIDs: [imageInfo[index]?.id],
-        uploadImgs: [""],
-      };
-
-      tokenHttp
-        .put("/s3/update/store", updatedImageData)
-        .then((res) => {
-          if (res.data.code === 200) {
-            UpdateImg("");
-
-            ModalChangeHandler();
-            if (res.headers.authorization) {
-              localStorage.setItem("accessToken", res.headers.authorization);
-            }
-          }
-        })
-        .catch((err) => {
-          if (err.response.status === 403) {
-            router.push("/fllylogin");
-          }
-        });
+    if (index === null) {
+      return;
     }
+    const imageIDs = imageInfo[index].id;
+
+    tokenHttp
+      .delete(`/s3/delete/store/${imageIDs}`)
+      .then((res) => {
+        if (res.data.code === 200) {
+          UpdateImg("");
+          ModalChangeHandler();
+          if (res.headers.authorization) {
+            localStorage.setItem("accessToken", res.headers.authorization);
+          }
+        }
+      })
+      .catch((err) => {
+        if (err.response.status === 403) {
+          router.push("/fllylogin");
+        }
+      });
   };
 
   return (
@@ -163,7 +160,7 @@ const StoreImgModal = ({ ModalChangeHandler, imageInfo, UpdateImg, index }: Prop
             <div></div>
           </div>
           <div className={style.modalBtnBox}>
-            <div onClick={() => deleteHandler()}>삭제</div>
+            <div onClick={deleteHandler}>삭제</div>
 
             <div onClick={onEditClick}>수정</div>
             {showFileInput && (
