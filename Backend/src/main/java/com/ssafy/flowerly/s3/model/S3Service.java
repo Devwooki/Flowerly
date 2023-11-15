@@ -52,7 +52,9 @@ public class S3Service {
                 .collect(Collectors.toList());
         s3Repository.saveAll(uploadImage);
         //이후 이미지 src만 반환한다.
-        return uploadImage.stream().map(fileInfo -> {return fileInfo.getUploadFileUrl();})
+        return uploadImage.stream().map(fileInfo -> {
+                    return fileInfo.getUploadFileUrl();
+                })
                 .collect(Collectors.toList());
     }
 
@@ -63,57 +65,57 @@ public class S3Service {
         return temp.getUploadFileUrl();
     }
 
-    public List<StoreImageResponse> updateStoreImage(Long memberId, List<Long> imageIDs, List<String> uploadImgs){
+    public List<StoreImageResponse> updateStoreImage(Long memberId, List<Long> imageIDs, List<String> uploadImgs) {
         List<StoreImage> storeImages = storeImageRepository.findBySeller_MemberId(memberId);
-        Member seller = memberRepository.findByMemberId(memberId).orElseThrow(()-> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+        Member seller = memberRepository.findByMemberId(memberId).orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
         //기존에 이미지가 없으면 모두 반환한다.
-        if(storeImages.size() == 0){
+        if (storeImages.size() == 0) {
             List<StoreImage> update = new ArrayList<>();
-            for(String uploadImg :  uploadImgs){
+            for (String uploadImg : uploadImgs) {
                 update.add(StoreImage.builder()
-                                .seller(seller)
-                                .imageUrl(uploadImg)
-                                .build());
+                        .seller(seller)
+                        .imageUrl(uploadImg)
+                        .build());
             }
 
             return storeImageRepository.saveAll(storeImages).stream()
                     .map(StoreImage::toResponseDto)
                     .collect(Collectors.toList());
-        }else{//저장된 이미지가 있으면 찾아 수정한다.
+        } else {//저장된 이미지가 있으면 찾아 수정한다.
 
             //업로드한 이미지 수 > 디비에 저장된 수
             //순차적으로 바꾸고 마지막에 컬럼 추가한다.
-            if(uploadImgs.size() > storeImages.size()){
+            if (uploadImgs.size() > storeImages.size()) {
                 int uploadImageIdx = 0;
 
                 //순차적으로 이미지 변경
-                for(int i = 0 ; i < storeImages.size() ; ++i){
+                for (int i = 0; i < storeImages.size(); ++i) {
                     storeImages.get(i).updateImage(uploadImgs.get(uploadImageIdx++));
                 }
                 //없는 데이터는 추가한다
-                for(int i = 0; i < uploadImgs.size() - storeImages.size()  ; ++i)
+                for (int i = 0; i < uploadImgs.size() - storeImages.size(); ++i)
                     storeImages.add(StoreImage.builder()
-                                    .imageUrl(uploadImgs.get(uploadImageIdx++))
-                                    .seller(seller)
-                                    .build());
+                            .imageUrl(uploadImgs.get(uploadImageIdx++))
+                            .seller(seller)
+                            .build());
 
-            }else{
+            } else {
                 //업로드한 이미지 수 <= 디비에 저장된 수
                 //ID 같은 것만 찾아서 업데이트한다.
                 Collections.sort(imageIDs);
 
                 int imageIDsIdx = 0;
-                for(int i = 0 ; i < storeImages.size() ; ++i){
-                    if(imageIDsIdx == uploadImgs.size()){
+                for (int i = 0; i < storeImages.size(); ++i) {
+                    if (imageIDsIdx == uploadImgs.size()) {
                         break;
                     }
-                    if(imageIDs.get(imageIDsIdx) == storeImages.get(i).getStoreImageId()) {
+                    if (imageIDs.get(imageIDsIdx) == storeImages.get(i).getStoreImageId()) {
                         storeImages.get(i).updateImage(uploadImgs.get(imageIDsIdx++));
                     }
                 }
 
-                for(StoreImage st : storeImages){
+                for (StoreImage st : storeImages) {
                     log.info("{}", st.getStoreImageId());
                 }
             }
@@ -219,13 +221,13 @@ public class S3Service {
         }
     }
 
-    public String makeFlowerBouquet(String imageUrl){
+    public String makeFlowerBouquet(String imageUrl) {
         return uploadBase64Image(urlToBase64(imageUrl), UploadType.FlOWER);
     }
 
     private String urlToBase64(String imageUrl) {
-        try{
-            if(imageUrl == null || imageUrl.trim().equals("")) throw new CustomException(ErrorCode.INVALID_IMAGE_URL);
+        try {
+            if (imageUrl == null || imageUrl.trim().equals("")) throw new CustomException(ErrorCode.INVALID_IMAGE_URL);
 
             URL url = new URL(imageUrl);
             BufferedImage img = ImageIO.read(url);
@@ -245,9 +247,25 @@ public class S3Service {
             String fileExtName = imageUrl.substring(imageUrl.lastIndexOf(".") + 1);
 
             // 밑에 changeString은 img 태그안에 쓰이는 용입니다. 위에만 참고하셔도 괜찮아요!
-            return "data:image/"+ fileExtName +";base64, "+ imageStr;
-        }catch(IOException e){
+            return "data:image/" + fileExtName + ";base64, " + imageStr;
+        } catch (IOException e) {
             throw new CustomException(ErrorCode.IOException);
         }
+    }
+
+    @Transactional
+    public List<StoreImageResponse> storeImageRegist(Long memberId, List<String> imageUrls) {
+        Member findMember = memberRepository.findByMemberId(memberId).orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+
+        List<StoreImage> uploadStoreImages = new ArrayList<>();
+
+        for (String imageUrl : imageUrls) {
+            uploadStoreImages.add(StoreImage.builder()
+                    .seller(findMember)
+                    .imageUrl(imageUrl)
+                    .build());
+        }
+
+        return storeImageRepository.saveAll(uploadStoreImages).stream().map(StoreImage::toResponseDto).collect(Collectors.toList());
     }
 }

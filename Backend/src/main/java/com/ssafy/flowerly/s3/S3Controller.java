@@ -38,6 +38,15 @@ public class S3Controller {
         );
     }
 
+    @PutMapping("/regist-image")
+    public DataResponse<?>  registImage(HttpServletRequest request, @RequestPart("image") List<String> imageUrls) {
+        Long memberId = (Long) request.getAttribute("memberId");
+
+        return new DataResponse<>(HttpStatus.OK.value(), "대표사진 업로드 완", s3Service.storeImageRegist(memberId, imageUrls)
+        );
+    }
+
+
     @PutMapping("/update/store")
     public DataResponse<?>  updateStoreThumbnail(
             HttpServletRequest request,
@@ -46,8 +55,8 @@ public class S3Controller {
         //if(updateDto.getUploadImg() == null || updateDto.getUploadImg().size() == 0) throw new CustomException(ErrorCode.INVALID_UPLOAD_FILE);
         //if(updateDto.getUploadImg().size() > 3) throw new CustomException(ErrorCode.INVALID_UPLOAD_FILE_CNT);
         Long memberId = (Long) request.getAttribute("memberId");
-
         List<Long> longIds = updateDto.getImageIDs().stream().map(Long::valueOf).collect(Collectors.toList());
+
         log.info("{}, 업로드 파일 수 {}", updateDto.getImageIDs().toString(), updateDto.getUploadImgs().size());
         return new DataResponse<>(HttpStatus.OK.value(),
                 "대표사진 수정 완",
