@@ -11,11 +11,12 @@ import { AnimatePresence, motion } from "framer-motion";
 
 type BuyerCardsProps = {
   card: BuyerCard;
+  onConfirm: () => void;
 };
 
 const stateProps = ["입찰", "조율", "주문완료", "제작완료", "픽업/배달완료"];
 
-const BuyerCards = ({ card }: BuyerCardsProps) => {
+const BuyerCards = ({ card, onConfirm }: BuyerCardsProps) => {
   const [cancelModal, setCancelModal] = useState(false); // 취소 모달
   const isClient = typeof window !== "undefined";
   const [windowWidth, setWindowWidth] = useState<number>(0);
@@ -246,7 +247,11 @@ const BuyerCards = ({ card }: BuyerCardsProps) => {
         </div>
         {buttomBtnCmd(stepNumber)}
       </motion.div>
-      <AnimatePresence>{cancelModal && <Cancel onCancel={handleCancel} />}</AnimatePresence>
+      <AnimatePresence>
+        {cancelModal && (
+          <Cancel onCancel={handleCancel} onConfirm={onConfirm} fllyId={card.fllyId} />
+        )}
+      </AnimatePresence>
     </>
   );
 };
