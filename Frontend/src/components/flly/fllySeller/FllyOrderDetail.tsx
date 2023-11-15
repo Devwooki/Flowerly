@@ -11,6 +11,8 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { tokenHttp } from "@/api/tokenHttp";
+import { useRecoilValue } from "recoil";
+import { MemberInfo, memberInfoState } from "@/recoil/memberInfoRecoil";
 
 interface flowerInfoType {
   flowerName: string;
@@ -56,6 +58,7 @@ const FllyOrderDetail = () => {
   const [slideState, setSlideState] = useState({ activeSlide: 0, activeSlide2: 0 });
   const [slideImgSize, setSlideImgSize] = useState<number>(2);
   const [backWidth, setbackWidth] = useState<number>();
+  const memberInfo = useRecoilValue<MemberInfo>(memberInfoState);
 
   const settings = {
     slide: "div",
@@ -72,7 +75,6 @@ const FllyOrderDetail = () => {
   };
 
   useEffect(() => {
-    console.log(fllyId);
     if (backRef.current) {
       const backWidth = backRef.current.offsetWidth;
       setbackWidth(backWidth);
@@ -80,26 +82,50 @@ const FllyOrderDetail = () => {
         backImgRef.current.style.height = backWidth + "px";
       }
     }
-    tokenHttp
-      .get("/seller/flly/request/" + fllyId.fllyId)
-      .then((res) => {
-        const rsData = res.data;
-        if (rsData.code == 200) {
-          console.log(res.data.data);
-          setFllyRequestInfo(rsData.data.fllyRequestDto);
-          setFllyResponseInfo(rsData.data.fllyResponeDto);
-        } else {
-          ToastErrorMessage(rsData.message);
-        }
-        if (res.headers.authorization) {
-          localStorage.setItem("accessToken", res.headers.authorization);
-        }
-      })
-      .catch((err) => {
-        if (err.response.status === 403) {
-          router.push("/fllylogin");
-        }
-      });
+
+    if (memberInfo.role === "SELLER") {
+      tokenHttp
+        .get("/seller/flly/request/" + fllyId.fllyId)
+        .then((res) => {
+          const rsData = res.data;
+          if (rsData.code == 200) {
+            console.log(res.data.data);
+            setFllyRequestInfo(rsData.data.fllyRequestDto);
+            setFllyResponseInfo(rsData.data.fllyResponeDto);
+          } else {
+            ToastErrorMessage(rsData.message);
+          }
+          if (res.headers.authorization) {
+            localStorage.setItem("accessToken", res.headers.authorization);
+          }
+        })
+        .catch((err) => {
+          if (err.response.status === 403) {
+            router.push("/fllylogin");
+          }
+        });
+    } else {
+      tokenHttp
+        .get("/seller/flly/request/buyer" + fllyId.fllyId)
+        .then((res) => {
+          const rsData = res.data;
+          if (rsData.code == 200) {
+            console.log(res.data.data);
+            setFllyRequestInfo(rsData.data.fllyRequestDto);
+            setFllyResponseInfo(rsData.data.fllyResponeDto);
+          } else {
+            ToastErrorMessage(rsData.message);
+          }
+          if (res.headers.authorization) {
+            localStorage.setItem("accessToken", res.headers.authorization);
+          }
+        })
+        .catch((err) => {
+          if (err.response.status === 403) {
+            router.push("/fllylogin");
+          }
+        });
+    }
   }, []);
 
   return (
