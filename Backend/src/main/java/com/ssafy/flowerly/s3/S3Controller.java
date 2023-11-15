@@ -5,6 +5,7 @@ import com.ssafy.flowerly.exception.CustomException;
 import com.ssafy.flowerly.exception.ErrorCode;
 import com.ssafy.flowerly.s3.model.S3Service;
 import com.ssafy.flowerly.s3.vo.UpdateTumbNailRequest;
+import com.ssafy.flowerly.util.CustomResponse;
 import com.ssafy.flowerly.util.DataResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,6 +48,14 @@ public class S3Controller {
         );
     }
 
+
+    @DeleteMapping("/delete-image/{storeImageId}")
+    public CustomResponse deleteImage(HttpServletRequest request, @PathVariable Long storeImageId) {
+        Long memberId = (Long) request.getAttribute("memberId");
+        s3Service.storeImageDelete(memberId, storeImageId);
+
+        return new CustomResponse(200, "가게 대표 사진 삭제 성공");
+    }
 
     @PutMapping("/update/store")
     public DataResponse<?>  updateStoreThumbnail(

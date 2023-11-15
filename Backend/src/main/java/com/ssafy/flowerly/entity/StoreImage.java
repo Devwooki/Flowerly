@@ -29,6 +29,8 @@ public class StoreImage {
         this.imageUrl = newUrl;
     }
 
+
+
     public StoreImageResponse toResponseDto(){
         return new StoreImageResponse(this.storeImageId, this.seller.getMemberId(),this.imageUrl);
     }

@@ -268,4 +268,12 @@ public class S3Service {
 
         return storeImageRepository.saveAll(uploadStoreImages).stream().map(StoreImage::toResponseDto).collect(Collectors.toList());
     }
+    @Transactional
+    public void storeImageDelete(Long memberId, Long storeImageId) {
+       StoreImage storeImage = storeImageRepository.findByStoreImageId(storeImageId);
+
+       storeImageRepository.delete(storeImage);
+
+
+    }
 }
