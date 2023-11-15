@@ -5,7 +5,7 @@
 
 //추가 module.exports
 module.exports = {
-  // output: "standalone",
+  output: "standalone",
   env: {
     OPENAI_API_KEY: process.env.OPENAI_API_KEY,
     FIREBASE_API_KEY: process.env.FIREBASE_API_KEY,
