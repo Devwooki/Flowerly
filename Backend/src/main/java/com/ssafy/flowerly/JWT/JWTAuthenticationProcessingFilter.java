@@ -64,6 +64,8 @@ public class JWTAuthenticationProcessingFilter extends OncePerRequestFilter {
             return;
         }
 
+
+
         //EndPoint가 /oauth2, favicon을 요청할 경우 컨트롤러로 들어간다. 즉 무시해도 되는 요청
         if(request.getRequestURI().equals(NO_CHECK_URL) || request.getRequestURI().contains("favicon")){
             filterChain.doFilter(request,response);

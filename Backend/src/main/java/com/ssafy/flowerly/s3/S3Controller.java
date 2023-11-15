@@ -38,7 +38,7 @@ public class S3Controller {
         );
     }
 
-    @PutMapping("/regist-image")
+    @PostMapping("/regist-image")
     public DataResponse<?>  registImage(HttpServletRequest request, @RequestPart("image") List<String> imageUrls) {
         Long memberId = (Long) request.getAttribute("memberId");
 
