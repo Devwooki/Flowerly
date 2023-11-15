@@ -19,9 +19,10 @@ type PaymentInfo = {
 
 type PaymentMsgProps = {
   chattingId: number;
+  isValidRoom: boolean;
 };
 
-const PaymentMsg: React.FC<PaymentMsgProps> = ({ chattingId }) => {
+const PaymentMsg: React.FC<PaymentMsgProps> = ({ chattingId, isValidRoom }) => {
   const router = useRouter();
   const [paymentInfo, setPaymentInfo] = useState<PaymentInfo>();
   const setPaymentInfoRecoil = useSetRecoilState(paymentInfoRecoil);
@@ -43,12 +44,6 @@ const PaymentMsg: React.FC<PaymentMsgProps> = ({ chattingId }) => {
           router.push("/fllylogin");
         }
       });
-
-    // axios.get(`https://flower-ly.co.kr/api/chatting/price/${chattingId}`).then((response) => {
-    //   // console.log(response);
-    //   setPaymentInfo(response.data.data);
-    // });
-
   }, []);
 
   const payAxiosHandler = () => {
@@ -113,13 +108,17 @@ const PaymentMsg: React.FC<PaymentMsgProps> = ({ chattingId }) => {
           </div>
           {paymentInfo?.isPaid ? (
             <div className={style.disabledBtnDiv}>결제 완료</div>
-          ) : (
+          ) : isValidRoom ? (
             <div
               className={style.btnDiv}
               onClick={() => {
                 payAxiosHandler();
               }}
             >
+              <Image src="/img/btn/kakao-pay-btn.png" width={80} height={30} alt="카카오페이" />
+            </div>
+          ) : (
+            <div className={style.btnDiv}>
               <Image src="/img/btn/kakao-pay-btn.png" width={80} height={30} alt="카카오페이" />
             </div>
           )}

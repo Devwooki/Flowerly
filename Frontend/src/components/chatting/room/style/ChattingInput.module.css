@@ -53,3 +53,10 @@
 .messageInput:focus {
   outline: none;
 }
+
+.disabled {
+  opacity: 0.6;
+}
+.messageInput::placeholder {
+  color: gray;
+}

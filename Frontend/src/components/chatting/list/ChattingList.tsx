@@ -47,7 +47,7 @@ const ChattingList = () => {
         }
       })
       .catch((err) => {
-        if (err.response.status === 403) {
+        if (err.response.satus && err.response.status === 403) {
           router.push("/fllylogin");
         }
       });
