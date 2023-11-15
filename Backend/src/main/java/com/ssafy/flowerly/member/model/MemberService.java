@@ -165,7 +165,7 @@ public class MemberService {
     }
 
     private String extractImageUrl(Object[] o){
-        return ((StoreImage) o[1]).getImageUrl();
+        return ((StoreImage) o[1]).getStoreImageId() + "_" + ((StoreImage) o[1]).getImageUrl();
     }
 
     public void signout(Long memberId) {
