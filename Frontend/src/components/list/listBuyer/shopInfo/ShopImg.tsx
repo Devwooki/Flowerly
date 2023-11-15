@@ -1,20 +1,36 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import style from "./ShopImg.module.css";
 import Image from "next/image";
 
 type ShopImgProps = {
   shopImg: string[];
 };
-
+type chmod = {
+  id: number;
+  url: string;
+};
 const ShopImg = ({ shopImg }: ShopImgProps) => {
+  const [ParsedImages, setParsedImages] = useState<chmod[]>();
+
+  useEffect(() => {
+    const images = shopImg.map((imageUrl) => {
+      const parts = imageUrl.split("_");
+      const id = parseInt(parts[0], 10);
+      const url = parts.slice(1).join("_"); // 뒤에 또 발견되는 밑줄을 모두 "url"로 처리
+
+      return { id, url };
+    });
+    setParsedImages(images);
+  }, [shopImg]);
+
   return (
     <div className={style.shopImgMain}>
       <div className={style.headerTitle}>대표사진</div>
       <div className={style.imgList}>
-        {shopImg.length > 0 ? (
-          shopImg.map((src, idx) => (
+        {ParsedImages && ParsedImages.length > 0 ? (
+          ParsedImages.map((src, idx) => (
             <Image
-              src={src}
+              src={src.url}
               key={src + "-" + idx}
               alt="대표 이미지"
               width={120}

@@ -59,7 +59,7 @@ const SellerFllyListProgressCard: React.FC<SellerFllyListProgressCardProps> = ({
     <>
       <div className={style.cardBack}>
         <div className={style.cardHeader}>
-          <div className={style.ImgBox} style={{ backgroundImage: `url(/test/horizental.jpg)` }} />
+          <div className={style.ImgBox} style={{ backgroundImage: `url(/thumb.jpg)` }} />
           <div className={style.InfoBox}>
             <div className={style.OrderAddBox}>
               <div onClick={handleMoveToOrder}>

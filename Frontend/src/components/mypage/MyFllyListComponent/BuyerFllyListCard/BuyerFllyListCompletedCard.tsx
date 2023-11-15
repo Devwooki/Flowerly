@@ -43,7 +43,7 @@ const BuyerFllyListCompletedCard = ({
   return (
     <>
       <div className={style.cardBack}>
-        <div className={style.ImgBox} style={{ backgroundImage: `url(/test/horizental.jpg)` }} />
+        <div className={style.ImgBox} style={{ backgroundImage: `url(/thumb.jpg)` }} />
         <div className={style.InfoBox}>
           <div className={style.OrderAddBox} onClick={() => handleFllyDetail()}>
             <div>
