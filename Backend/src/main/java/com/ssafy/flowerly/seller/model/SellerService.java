@@ -1,6 +1,7 @@
 package com.ssafy.flowerly.seller.model;
 
 
+import com.ssafy.flowerly.FCM.service.FCMService;
 import com.ssafy.flowerly.address.repository.DongRepository;
 import com.ssafy.flowerly.address.repository.SigunguRepository;
 import com.ssafy.flowerly.chatting.repository.RequestDeliveryInfoRepository;
@@ -46,7 +47,7 @@ public class SellerService {
     private final FllyPickupRegionRepository fllyPickupRegionRepository;
     private final RequestDeliveryInfoRepository requestDeliveryInfoRepository;
     private final S3Service s3Service;
-
+    private final FCMService fcmService;
 
     /*
         플리 정보 조회 및 검증 ( 없거나 마감시간이 지났거나 취소되지 않은 플리 )
@@ -212,9 +213,15 @@ public class SellerService {
                             .offerPrice(data.getOfferPrice())
                             .content(data.getContent())
                             .build());
+
+            Member buyer = memberRepository.findByMemberId(fllyInfo.getConsumer().getMemberId())
+                            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+            fcmService.sendPushMessage(buyer.getMemberId(), "꽃집이 플리에 참여했습니다.", "진행중인 플리의 플리스트에서 확인해보세요!");
         }catch (Exception e){
             throw new CustomException(ErrorCode.SELLER_PARTICIPATE_FAIL);
         }
+
+
 
     }
     
