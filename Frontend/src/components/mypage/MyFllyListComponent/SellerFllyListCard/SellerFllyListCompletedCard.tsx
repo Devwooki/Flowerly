@@ -21,7 +21,7 @@ const SellerFllyListCompletedCard: React.FC<SellerFllyListCompletedCardProps> = 
   return (
     <>
       <div className={style.cardBack}>
-        <div className={style.ImgBox} style={{ backgroundImage: `url(/test/horizental.jpg)` }} />
+        <div className={style.ImgBox} style={{ backgroundImage: `url(/thumb.jpg)` }} />
         <div className={style.InfoBox}>
           <div className={style.OrderAddBox}>
             <div onClick={handleMoveToOrder}>
