@@ -94,7 +94,7 @@ public class ChattingService {
                 Member opponent = chatting.getSeller();
                 String opponentName = null;
                 if(opponent.getRole().equals(MemberRole.DELETE)) {
-                    opponentName = "알수없음";
+                    opponentName = "(알수없음)";
                 } else {
                     opponentName = storeInfoRepository.findStoreName(opponent);
                 }
@@ -109,7 +109,7 @@ public class ChattingService {
                 Member opponent = chatting.getConsumer();
                 String opponentName = null;
                 if(opponent.getRole().equals(MemberRole.DELETE)) {
-                    opponentName = "알수없음";
+                    opponentName = "(알수없음)";
                 } else {
                     opponentName = opponent.getNickName();
                 }
@@ -155,6 +155,7 @@ public class ChattingService {
         if(opponent.getRole().equals(MemberRole.DELETE)) {
             // 상대방이 탈퇴한 경우
             isValidRoom = false;
+            opponentName="(알수없음)";
             messageDtos.add(new ChattingMessageDto.Response(
                     null, null, "INFORMATION", "삭제된 사용자입니다.", null));
         }
