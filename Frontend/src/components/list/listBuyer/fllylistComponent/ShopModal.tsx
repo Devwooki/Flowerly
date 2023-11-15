@@ -41,10 +41,10 @@ const ShopModal = ({ shopInfo, modal, chatModal }: ShopModalProps) => {
             layoutId={`shopInfo-${shopInfo.participant.fllyParticipationId}`}
           >
             <div
-              className={style.infoTable}
+              className={style.shopName}
               onClick={(e) => moveToShop(shopInfo.storeInfoDto.storeInfoId, e)}
             >
-              {shopInfo.storeInfoDto.storeName}
+              {shopInfo.storeInfoDto.storeName}&nbsp;&nbsp;<Image src={"/img/icon/move.png"} alt="move" width={28} height={28}/>
             </div>
             <div className={style.infoTable}>
               <Image src={"/img/icon/seller-location.png"} alt="가게 위치" width={10} height={15} />
@@ -52,7 +52,7 @@ const ShopModal = ({ shopInfo, modal, chatModal }: ShopModalProps) => {
             </div>
             <div className={style.infoTable}>
               <Image src={"/img/icon/seller-money.png"} alt="제시 금액 " width={15} height={15} />
-              <div>{shopInfo.participant.offerPrice}</div>
+              <div>{Number(shopInfo.participant.offerPrice).toLocaleString()}</div>
             </div>
             <div className={style.responseContent}>{shopInfo.participant.content}</div>
           </motion.div>

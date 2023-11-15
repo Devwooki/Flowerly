@@ -34,6 +34,9 @@
 .shopName {
   font-size: 20px;
   font-family: "NanumSquareNeoOTF-Bd";
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
 }
 
 .shopInfo {
