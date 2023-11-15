@@ -10,6 +10,7 @@ import ShopList from "@/components/list/listBuyer/fllylistComponent/ShopList";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { ToastErrorMessage } from "@/model/toastMessageJHM";
+import { useEffect } from "react";
 
 const FllyList = () => {
   const param = useParams();
@@ -40,6 +41,15 @@ const FllyList = () => {
   if (isError) {
     <div>에러났다 임마</div>;
   }
+
+  useEffect(() => {
+    router.push({
+      pathname: `/list/buyer/[fllyId]/`,
+      query: {
+        fllyId: param.fllyId,
+      },
+    });
+  }, [])
 
   return (
     <motion.div className={style.ListBuyerBack}>
