@@ -93,6 +93,10 @@ public class Chatting extends BaseCreatedTimeEntity {
         this.unreadCntSeller++;
     }
 
+    public void updateChattingStatus(ChattingType state){
+        this.chattingStatus = state;
+    }
+
     public Chatting toEntity(Flly flly, FllyParticipation fllyParticipation, Member consumer, Member seller) {
         return Chatting.builder()
                 .flly(flly)

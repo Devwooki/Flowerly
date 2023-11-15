@@ -4,8 +4,10 @@ package com.ssafy.flowerly.seller.model;
 import com.ssafy.flowerly.FCM.service.FCMService;
 import com.ssafy.flowerly.address.repository.DongRepository;
 import com.ssafy.flowerly.address.repository.SigunguRepository;
+import com.ssafy.flowerly.chatting.repository.ChattingRepository;
 import com.ssafy.flowerly.chatting.repository.RequestDeliveryInfoRepository;
 import com.ssafy.flowerly.entity.*;
+import com.ssafy.flowerly.entity.type.ChattingType;
 import com.ssafy.flowerly.entity.type.OrderType;
 import com.ssafy.flowerly.entity.type.ProgressType;
 import com.ssafy.flowerly.entity.type.UploadType;
@@ -45,6 +47,8 @@ public class SellerService {
     private final RequestDeliveryInfoRepository requestDeliveryInfoRepository;
     private final S3Service s3Service;
     private final FCMService fcmService;
+    private final ChattingRepository chattingRepository;
+
 
 
     /*
@@ -182,6 +186,19 @@ public class SellerService {
         }
         else if(fllyInfo.getProgress() == ProgressType.FINISH_MAKING) {
             fllyInfo.UpdateFllyProgress(ProgressType.FINISH_DELIVERY);
+
+            //fllyId와 판매자Id롤 참여Id를 불러옴
+            FllyParticipation fllyParticipation = fllyParticipationRepository
+                    .findByFllyFllyIdAndSellerMemberId(fllyId, mamberId)
+                    .orElseThrow(() -> new CustomException(ErrorCode.FLLY_PARTICIPATION_NOT_FOUND));
+            //참여한 id로 채팅정보 불러옴
+            Chatting chattingInfo  = chattingRepository.findByFllyParticipationFllyParticipationId(fllyParticipation.getFllyParticipationId())
+                    .orElseThrow(() -> new CustomException(ErrorCode.CHATTING_NOT_FOUND));
+
+            chattingInfo.updateChattingStatus(ChattingType.COMPLETED);
+
+            chattingRepository.save(chattingInfo);
+
             if(fllyInfo.getOrderType().equals(OrderType.DELIVERY)) {
                 fcmService.sendPushMessage(buyer.getMemberId(), "꽃다발 배달이 완료되었습니다.", "꽃다발에 대한 리뷰를 작성해 주세요.");
             } else {
