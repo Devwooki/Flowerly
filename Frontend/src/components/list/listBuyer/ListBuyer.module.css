@@ -21,11 +21,14 @@
   overflow: scroll;
 }
 
-.noData {
+.noDataTable {
+  height: 100%;
   display: flex;
-  margin-top: 30%;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+}
+
+.noData {
   opacity: 0.8;
 }
 
