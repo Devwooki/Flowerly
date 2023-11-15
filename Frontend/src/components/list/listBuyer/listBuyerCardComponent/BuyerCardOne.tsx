@@ -145,6 +145,7 @@ const BuyerCardOne = ({ card, onConfirm }: BuyerCardOneProps) => {
         fllyId: fllyId,
       },
     });
+    window.location.href = `https://flower-ly.co.kr/list/buyer/${fllyId}`;
   };
 
   const handleCancel = () => {
