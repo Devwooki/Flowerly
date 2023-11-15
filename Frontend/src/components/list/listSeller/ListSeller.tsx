@@ -62,9 +62,11 @@ const ListSeller = () => {
   const ChangeStatHander = (clickName: string) => {
     if (ListState !== clickName && clickName === "participation") {
       setCurrentPage(0);
+      setAdoptData([]);
       setListState("participation");
     } else if (ListState !== clickName && clickName === "adopt") {
       setCurrentPage(0);
+      setParticipationData([]);
       setListState("adopt");
     } else null;
   };
@@ -166,7 +168,7 @@ const ListSeller = () => {
                 ChangeStatHander("adopt");
               }}
             >
-              채택된 플리
+              채택된 플리얌
             </div>
             <div
               className={
@@ -183,15 +185,31 @@ const ListSeller = () => {
         <div className={style.ListSellerMain}>
           {ListState === "adopt" ? (
             <>
-              {adoptData.map((value, index) => (
-                <ListAdoptCard
-                  ModalChangeHandler={ModalChangeHandler}
-                  SelectIdChangeHandler={SelectIdChangeHandler}
-                  $adoptInfo={value}
-                  key={value.fllyId + index}
-                  $index={index}
-                />
-              ))}
+              {adoptData.length > 0 ? (
+                <>
+                  {adoptData.map((value, index) => (
+                    <ListAdoptCard
+                      ModalChangeHandler={ModalChangeHandler}
+                      SelectIdChangeHandler={SelectIdChangeHandler}
+                      $adoptInfo={value}
+                      key={value.fllyId + index}
+                      $index={index}
+                    />
+                  ))}
+                </>
+              ) : (
+                <div className={style.noListBox}>
+                  <div>
+                    <Image
+                      src={"/img/etc/no-selection-image.png"}
+                      width={200}
+                      height={200}
+                      alt="플리가 없습니다"
+                    ></Image>
+                    <div>채택된 플리가 없습니다</div>
+                  </div>
+                </div>
+              )}
             </>
           ) : (
             <>
@@ -203,18 +221,12 @@ const ListSeller = () => {
                 <div className={style.noListBox}>
                   <div>
                     <Image
-                      src={
-                        ListState === "adopt"
-                          ? "/img/etc/no-selection-image.png"
-                          : "/img/etc/no-participation-image.png"
-                      }
+                      src={"/img/etc/no-participation-image.png"}
                       width={200}
                       height={200}
                       alt="플리가 없습니다"
                     ></Image>
-                    <div>
-                      {ListState === "adopt" ? "채택된 플리가 없습니다" : "참여한 플리가 없습니다"}
-                    </div>
+                    <div>참여한 플리가 없습니다</div>
                   </div>
                 </div>
               )}
