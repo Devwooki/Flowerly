@@ -221,8 +221,12 @@ public class FlowerService {
                 Sigungu pickupSigungu = sigunguRepository.findBySigunguCodeAndSido(sigunguCode, pickupSido)
                         .orElseThrow(() -> new CustomException(ErrorCode.SIGUNGU_NOT_FOUND));
 
-                Dong pickupDong = dongRepository.findByDongCodeAndSigungu(dongCode, pickupSigungu)
-                        .orElseThrow(() -> new CustomException(ErrorCode.DONG_NOT_FOUND));
+                Dong pickupDong = null;
+
+                if(!pickupSigungu.getSigunguName().equals("전체")) {
+                    pickupDong = dongRepository.findByDongCodeAndSigungu(dongCode, pickupSigungu)
+                            .orElseThrow(() -> new CustomException(ErrorCode.DONG_NOT_FOUND));
+                }
 
                 FllyPickupRegion fllyPickupRegion = FllyPickupRegion.builder()
                         .flly(savedFlly)
