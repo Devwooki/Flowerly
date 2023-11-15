@@ -140,19 +140,13 @@ const BuyerCards = ({ card, onConfirm }: BuyerCardsProps) => {
 
   const fllistBtn = (fllyId: number) => {
     setCardProps(card);
-    // route.push({
-    //   pathname: `/list/buyer/[fllyId]/`,
-    //   query: {
-    //     fllyId: fllyId,
-    //   },
-    // });
-    window.location.href = `https://flower-ly.co.kr/list/buyer/${fllyId}`;
     route.push({
       pathname: `/list/buyer/[fllyId]/`,
       query: {
         fllyId: fllyId,
       },
     });
+    window.location.href = `https://flower-ly.co.kr/list/buyer/${fllyId}`;
   };
 
   const handleCancel = () => {

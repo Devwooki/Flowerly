@@ -42,15 +42,6 @@ const FllyList = () => {
     <div>에러났다 임마</div>;
   }
 
-  useEffect(() => {
-    router.push({
-      pathname: `/list/buyer/[fllyId]/`,
-      query: {
-        fllyId: param.fllyId,
-      },
-    });
-  }, [])
-
   return (
     <motion.div className={style.ListBuyerBack}>
       <div className={style.ListBuyerHeader}>
