@@ -1,5 +1,6 @@
 package com.ssafy.flowerly.chatting.service;
 
+import com.ssafy.flowerly.FCM.service.FCMService;
 import com.ssafy.flowerly.chatting.dto.*;
 import com.ssafy.flowerly.chatting.repository.RequestDeliveryInfoRepository;
 import com.ssafy.flowerly.entity.*;
@@ -43,6 +44,7 @@ public class ChattingService {
     private final FllyDeliveryRegionRepository fllyDeliveryRegionRepository;
     private final FllyRepository fllyRepository;
     private final FllyParticipationRepository fllyParticipationRepository;
+    private final FCMService fcmService;
 
     @Transactional
     public Map<String, Object> createChatting(ChattingDto.Request chattingRequestDto) {
@@ -76,6 +78,9 @@ public class ChattingService {
 
             responseMap.put("isNew", true);
             responseMap.put("chattingId", newChatting.getChattingId());
+
+            // 판매자에게 알림
+            fcmService.sendPushMessage(seller.getMemberId(), "구매자가 채팅을 요청했습니다.", "채팅 리스트에서 확인해 보세요!");
         }
 
         return responseMap;
