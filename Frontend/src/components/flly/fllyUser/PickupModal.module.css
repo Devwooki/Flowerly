@@ -1,181 +1,221 @@
 .checkBack {
-    background-color: rgba(37, 37, 37, 0.2);
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    z-index: 20;
-    display: flex;
-    text-align: center;
-  }
-  
-  .modalBack {
-    /* width: calc(100% - 100px); */
-    width: 300px;
-    /* height: 208px; */
-    background-color: white;
-    margin: auto;
-    border-radius: 10px;
-    padding: 32px 20px;
-  }
+  background-color: rgba(37, 37, 37, 0.2);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 20;
+  display: flex;
+  text-align: center;
+}
 
-  .modalBack input::placeholder {
-    color: var(--dark);
-  }
+.modalBack {
+  /* width: calc(100% - 100px); */
+  width: 300px;
+  /* height: 208px; */
+  background-color: white;
+  margin: auto;
+  border-radius: 10px;
+  padding: 32px 20px;
+}
 
-  .title {
-    font-family: "NanumSquareNeoOTF-Bd";
-    word-break: keep-all;
-    text-align: left;
-    margin-bottom: 6px;
-  }
+.modalBack input::placeholder {
+  color: var(--dark);
+}
 
+.title {
+  font-family: "NanumSquareNeoOTF-Bd";
+  word-break: keep-all;
+  text-align: left;
+  margin-bottom: 6px;
+}
 
-  .deliveryRegionList {
-    width: 300px;
-    height: 40px;
-    border-radius: 10px;
-    background-color: #f2f2f2;
-    font-family: NanumSquareNeoOTF-Rg;
-    font-size: 12px;
-    padding-left: 10px;
-    margin-bottom: 10px;
-    display: flex;
-    overflow-x: auto;
-    white-space: nowrap;
-    align-items: center;
-    justify-content: flex-start;
-  }
+.deliveryRegionList {
+  height: 40px;
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  font-size: 12px;
+  padding-left: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  overflow-x: scroll;
+  white-space: nowrap;
+  align-items: center;
+  justify-content: flex-start;
+  border: 1px solid var(--moregray);
+}
 
-  .removeButton {
-    border: none;
-    justify-content: center;
-    align-items: center;
-    padding: 0px;
-    margin-right: 6px;
-    color: red;
-    background-color: white;
-    border-radius: 4px;
-    /* padding: 2px; */
-    width: 16px;
-    height: 16px;
-    margin: 0 8px 0 2px;
-  }
+.removeButton {
+  border: none;
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
+  margin-right: 6px;
+  color: red;
+  background-color: white;
+  border-radius: 4px;
+  /* padding: 2px; */
+  width: 16px;
+  height: 16px;
+  margin: 0 8px 0 2px;
+}
 
-  .sidoDropDown select {
-    width: 300px;
-    height: 40px;
-    background-color: #f2f2f2;
-    padding: 10px 15px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background-color: #f8f8f8;
-    color: #333;
-    font-size: 12px;
-    appearance: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-family: NanumSquareNeoOTF-Rg;
-  }
-  
-  .sidoDropDown option {
-    background-color: #fff;
-    color: #333;
-    font-family: NanumSquareNeoOTF-Rg;
-  }
-  
-  .sidoDropDown {
-    position: relative;
-    font-family: NanumSquareNeoOTF-Rg;
-  }
-  
-  .sidoDropDown::after {
-    content: "▼";
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #999;
-    pointer-events: none;
-  }
+.sidoDropDown select {
+  border: 1px solid var(--dark);
+  position: relative;
+  width: 100%;
+  height: 40px;
+  background-color: #f2f2f2;
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f8f8f8;
+  color: #333;
+  font-size: 12px;
+  appearance: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: NanumSquareNeoOTF-Rg;
+}
 
-  .dataArea {
-    display: flex;
-    justify-content: space-between;
-    height: 320px;
-    width: 300px;
-    padding: 10px 0;
-    overflow-y: auto;
-    font-size: 12px;
-    text-align: center;
-  }
+.sidoDropDown option {
+  background-color: #fff;
+  color: #333;
+  font-family: NanumSquareNeoOTF-Rg;
+}
 
-  .sigunguTable {
-    flex: 1;
-    margin-right: 4px;
-    width: 92px;
-    font-size: 12px;
-  }
-  
-  .dongTable {
-    flex: 2;
-    width: 200px;
-  
-    font-size: 12px;
-  }
-  
-  .sigunguTable,
-  .dongTable {
-    border-collapse: collapse;
-    table-layout: fixed;
-  }
-  
-  .sigunguTable td,
-  .dongTable td {
-    width: 100%; /* 셀의 너비를 최대로 활용 (이 경우 .sigunguTable의 셀은 1열로, .dongTable의 셀은 3열로 나뉘게 됩니다) */
-    white-space: nowrap; /* 글자를 1줄로 표시 */
-    overflow: hidden; /* 셀의 크기를 초과하는 내용은 숨김 */
-    text-overflow: ellipsis; /* 숨겨진 내용을 '...'로 표시 */
-    border: 1px solid lightgray; /* 연한 회색 테두리 적용 */
-    padding: 5px 10px; /* 셀 내부의 패딩 추가 */
-  }
-  
-  /* 테이블의 가로선 */
-  .sigunguTable tr,
-  .dongTable tr {
-    border-bottom: 1px solid lightgray; /* 각 행의 하단에 연한 회색 테두리 추가 */
-  }
-  
-  /* 마지막 행의 하단 테두리를 제거 */
-  .sigunguTable tr:last-child,
-  .dongTable tr:last-child {
-    border-bottom: none;
-  }
-  
-  .selectedItem {
-    background-color: #485256;
-    color: #ffffff;
-  }
+.sidoDropDown {
+  position: relative;
+  font-family: NanumSquareNeoOTF-Rg;
+}
 
-  
-  
-  .modalBtnBox {
-    margin-top: 20px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-  }
-  
-  .modalBtnBox div {
-    background-color: var(--dark);
-    width: 120px;
-    border-radius: 5px;
-    line-height: 40px;
-    height: 40px;
-    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
-    color: white;
-    font-family: "NanumSquareNeoOTF-Bd";
-  }
-  
+.sidoDropDown::after {
+  content: "▼";
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #999;
+  pointer-events: none;
+}
+
+.dataArea {
+  /* border: 1px solid red; */
+  display: flex;
+  justify-content: space-between;
+  height: 320px;
+  /* width: calc(100% - 60px); */
+  overflow-y: auto;
+  overflow: hidden;
+  font-size: 12px;
+  text-align: center;
+  position: relative;
+  border: 1px solid var(--moregray);
+  margin: 15px auto 20px auto;
+}
+.dataArea > div {
+  overflow: scroll;
+  height: 100%;
+}
+
+.dataArea > div:nth-child(1) {
+  width: 40%;
+  border-right: 1px solid var(--moregray);
+}
+
+.dataArea > div:nth-child(2) {
+  width: 60%;
+}
+
+.sigunguTable {
+  flex: 1;
+  width: 130px;
+  font-size: 12px;
+}
+
+.dongTable {
+  flex: 2;
+  width: 100%;
+  font-size: 12px;
+}
+
+.sigunguTable,
+.dongTable {
+  border-collapse: collapse;
+  table-layout: fixed;
+  overflow: scroll;
+}
+
+.sigunguTable td,
+.dongTable td {
+  white-space: nowrap; /* 글자를 1줄로 표시 */
+  /* overflow: hidden; */
+  /* 셀의 크기를 초과하는 내용은 숨김 */
+  text-overflow: ellipsis; /* 숨겨진 내용을 '...'로 표시 */
+  border: 1px solid lightgray; /* 연한 회색 테두리 적용 */
+  padding: 5px 10px; /* 셀 내부의 패딩 추가 */
+  font-family: "NanumSquareNeoOTF-Lt";
+}
+
+.sigunguTable td {
+  height: 25px;
+}
+
+.dongTable td {
+  height: 25px;
+}
+
+/* 테이블의 가로선 */
+.sigunguTable tr,
+.dongTable tr {
+  border-bottom: 1px solid lightgray; /* 각 행의 하단에 연한 회색 테두리 추가 */
+}
+
+/* 마지막 행의 하단 테두리를 제거 */
+.sigunguTable tr:last-child,
+.dongTable tr:last-child {
+  border-bottom: none;
+}
+
+.selectedItem {
+  background-color: #485256;
+  color: #ffffff;
+}
+
+.modalBtnBox {
+  margin-top: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.modalBtnBox div {
+  background-color: var(--dark);
+  width: 120px;
+  border-radius: 5px;
+  line-height: 40px;
+  height: 40px;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
+  color: white;
+  font-family: "NanumSquareNeoOTF-Bd";
+}
+
+.deliveryRegionItem {
+  font-family: NanumSquareNeoOTF-Rg;
+  display: flex;
+  height: 15px;
+  margin-right: 10px;
+  line-height: 17px;
+}
+
+.deliveryRegionItem > img {
+  width: 13px;
+  height: 13px;
+  object-fit: contain;
+  object-position: center;
+  margin: 3px 2px 2px 2px;
+  overflow: hidden;
+  /* border: 1px solid black; */
+}

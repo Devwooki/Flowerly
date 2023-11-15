@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
-import style from "@/components/flly/fllyUser/PickupModal.module.css"
+import React, { useEffect, useRef, useState } from "react";
+import style from "@/components/flly/fllyUser/PickupModal.module.css";
 import { sidoDataType, sigunguDataType, dongDataType, regionType } from "@/recoil/fllyRecoil";
 import axios from "axios";
+import Image from "next/image";
 
 interface Props {
   ModalChangeHandler: () => void;
@@ -11,13 +12,20 @@ interface Props {
   setPickupList: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-const DeliveryModal = ({ ModalChangeHandler, pickupCodeList, setPickupCodeList, pickupList, setPickupList }: Props) => {
+const DeliveryModal = ({
+  ModalChangeHandler,
+  pickupCodeList,
+  setPickupCodeList,
+  pickupList,
+  setPickupList,
+}: Props) => {
   const [sidoData, setSidoData] = useState<sidoDataType[]>([]);
   const [selectedSido, setSelectedSido] = useState<sidoDataType | null>(null);
   const [sigunguData, setSigunguData] = useState<sigunguDataType[]>([]);
   const [selectedSigungu, setSelectedSigungu] = useState<sigunguDataType | null>(null);
   const [dongData, setDongData] = useState<dongDataType[]>([]);
   const [selectedDong, setSelectedDong] = useState<dongDataType | null>(null);
+  const deliveryListRef = useRef<HTMLDivElement>(null);
 
   const NotClickEventHandler = (e: React.MouseEvent<HTMLDivElement>) => {
     //상위 함수를 실행하지 말아라 (모달 꺼지는거 방지)
@@ -84,12 +92,11 @@ const DeliveryModal = ({ ModalChangeHandler, pickupCodeList, setPickupCodeList, 
     const selectedSigunguObj = sigunguData.find((sigungu) => sigungu.sigunguCode === sigunguCode);
     setSelectedSigungu(selectedSigunguObj || null);
 
-    if(selectedSigunguObj?.sigunguName === "전체") {
-      if(selectedSido && selectedSigunguObj) {
+    if (selectedSigunguObj?.sigunguName === "전체") {
+      if (selectedSido && selectedSigunguObj) {
         const fullAddress = `${selectedSido.sidoName} ${selectedSigunguObj.sigunguName}`;
         // 이미 리스트에 있는지 확인
         if (!pickupList.includes(fullAddress)) {
-
           setPickupList((prevList) => [...prevList, fullAddress]);
 
           // deliveryRegionCodeList에 추가
@@ -140,7 +147,6 @@ const DeliveryModal = ({ ModalChangeHandler, pickupCodeList, setPickupCodeList, 
     );
   };
 
-
   return (
     <>
       <div className={style.checkBack} onClick={ModalChangeHandler}>
@@ -149,14 +155,16 @@ const DeliveryModal = ({ ModalChangeHandler, pickupCodeList, setPickupCodeList, 
           <div>
             <div className={style.deliveryRegionList}>
               {pickupList.map((address, index) => (
-                <div key={index} className={style.deliveryRegionItem}>
+                <div key={index} ref={deliveryListRef} className={style.deliveryRegionItem}>
                   {address}
-                  <button
+                  <Image
+                    alt="삭제"
+                    src="/img/btn/gray-delete-btn.png"
+                    width={5}
+                    height={5}
                     className={style.removeButton}
                     onClick={() => handleRemoveDeliveryRegion(address)}
-                  >
-                    x
-                  </button>
+                  />
                 </div>
               ))}
             </div>

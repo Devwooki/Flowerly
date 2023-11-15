@@ -21,6 +21,7 @@ import CheckModal from "@/components/flly/fllyUser/CheckModal";
 import axios from "axios";
 import { ToastErrorMessage } from "@/model/toastMessageJHM";
 import { tokenHttp } from "@/api/tokenHttp";
+import TimeSetModal from "@/components/flly/fllyUser/TimeSetModal";
 
 const FllyTarget = () => {
   const router = useRouter();
@@ -37,12 +38,13 @@ const FllyTarget = () => {
   const [oneDayLater, setOneDayLater] = useState(new Date());
   const [twoDaysLater, setTwoDaysLater] = useState(new Date());
   const [dates, setDates] = useState([] as string[]);
-  const [dateIdx, setDateIdx] = useState<number>(0);
+  const [dateIdx, setDateIdx] = useState<number>();
   const [time, setTime] = useState<string>("");
   const [requestText, setRequestText] = useState<string>("");
   const [dateTime, setDateTime] = useState<Date>(new Date());
   const [showDelieveryModal, setShowDelieveryModal] = useState<boolean>(false);
   const [showPickupModal, setShowPickupModal] = useState<boolean>(false);
+  const [showTimeSetModal, setShowTimeSetModal] = useState<boolean>(false);
   const [basicAddress, setBasicAddress] = useState("");
   const [detailAddress, setDetailAddress] = useState("");
   const [addressCode, setAddressCode] = useState<deliveryAddressType>({
@@ -54,7 +56,7 @@ const FllyTarget = () => {
   const [pickupCodeList, setPickupCodeList] = useRecoilState<regionType[]>(regionState);
   const [showPrevModal, setShowPrevModal] = useState<boolean>(false);
   const [showNextModal, setShowNextModal] = useState<boolean>(false);
-  
+
   const [checkSubmitted, setCheckSubmitted] = useState<boolean>(false);
 
   const handleBasicAddressUpdate = (newAddress: string) => {
@@ -63,6 +65,10 @@ const FllyTarget = () => {
 
   const handleDetailAddresUpdate = (newAddress: string) => {
     setDetailAddress(newAddress);
+  };
+
+  const timeSetModalHandler = () => {
+    setShowTimeSetModal(!showTimeSetModal);
   };
 
   const deliveryModalHandler = () => {
@@ -172,7 +178,7 @@ const FllyTarget = () => {
   };
 
   const submitBtn = () => {
-    if(checkSubmitted === false) {
+    if (checkSubmitted === false) {
       setCheckSubmitted(true);
       tokenHttp
         .post(`/flly/request`, {
@@ -202,7 +208,7 @@ const FllyTarget = () => {
             router.push("/fllylogin");
           } else ToastErrorMessage("오류가 발생했습니다.");
         });
-    } else ToastErrorMessage("의뢰서를 저장하고 있습니다.")
+    } else ToastErrorMessage("의뢰서를 저장하고 있습니다.");
   };
 
   useEffect(() => {
@@ -218,15 +224,25 @@ const FllyTarget = () => {
 
   useEffect(() => {
     setDates([
-      `${currentDate.getMonth() + 1}.${currentDate.getDate()}`,
-      `${oneDayLater.getMonth() + 1}.${oneDayLater.getDate()}`,
-      `${twoDaysLater.getMonth() + 1}.${twoDaysLater.getDate()}`,
+      `${currentDate.getMonth() + 1} 월 ${currentDate.getDate()} 일`,
+      `${oneDayLater.getMonth() + 1} 월 ${oneDayLater.getDate()} 일`,
+      `${twoDaysLater.getMonth() + 1} 월 ${twoDaysLater.getDate()} 일`,
     ]);
   }, [currentDate, oneDayLater, twoDaysLater]);
 
   return (
     <>
       <div className={style.fllyBox}>
+        {showTimeSetModal && (
+          <TimeSetModal
+            $dateIdx={dateIdx}
+            $dates={dates}
+            $time={time}
+            handleTimeChange={handleTimeChange}
+            ModalChangeHandler={timeSetModalHandler}
+            handleDate={handleDate}
+          />
+        )}
         {showDelieveryModal && (
           <DeliveryModal
             ModalChangeHandler={deliveryModalHandler}
@@ -261,7 +277,9 @@ const FllyTarget = () => {
               <div className={styleModal.explain}>페이지가 이동합니다.</div>
               <div className={styleModal.modalBtnBox}>
                 <div onClick={nextBtnHandler}>취소</div>
-                <div className={checkSubmitted? styleModal.noSelect : ""} onClick={submitBtn}>확인</div>
+                <div className={checkSubmitted ? styleModal.noSelect : ""} onClick={submitBtn}>
+                  확인
+                </div>
               </div>
             </div>
           </div>
@@ -338,7 +356,7 @@ const FllyTarget = () => {
                 <td>
                   <span onClick={handleAdress} className={style.address}>
                     <Image src="/img/icon/search.png" alt="icon" height={16} width={16} />
-                    &nbsp;주소 설정하기
+                    &nbsp; {checkDelivery ? "배달 주소 설정하기" : "픽업 가능 지역 설정하기"}
                   </span>
                 </td>
               </tr>
@@ -357,8 +375,29 @@ const FllyTarget = () => {
               </tr>
               <tr>
                 <th>마감 시간</th>
-                <td>
-                  {dates.map((item, index) => (
+                <td className={style.ManyInfoTd}>
+                  {dateIdx && time ? (
+                    <div
+                      className={style.fllyTimeSet}
+                      onClick={() => {
+                        timeSetModalHandler();
+                      }}
+                    >
+                      {dateTime.getMonth() + 1} 월 {dateTime.getDate()} 일 {dateTime.getHours()} 시{" "}
+                      {dateTime.getMinutes()} 분{" "}
+                    </div>
+                  ) : (
+                    <div
+                      onClick={() => {
+                        timeSetModalHandler();
+                      }}
+                      className={style.fllyTimeSet}
+                    >
+                      플리 마감시간 설정하기
+                    </div>
+                  )}
+                  <div className={style.fllyTimeInfoText}>해당 시간까지 플리가 등장해요!</div>
+                  {/* {dates.map((item, index) => (
                     <span
                       key={index}
                       onClick={() => handleDate(index)}
@@ -366,17 +405,18 @@ const FllyTarget = () => {
                     >
                       {item}
                     </span>
-                  ))}
-                  <input type="time" value={time} onChange={handleTimeChange} />
+                  ))} */}
+                  {/* <input type="time" value={time} onChange={handleTimeChange} /> */}
                 </td>
               </tr>
               <tr>
                 <th>
-                  요청 사항
-                  <br />
-                  (150자)
+                  <div className={style.ManyInfoth}>
+                    <div>요청 사항</div>
+                    <div>(150자)</div>
+                  </div>
                 </th>
-                <td>
+                <td className={style.ManyInfoTd}>
                   <textarea maxLength={149} value={requestText} onChange={handleText} />
                   <div className={style.textCount}>{requestText?.length}/150자</div>
                 </td>
