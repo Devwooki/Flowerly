@@ -151,12 +151,24 @@ public class SellerService {
         checkSellerRequestFlly(mamberId, fllyId);
         //꽃 정보 받아오기
         Flly fllyInfo = getFllyInfo(fllyId);
+        Member buyer = memberRepository.findByMemberId(fllyInfo.getConsumer().getMemberId())
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
         if(fllyInfo.getProgress() == ProgressType.FINISH_ORDER){
             fllyInfo.UpdateFllyProgress(ProgressType.FINISH_MAKING);
+            if(fllyInfo.getOrderType().equals(OrderType.DELIVERY)) {
+                fcmService.sendPushMessage(buyer.getMemberId(), "꽃다발 제작이 완료되었습니다.", "배달이 시작될 예정입니다!");
+            } else {
+                fcmService.sendPushMessage(buyer.getMemberId(), "꽃다발 제작이 완료되었습니다.", "픽업 시간에 맞춰 찾아가 주세요!");
+            }
         }
         else if(fllyInfo.getProgress() == ProgressType.FINISH_MAKING) {
             fllyInfo.UpdateFllyProgress(ProgressType.FINISH_DELIVERY);
+            if(fllyInfo.getOrderType().equals(OrderType.DELIVERY)) {
+                fcmService.sendPushMessage(buyer.getMemberId(), "꽃다발 배달이 완료되었습니다.", "꽃다발에 대한 리뷰를 작성해 주세요.");
+            } else {
+                fcmService.sendPushMessage(buyer.getMemberId(), "꽃다발 픽업이 완료되었습니다.", "꽃다발에 대한 리뷰를 작성해 주세요.");
+            }
         }
 
         Flly updateInfo = fellyRepository.save(fllyInfo);
@@ -216,7 +228,7 @@ public class SellerService {
 
             Member buyer = memberRepository.findByMemberId(fllyInfo.getConsumer().getMemberId())
                             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
-            fcmService.sendPushMessage(buyer.getMemberId(), "꽃집이 플리에 참여했습니다.", "진행중인 플리의 플리스트에서 확인해보세요!");
+            fcmService.sendPushMessage(buyer.getMemberId(), "꽃집이 플리에 참여했습니다.", "진행중인 플리의 플리스트에서 확인해 보세요!");
         }catch (Exception e){
             throw new CustomException(ErrorCode.SELLER_PARTICIPATE_FAIL);
         }
