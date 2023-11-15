@@ -44,6 +44,9 @@
   display: flex;
 }
 
+.infoColorTable div:nth-child(1) {
+  line-height: 25px;
+}
 .infoColorTable div:nth-child(2) {
   margin-left: 10px;
 }
@@ -110,7 +113,7 @@
   line-height: 20px;
   height: 20px;
   border-radius: 5px;
-  margin: 0 auto;
+  /* margin: 0 auto; */
   margin-top: 5px;
   font-size: 14px;
   /* background-color: white; */

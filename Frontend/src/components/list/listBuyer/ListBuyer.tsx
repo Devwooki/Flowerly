@@ -11,7 +11,7 @@ import Image from "next/image";
 
 const ListBuyer = () => {
   const router = useRouter();
-  const { data, isLoading, isFetching, isError } = useQuery<BuyerCard[], AxiosError>(
+  const { data, refetch } = useQuery<BuyerCard[], AxiosError>(
     ["listBuyerQuery"],
     async () => {
       const res = await tokenHttp.get("/buyer/my-flly");
@@ -21,7 +21,7 @@ const ListBuyer = () => {
         console.log("accessToken", res.headers.authorization);
         localStorage.setItem("accessToken", res.headers.authorization);
       }
-      // return [res.data.data.content[1]];
+      // return [res.data.data.content[11]];
       return res.data.data.content;
     },
     {
@@ -43,7 +43,7 @@ const ListBuyer = () => {
       </div>
       <div className={style.ListBuyerMain}>
         {data && data.length >= 2 ? (
-          data.map((card) => <BuyerCards card={card} key={card.fllyId} />)
+          data.map((card) => <BuyerCards card={card} key={card.fllyId} onConfirm={refetch} />)
         ) : data && data.length === 1 ? (
           <BuyerCardOne card={data[0]} key={data[0].fllyId} />
         ) : (

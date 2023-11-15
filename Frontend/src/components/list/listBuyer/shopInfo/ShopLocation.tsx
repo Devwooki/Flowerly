@@ -55,7 +55,7 @@ const ShopLocation = ({ ShopInfoDetail }: ShopLocationProps) => {
         console.log("위치 검색 실패");
       }
     });
-  }, [map, location]);
+  }, [location]);
 
   return (
     <div className={style.locationMain}>
