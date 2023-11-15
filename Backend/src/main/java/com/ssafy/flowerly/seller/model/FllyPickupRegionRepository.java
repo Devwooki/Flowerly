@@ -20,6 +20,7 @@ public interface FllyPickupRegionRepository extends JpaRepository<FllyPickupRegi
                     "Left Join Flly fy ON fy.fllyId = pr.flly.fllyId " +
                     " LEFT JOIN FllyParticipation fp ON fp.flly.fllyId = fy.fllyId " +
                     "WHere ( pr.sigungu IN :sigunguList OR pr.dong IN :dongList ) " +
+                    " AND (fy.progress = 'START' OR fy.progress = 'DISCUSSION') " +
                     "AND fy.deadline > current_timestamp AND fy.isCanceled = false " +
                     "AND (fp.seller.memberId IS NULL OR fp.seller.memberId != :memberId) " +
                     "AND fy.consumer.role != 'DELETE' " +
