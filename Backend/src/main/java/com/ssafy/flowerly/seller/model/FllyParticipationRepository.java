@@ -33,4 +33,7 @@ public interface FllyParticipationRepository extends JpaRepository<FllyParticipa
     Page<Object[]> findFlistByFllyId(Pageable pageable,
                                      @Param("fllyId") Long fllyId);
 
+
+
+
 }

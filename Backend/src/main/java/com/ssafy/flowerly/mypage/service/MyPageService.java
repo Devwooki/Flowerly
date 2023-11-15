@@ -11,6 +11,8 @@ import com.ssafy.flowerly.member.model.MemberRepository;
 import com.ssafy.flowerly.member.model.StoreInfoRepository;
 import com.ssafy.flowerly.mypage.dto.*;
 import com.ssafy.flowerly.review.repository.ReviewRepository;
+import com.ssafy.flowerly.s3.model.StoreImageRepository;
+import com.ssafy.flowerly.seller.model.FllyParticipationRepository;
 import com.ssafy.flowerly.seller.model.FllyRepository;
 import com.ssafy.flowerly.seller.model.RequestRepository;
 import com.ssafy.flowerly.seller.model.StoreDeliveryRegionRepository;
@@ -36,6 +38,8 @@ public class MyPageService {
     private final SidoRepository sidoRepository;
     private final SigunguRepository sigunguRepository;
     private final DongRepository dongRepository;
+    private final StoreImageRepository storeImageRepository;
+    private final FllyParticipationRepository fllyParticipationRepository;
 
 
     public Object getNickName(Long memberId) {
@@ -100,14 +104,26 @@ public class MyPageService {
 
     public List<SellerFllyDto> getSellerFlly(Long memberId) {
         List<Request> requests = requestRepository.findBySellerMemberId(memberId);
-        return requests.stream()
-                .map(request -> new SellerFllyDto(
-                        request.getFlly().getFllyId(),
-                        request.getOrderName(),
-                        request.getOrderType().getTitle(),
-                        request.getDeliveryPickupTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
-                        request.getFlly().getProgress().getTitle()))
-                .collect(Collectors.toList());
+
+
+        return requests.stream().map(request -> {
+            Long fllyId = request.getFlly().getFllyId();
+
+
+            Optional<FllyParticipation> participation = fllyParticipationRepository.findByFllyFllyIdAndSellerMemberId(request.getFlly().getFllyId(),  memberId);
+
+
+            String imageUrl = participation.map(FllyParticipation::getImageUrl).orElse(null);
+
+            return SellerFllyDto.builder()
+                    .fllyId(fllyId)
+                    .orderName(request.getOrderName())
+                    .orderType(request.getOrderType().getTitle())
+                    .deliveryPickupTime(request.getDeliveryPickupTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
+                    .progress(request.getFlly().getProgress().getTitle())
+                    .imageUrl(imageUrl)
+                    .build();
+        }).collect(Collectors.toList());
     }
 
 
@@ -142,6 +158,7 @@ public class MyPageService {
                     .requestOrderType(requestOrderType)
                     .deliveryPickupTime(deliveryPickupTime)
                     .isReviewed(isReviewed)
+                    .imageUrls(flly.getImageUrl())
                     .build();
         }).collect(Collectors.toList());
 
@@ -152,6 +169,13 @@ public class MyPageService {
         StoreInfo storeInfo = storeInfoRepository.findBySellerMemberId(memberId)
                 .orElseThrow(() -> new CustomException(ErrorCode.STOREINFO_NOT_FOUND));
 
+        List<StoreImage> storeImages = storeImageRepository.findBySeller_MemberId(memberId);
+
+
+        List<String> imageUrls = storeImages.stream()
+                .map(StoreImage::getImageUrl)
+                .collect(Collectors.toList());
+
         return MyStoreInfoDto.builder()
                 .storeId(storeInfo.getStoreInfoId())
                 .storeName(storeInfo.getStoreName())
@@ -159,6 +183,7 @@ public class MyPageService {
                 .phoneNumber(storeInfo.getPhoneNumber())
                 .storeNumber(storeInfo.getStoreNumber())
                 .address(storeInfo.getAddress())
+                .images(imageUrls)
                 .build();
     }
 

@@ -3,6 +3,8 @@ package com.ssafy.flowerly.mypage.dto;
 
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -26,6 +28,8 @@ public class MyStoreInfoDto {
     private String sigunguName;
 
     private String dongName;
+
+    private List<String> images;
 
 
 }
