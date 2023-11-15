@@ -307,12 +307,13 @@ public class FlowerService {
             selected.add(name);
         }
 
-        Collections.sort(mainDtoList, new Comparator<MainDto>() {
-            @Override
-            public int compare(MainDto o1, MainDto o2) {
-                return o1.getFlowerCode() < o2.getFlowerCode()? -1 : 1;
-            }
-        });
+//        Collections.sort(mainDtoList, new Comparator<MainDto>() {
+//            @Override
+//            public int compare(MainDto o1, MainDto o2) {
+//                return o1.getFlowerCode() < o2.getFlowerCode()? -1 : 1;
+//            }
+//        });
+        Collections.shuffle(mainDtoList);
 
         return mainDtoList;
     }
