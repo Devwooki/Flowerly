@@ -43,7 +43,7 @@ const Disc = ({ card }: DiscProps) => {
         <div className={style.discText}>
           <div className={style.discTable}>
             <div>예산</div>
-            <div>{card.budget}</div>
+            <div>{Number(card.budget).toLocaleString()}</div>
           </div>
           <div className={style.discTable}>
             <div>마감</div>

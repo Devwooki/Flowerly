@@ -13,6 +13,7 @@ type ShopCardProps = {
 const ShopCard = ({ shopInfo }: ShopCardProps) => {
   const router = useRouter();
   const originalContent = shopInfo.participant.content;
+  const maxLengthNM = 8;
   const maxLengthAD = 20; // 주소 최대 길이 설정
   const maxLengthCT = 30; // 코멘트 최대 길이 설정
   const [modal, setModal] = useState(false); // 모달창
@@ -69,7 +70,9 @@ const ShopCard = ({ shopInfo }: ShopCardProps) => {
               onClick={(e) => moveToShop(shopInfo.storeInfoDto.storeInfoId, e)}
               className={style.shopName}
             >
-              {shopInfo.storeInfoDto.storeName}
+              {shopInfo.storeInfoDto.storeName.length > maxLengthNM
+                ? `${shopInfo.storeInfoDto.storeName.substring(0, maxLengthNM)}...`
+                : shopInfo.storeInfoDto.storeName}
             </div>
           </div>
           <div className={style.infoTable}>
@@ -88,7 +91,7 @@ const ShopCard = ({ shopInfo }: ShopCardProps) => {
           </div>
           <div className={style.infoTable}>
             <Image src={"/img/icon/seller-money.png"} alt="제시 금액 " width={15} height={15} />
-            <div>{shopInfo.participant.offerPrice}</div>
+            <div>{Number(shopInfo.participant.offerPrice).toLocaleString()}</div>
           </div>
           <div className={style.responseContent}>{truncatedContent}</div>
         </motion.div>
