@@ -35,11 +35,13 @@ public enum ErrorCode {
     REQUEST_ADDRESS_NOT_FOUND(-4014, "플리의 배달 주소를 찾을 수 없습니다."),
     DUPLICATE_REQUEST_PAID(-4015, "중복 결제된 플리가 있습니다. 고객센터로 문의주세요"),
     REVIEW_ALREADY_EXISTS(-4016, "이미 리뷰가 작성되었습니다."),
+    NOT_CREATED_FLLY_MEMBER(-4017, "나의 플리가 아닙니다."),
 
     SELLER_PARTICIPATE_FAIL(-5000, "플리 참여에 실패하였습니다"),
     SELLER_ALREADY_PARTICIPATE(-5001, "이미 참가하신 플리입니다"),
     SELLER_NOT_PARTICIPATE(-5003, "플리에 참가하지 않은 유저입니다"),
     SELLER_NOT_REQUEST(-5004, "해당 주문서의 발급 유저가 아닙니다"),
+
 
     CHATTING_NOT_FOUND(-6001, "채팅 정보를 찾을 수 없습니다."),
     REQUEST_NOT_FOUND(-6002, "주문 정보를 찾을 수 없습니다."),

@@ -96,14 +96,23 @@ public class SellerController {
     }
 
     /*
-        참여한 플리 상세보기 ( 의뢰 내용 + 제안 내용 )
+        플리 상세보기 ( 의뢰 내용 + 제안 내용 ) - 판매자 (참여한 / 주문서에서 이동)
      */
     @GetMapping("/flly/request/{fllyId}")
     public DataResponse<ParticipationRequestDto> getFllyRequestInfo(HttpServletRequest request, @PathVariable("fllyId") long fllyId){
         Long memberId = (Long) request.getAttribute("memberId");
         ParticipationRequestDto participationRequestDto = sellerService.getFllyRequestInfo(memberId, fllyId);
-        log.info(participationRequestDto.toString());
-        DataResponse<ParticipationRequestDto> result = new DataResponse<>(200, "참여한 플리상제(제안+의뢰) 반환 성공 ", participationRequestDto);
+        DataResponse<ParticipationRequestDto> result = new DataResponse<>(200, "플리상제(제안+의뢰) 반환 성공 ", participationRequestDto);
+        return result;
+    }
+    /*
+        플리 상세보기 ( 의뢰 내용 + 제안 내용 ) - 구매자 (주문서에서 이동)
+     */
+    @GetMapping("/flly/request/buyer/{fllyId}")
+    public DataResponse<ParticipationRequestDto> getFllyBuyerRequestInfo(HttpServletRequest request, @PathVariable("fllyId") long fllyId){
+        Long memberId = (Long) request.getAttribute("memberId");
+        ParticipationRequestDto participationRequestDto = sellerService.getFllyBuyerRequestInfo(memberId, fllyId);
+        DataResponse<ParticipationRequestDto> result = new DataResponse<>(200, "플리상제(제안+의뢰) 반환 성공 ", participationRequestDto);
         return result;
     }
 

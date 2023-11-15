@@ -25,10 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -48,6 +45,7 @@ public class SellerService {
     private final RequestDeliveryInfoRepository requestDeliveryInfoRepository;
     private final S3Service s3Service;
     private final FCMService fcmService;
+
 
     /*
         플리 정보 조회 및 검증 ( 없거나 마감시간이 지났거나 취소되지 않은 플리 )
@@ -90,7 +88,7 @@ public class SellerService {
     }
 
     /*
-       의뢰 상세서 내용 ( 제안 + 의뢰 )
+       의뢰 상세서 내용 ( 제안 + 의뢰 ) - 판매자
      */
     public ParticipationRequestDto getFllyRequestInfo(Long memberId, Long fllyId){
 
@@ -105,6 +103,26 @@ public class SellerService {
 
         return result;
     }
+    /*
+     의뢰 상세서 내용 ( 제안 + 의뢰 ) - 구매자  // 결제가 된 이후
+   */
+    public ParticipationRequestDto getFllyBuyerRequestInfo(Long memberId, long fllyId) {
+
+        Flly fllyInfo = fellyRepository.findByFllyId(fllyId)
+                .orElseThrow(() -> new CustomException(ErrorCode.FLLY_NOT_FOUND));
+        if(!fllyInfo.getConsumer().getMemberId().equals(memberId)){
+            throw new CustomException(ErrorCode.NOT_CREATED_FLLY_MEMBER);
+        }
+
+        Request requestInfo = requestRepository.
+                findByFllyFllyIdAndIsPaidTrue(fllyId)
+                .orElseThrow(() -> new CustomException(ErrorCode.PAYMENT_NOT_FOUND));
+
+        ParticipationRequestDto resultBuyerRequest = getFllyRequestInfo(requestInfo.getSeller().getMemberId(), fllyId);
+
+        return resultBuyerRequest;
+    }
+    
 
     /*
         판매자가 해당 플리경매에 참여했는가 검증
@@ -190,7 +208,8 @@ public class SellerService {
         }
         return orderParticipation;
     }
-
+    
+    
 
     /*
         플리 참여하기
@@ -355,4 +374,6 @@ public class SellerService {
 
         return result;
     }
+
+    
 }
