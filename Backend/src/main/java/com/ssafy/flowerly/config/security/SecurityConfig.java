@@ -52,6 +52,8 @@ public class SecurityConfig {
                 //==========================================
                 .antMatchers("/**").permitAll()
                 .antMatchers("/api/member").authenticated()
+                .antMatchers("/api/member/dummy/seller").permitAll()
+                .antMatchers("/api/member/dummy/buyer").permitAll()
                 .antMatchers("/api/member/signup/**").authenticated()
                 .antMatchers("/api/member/need-login").permitAll();
 

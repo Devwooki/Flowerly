@@ -1,11 +1,13 @@
 package com.ssafy.flowerly.chatting.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ssafy.flowerly.FCM.service.FCMService;
 import com.ssafy.flowerly.chatting.dto.PaymentDto;
 import com.ssafy.flowerly.chatting.dto.StompChatRequest;
 import com.ssafy.flowerly.chatting.repository.ChattingRepository;
 import com.ssafy.flowerly.chatting.repository.PaymentRepository;
 import com.ssafy.flowerly.entity.Flly;
+import com.ssafy.flowerly.entity.Member;
 import com.ssafy.flowerly.entity.Payment;
 import com.ssafy.flowerly.entity.Request;
 import com.ssafy.flowerly.entity.type.ProgressType;
@@ -36,6 +38,7 @@ public class KakaoPayService {
     private final PaymentRepository paymentRepository;
     private final MemberRepository memberRepository;
     private final RequestRepository requestRepository;
+    private final FCMService fcmService;
 
     private static final ObjectMapper mapper = new ObjectMapper();
 
@@ -137,6 +140,11 @@ public class KakaoPayService {
         chattingService.saveChattingMessage(
                 new StompChatRequest(approveReq.getChattingId(), memberId, "PAYMENT_COMPLETE", "결제가 완료되었습니다.")
         );
+
+        // 알림 전송
+        Member seller = memberRepository.findByMemberId(request.getSeller().getMemberId())
+                        .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+        fcmService.sendPushMessage(seller.getMemberId(), "구매자가 결제를 완료했습니다.", "꽃다발 제작을 준비해 주세요!");
     }
 
     public PaymentDto.KakaoApproveResponse kakaoApprove(String tid, String requestId, String sellerId, String pgToken) {

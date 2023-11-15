@@ -18,6 +18,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -34,7 +37,10 @@ public class BuyerService {
      * @Param MemberId : 진행중인 플리 조회할 유저 id
      */
     public Page<BuyerFllyDto> getMyFlly(Pageable pageable, Long memberId) {
-        return fllyRepository.findFllyByConsumerMemberIdNotLikeFinish(pageable, memberId, ProgressType.FINISH_DELIVERY)
+        List<ProgressType> progressTypeList = new ArrayList<>();
+        progressTypeList.add(ProgressType.FINISH_DELIVERY);
+        progressTypeList.add(ProgressType.CANCELED);
+        return fllyRepository.findFllyByConsumerMemberIdNotLikeFinish(pageable, memberId, progressTypeList)
                 .map(curFlly -> fllyToBuyerDto(curFlly));
     }
 

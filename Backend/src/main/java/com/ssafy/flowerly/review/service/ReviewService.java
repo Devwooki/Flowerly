@@ -35,7 +35,6 @@ public class ReviewService {
 
 
     public Page<ReviewDetailDto> getReviewBySellerId(Pageable pageable, Long sellerId) {
-
         return reviewRepository.findReviewsBySeller_MemberIdAndIsRemovedFalse(pageable, sellerId).map(Review::toDetailDto);
     }
 

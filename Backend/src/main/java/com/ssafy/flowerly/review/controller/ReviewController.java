@@ -34,10 +34,6 @@ public class ReviewController {
         return new DataResponse<>(HttpStatus.SC_OK, "리뷰를 반환합니다. page : " + pageable.getOffset(),  reviewService.getReviewByConsumerId(pageable, consumerId));
     }
 
-
-
-
-
     @PostMapping("/create")
     public CustomResponse saveReview(HttpServletRequest request, @RequestBody ReviewRequestDto reviewRequestDto) {
         Long memberId = (Long) request.getAttribute("memberId");

@@ -5,6 +5,7 @@ import com.ssafy.flowerly.exception.CustomException;
 import com.ssafy.flowerly.exception.ErrorCode;
 import com.ssafy.flowerly.s3.model.S3Service;
 import com.ssafy.flowerly.s3.vo.UpdateTumbNailRequest;
+import com.ssafy.flowerly.util.CustomResponse;
 import com.ssafy.flowerly.util.DataResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,6 +39,24 @@ public class S3Controller {
         );
     }
 
+    @PostMapping("/regist-image")
+    public DataResponse<?>  registImage(HttpServletRequest request, @RequestBody Map<String, Object> requestData) {
+        Long memberId = (Long) request.getAttribute("memberId");
+        List<String> imageUrls = (List<String>) requestData.get("imageUrls");
+
+        return new DataResponse<>(HttpStatus.OK.value(), "대표사진 업로드 완", s3Service.storeImageRegist(memberId, imageUrls)
+        );
+    }
+
+
+    @DeleteMapping("/delete-image/{storeImageId}")
+    public CustomResponse deleteImage(HttpServletRequest request, @PathVariable Long storeImageId) {
+        Long memberId = (Long) request.getAttribute("memberId");
+        s3Service.storeImageDelete(memberId, storeImageId);
+
+        return new CustomResponse(200, "가게 대표 사진 삭제 성공");
+    }
+
     @PutMapping("/update/store")
     public DataResponse<?>  updateStoreThumbnail(
             HttpServletRequest request,
@@ -46,8 +65,8 @@ public class S3Controller {
         //if(updateDto.getUploadImg() == null || updateDto.getUploadImg().size() == 0) throw new CustomException(ErrorCode.INVALID_UPLOAD_FILE);
         //if(updateDto.getUploadImg().size() > 3) throw new CustomException(ErrorCode.INVALID_UPLOAD_FILE_CNT);
         Long memberId = (Long) request.getAttribute("memberId");
-
         List<Long> longIds = updateDto.getImageIDs().stream().map(Long::valueOf).collect(Collectors.toList());
+
         log.info("{}, 업로드 파일 수 {}", updateDto.getImageIDs().toString(), updateDto.getUploadImgs().size());
         return new DataResponse<>(HttpStatus.OK.value(),
                 "대표사진 수정 완",

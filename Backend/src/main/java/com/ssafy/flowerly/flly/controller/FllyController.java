@@ -59,4 +59,10 @@ public class FllyController {
                                         @PathVariable Long sellerId){
         return new DataResponse<>(HttpStatus.SC_OK, "가게 정보를 반환합니다",  fllyService.getStoreDetail(pageable, sellerId));
     }
+
+    @DeleteMapping("{fllyId}")
+    public CustomResponse deleteFlly(@PathVariable Long fllyId) {
+        fllyService.deleteFlly(fllyId);
+        return new CustomResponse(200, "플리 취소 성공");
+    }
 }

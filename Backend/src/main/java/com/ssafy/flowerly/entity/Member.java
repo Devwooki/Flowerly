@@ -45,7 +45,7 @@ public class Member extends BaseTimeEntity {
 //    private LocalDateTime updateddAt;
 
     @Column(nullable = false)
-    private boolean isNotification;
+    private boolean isNotification = true;
 
 
     public MemberDto toDto(){
