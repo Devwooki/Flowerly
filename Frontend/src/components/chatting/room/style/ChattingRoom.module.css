@@ -90,12 +90,12 @@
   display: inline-block;
   text-align: center;
   width: auto;
-  padding: 7px 40px;
+  padding: 6px 20px;
   margin: 20px 0;
   border-radius: 20px;
-  background-color: rgba(72, 82, 86, 0.5);
+  background-color: rgba(0, 0, 0, 0.25);
   color: white;
-  font-family: "NanumSquareNeoOTF-Rg";
+  /* font-family: "NanumSquareNeoOTF-Rg"; */
 }
 .informationWrapper {
   display: flex;

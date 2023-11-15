@@ -76,7 +76,7 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
             chattingId: responseData.chattingId,
             opponentMemberId: responseData.opponentMemberId,
             opponentName: responseData.opponentName,
-            isValidRoom: responseData.isValid,
+            isValidRoom: responseData.isValidRoom,
             lastId: responseData.lastId,
             messages: addDateMsg(responseData.messages),
           });
@@ -407,6 +407,7 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
                   key={idx}
                   message={message}
                   chattingId={chattingId}
+                  isValidRoom={chattingMsgs.isValidRoom}
                   modalHandler={modalHandler}
                   imageLoadHandler={imageLoadHandler}
                   lastRequestMsgId={lastRequestMsgId}
@@ -416,6 +417,7 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
                   key={idx}
                   message={message}
                   chattingId={chattingId}
+                  isValidRoom={chattingMsgs.isValidRoom}
                   modalHandler={modalHandler}
                   imageLoadHandler={imageLoadHandler}
                   lastRequestMsgId={lastRequestMsgId}
@@ -425,7 +427,11 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
           <div ref={messageEndRef}></div> {/* 스크롤 맨아래로 설정하기 위한 빈 div */}
         </div>
         <div className={style.bottom}>
-          <ChattingInput sendHandler={sendTextMessage} menuHandler={changeMenuOpen} />
+          <ChattingInput
+            sendHandler={sendTextMessage}
+            menuHandler={changeMenuOpen}
+            isValidRoom={chattingMsgs?.isValidRoom}
+          />
           {menuOpen && (
             <ChattingMenu sendOrderFormHandler={sendOrderForm} sendImgHandler={sendImageMsg} />
           )}

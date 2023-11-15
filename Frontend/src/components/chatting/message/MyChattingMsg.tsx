@@ -16,6 +16,7 @@ type ChattingMsgProps = {
     type: string;
   };
   chattingId: number;
+  isValidRoom: boolean;
   modalHandler: Function;
   imageLoadHandler: Function;
   lastRequestMsgId: string | null;
@@ -24,6 +25,7 @@ type ChattingMsgProps = {
 const MyChattingMsg: React.FC<ChattingMsgProps> = ({
   message,
   chattingId,
+  isValidRoom,
   modalHandler,
   imageLoadHandler,
   lastRequestMsgId,
@@ -62,11 +64,11 @@ const MyChattingMsg: React.FC<ChattingMsgProps> = ({
       {message.type === "PARTICIPATION" ? (
         <ParticipationInfo chattingId={chattingId} modalHandler={modalHandler} />
       ) : message.type === "ORDER_FORM" ? (
-        <OrderFormMsg modalHandler={modalHandler} />
+        <OrderFormMsg modalHandler={modalHandler} isValidRoom={isValidRoom} />
       ) : message.type === "ORDER_COMPLETE" ? (
         <RequestMsg isLast={lastRequestMsgId == message.messageId} modalHandler={modalHandler} />
       ) : message.type === "PAYMENT_FORM" ? (
-        <PaymentMsg chattingId={chattingId} />
+        <PaymentMsg chattingId={chattingId} isValidRoom={isValidRoom} />
       ) : message.type === "IMAGE" ? (
         <ImageMsg
           imgUrl={message.content}
