@@ -47,7 +47,11 @@ const ListAdoptCard = ({
       setProgressImg(flowerSrc);
     }
     if ($adoptInfo.progress === "제작완료") {
-      setProgressState("배송중");
+      if ($adoptInfo.orderType === "배달") {
+        setProgressState("배송중");
+      } else {
+        setProgressState("픽업중");
+      }
       setProgressImg(paperSrc);
     }
   }, [$adoptInfo.progress]);
