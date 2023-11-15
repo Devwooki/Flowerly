@@ -136,6 +136,7 @@ public class Flly extends BaseCreatedTimeEntity {
 
         return FllyRequestSimpleDto.builder()
                 .fllyId(this.fllyId)
+                .requestImgUrl(this.imageUrl)
                 .situation(this.target != null ? this.situation.toString() : null)
                 .target(this.target != null ? this.target.toString() : null)
                 .color1(this.color1 != null ? this.color1.getTitle() : null)
