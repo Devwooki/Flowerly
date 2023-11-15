@@ -13,6 +13,16 @@
   margin-left: 5px;
   font-family: "NanumSquareNeoOTF-Bd";
   color: var(--blue);
+  display: flex;
+  justify-content: space-between;
+}
+
+.fllyInfoBtn {
+  font-family: "NanumSquareNeoOTF-Bd";
+  font-size: 12px;
+  color: var(--dark);
+  height: 30px;
+  line-height: 30px;
 }
 
 .fllyOrderMain {
@@ -20,8 +30,8 @@
 }
 
 .imgBox {
-  width: 170px;
-  height: 170px;
+  width: 160px;
+  height: 160px;
 }
 
 .imgBox > img {
@@ -30,15 +40,15 @@
 }
 
 .infoMainBox {
-  padding: 10px;
+  padding: 10px 5px;
   display: flex;
   flex-direction: column;
   gap: 10px;
   /* border: 1px solid black; */
   margin-top: 10px;
   width: calc(100% - 170px);
-  height: 155px;
-  overflow: hidden;
+  height: auto;
+  /* border: 1px solid black; */
 }
 
 .infoMainBox > div {
@@ -46,18 +56,25 @@
 }
 
 .infoMainBox > div > div:nth-child(1) {
-  width: 90px;
+  width: 80px;
   font-size: 16px;
   font-family: "NanumSquareNeoOTF-Bd";
 }
 
+.infoMainBox > div > div:nth-child(2) {
+  width: calc(100% - 80px);
+  overflow: hidden;
+}
+
 .colorBox {
   display: flex;
+  flex-wrap: wrap;
   gap: 5px;
 }
 
 .flowerBox {
   display: flex;
+  white-space: nowrap;
   flex-direction: column;
   gap: 3px;
 }

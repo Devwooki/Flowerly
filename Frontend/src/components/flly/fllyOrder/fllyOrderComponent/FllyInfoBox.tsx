@@ -1,6 +1,7 @@
 import React from "react";
 import style from "./FllyInfoBox.module.css";
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 interface flowerType {
   flowerName: string;
@@ -27,10 +28,27 @@ const FllyOrderBox = ({
   $requestInfo: resultSimpleType;
   $imgUrl: string | null | undefined;
 }) => {
+  const router = useRouter();
+  const movePageHandelr = () => {
+    router.push(
+      {
+        pathname: "/flly/order/detail/[fllyId]",
+        query: { fllyId: $requestInfo.fllyId },
+      },
+      "/flly/order/detail", // 이것은 브라우저 주소창에 표시될 URL입니다.
+      { shallow: true },
+    );
+  };
+
   return (
     <>
       <div className={style.fllyOrderBox}>
-        <div>플리 정보</div>
+        <div>
+          <div>플리 정보</div>
+          <div className={style.fllyInfoBtn} onClick={movePageHandelr}>
+            의뢰 정보 상세 보기 <span>&gt;</span>
+          </div>
+        </div>
         <div className={style.fllyOrderMain}>
           <div className={style.imgBox}>
             {$imgUrl != null ? (
@@ -51,9 +69,9 @@ const FllyOrderBox = ({
             <div>
               <div>색상</div>
               <div className={style.colorBox}>
-                <div>{$requestInfo.color1}</div>
-                <div>{$requestInfo.color2}</div>
-                <div>{$requestInfo.color3}</div>
+                {$requestInfo.color1 && <div>{$requestInfo.color1}</div>}
+                {$requestInfo.color2 && <div>{$requestInfo.color2}</div>}
+                {$requestInfo.color3 && <div>{$requestInfo.color3}</div>}
               </div>
             </div>
             <div>
