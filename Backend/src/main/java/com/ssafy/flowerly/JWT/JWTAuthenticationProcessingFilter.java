@@ -56,8 +56,9 @@ public class JWTAuthenticationProcessingFilter extends OncePerRequestFilter {
         //멤버 검증 로직은 인터셉터에서 수행하므로 filter를 넘어간다.
         if(request.getRequestURI().startsWith("/api/member/dummy-token")    //더미 토큰 요청시 필터 안거침
         || request.getRequestURI().startsWith("/stomp-chat")                //Stomp 요청시
-        ||request.getRequestURI().startsWith("/api/address")                //주소 정보 요청시
-        ||request.getRequestURI().equals("/api/member")                //멤버 정보 요청시
+        || request.getRequestURI().startsWith("/api/member/dummy/")                //더미 요청시
+        || request.getRequestURI().startsWith("/api/address")                //주소 정보 요청시
+        || request.getRequestURI().equals("/api/member")                //멤버 정보 요청시
         ){
             filterChain.doFilter(request, response);
             return;
