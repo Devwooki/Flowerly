@@ -39,8 +39,9 @@ public class S3Controller {
     }
 
     @PostMapping("/regist-image")
-    public DataResponse<?>  registImage(HttpServletRequest request, @RequestBody List<String> imageUrls) {
+    public DataResponse<?>  registImage(HttpServletRequest request, @RequestBody Map<String, Object> requestData) {
         Long memberId = (Long) request.getAttribute("memberId");
+        List<String> imageUrls = (List<String>) requestData.get("imageUrls");
 
         return new DataResponse<>(HttpStatus.OK.value(), "대표사진 업로드 완", s3Service.storeImageRegist(memberId, imageUrls)
         );
