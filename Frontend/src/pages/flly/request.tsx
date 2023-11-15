@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import style from "@/components/flly/fllyUser/FllyRequest.module.css";
 import styleModal from "@/components/flly/fllyUser/CheckModal.module.css";
 import { useState } from "react";
@@ -22,6 +22,7 @@ import axios from "axios";
 import { ToastErrorMessage } from "@/model/toastMessageJHM";
 import { tokenHttp } from "@/api/tokenHttp";
 import TimeSetModal from "@/components/flly/fllyUser/TimeSetModal";
+import { url } from "inspector";
 
 const FllyTarget = () => {
   const router = useRouter();
@@ -56,6 +57,7 @@ const FllyTarget = () => {
   const [pickupCodeList, setPickupCodeList] = useRecoilState<regionType[]>(regionState);
   const [showPrevModal, setShowPrevModal] = useState<boolean>(false);
   const [showNextModal, setShowNextModal] = useState<boolean>(false);
+  const imgBoxRef = useRef<HTMLDivElement>(null);
 
   const [checkSubmitted, setCheckSubmitted] = useState<boolean>(false);
 
@@ -220,7 +222,15 @@ const FllyTarget = () => {
     const twoDaysLater = new Date(currentDate);
     twoDaysLater.setDate(currentDate.getDate() + 2);
     setTwoDaysLater(twoDaysLater);
+
+    if (imgBoxRef.current) {
+      imgBoxRef.current.style.height = imgBoxRef.current.offsetWidth + "px";
+    }
   }, []);
+
+  useEffect(() => {
+    console.log("픽업리스트", pickupList);
+  }, [pickupList]);
 
   useEffect(() => {
     setDates([
@@ -288,13 +298,12 @@ const FllyTarget = () => {
           <div className={style.headerTitle}>
             <div className={style.guide}>플리 의뢰서</div>
           </div>
-          <div className={style.imageBox}>
-            <Image
-              src={bouquet ? bouquet.url : ""}
-              alt="flower image"
-              width={320}
-              height={320}
-            ></Image>
+          <div
+            className={style.imageBox}
+            ref={imgBoxRef}
+            style={{ backgroundImage: `url(${bouquet ? bouquet.url : "/img/etc/loading.gif"})` }}
+          >
+            {/* <Image src={bouquet ? bouquet.url : ""} alt="flower image" fill></Image> */}
           </div>
           <div className={style.requestArea}>
             {/* <div className={style.guide}>의뢰 내용</div> */}
@@ -354,10 +363,32 @@ const FllyTarget = () => {
               <tr>
                 <th>주소</th>
                 <td>
-                  <span onClick={handleAdress} className={style.address}>
+                  <div onClick={handleAdress} className={style.address}>
                     <Image src="/img/icon/search.png" alt="icon" height={16} width={16} />
-                    &nbsp; {checkDelivery ? "배달 주소 설정하기" : "픽업 가능 지역 설정하기"}
-                  </span>
+                    &nbsp;{" "}
+                    {checkDelivery ? (
+                      basicAddress && detailAddress ? (
+                        <div className={style.addressAndDelivery}>
+                          {basicAddress + detailAddress}
+                        </div>
+                      ) : (
+                        <div>배달 주소 설정하기</div>
+                      )
+                    ) : pickupList.length > 0 ? (
+                      <div>
+                        {pickupList.map((value, index) => (
+                          <>
+                            <span key={value + index}>
+                              {index != 0 && ", "}
+                              {value}
+                            </span>
+                          </>
+                        ))}
+                      </div>
+                    ) : (
+                      <div>픽업 가능 지역 설정하기</div>
+                    )}
+                  </div>
                 </td>
               </tr>
               <tr>
