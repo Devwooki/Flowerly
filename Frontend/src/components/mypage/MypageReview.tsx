@@ -6,9 +6,11 @@ import MypageReviewCard from "./MyFllyListComponent/MypageReviewCard/MypageRevie
 import MypageReviewDeleteModal from "./MyFllyListComponent/MypageReviewCard/MypageReviewDeleteModal";
 import { useRecoilState } from "recoil";
 import { MemberInfo, memberInfoState } from "@/recoil/memberInfoRecoil";
-import axios from "axios";
+
 import { tokenHttp } from "@/api/tokenHttp";
 import { ToastErrorMessage } from "@/model/toastMessageJHM";
+import EmptyReviewList from "../emptypage/EmptyReviewList";
+
 interface BaseReviewType {
   reviewId: number;
   content: string;
@@ -19,6 +21,7 @@ interface BaseReviewType {
 interface BuyerReviewType extends BaseReviewType {
   requestId: number;
   storeName: string;
+  storeId: number;
   type: "buyer";
 }
 
@@ -114,18 +117,21 @@ const MypageReview = () => {
           {memberInfo.role === "USER" ? <div>내가 쓴 리뷰</div> : <div>우리 가게 리뷰</div>}
         </div>
         <div className={style.fllyReviewMain}>
-          {sortedReviews &&
+          {sortedReviews.length > 0 ? (
             sortedReviews.map((value, index) => (
-              <>
-                <MypageReviewCard
-                  key={value.reviewId}
-                  ModalChangeHandler={ModalChangeHandler}
-                  SelectIdChangeHandler={SelectIdChangeHandler}
-                  $requestIndex={index}
-                  $reviewInfo={value}
-                />
-              </>
-            ))}
+              <MypageReviewCard
+                key={value.reviewId}
+                ModalChangeHandler={ModalChangeHandler}
+                SelectIdChangeHandler={SelectIdChangeHandler}
+                $requestIndex={index}
+                $reviewInfo={value}
+              />
+            ))
+          ) : (
+            <div className={style.emptyBack}>
+              <EmptyReviewList />
+            </div>
+          )}
         </div>
       </div>
     </>

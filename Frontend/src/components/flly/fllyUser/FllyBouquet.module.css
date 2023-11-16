@@ -1,13 +1,14 @@
 .fllyBox {
   width: 100%;
   height: calc(100vh - 60px);
-  overflow: scroll;
   position: relative;
   background-color: var(--gray);
 }
 
 .contentBox {
   padding: 30px 10px;
+  height: calc(100% - 50px);
+  overflow: scroll;
 }
 
 .headerTitle {

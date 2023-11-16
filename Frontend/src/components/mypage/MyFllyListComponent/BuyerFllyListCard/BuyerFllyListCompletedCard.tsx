@@ -11,6 +11,7 @@ interface BuyerFillListType {
   fllyOrderType: string;
   requestOrderType: string;
   isReviewed: boolean;
+  imageUrls: string;
 }
 
 interface Props {
@@ -32,8 +33,7 @@ const BuyerFllyListCompletedCard = ({
   };
 
   const handleFllyDetail = () => {
-    Router.push(`/flly/detail/${$fllyInfo.fllyId}`);
-    console.log($fllyInfo);
+    Router.push(`/flly/order/sheet/${$fllyInfo.fllyId}`);
   };
 
   const handleFllyReview = () => {
@@ -43,7 +43,10 @@ const BuyerFllyListCompletedCard = ({
   return (
     <>
       <div className={style.cardBack}>
-        <div className={style.ImgBox} style={{ backgroundImage: `url(/thumb.jpg)` }} />
+        <div
+          className={style.ImgBox}
+          style={{ backgroundImage: `url('${$fllyInfo.imageUrls}')` }}
+        />
         <div className={style.InfoBox}>
           <div className={style.OrderAddBox} onClick={() => handleFllyDetail()}>
             <div>
@@ -60,7 +63,7 @@ const BuyerFllyListCompletedCard = ({
               <div>{$fllyInfo.requestOrderType}</div>
             </div>
             <div className={style.OrderInfoBoxAll}>
-              <div>배송일시</div>
+              {$fllyInfo.requestOrderType === "배달" ? <div>배달 일시</div> : <div>픽업 일시</div>}
               <div>{$fllyInfo.deliveryPickupTime}</div>
             </div>
           </div>

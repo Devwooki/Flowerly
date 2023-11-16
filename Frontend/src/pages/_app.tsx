@@ -13,6 +13,7 @@ export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const isChattingRoom = router.pathname.includes("/chatting/room/");
   const fllyLogin = router.pathname.includes("/fllylogin");
+  const signup = router.pathname.includes("/signup");
   const queryClient = new QueryClient();
 
   return (
@@ -27,7 +28,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <QueryClientProvider client={queryClient}>
         <ToastContainer />
         <RecoilRoot>
-          {isChattingRoom || fllyLogin ? (
+          {isChattingRoom || fllyLogin || signup ? (
             <Component {...pageProps} />
           ) : (
             <>

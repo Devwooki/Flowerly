@@ -13,6 +13,7 @@ interface BuyerFillListType {
   fllyOrderType: string;
   requestOrderType: string;
   isReviewed: boolean;
+  imageUrls: string;
 }
 
 interface Props {
@@ -41,16 +42,29 @@ const BuyerFllyListProgressCard = ({ $fllyInfo }: Props) => {
     Router.push(`/flly/detail/${$fllyInfo.fllyId}`);
   };
 
+  const handleOrderDetail = () => {
+    Router.push(`/flly/order/sheet/${$fllyInfo.fllyId}`);
+  };
+
   return (
     <>
       <div className={style.cardBack}>
         <div className={style.cardHeader}>
-          <div className={style.ImgBox} style={{ backgroundImage: `url(/thumb.jpg)` }} />
+          <div
+            className={style.ImgBox}
+            style={{ backgroundImage: `url('${$fllyInfo.imageUrls}')` }}
+          />
           <div className={style.InfoBox}>
             <div className={style.OrderAddBox}>
-              <div onClick={() => handleFllyDetail()}>
-                주문서 보기 <span> &gt;</span>
-              </div>
+              {progressStep >= 2 ? (
+                <div onClick={() => handleOrderDetail()}>
+                  주문서 보기 <span> &gt;</span>
+                </div>
+              ) : (
+                <div onClick={() => handleFllyDetail()}>
+                  의뢰서 보기 <span> &gt;</span>
+                </div>
+              )}
             </div>
             <div className={style.OrderInfoBox}>
               <div className={style.OrderInfoBoxHarf}>

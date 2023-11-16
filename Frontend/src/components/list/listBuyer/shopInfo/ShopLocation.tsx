@@ -50,9 +50,8 @@ const ShopLocation = ({ ShopInfoDetail }: ShopLocationProps) => {
         // 검색된 장소 위치를 기준으로 지도 범위를 재설정
         map.setBounds(bounds);
       } else {
-        console.log(location);
-
-        console.log("위치 검색 실패");
+        // console.log(location);
+        // console.log("위치 검색 실패");
       }
     });
   }, [location]);

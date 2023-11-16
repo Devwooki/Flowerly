@@ -58,7 +58,7 @@ const MyPageBuyer = () => {
         </div>
         <div className={style.myInfoMain}>
           <div className={style.imgLogo}>
-            <Image src="/img/logo/temp_logo.png" alt="logo" width={200} height={200} />
+            <Image src="/img/logo/flly_logo.png" alt="logo" width={200} height={200} />
           </div>
           <input
             type="text"

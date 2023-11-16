@@ -11,6 +11,7 @@ interface Order {
   orderType: string;
   deliveryPickupTime: string;
   progress: string;
+  imageUrl: string;
 }
 
 interface SellerFllyListProgressCardProps {
@@ -59,7 +60,7 @@ const SellerFllyListProgressCard: React.FC<SellerFllyListProgressCardProps> = ({
     <>
       <div className={style.cardBack}>
         <div className={style.cardHeader}>
-          <div className={style.ImgBox} style={{ backgroundImage: `url(/thumb.jpg)` }} />
+          <div className={style.ImgBox} style={{ backgroundImage: `url('${data.imageUrl}')` }} />
           <div className={style.InfoBox}>
             <div className={style.OrderAddBox}>
               <div onClick={handleMoveToOrder}>

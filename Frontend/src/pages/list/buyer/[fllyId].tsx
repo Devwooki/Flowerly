@@ -10,12 +10,11 @@ import ShopList from "@/components/list/listBuyer/fllylistComponent/ShopList";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { ToastErrorMessage } from "@/model/toastMessageJHM";
-import { useEffect } from "react";
 
 const FllyList = () => {
   const param = useParams();
   const router = useRouter();
-  const { data, isError } = useQuery<fllyList, AxiosError>(
+  const { data } = useQuery<fllyList, AxiosError>(
     ["FllyListQuery"],
     async () => {
       const res = await tokenHttp.get(`/buyer/flist/${param.fllyId}`);
@@ -27,20 +26,17 @@ const FllyList = () => {
     },
     {
       onError: (error) => {
-        console.log("에러 발생했다 임마");
-        console.log(error?.response?.status);
+        // console.log("에러 발생했다 임마");
+        // console.log(error?.response?.status);
         if (error?.response?.status === 403) {
           router.push("/fllylogin");
+          ToastErrorMessage("로그인 만료되어 로그인 화면으로 이동합니다.");
         }
       },
       retry: false,
       cacheTime: 0,
     },
   );
-
-  if (isError) {
-    <div>에러났다 임마</div>;
-  }
 
   return (
     <motion.div className={style.ListBuyerBack}>

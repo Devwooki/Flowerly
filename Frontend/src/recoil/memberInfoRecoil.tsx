@@ -35,6 +35,12 @@ const { persistAtom } = recoilPersist({
   storage: localStorage,
 });
 
+export const storeInfoState = atom<StoreInfo | null>({
+  key: "storeInfoState",
+  default: null,
+  effects_UNSTABLE: [persistAtom],
+});
+
 export const memberInfoState = atom<MemberInfo>({
   key: "memberInfoState",
   default: {

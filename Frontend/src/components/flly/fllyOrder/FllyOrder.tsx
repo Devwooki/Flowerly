@@ -56,7 +56,6 @@ const FllyOrder = () => {
   const [requestInfo, setRequestInfo] = useState<resultSimpleType>();
   const [orderInfo, setOrderInfo] = useState<orderInfoType>();
   const [deliverInfo, setDeliverInfo] = useState<deliveryInfoType>();
-  //나중에 바뀔거
 
   const memberInfo = useRecoilValue<MemberInfo>(memberInfoState);
 
@@ -105,8 +104,8 @@ const FllyOrder = () => {
                 $requestInfo={requestInfo}
                 $imgUrl={
                   memberInfo.role === "SELLER"
-                    ? requestInfo.requestImgUrl
-                    : orderInfo?.responseImgUrl
+                    ? orderInfo?.responseImgUrl
+                    : requestInfo.requestImgUrl
                 }
               />
             </div>

@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React, { useEffect } from "react";
+import React from "react";
 import style from "./ShopInfoMain.module.css";
 import ShopLocation from "@/components/list/listBuyer/shopInfo/ShopLocation";
 import ShopImg from "@/components/list/listBuyer/shopInfo/ShopImg";
@@ -23,6 +23,7 @@ const ShopInfoMain = () => {
     {
       onError: (error) => {
         if (error?.response?.status === 403) {
+          ToastErrorMessage("로그인 만료되어 로그인 화면으로 이동합니다.");
           router.push("/fllylogin");
         }
       },
