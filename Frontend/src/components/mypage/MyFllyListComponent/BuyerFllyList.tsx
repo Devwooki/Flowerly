@@ -44,7 +44,7 @@ const BuyerFllyList = () => {
     //clickIndex값이 유효하다면 변경해준다 ( 추후 길이도 체크해줘야함 && clickIndex < updatedAdoptData.length 처럼)
     if (clickIndex >= 0) {
       //해당 clickIndex의 정보를 접근해 업데이트! (이렇게 해야 화면에 변화가 생긴다)
-      updateFllyListData[clickIndex].isReviewed = false;
+      updateFllyListData[clickIndex].isReviewed = true;
       setBuyerFllyList(updateFllyListData);
     }
   };
