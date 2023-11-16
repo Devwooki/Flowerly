@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { ToastErrorMessage, ToastSuccessMessage } from "@/model/toastMessageJHM";
 import imageCompression from "browser-image-compression";
 import { tokenHttp } from "@/api/tokenHttp";
+import LoadingModal from "./LoadingModal";
 
 const FllySellerParticipation = () => {
   const [userImgSrc, setUserImgSrc] = useState<string>();
@@ -20,6 +21,7 @@ const FllySellerParticipation = () => {
   const [money, setMoney] = useState<string>();
   const [content, setContent] = useState<String>();
   const [fileInfo, setFileInfo] = useState<File>();
+  const [loadingModalState, setLoadingModalState] = useState<boolean>(false);
 
   //이미지버튼 클릭시 발생 핸들러
   const imgChangBtnClickHandler = () => {
@@ -112,6 +114,8 @@ const FllySellerParticipation = () => {
     formData.append("content", content.toString());
     formData.append("offerPrice", money);
 
+    setLoadingModalState(true);
+
     tokenHttp
       .post("/seller/flly/participate", formData, {
         headers: {
@@ -128,10 +132,12 @@ const FllySellerParticipation = () => {
         if (res.headers.authorization) {
           localStorage.setItem("accessToken", res.headers.authorization);
         }
+        setLoadingModalState(false);
       })
       .catch((err) => {
         if (err.response.status === 403) {
           router.push("/fllylogin");
+          setLoadingModalState(false);
         }
       });
   };
@@ -139,6 +145,7 @@ const FllySellerParticipation = () => {
   return (
     <>
       <div className={style.participationBack}>
+        {loadingModalState && <LoadingModal statetext={"플리 참여 중"} />}
         <div className={style.participationHeader}>
           <Image
             src="/img/btn/left-btn.png"
