@@ -20,9 +20,9 @@ type ChattingProps = {
 
 const ChattingListCard: React.FC<ChattingProps> = ({ chattingData, modalHandler }) => {
   const router = useRouter();
+  const upperDivRef = useRef<HTMLDivElement>(null);
 
   const [touchX, setTouchX] = useState(0);
-  const upperDivRef = useRef<HTMLDivElement>(null);
 
   const disableUpperDiv = () => {
     upperDivRef.current!.style.pointerEvents = "none";
@@ -57,6 +57,18 @@ const ChattingListCard: React.FC<ChattingProps> = ({ chattingData, modalHandler 
     if (upperDivRef.current) {
       const offset = Math.max(-50, Math.min(0, -distanceX)); // 최소 -50px, 최대 0px 사이로 제한
       upperDivRef.current.style.setProperty("left", `${offset}px`);
+    }
+  };
+
+  const clickHandler = () => {
+    router.push(`/chatting/room/${chattingData.chattingId}`);
+  };
+
+  const rightClickHandler = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    if (upperDivRef.current) {
+      upperDivRef.current.style.setProperty("left", "-50px");
+      disableUpperDiv();
     }
   };
 
@@ -106,6 +118,7 @@ const ChattingListCard: React.FC<ChattingProps> = ({ chattingData, modalHandler 
             onTouchStart={touchStartHandler}
             onTouchMove={touchMoveHandler}
             onTouchEnd={touchEndHandler}
+            onContextMenu={rightClickHandler}
             ref={upperDivRef}
           >
             <div className={style.contentImg}>
@@ -114,7 +127,9 @@ const ChattingListCard: React.FC<ChattingProps> = ({ chattingData, modalHandler 
                 height={70}
                 src={chattingData.imageUrl}
                 alt="의뢰 이미지"
-                onClick={() => router.push(`/chatting/room/${chattingData.chattingId}`)}
+                onClick={() => {
+                  clickHandler();
+                }}
                 onError={(e) => {
                   e.currentTarget.src = "/img/etc/no-image.jpg";
                 }}

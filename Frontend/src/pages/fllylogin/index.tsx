@@ -24,7 +24,7 @@ const FllyLogin = () => {
           height={260}
           className={style.img}
         />
-        <div className={style.imgText}>세상의 하나뿐인 꽃다발을 만들어보세요</div>
+        <div className={style.imgText}>세상에 하나뿐인 꽃다발을 만들어보세요</div>
 
         <div>
           <div className={style.loginBox}>

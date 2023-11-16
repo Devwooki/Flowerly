@@ -16,6 +16,7 @@ import PickupOrderModal from "../modal/PickupOrderModal";
 import DeliveryOrderModal from "../modal/DeliveryOrderModal";
 import RequestModal from "../modal/RequestModal";
 import ImageModal from "../modal/ImageModal";
+import ReportModal from "../modal/ReportModal";
 
 import { memberInfoState } from "@/recoil/memberInfoRecoil";
 import { paymentErrorRecoil } from "@/recoil/paymentRecoil";
@@ -348,6 +349,7 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
   const [requestModalState, setRequestModalState] = useState(false);
   const [imageModalState, setImageModalState] = useState(false);
   const [imgUrl, setImgUrl] = useState<string>();
+  const [reportModalState, setReportModalState] = useState(false);
 
   const modalHandler = (modalType: string, state: boolean, data: string) => {
     if (modalType == "FLLY") {
@@ -361,6 +363,8 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
     } else if (modalType == "IMAGE") {
       setImageModalState(state);
       setImgUrl(data);
+    } else if (modalType == "REPORT") {
+      setReportModalState(state);
     }
   };
 
@@ -433,9 +437,19 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
             isValidRoom={chattingMsgs?.isValidRoom}
           />
           {menuOpen && (
-            <ChattingMenu sendOrderFormHandler={sendOrderForm} sendImgHandler={sendImageMsg} />
+            <ChattingMenu
+              sendOrderFormHandler={sendOrderForm}
+              sendImgHandler={sendImageMsg}
+              modalHandler={modalHandler}
+            />
           )}
         </div>
+        {reportModalState && (
+          <ReportModal
+            memberName={chattingMsgs?.opponentName ? chattingMsgs.opponentName : null}
+            modalHandler={modalHandler}
+          />
+        )}
       </div>
       {fllyModalState && <FllyDetailModal chattingId={chattingId} modalHandler={modalHandler} />}
       {pickupModalState && (

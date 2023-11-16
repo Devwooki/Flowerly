@@ -209,32 +209,32 @@ const DeliveryOrderModal: React.FC<DeliveryOrderProps> = ({
 
   return (
     <>
-      {addressModal && (
-        <div
-          className={style.addressModalBg}
-          onClick={() => {
-            setAddressModal(false);
-          }}
-        >
-          <DaumPostcode
-            onComplete={handleComplete}
-            autoClose
-            style={{
-              margin: "0 auto",
-              zIndex: 9999,
-              width: "90%",
-              height: "60vh",
-              display: "fixed",
-              top: "20vh",
-              left: "5%",
-              position: "absolute",
-              color: "black",
-              borderRadius: "10px",
-            }}
-          />
-        </div>
-      )}
       <div className={style.modalBg}>
+        {addressModal && (
+          <div
+            className={style.addressModalBg}
+            onClick={() => {
+              setAddressModal(false);
+            }}
+          >
+            <DaumPostcode
+              onComplete={handleComplete}
+              autoClose
+              style={{
+                margin: "0 auto",
+                zIndex: 9999,
+                width: "90%",
+                height: "60vh",
+                // display: "fixed",
+                top: "20vh",
+                left: "5%",
+                position: "absolute",
+                color: "black",
+                borderRadius: "10px",
+              }}
+            />
+          </div>
+        )}
         <div className={style.modalMain}>
           <div className={style.top}>
             <div className={style.title}>배달 주문서 작성</div>
