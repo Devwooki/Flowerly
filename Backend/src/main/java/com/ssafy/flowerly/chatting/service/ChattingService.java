@@ -179,7 +179,7 @@ public class ChattingService {
             messageDtos.add(new ChattingMessageDto.Response(
                     null, null, "INFORMATION", "종료된 주문입니다.", null));
         } else if(chatting.getChattingStatus().equals(ChattingType.NORMAL) &&
-                (chatting.getFlly().getProgress().equals(ProgressType.FINISH_ORDER) || chatting.getFlly().getProgress().equals(ProgressType.FINISH_MAKING) || chatting.getFlly().getProgress().equals(ProgressType.FINISH_MAKING))) {
+                (chatting.getFlly().getProgress().equals(ProgressType.FINISH_ORDER) || chatting.getFlly().getProgress().equals(ProgressType.FINISH_MAKING) || chatting.getFlly().getProgress().equals(ProgressType.FINISH_DELIVERY))) {
             isValidRoom = false;
             messageDtos.add(new ChattingMessageDto.Response(
                     null, null, "INFORMATION", "이미 체결된 주문입니다.", null));
