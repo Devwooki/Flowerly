@@ -26,8 +26,7 @@ const MypageName: React.FC<MypageNameProps> = ({ data }) => {
           </>
         ) : (
           <>
-            <div></div>
-            <div>판매자님 반갑습니다</div>
+            <div>구매자님 반갑습니다</div>
             <div>{data}</div>
           </>
         )}

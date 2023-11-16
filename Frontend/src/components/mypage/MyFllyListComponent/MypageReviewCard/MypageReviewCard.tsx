@@ -4,18 +4,19 @@ import Image from "next/image";
 import { useRecoilValue } from "recoil";
 import { MemberInfo, memberInfoState } from "@/recoil/memberInfoRecoil";
 import { tokenHttp } from "@/api/tokenHttp";
-import Router from "next/router";
-import { ToastSuccessMessage } from "@/model/toastMessageJHM";
+import { useRouter } from "next/router";
 
 interface BaseReviewType {
   reviewId: number;
   content: string;
   createdAt: string;
+  type: string;
 }
 
 interface BuyerReviewType extends BaseReviewType {
   requestId: number;
   storeName: string;
+  storeId: number;
 }
 
 interface SellerReviewType extends BaseReviewType {
@@ -38,6 +39,7 @@ const MypageReviewCard = ({
   $reviewInfo,
 }: Props) => {
   const memberInfo = useRecoilValue<MemberInfo>(memberInfoState);
+  const router = useRouter();
 
   const DeleteBtnHandler = () => {
     ModalChangeHandler();
@@ -47,14 +49,16 @@ const MypageReviewCard = ({
   const isBuyerReview = "storeName" in $reviewInfo;
 
   const handleStoreDetail = () => {
-    Router.push(`/list/shop/${memberInfo.id}`);
+    if (isBuyerReview && "storeId" in $reviewInfo) {
+      router.push(`/list/shop/${$reviewInfo.storeId}`);
+    }
   };
 
   return (
     <>
       <div className={style.ReviewCardBack}>
         {isBuyerReview ? (
-          <div className={style.BuyerReviewCardHeader}>
+          <div className={style.BuyerReviewCardHeader} onClick={() => handleStoreDetail()}>
             <div>
               {$reviewInfo.storeName}
               <span>

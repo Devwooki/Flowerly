@@ -98,7 +98,7 @@ const BuyerFllyList = () => {
             </>
           ))
         ) : (
-          <div>
+          <div className={style.emptyBack}>
             <EmptyBuyerFllyList />
           </div>
         )}
