@@ -16,6 +16,7 @@ public class ReviewResponseDto {
     private Long reviewId;
     private Long requestId;
     private String storeName;
+    private Long storeId;
     private String content;
     private String createdAt;
 
