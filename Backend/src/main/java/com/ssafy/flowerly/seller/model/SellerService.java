@@ -253,7 +253,8 @@ public class SellerService {
         }
 
         try {
-            fllyParticipationRepository
+
+            FllyParticipation fllyParticipation = fllyParticipationRepository
                     .save(FllyParticipation.builder()
                             .flly(fllyInfo)
                             .seller(member)
@@ -264,7 +265,11 @@ public class SellerService {
 
             Member buyer = memberRepository.findByMemberId(fllyInfo.getConsumer().getMemberId())
                             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
-            fcmService.sendPushMessage(buyer.getMemberId(), "꽃집이 플리에 참여했습니다.", "진행중인 플리의 플리스트에서 확인해 보세요!");
+            try {
+                fcmService.sendPushMessage(buyer.getMemberId(), "꽃집이 플리에 참여했습니다.", "진행중인 플리의 플리스트에서 확인해 보세요!");
+            } catch (Exception e) {
+                log.info("sellerFllyParticipate 알림 전송 중 에러 발생");
+            }
         }catch (Exception e){
             throw new CustomException(ErrorCode.SELLER_PARTICIPATE_FAIL);
         }
