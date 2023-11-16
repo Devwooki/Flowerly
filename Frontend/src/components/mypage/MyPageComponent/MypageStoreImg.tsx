@@ -4,24 +4,21 @@ import Image from "next/image";
 import StoreImgModal from "../StoreImgComponent/StoreImgModal";
 import StoreImgSlider from "./StoreImgSlider";
 import StoreImgPlusModal from "../StoreImgComponent/StoreImgPlusModal";
+import { ImageInfo } from "@/recoil/memberInfoRecoil";
+import { tokenHttp } from "@/api/tokenHttp";
 
 interface MypageStoreImgProps {
-  imageUrls: string[];
+  imageInfos: ImageInfo[];
 }
 
-interface ImageInfo {
-  id: number;
-  url: string;
-}
-
-const MypageStoreImg: React.FC<MypageStoreImgProps> = ({ imageUrls }) => {
+const MypageStoreImg: React.FC<MypageStoreImgProps> = ({ imageInfos }) => {
   const imgBoxRef = useRef<HTMLDivElement>(null);
 
-  const [parsedImages, setParsedImages] = useState<ImageInfo[]>([]);
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
-  const [updatedUrls, setUpdatedUrls] = useState<string[]>(imageUrls);
+
   const [showStoreImgModal, setShowStoreImgModal] = useState(false);
   const [showStoreImgPlusModal, setShowStoreImgPlusModal] = useState(false);
+  const [imgInfos, setImgInfos] = useState<ImageInfo[]>([]);
 
   // 이미지 클릭 핸들러
   const onImageClick = (index: number) => {
@@ -42,32 +39,30 @@ const MypageStoreImg: React.FC<MypageStoreImgProps> = ({ imageUrls }) => {
     }
   }, []);
 
-  useEffect(() => {
-    const images = imageUrls.map((imageUrl) => {
-      const parts = imageUrl.split("_");
-      return { id: parseInt(parts[0], 10), url: parts[1] };
-    });
-    setParsedImages(images);
-  }, [imageUrls]);
-
   //모달 상태 변경 핸들러
   const ModalChangeHandler = () => {
     setShowStoreImgModal(false);
     setShowStoreImgPlusModal(false);
   };
 
-  // updateImg 함수
+  const deleteImg = (id: number) => {
+    setImgInfos((prevImageInfos) => prevImageInfos.filter((info) => info.storeImageId !== id));
+  };
 
   const updateImg = (newUrl: string) => {
-    if (selectedImageIndex !== null) {
-      const replacedUrls = [...imageUrls];
-      if (newUrl === "") {
-        replacedUrls.splice(selectedImageIndex, 1);
-      } else {
-        replacedUrls[selectedImageIndex] = newUrl;
-      }
-      setUpdatedUrls(replacedUrls);
-    }
+    if (!newUrl) return;
+
+    tokenHttp
+      .get("/mypage/store")
+      .then((response) => {
+        if (response.data.code === 200) {
+          const newStoreInfo = response.data.data;
+          setImgInfos(newStoreInfo.images);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
   const onPlusClick = () => {
@@ -88,14 +83,14 @@ const MypageStoreImg: React.FC<MypageStoreImgProps> = ({ imageUrls }) => {
           />
         </div>
 
-        <StoreImgSlider imageUrls={imageUrls} onImageClick={onImageClick} />
+        <StoreImgSlider imageInfos={imageInfos} onImageClick={onImageClick} />
       </div>
 
       {showStoreImgModal && (
         <StoreImgModal
           ModalChangeHandler={ModalChangeHandler}
-          imageInfo={parsedImages}
-          UpdateImg={updateImg}
+          imageInfos={imageInfos}
+          DeleteImg={deleteImg}
           index={selectedImageIndex}
         />
       )}

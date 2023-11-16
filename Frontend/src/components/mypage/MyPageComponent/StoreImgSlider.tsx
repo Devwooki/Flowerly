@@ -7,13 +7,14 @@ import "swiper/css/pagination";
 import Image from "next/image";
 import style from "./style/StoreImgSlider.module.css";
 
-export default function StoreImgSlider({
-  imageUrls,
-  onImageClick,
-}: {
-  imageUrls: string[];
+import { ImageInfo } from "@/recoil/memberInfoRecoil";
+
+interface StoreImgSliderProps {
+  imageInfos: ImageInfo[];
   onImageClick: (index: number) => void;
-}) {
+}
+
+export default function StoreImgSlider({ imageInfos, onImageClick }: StoreImgSliderProps) {
   SwiperCore.use([Navigation, Scrollbar]);
 
   return (
@@ -28,14 +29,14 @@ export default function StoreImgSlider({
         // onSlideChange={() => console.log("slide change")}
         // onSwiper={(swiper) => console.log(swiper)}
       >
-        {imageUrls.map((url, index) => (
-          <SwiperSlide key={index} className={style.img}>
+        {imageInfos.map((imageInfos, id) => (
+          <SwiperSlide key={id} className={style.img}>
             <Image
-              src={url}
+              src={imageInfos.imageUrl}
               alt="store"
               width={100}
               height={100}
-              onClick={() => onImageClick(index)}
+              onClick={() => onImageClick(id)}
             />
           </SwiperSlide>
         ))}

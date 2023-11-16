@@ -11,6 +11,11 @@ export interface MemberInfo {
   notification: boolean;
 }
 
+export interface ImageInfo {
+  storeImageId: number;
+  imageUrl: string;
+}
+
 export interface StoreInfo {
   storeInfoId: number;
   storeName: string;
@@ -18,7 +23,7 @@ export interface StoreInfo {
   sellerName: string;
   phoneNumber: string;
   address: string;
-  images: string[];
+  images: ImageInfo[];
 }
 
 export interface sellerAddressType {

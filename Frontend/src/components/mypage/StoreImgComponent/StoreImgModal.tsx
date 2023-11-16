@@ -2,15 +2,15 @@ import React from "react";
 import style from "./StoreImgModal.module.css";
 import { tokenHttp } from "@/api/tokenHttp";
 import { useRouter } from "next/router";
-
+import { ImageInfo } from "@/recoil/memberInfoRecoil";
 interface Props {
   ModalChangeHandler: () => void;
-  imageInfo: { id: number; url: string }[];
-  UpdateImg: (img: string) => void;
+  imageInfos: ImageInfo[];
+  DeleteImg: (id: number) => void;
   index: number | null;
 }
 
-const StoreImgModal = ({ ModalChangeHandler, imageInfo, UpdateImg, index }: Props) => {
+const StoreImgModal = ({ ModalChangeHandler, imageInfos, DeleteImg, index }: Props) => {
   const router = useRouter();
 
   const NotClickEventHandler = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -21,13 +21,13 @@ const StoreImgModal = ({ ModalChangeHandler, imageInfo, UpdateImg, index }: Prop
     if (index === null) {
       return;
     }
-    const imageIDs = imageInfo[index].id;
+    const imageIDs = imageInfos[index].storeImageId;
 
     tokenHttp
-      .delete(`/s3/delete/store/${imageIDs}`)
+      .delete(`/s3/delete-image/${imageIDs}`)
       .then((res) => {
         if (res.data.code === 200) {
-          UpdateImg("");
+          DeleteImg(imageIDs);
           ModalChangeHandler();
           if (res.headers.authorization) {
             localStorage.setItem("accessToken", res.headers.authorization);
@@ -35,9 +35,7 @@ const StoreImgModal = ({ ModalChangeHandler, imageInfo, UpdateImg, index }: Prop
         }
       })
       .catch((err) => {
-        if (err.response.status === 403) {
-          router.push("/fllylogin");
-        }
+        console.log(err);
       });
   };
 

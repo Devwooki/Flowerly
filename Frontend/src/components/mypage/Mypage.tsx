@@ -3,13 +3,18 @@ import style from "./style/Mypage.module.css";
 import MypageName from "./MyPageComponent/MypageName";
 import MypageCategory from "./MyPageComponent/MypageCategory";
 import MypageStoreImg from "./MyPageComponent/MypageStoreImg";
-import { memberInfoState, MemberInfo, StoreInfo, storeInfoState } from "@/recoil/memberInfoRecoil";
+import {
+  memberInfoState,
+  MemberInfo,
+  StoreInfo,
+  storeInfoState,
+  ImageInfo,
+} from "@/recoil/memberInfoRecoil";
 import { useRecoilState } from "recoil";
 import { tokenHttp } from "@/api/tokenHttp";
 import Router from "next/router";
 import { ToastErrorMessage } from "@/model/toastMessageJHM";
 import { useResetRecoilState } from "recoil";
-import axios from "axios";
 
 interface SellerMyPageData {
   storeName: string;
@@ -96,7 +101,7 @@ const Mypage = () => {
         </div>
         {memberInfo.role === "SELLER" && sellerData && (
           <div className={style.StoreImgBox}>
-            <MypageStoreImg imageUrls={storeInfo.images} />
+            <MypageStoreImg imageInfos={storeInfo.images} />
           </div>
         )}
 
