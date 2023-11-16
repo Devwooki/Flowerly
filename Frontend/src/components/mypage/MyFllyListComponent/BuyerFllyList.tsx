@@ -18,6 +18,7 @@ interface BuyerFillListType {
   requestOrderType: string;
   isReviewed: boolean;
   imageUrls: string;
+  createdAt: string;
 }
 
 const BuyerFllyList = () => {
@@ -57,7 +58,12 @@ const BuyerFllyList = () => {
       .get("/mypage/buyer/flly")
       .then((res) => {
         if (res.data.code === 200) {
-          setBuyerFllyList(res.data.data);
+          const sortedData = res.data.data.sort(
+            (a: BuyerFillListType, b: BuyerFillListType) =>
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+          );
+
+          setBuyerFllyList(sortedData);
 
           if (res.headers.authorization) {
             localStorage.setItem("accessToken", res.headers.authorization);

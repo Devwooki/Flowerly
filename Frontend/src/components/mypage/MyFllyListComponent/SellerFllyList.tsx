@@ -13,6 +13,7 @@ export interface Order {
   deliveryPickupTime: string;
   progress: string;
   imageUrl: string;
+  createdAt: string;
 }
 
 const SellerFllyList = () => {
@@ -32,9 +33,13 @@ const SellerFllyList = () => {
         .get("/mypage/seller/flly")
         .then((res) => {
           if (res.data.code === 200) {
-            setSellerFllyList(res.data.data);
-            console.log(res.data.data);
+            // 정렬
+            const sortedData = res.data.data.sort(
+              (a: Order, b: Order) =>
+                new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+            );
 
+            setSellerFllyList(sortedData);
             if (res.headers.authorization) {
               localStorage.setItem("accessToken", res.headers.authorization);
             }
