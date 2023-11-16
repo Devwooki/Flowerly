@@ -105,4 +105,25 @@ public class MemberController {
         }
     }
 
+
+    @GetMapping("/execution/{type}")
+    public void redierect(@PathVariable String type,
+                          HttpServletRequest request,
+                          HttpServletResponse response){
+        try{
+            StringBuilder redirectUrl = new StringBuilder();
+            Long memberId = null;
+
+            redirectUrl.append("https://flower-ly.co.kr/temp?token=");
+            memberId = type.equals("buyer") ? 1L: 2L ;
+
+            String tempAccessToken = jwtService.createTempAccessToken(memberId);
+            redirectUrl.append(tempAccessToken);
+
+            response.sendRedirect(redirectUrl.toString());
+        }catch(Exception e) {
+            log.error("더미 입력 도중 에러 발생{}", e.getMessage());
+            throw new CustomException(ErrorCode.INVALID_ACCESS);
+        }
+    }
 }
