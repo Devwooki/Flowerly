@@ -42,6 +42,10 @@ const BuyerFllyListProgressCard = ({ $fllyInfo }: Props) => {
     Router.push(`/flly/detail/${$fllyInfo.fllyId}`);
   };
 
+  const handleOrderDetail = () => {
+    Router.push(`/flly/order/sheet/${$fllyInfo.fllyId}`);
+  };
+
   return (
     <>
       <div className={style.cardBack}>
@@ -52,9 +56,15 @@ const BuyerFllyListProgressCard = ({ $fllyInfo }: Props) => {
           />
           <div className={style.InfoBox}>
             <div className={style.OrderAddBox}>
-              <div onClick={() => handleFllyDetail()}>
-                주문서 보기 <span> &gt;</span>
-              </div>
+              {progressStep >= 2 ? (
+                <div onClick={() => handleOrderDetail()}>
+                  주문서 보기 <span> &gt;</span>
+                </div>
+              ) : (
+                <div onClick={() => handleFllyDetail()}>
+                  의뢰서 보기 <span> &gt;</span>
+                </div>
+              )}
             </div>
             <div className={style.OrderInfoBox}>
               <div className={style.OrderInfoBoxHarf}>

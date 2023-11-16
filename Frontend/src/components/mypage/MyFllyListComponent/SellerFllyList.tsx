@@ -4,6 +4,8 @@ import SellerFllyListProgressCard from "./SellerFllyListCard/SellerFllyListProgr
 import { tokenHttp } from "@/api/tokenHttp";
 import { useRouter } from "next/router";
 import EmptySellerFllyList from "@/components/emptypage/EmptySellerFllyList";
+import style from "./style/SellerFllyList.module.css";
+
 export interface Order {
   fllyId: number;
   orderName: string;
@@ -64,7 +66,7 @@ const SellerFllyList = () => {
             ),
           )
         ) : (
-          <div>
+          <div className={style.emptyBack}>
             <EmptySellerFllyList />
           </div>
         )}

@@ -21,6 +21,7 @@ interface BaseReviewType {
 interface BuyerReviewType extends BaseReviewType {
   requestId: number;
   storeName: string;
+  storeId: number;
   type: "buyer";
 }
 
@@ -127,7 +128,7 @@ const MypageReview = () => {
               />
             ))
           ) : (
-            <div>
+            <div className={style.emptyBack}>
               <EmptyReviewList />
             </div>
           )}
