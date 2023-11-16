@@ -20,7 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Map;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 @Service
@@ -35,24 +35,26 @@ public class ReviewService {
 
 
     public Page<ReviewDetailDto> getReviewBySellerId(Pageable pageable, Long sellerId) {
-
         return reviewRepository.findReviewsBySeller_MemberIdAndIsRemovedFalse(pageable, sellerId).map(Review::toDetailDto);
     }
 
 
 
     public Page<ReviewResponseDto> getReviewByConsumerId(Pageable pageable, Long consumerId) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         return reviewRepository.findByConsumerMemberIdAndIsRemovedFalse(pageable, consumerId)
                 .map(review -> {
 
                     String storeName = storeInfoRepository.findStoreName(review.getSeller());
+                    Long storeId = storeInfoRepository.findSellerMemberIdByMemberId(review.getSeller().getMemberId());
 
                     return ReviewResponseDto.builder()
                             .reviewId(review.getReviewId())
                             .requestId(review.getRequest().getRequestId())
                             .content(review.getContent())
-                            .createdAt(review.getCreatedAt())
+                            .createdAt(review.getCreatedAt() != null ? review.getCreatedAt().format(formatter) : null)
                             .storeName(storeName)
+                            .storeId(storeId)
                             .build();
                 });
     }
@@ -63,15 +65,24 @@ public class ReviewService {
         Request request = requestRepository.findByRequestId(reviewRequestDto.getRequestId())
                 .orElseThrow(() -> new CustomException(ErrorCode.REQUEST_NOT_FOUND));
 
-        Member seller = memberRepository.findByMemberId(reviewRequestDto.getSellerId())
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_MEMBER));
+        Member seller = request.getSeller();
+
+        System.out.println("Seller info: " + seller);
 
         Member consumer = memberRepository.findByMemberId(memberId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_MEMBER));
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
         // consumer 검증
         if (!consumer.equals(request.getFlly().getConsumer())) {
             throw new CustomException(ErrorCode.CONSUMER_NOT_REVIEWER);
+        }
+
+        // 리뷰 중복 등록 방지
+
+        Optional<Review> existingReview = reviewRepository.findByRequestAndConsumerAndIsRemovedFalse(request, consumer);
+        if (existingReview.isPresent()) {
+            throw new CustomException(ErrorCode.REVIEW_ALREADY_EXISTS);
+
         }
 
         Review review = Review.builder()
@@ -88,11 +99,13 @@ public class ReviewService {
 
     }
 
-    public void deleteReview(Long reviewId, Long consumerId) {
-        Review review = reviewRepository.findByConsumerMemberIdAndReviewIdAndIsRemovedFalse(reviewId, consumerId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_REVIEW));
+    public void deleteReview(Long reviewId) {
+        Review review = reviewRepository.findByReviewIdAndIsRemovedFalse(reviewId)
+                .orElseThrow(() -> new CustomException(ErrorCode.REVIEW_NOT_FOUND));
 
         review.markAsRemoved();
         reviewRepository.save(review);
+
+        System.out.println("Review info: " + review);
     }
 }

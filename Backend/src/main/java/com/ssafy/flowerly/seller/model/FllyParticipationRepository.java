@@ -17,9 +17,10 @@ import java.util.Optional;
 public interface FllyParticipationRepository extends JpaRepository<FllyParticipation, Long> {
 
     @Query("SELECT fp FROM FllyParticipation fp LEFT JOIN fp.flly fy ON fp.flly.fllyId = fy.fllyId " +
-                    "WHERE fp.seller.memberId = :memberId AND (fy.progress = 'START' OR fy.progress = 'DISCUSSION')" +
-                    " AND fy.deadline > :currentDateTime AND fy.isCanceled = false ")
-    Page<FllyParticipation> findBySellerMemberIdParticipationDto(Long memberId, Pageable pageable, LocalDateTime currentDateTime);
+                    "WHERE fp.seller.memberId = :memberId AND (fy.progress = 'START' OR fy.progress = 'DISCUSSION') " +
+                    " AND fy.isCanceled = false " +
+                    "AND fy.consumer.role != 'DELETE' " )
+    Page<FllyParticipation> findBySellerMemberIdParticipationDto(Long memberId, Pageable pageable);
 
 //    Optional<FllyParticipation> findByFllyFllyIdAndSellerMemberId(long fllyId, long memberId);
 
@@ -31,5 +32,8 @@ public interface FllyParticipationRepository extends JpaRepository<FllyParticipa
             " where fp.flly.fllyId = :fllyId ")
     Page<Object[]> findFlistByFllyId(Pageable pageable,
                                      @Param("fllyId") Long fllyId);
+
+
+
 
 }

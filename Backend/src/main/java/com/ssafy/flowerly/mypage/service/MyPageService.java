@@ -11,6 +11,8 @@ import com.ssafy.flowerly.member.model.MemberRepository;
 import com.ssafy.flowerly.member.model.StoreInfoRepository;
 import com.ssafy.flowerly.mypage.dto.*;
 import com.ssafy.flowerly.review.repository.ReviewRepository;
+import com.ssafy.flowerly.s3.model.StoreImageRepository;
+import com.ssafy.flowerly.seller.model.FllyParticipationRepository;
 import com.ssafy.flowerly.seller.model.FllyRepository;
 import com.ssafy.flowerly.seller.model.RequestRepository;
 import com.ssafy.flowerly.seller.model.StoreDeliveryRegionRepository;
@@ -36,12 +38,14 @@ public class MyPageService {
     private final SidoRepository sidoRepository;
     private final SigunguRepository sigunguRepository;
     private final DongRepository dongRepository;
+    private final StoreImageRepository storeImageRepository;
+    private final FllyParticipationRepository fllyParticipationRepository;
 
 
     public Object getNickName(Long memberId) {
 
         Member member = memberRepository.findByMemberId(memberId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_MEMBER));
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
         return member.getNickName();
     }
@@ -49,7 +53,7 @@ public class MyPageService {
     public Object updateNickName(Long memberId, String newNickName) {
 
         Member member = memberRepository.findByMemberId(memberId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_MEMBER));
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
         member.updateNickName(newNickName);
         memberRepository.save(member);
@@ -62,7 +66,7 @@ public class MyPageService {
     public Object updateNotification(Long memberId) {
 
         Member member = memberRepository.findByMemberId(memberId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_MEMBER));
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
         String newNotificationStatus = member.notificationToggle();
         memberRepository.save(member);
@@ -78,7 +82,7 @@ public class MyPageService {
         List<Object[]> results = storeInfoRepository.findBySellerInfo(memberId);
 
         if (results.isEmpty()) {
-            throw new CustomException(ErrorCode.NOT_FIND_MEMBER);
+            throw new CustomException(ErrorCode.MEMBER_NOT_FOUND);
         }
 
 
@@ -100,20 +104,34 @@ public class MyPageService {
 
     public List<SellerFllyDto> getSellerFlly(Long memberId) {
         List<Request> requests = requestRepository.findBySellerMemberId(memberId);
-        return requests.stream()
-                .map(request -> new SellerFllyDto(
-                        request.getFlly().getFllyId(),
-                        request.getOrderName(),
-                        request.getOrderType().getTitle(),
-                        request.getDeliveryPickupTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
-                        request.getFlly().getProgress().getTitle()))
-                .collect(Collectors.toList());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+
+        return requests.stream().map(request -> {
+            Long fllyId = request.getFlly().getFllyId();
+
+
+            Optional<FllyParticipation> participation = fllyParticipationRepository.findByFllyFllyIdAndSellerMemberId(request.getFlly().getFllyId(),  memberId);
+
+
+            String imageUrl = participation.map(FllyParticipation::getImageUrl).orElse(null);
+
+            return SellerFllyDto.builder()
+                    .fllyId(fllyId)
+                    .orderName(request.getOrderName())
+                    .orderType(request.getOrderType().getTitle())
+                    .deliveryPickupTime(request.getDeliveryPickupTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
+                    .progress(request.getFlly().getProgress().getTitle())
+                    .imageUrl(imageUrl)
+                    .createdAt(request.getCreatedAt() != null ? request.getCreatedAt().format(formatter) : null)
+                    .build();
+        }).collect(Collectors.toList());
     }
 
 
     public List<BuyerFllyDto> getBuyerFlly(Long memberId) {
         List<Flly> fllyList = fllyRepository.findByConsumerMemberId(memberId);
-
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
         return fllyList.stream().map(flly -> {
             Optional<Request> paidRequestOpt = requestRepository.findByFllyFllyIdAndIsPaid(flly.getFllyId(), true);
@@ -122,14 +140,16 @@ public class MyPageService {
             String requestOrderType = null;
             String deliveryPickupTime = null;
             Boolean isReviewed = false;
+            String createdAt = null;
 
 
             if (paidRequestOpt.isPresent()) {
                 Request paidRequest = paidRequestOpt.get();
                 storeName = paidRequest.getSeller().getNickName();
                 requestOrderType = paidRequest.getOrderType().getTitle();
-                deliveryPickupTime = paidRequest.getDeliveryPickupTime().toString();
+                deliveryPickupTime = paidRequest.getDeliveryPickupTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
                 isReviewed = reviewRepository.existsByRequestRequestId(paidRequest.getRequestId());
+                createdAt = paidRequest.getCreatedAt() != null ? paidRequest.getCreatedAt().format(formatter) : null;
             }
 
 
@@ -142,6 +162,8 @@ public class MyPageService {
                     .requestOrderType(requestOrderType)
                     .deliveryPickupTime(deliveryPickupTime)
                     .isReviewed(isReviewed)
+                    .imageUrls(flly.getImageUrl())
+                    .createdAt(createdAt)
                     .build();
         }).collect(Collectors.toList());
 
@@ -150,7 +172,14 @@ public class MyPageService {
     public MyStoreInfoDto getMyStoreInfo(Long memberId) {
 
         StoreInfo storeInfo = storeInfoRepository.findBySellerMemberId(memberId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_STOREINFO));
+                .orElseThrow(() -> new CustomException(ErrorCode.STOREINFO_NOT_FOUND));
+
+        List<StoreImage> storeImages = storeImageRepository.findBySeller_MemberId(memberId);
+
+
+        List<ImageInfoDto> imageInfoDtos = storeImages.stream()
+                .map(storeImage -> new ImageInfoDto(storeImage.getStoreImageId(), storeImage.getImageUrl()))
+                .collect(Collectors.toList());
 
         return MyStoreInfoDto.builder()
                 .storeId(storeInfo.getStoreInfoId())
@@ -159,19 +188,38 @@ public class MyPageService {
                 .phoneNumber(storeInfo.getPhoneNumber())
                 .storeNumber(storeInfo.getStoreNumber())
                 .address(storeInfo.getAddress())
+                .images(imageInfoDtos)
                 .build();
     }
 
     @Transactional
     public MyStoreInfoDto updateMyStoreInfo(Long memberId, MyStoreInfoDto myStoreInfoDto) {
         StoreInfo storeInfo = storeInfoRepository.findBySellerMemberId(memberId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_STOREINFO));
+                .orElseThrow(() -> new CustomException(ErrorCode.STOREINFO_NOT_FOUND));
 
         storeInfo.updateStoreName(myStoreInfoDto.getStoreName());
         storeInfo.updateStoreNumber(myStoreInfoDto.getStoreNumber());
         storeInfo.updateSellerName(myStoreInfoDto.getSellerName());
         storeInfo.updateAddress(myStoreInfoDto.getAddress());
         storeInfo.updatePhoneNumber(myStoreInfoDto.getPhoneNumber());
+
+
+        // 시도, 시군구, 동 코드 조회
+
+        Sido sido = sidoRepository.findBySidoName(myStoreInfoDto.getSidoName())
+                .orElseThrow(() -> new CustomException(ErrorCode.SIDO_NOT_FOUND));
+
+        Sigungu sigungu = sigunguRepository.findBySigunguNameAndSido(myStoreInfoDto.getSigunguName(), sido)
+                .orElseThrow(() -> new CustomException(ErrorCode.SIGUNGU_NOT_FOUND));
+
+        Dong dong = dongRepository.findByDongNameAndSigungu(myStoreInfoDto.getDongName(), sigungu)
+                .orElseThrow(() -> new CustomException((ErrorCode.DONG_NOT_FOUND)));
+
+
+        storeInfo.updateSido(sido);
+        storeInfo.updateSigungu(sigungu);
+        storeInfo.updateDong(dong);
+
 
         storeInfoRepository.save(storeInfo);
 
@@ -190,6 +238,9 @@ public class MyPageService {
                         .sidoCode(myDeliveryRegion.getSido().getSidoCode())
                         .sigunguCode(myDeliveryRegion.getSigungu().getSigunguCode())
                         .dongCode(myDeliveryRegion.getDong().getDongCode())
+                        .fullAddress(myDeliveryRegion.getSido().getSidoName() + " " +
+                                myDeliveryRegion.getSigungu().getSigunguName() + " " +
+                                myDeliveryRegion.getDong().getDongName())
                         .build())
                 .collect(Collectors.toList());
 
@@ -205,13 +256,13 @@ public class MyPageService {
         List<MyDeliveryRegionDto> savedDtos = myDeliveryRegionDtos.stream()
                 .map(dto -> {
                     Sido sido = sidoRepository.findBySidoCode(dto.getSidoCode())
-                            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_SIDO));
+                            .orElseThrow(() -> new CustomException(ErrorCode.SIDO_NOT_FOUND));
                     Sigungu sigungu = sigunguRepository.findBySigunguCodeAndSido(dto.getSigunguCode(), sido)
-                            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_SIGUNGU));
+                            .orElseThrow(() -> new CustomException(ErrorCode.SIGUNGU_NOT_FOUND));
                     Dong dong = dongRepository.findByDongCodeAndSigungu(dto.getDongCode(), sigungu)
-                            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_DONG));
+                            .orElseThrow(() -> new CustomException(ErrorCode.DONG_NOT_FOUND));
                     Member seller = memberRepository.findById(memberId)
-                            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_MEMBER));
+                            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
                     StoreDeliveryRegion newRegion = StoreDeliveryRegion.builder()
                             .seller(seller)
@@ -228,6 +279,9 @@ public class MyPageService {
                             .sidoCode(sido.getSidoCode())
                             .sigunguCode(sigungu.getSigunguCode())
                             .dongCode(dong.getDongCode())
+                            .fullAddress(savedRegion.getSido().getSidoName() + " " +
+                            savedRegion.getSigungu().getSigunguName() + " " +
+                            savedRegion.getDong().getDongName())
                             .build();
                 }).collect(Collectors.toList());
 

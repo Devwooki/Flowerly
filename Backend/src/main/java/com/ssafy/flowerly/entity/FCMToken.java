@@ -1,30 +1,29 @@
 package com.ssafy.flowerly.entity;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
-@Entity
-@Setter
+@Document(collection = "fcm_token")
+@Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED) //서브클래스에서만 접근할 수 있도록 제한
+@AllArgsConstructor
 public class FCMToken {
     @Id
-    @GeneratedValue
-    @Column(name = "fcm_id")
-    private Long id;
+    private String id;
+    private Long memberId;
+    private List<String> tokens = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
+    public FCMToken(Long member, String newFCM) {
+        this.memberId = member;
+        this.tokens.add(newFCM);
+    }
 
-    private String token;
-
-    public FCMToken(Member member, String token) {
-        this.member = member;
-        this.token = token;
+    public void addToken(String newFCM){
+        this.tokens.add(newFCM);
     }
 }

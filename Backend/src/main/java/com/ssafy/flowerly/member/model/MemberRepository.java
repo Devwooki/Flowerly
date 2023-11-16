@@ -11,13 +11,10 @@ import java.util.Optional;
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findBySocialId(String socialId);
-    Optional<Member> findByMemberId(Long memberId);
-
     @Query(
             "SELECT m FROM Member m " +
                     "Where m.memberId = :memberId " +
                     " and m.role != 'DELETE' "
     )
-    Optional<Member> findByMemberIdActivate(@Param("memberId") Long memberID);
-
+    Optional<Member> findByMemberId(@Param("memberId") Long memberId);
 }

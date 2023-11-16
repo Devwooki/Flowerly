@@ -1,5 +1,5 @@
 package com.ssafy.flowerly.member.model;
-import com.ssafy.flowerly.FCM.FCMRepository;
+import com.ssafy.flowerly.FCM.repository.FCMRepository;
 import com.ssafy.flowerly.address.repository.DongRepository;
 import com.ssafy.flowerly.address.repository.SidoRepository;
 import com.ssafy.flowerly.address.repository.SigunguRepository;
@@ -9,7 +9,6 @@ import com.ssafy.flowerly.exception.ErrorCode;
 import com.ssafy.flowerly.member.MemberRole;
 import com.ssafy.flowerly.member.vo.MemberDto;
 import com.ssafy.flowerly.seller.model.StoreDeliveryRegionRepository;
-import com.ssafy.flowerly.JWT.JWTService;
 import com.ssafy.flowerly.entity.Member;
 import com.ssafy.flowerly.entity.StoreImage;
 import com.ssafy.flowerly.entity.StoreInfo;
@@ -42,7 +41,7 @@ public class MemberService {
     public MemberDto getMemberInfo(Long memberId) {
         MemberDto memberInfo = memberRepository.findByMemberId(memberId)
                 .map(Member::toDto)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_MEMBER));
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
         //상점 정보가 있으면 값을 넣고 없으면 null을 넣는더.
         memberInfo.setStore(getStoreInfo(memberId));
@@ -54,7 +53,7 @@ public class MemberService {
 
         //유저가 있는지 확인
         Member member = memberRepository.findByMemberId(memberId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_MEMBER));
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
 
         member.updateRole(MemberRole.USER);
@@ -66,7 +65,7 @@ public class MemberService {
     public void signupSeller(Map<String, Object> data, Long memberId) {
 
         Member member = memberRepository.findByMemberId(memberId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_MEMBER));
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
         member.updateRole(MemberRole.SELLER);
 
@@ -83,13 +82,13 @@ public class MemberService {
         // 시도, 시군구, 동 코드 조회
 
         Sido sido = sidoRepository.findBySidoName(sidoName)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_SIDO));
+                .orElseThrow(() -> new CustomException(ErrorCode.SIDO_NOT_FOUND));
 
         Sigungu sigungu = sigunguRepository.findBySigunguNameAndSido(sigunguName, sido)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_SIGUNGU));
+                .orElseThrow(() -> new CustomException(ErrorCode.SIGUNGU_NOT_FOUND));
 
         Dong dong = dongRepository.findByDongNameAndSigungu(dongName, sigungu)
-                .orElseThrow(() -> new CustomException((ErrorCode.NOT_FIND_DONG)));
+                .orElseThrow(() -> new CustomException((ErrorCode.DONG_NOT_FOUND)));
 
 
 
@@ -123,13 +122,13 @@ public class MemberService {
 
 
             Sido deliverySido = sidoRepository.findBySidoCode(sidoCode)
-                    .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_SIDO));
+                    .orElseThrow(() -> new CustomException(ErrorCode.SIDO_NOT_FOUND));
 
             Sigungu deliverySigungu = sigunguRepository.findBySigunguCodeAndSido(sigunguCode, deliverySido)
-                    .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_SIGUNGU));
+                    .orElseThrow(() -> new CustomException(ErrorCode.SIGUNGU_NOT_FOUND));
 
             Dong deliveryDong = dongRepository.findByDongCodeAndSigungu(dongCode, deliverySigungu)
-                    .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_DONG));
+                    .orElseThrow(() -> new CustomException(ErrorCode.DONG_NOT_FOUND));
 
             StoreDeliveryRegion storeDeliveryRegion = StoreDeliveryRegion.builder()
                     .seller(member)
@@ -160,19 +159,20 @@ public class MemberService {
         return null;
     }
 
-    @Transactional
-    public void addFCMToken(Long memberId, String FCMToken){
-        Member findMember = memberRepository.findByMemberIdActivate(memberId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_MEMBER));
-
-        fcmRepository.save(new FCMToken(findMember, FCMToken));
-    }
 
     private StoreInfoDto extractStoreInfoDto(List<Object[]> object){
         return ((StoreInfo) object.get(0)[0]).toDto();
     }
 
     private String extractImageUrl(Object[] o){
-        return ((StoreImage) o[1]).getImageUrl();
+        return ((StoreImage) o[1]).getStoreImageId() + "_" + ((StoreImage) o[1]).getImageUrl();
+    }
+
+    public void signout(Long memberId) {
+        Member findMember = memberRepository.findByMemberId(memberId)
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+
+        findMember.signOut();
+        memberRepository.save(findMember);
     }
 }

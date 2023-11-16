@@ -19,6 +19,9 @@ public class BuyerFllyDto {
     private String requestOrderType;
     private String deliveryPickupTime;
     private Boolean isReviewed;
+    private String imageUrls;
+
+    private String createdAt;
 
 
 }

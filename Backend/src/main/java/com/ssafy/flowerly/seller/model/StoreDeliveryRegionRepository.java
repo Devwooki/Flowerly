@@ -15,6 +15,6 @@ public interface StoreDeliveryRegionRepository extends JpaRepository<StoreDelive
     Optional<List<StoreDeliveryRegion>> findBySellerMemberId (Long memberId);
 
     @Transactional
-    Optional<List<StoreDeliveryRegion>> deleteBySellerMemberId(Long memberId);
+    void deleteBySellerMemberId(Long memberId);
 
 }

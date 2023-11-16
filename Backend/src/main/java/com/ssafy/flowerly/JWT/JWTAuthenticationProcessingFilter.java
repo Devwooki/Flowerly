@@ -54,22 +54,18 @@ public class JWTAuthenticationProcessingFilter extends OncePerRequestFilter {
 
         //return을 하게 되면 Servlet 컨테이너를 넘어 Interceptor -> Controller로 접속하게 된다.
         //멤버 검증 로직은 인터셉터에서 수행하므로 filter를 넘어간다.
-        if(request.getRequestURI().equals("/api/member")){
-            log.info("너냐!?");
+        if(request.getRequestURI().startsWith("/api/member/dummy-token")    //더미 토큰 요청시 필터 안거침
+        || request.getRequestURI().startsWith("/stomp-chat")                //Stomp 요청시
+        || request.getRequestURI().startsWith("/api/member/dummy/")                //더미 요청시
+        || request.getRequestURI().startsWith("/api/member/execution")          //시연용 계정 접속
+        || request.getRequestURI().startsWith("/api/address")                //주소 정보 요청시
+        || request.getRequestURI().equals("/api/member")                //멤버 정보 요청시
+        ){
             filterChain.doFilter(request, response);
             return;
         }
 
-        if(request.getRequestURI().startsWith("/stomp-chat")){
-            log.info("채팅연결 요청?");
-            filterChain.doFilter(request, response);
-            return;
-        }
 
-        if(request.getRequestURI().startsWith("/api/member/dummy-token")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
 
         //EndPoint가 /oauth2, favicon을 요청할 경우 컨트롤러로 들어간다. 즉 무시해도 되는 요청
         if(request.getRequestURI().equals(NO_CHECK_URL) || request.getRequestURI().contains("favicon")){
@@ -116,7 +112,7 @@ public class JWTAuthenticationProcessingFilter extends OncePerRequestFilter {
         log.info("accessToken 검증 시작");
 
         jwtService.extractMemberId(accessToken)
-                .flatMap(memberRepository::findByMemberIdActivate)
+                .flatMap(memberRepository::findByMemberId)
                 .ifPresent(member -> {
                     log.info("{}", member.getMemberId());
                     request.setAttribute("memberId", member.getMemberId());

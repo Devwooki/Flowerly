@@ -1,6 +1,7 @@
 package com.ssafy.flowerly.member;
 
 import com.ssafy.flowerly.JWT.JWTService;
+import com.ssafy.flowerly.exception.CustomException;
 import com.ssafy.flowerly.exception.ErrorCode;
 import com.ssafy.flowerly.member.model.MemberService;
 import com.ssafy.flowerly.util.CustomResponse;
@@ -35,11 +36,6 @@ public class MemberController {
         return new CustomResponse(ErrorCode.FORBIDDEN.getCode(), ErrorCode.FORBIDDEN.getMessage());
     }
 
-    @PostMapping("/login")
-    public CustomResponse login(HttpServletRequest request,
-                                 @RequestBody Map<String, Object> data){
-        return new CustomResponse(HttpStatus.OK.value(), "요청 성공");
-    }
     @PostMapping("/signup/buyer")
     public CustomResponse signupBuyer(HttpServletRequest request,
                                  @RequestBody Map<String, Object> data){
@@ -62,19 +58,72 @@ public class MemberController {
 
     @GetMapping("/logout")
     public CustomResponse logOut(HttpServletRequest request, HttpServletResponse response){
-        log.info("로그아웃 시작");
-
-        //멤버 아이디 꺼내고, refreshToken 찾아 redis에서 제거한다. 카카오 로그아웃도 시킨다.
-        String refreshToken = jwtService.extractRefreshToken(request).orElseGet(null);
-        Long memberId = (Long) request.getAttribute("memberId");
-
         jwtService.sendDeleteToken(request, response);
         return new CustomResponse(200, "logout");
     }
 
+    @DeleteMapping("/signout")
+    public CustomResponse signOut(HttpServletRequest request, HttpServletResponse response){
+        Long memberId = (Long) request.getAttribute("memberId");
+        log.info("{}", memberId);
+        memberService.signout(memberId);
+        jwtService.sendDeleteToken(request, response);
+
+        return new CustomResponse(HttpStatus.OK.value(), "회원탈퇴 성공");
+    }
+
     @GetMapping("/dummy-token/{memberId}")
     public DataResponse<?> getDummyToken(@PathVariable Long memberId,
-                                        HttpServletRequest request){
+                                         HttpServletRequest request){
         return new DataResponse<>(HttpStatus.OK.value(), "더미토큰 발사!!", jwtService.makeDummyToken(memberId));
+    }
+
+    @GetMapping("/dummy/{type}/{rediURL}")
+    public void redierect(@PathVariable String rediURL,
+                          @PathVariable String type,
+                          HttpServletRequest request,
+                          HttpServletResponse response){
+        try{
+            StringBuilder redirectUrl = new StringBuilder();
+            Long memberId = null;
+
+            redirectUrl.append(rediURL.equals("flower")
+                    ? "https://flower-ly.co.kr/temp?token="
+                    : "http://localhost:3000/temp?token=");
+
+            memberId = type.equals("buyer") ? 108L: 109L ;
+
+            //flower-ly.co.kr/api/member/dummy/(buyer||seller)/(local || flower)
+
+            String tempAccessToken = jwtService.createTempAccessToken(memberId);
+            redirectUrl.append(tempAccessToken);
+
+            response.sendRedirect(redirectUrl.toString());
+        }catch(Exception e) {
+            log.error("더미 입력 도중 에러 발생{}", e.getMessage());
+            throw new CustomException(ErrorCode.INVALID_ACCESS);
+        }
+    }
+
+
+    @GetMapping("/execution/{type}")
+    public void redierect(@PathVariable String type,
+                          HttpServletRequest request,
+                          HttpServletResponse response){
+        try{
+            StringBuilder redirectUrl = new StringBuilder();
+            Long memberId = null;
+
+            redirectUrl.append("https://flower-ly.co.kr/temp?token=");
+            memberId = type.equals("buyer") ?108L: 109L ;
+
+            String tempAccessToken = jwtService.createTempAccessToken(memberId);
+            redirectUrl.append(tempAccessToken);
+
+            response.sendRedirect(redirectUrl.toString());
+        }catch(Exception e) {
+            log.error("더미 입력 도중 에러 발생{}", e.getMessage());
+            throw new CustomException(ErrorCode.INVALID_ACCESS);
+        }
     }
 }

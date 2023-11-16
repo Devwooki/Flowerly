@@ -2,8 +2,10 @@ package com.ssafy.flowerly.chatting.controller;
 
 import com.ssafy.flowerly.chatting.dto.ChattingDto;
 import com.ssafy.flowerly.chatting.dto.FllyFromChattingDto;
+import com.ssafy.flowerly.chatting.dto.PaymentDto;
 import com.ssafy.flowerly.chatting.dto.RequestFromChattingDto;
 import com.ssafy.flowerly.chatting.service.ChattingService;
+import com.ssafy.flowerly.chatting.service.KakaoPayService;
 import com.ssafy.flowerly.exception.CustomException;
 import com.ssafy.flowerly.exception.ErrorCode;
 import com.ssafy.flowerly.util.CustomResponse;
@@ -24,6 +26,25 @@ import java.util.Map;
 public class ChattingController {
 
     private final ChattingService chattingService;
+    private final KakaoPayService kakaoPayService;
+
+    /**
+     * 채팅방 생성 API
+     * @param request 로그인한 유저의 id 추출
+     * @param chattingRequestDto sellerId, fllyId, fllyParticipationId
+     * @return isNew, chattingId
+     */
+    @PostMapping
+    public CustomResponse createChatting(HttpServletRequest request, @RequestBody ChattingDto.Request chattingRequestDto) {
+        Long memberId = (Long) request.getAttribute("memberId");
+        chattingRequestDto.setConsumerId(memberId);
+
+        Map<String, Object> responseMap = chattingService.createChatting(chattingRequestDto);
+        System.out.println("responseMap: " + responseMap);
+
+        log.info("채팅방 생성");
+        return new DataResponse<>(200, "채팅방 생성 성공", responseMap);
+    }
 
     /**
      * 채팅방 목록 조회 API
@@ -73,7 +94,7 @@ public class ChattingController {
      */
     @PostMapping("/request/{chattingId}")
     public CustomResponse saveRequestInfo(@PathVariable Long chattingId, @RequestBody RequestFromChattingDto requestDto) {
-        Long requestId = chattingService.saveRequestPrice(requestDto, chattingId);
+        Long requestId = chattingService.saveRequest(requestDto, chattingId);
 
         if(requestId == null) throw new CustomException(ErrorCode.REQUEST_PRICE_EXIST);
         return new DataResponse<Long>(200, "주문서 저장 성공", requestId);
@@ -142,7 +163,7 @@ public class ChattingController {
      */
     @GetMapping("/price/{chattingId}")
     public CustomResponse getPrice(@PathVariable Long chattingId) {
-        Map<String, Object> responseDto = chattingService.getPrice(chattingId);
+        PaymentDto.Info responseDto = chattingService.getPrice(chattingId);
 
         return new DataResponse<>(200, "결제 정보 조회 성공", responseDto);
     }
@@ -160,4 +181,35 @@ public class ChattingController {
 
         return new CustomResponse(200, "채팅방 나가기 성공");
     }
+
+    @PostMapping("/kakaopay")
+    public CustomResponse payMoney(HttpServletRequest request, @RequestBody PaymentDto.PayReq payRequest) {
+        log.info("KakaoPay Ready");
+        Long memberId = (Long) request.getAttribute("memberId");
+        PaymentDto.ReadyResponse readyResponse = kakaoPayService.ready(payRequest, memberId);
+
+        return new DataResponse<PaymentDto.ReadyResponse>(200, "카카오페이 결제 준비 성공", readyResponse);
+    }
+
+    @PostMapping("/kakaopay/approve")
+    public CustomResponse approvePay(HttpServletRequest request, @RequestBody PaymentDto.ApproveReq approveReq) {
+        log.info("KakaoPay Approve");
+        Long memberId = (Long) request.getAttribute("memberId");
+        kakaoPayService.approve(memberId, approveReq);
+
+        return new CustomResponse(200, "카카오페이 결제 승인 성공");
+    }
+
+    @PostMapping("/kakaopay/cancel")
+    public CustomResponse cancelPay() {
+        log.info("KakaoPay Cancel");
+        return new CustomResponse(200, "카카오페이 결제 취소");
+    }
+
+    @PostMapping("/kakaopay/fail")
+    public CustomResponse failPay() {
+        log.info("KakaoPay Fail");
+        return new CustomResponse(200, "카카오페이 결제 실패");
+    }
+
 }

@@ -21,7 +21,7 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
     @Query(
             value = "SELECT NEW com.ssafy.flowerly.seller.vo.OrderRequestDto(r, " +
                     "(SELECT fp.imageUrl FROM FllyParticipation fp " +
-                    "WHERE fp.flly.fllyId = r.flly.fllyId AND fp.seller.memberId = :memberId)) " +
+                    "WHERE fp.flly.fllyId = r.flly.fllyId AND fp.seller.memberId = :memberId AND fp.flly.consumer.role != 'DELETE' )) " +
                     "FROM Request r " +
                     "LEFT JOIN r.flly fl " +
                     "WHERE r.seller.memberId = :memberId " +
@@ -49,4 +49,15 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
     Optional<Request> findByFllyFllyIdAndIsPaid(Long fllyId, Boolean isPaid);
 
     Optional<Request> findByFllyFllyIdAndIsPaidTrue(Long fllyId);
+    Optional<Request> findByFllyAndIsPaidTrue(Flly flly);
+
+    @Query("SELECT rdi.address FROM RequestDeliveryInfo rdi " +
+            " where rdi.request.requestId = :requestId ")
+    String getAddress(@Param("requestId") Long requestId);
+
+    @Query("SELECT rqO " +
+            "FROM Request rqO " +
+            "WHERE rqO.flly.fllyId = (SELECT rqJ.flly.fllyId FROM Request rqJ WHERE rqJ.requestId = :requestId) " +
+            "AND rqO.isPaid = true")
+    List<Request> findSameFllyRequest(Long requestId);
 }
