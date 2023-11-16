@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import style from "./style/FllySeller.module.css";
 
 import FllySellerCard from "./fllySellerCardComponent/FllySellerCard";
-
-import { ToastErrorMessage } from "@/model/toastMessageJHM";
 import { useRouter } from "next/router";
 import { tokenHttp } from "@/api/tokenHttp";
 import { useInView } from "react-intersection-observer";
@@ -32,7 +30,7 @@ const FllySeller = () => {
     tokenHttp
       .get(`/seller/near/${dpState}?page=` + currentPage)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         const rData = res.data;
         if (rData.code === 200) {
           setNearFllyList((parent) => [...parent, ...rData.data.content]);
@@ -66,12 +64,14 @@ const FllySeller = () => {
 
   useEffect(() => {
     axiosHandelr();
+    /* eslint-disable-next-line */
   }, [dpState]);
 
   useEffect(() => {
     if (totalPage !== 0) {
       axiosHandelr();
     }
+    /* eslint-disable-next-line */
   }, [inView]);
 
   return (

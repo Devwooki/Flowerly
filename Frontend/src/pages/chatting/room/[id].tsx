@@ -6,8 +6,6 @@ import { GetServerSideProps } from "next";
 const User = () => {
   const router = useRouter();
   const id = Number(router.query.id);
-  console.log(router.query.id);
-
   if (isNaN(id)) {
     // id 값이 유효하지 않은 경우 추가적인 로직 여기서 구현
     return <></>;

@@ -26,8 +26,6 @@ const FllyList = () => {
     },
     {
       onError: (error) => {
-        // console.log("에러 발생했다 임마");
-        // console.log(error?.response?.status);
         if (error?.response?.status === 403) {
           router.push("/fllylogin");
           ToastErrorMessage("로그인 만료되어 로그인 화면으로 이동합니다.");
@@ -72,7 +70,6 @@ export const getServerSideProps: GetServerSideProps = async (context: any) => {
   // context.params를 통해 URL 파라미터에 접근할 수 있습니다.
   const { fllyId } = context.params;
 
-  console.log("SSR 렌더링", fllyId);
   // 필요한 데이터를 props로 페이지에 전달할 수 있습니다.
   return {
     props: { fllyId },

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import style from "./ShopModal.module.css";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -12,10 +12,18 @@ type ShopModalProps = {
 
 const ShopModal = ({ shopInfo, modal, chatModal }: ShopModalProps) => {
   const router = useRouter();
+  const [location, setLocation] = useState<string>();
+
   const moveToShop = (shopId: number, event: React.MouseEvent) => {
     event.stopPropagation(); // 이벤트 버블링 방지
     router.push({ pathname: "/list/shop/[shopId]", query: { shopId: shopId } });
   };
+
+  useEffect(() => {
+    // 주소 처리를 위한 useEffect
+    const splitT = shopInfo.storeInfoDto.address.indexOf("T");
+    setLocation(shopInfo.storeInfoDto.address.substring(0, splitT));
+  }, [shopInfo]);
 
   return (
     <>
@@ -49,7 +57,7 @@ const ShopModal = ({ shopInfo, modal, chatModal }: ShopModalProps) => {
             </div>
             <div className={style.infoTable}>
               <Image src={"/img/icon/seller-location.png"} alt="가게 위치" width={10} height={15} />
-              <div>{shopInfo.storeInfoDto.address}</div>
+              <div>{location}</div>
             </div>
             <div className={style.infoTable}>
               <Image src={"/img/icon/seller-money.png"} alt="제시 금액 " width={15} height={15} />

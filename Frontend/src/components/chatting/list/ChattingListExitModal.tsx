@@ -19,7 +19,6 @@ const ChattingListExitModal: React.FC<ChattingListExitModalProps> = ({
     tokenHttp
       .delete(`/chatting/${chattingId}`)
       .then((response) => {
-        console.log(response.data);
         if (response.data.code === 200) {
           axiosHandler();
           //요거 필수!! (엑세스 토큰 만료로 재발급 받았다면 바꿔줘!! )

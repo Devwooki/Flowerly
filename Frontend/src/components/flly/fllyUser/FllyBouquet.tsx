@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import style from "./FllyBouquet.module.css";
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
@@ -10,12 +10,13 @@ const FllyBouquet = () => {
   const [cnt, setCnt] = useState<number>(2);
   const bouquets = useRecoilValue(bouquetsState);
 
-  const handleSelect = (e:bouquetType) => {
+  const handleSelect = (e: bouquetType) => {
     setSelected(e);
   };
 
   useEffect(() => {
-    setCnt(3-(bouquets.length/4));
+    setCnt(3 - bouquets.length / 4);
+    /* eslint-disable-next-line */
   }, []);
 
   return (
@@ -28,14 +29,28 @@ const FllyBouquet = () => {
           <div className={style.selectAreaBox}>
             <div className={style.selectBox}>
               {bouquets.map((item, index) => (
-                <div key={index} onClick={() => {handleSelect(item)}}>
-                  <div className={selected == item?`${style.selectImg} ${style.selectedImg}` : style.selectImg} style={{ backgroundImage: `url(${item.url})` }}>
-                    {(selected == item) && <Image src="/img/icon/check.png" width={60} height={45} alt="check"></Image>}
+                <div
+                  key={index}
+                  onClick={() => {
+                    handleSelect(item);
+                  }}
+                >
+                  <div
+                    className={
+                      selected == item ? `${style.selectImg} ${style.selectedImg}` : style.selectImg
+                    }
+                    style={{ backgroundImage: `url(${item.url})` }}
+                  >
+                    {selected == item && (
+                      <Image src="/img/icon/check.png" width={60} height={45} alt="check"></Image>
+                    )}
                   </div>
                 </div>
               ))}
             </div>
-            <div className={style.againBtn}><Image src="/img/icon/again.png" width={40} height={40} alt="again"></Image></div>
+            <div className={style.againBtn}>
+              <Image src="/img/icon/again.png" width={40} height={40} alt="again"></Image>
+            </div>
             <div className={style.btnCount}>남은 생성 횟수 : {cnt}/3</div>
           </div>
           <div className={style.btnBox}>

@@ -37,8 +37,6 @@ const FllyFlower = () => {
         colors: colors.includes("선택 안함") ? null : colors,
       })
       .then((response) => {
-        console.log(response);
-        console.log(response.data);
         if (response.data.code === 200) {
           setFlowers(response.data.data.flowers);
           setFlowersColor(response.data.data.flowersColor);
@@ -52,12 +50,6 @@ const FllyFlower = () => {
           router.push("/fllylogin");
         } else ToastErrorMessage("오류가 발생했습니다.");
       });
-
-    console.log(
-      situation == "선택 안함" ? null : [situation],
-      target == "선택 안함" ? null : [target],
-      colors.includes("선택 안함") ? null : colors,
-    );
   };
 
   const handleSelect = (e: flowerCardType) => {
@@ -86,10 +78,12 @@ const FllyFlower = () => {
     selectedFlowers.map((value, index) => {
       selected.push(value.flowerCode);
     });
+    /* eslint-disable-next-line */
   }, []);
 
   useEffect(() => {
     axiosHandler();
+    /* eslint-disable-next-line */
   }, []);
 
   useEffect(() => {

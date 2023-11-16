@@ -53,8 +53,6 @@ const FllyOrderDetail = () => {
   const router = useRouter();
   const backImgRef = useRef<HTMLDivElement>(null);
   const backRef = useRef<HTMLDivElement>(null);
-  const requestImgRef = useRef<HTMLDivElement>(null);
-  const responeImgRef = useRef<HTMLDivElement>(null);
   const [slideState, setSlideState] = useState({ activeSlide: 0, activeSlide2: 0 });
   const [slideImgSize, setSlideImgSize] = useState<number>(2);
   const [backWidth, setbackWidth] = useState<number>();
@@ -89,7 +87,7 @@ const FllyOrderDetail = () => {
         .then((res) => {
           const rsData = res.data;
           if (rsData.code == 200) {
-            console.log(res.data.data);
+            // console.log(res.data.data);
             setFllyRequestInfo(rsData.data.fllyRequestDto);
             setFllyResponseInfo(rsData.data.fllyResponeDto);
           } else {
@@ -126,6 +124,7 @@ const FllyOrderDetail = () => {
           }
         });
     }
+    /* eslint-disable-next-line */
   }, []);
 
   return (

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import style from "@/components/flly/fllyUser/DeliveryModal.module.css"
+import style from "@/components/flly/fllyUser/DeliveryModal.module.css";
 import { useDaumPostcodePopup } from "react-daum-postcode";
 import { deliveryAddressType } from "@/recoil/fllyRecoil";
 
@@ -12,7 +12,14 @@ interface Props {
   setAddressCode: React.Dispatch<React.SetStateAction<deliveryAddressType>>;
 }
 
-const DeliveryModal = ({ ModalChangeHandler, UpdateBasicAddress, initialAddress, initialDetailAddress, UpdateDetailAddress, setAddressCode }: Props) => {
+const DeliveryModal = ({
+  ModalChangeHandler,
+  UpdateBasicAddress,
+  initialAddress,
+  initialDetailAddress,
+  UpdateDetailAddress,
+  setAddressCode,
+}: Props) => {
   const [basicAddress, setBasicAddress] = useState("");
   const [detailAddress, setDetailAddress] = useState("");
 
@@ -37,7 +44,6 @@ const DeliveryModal = ({ ModalChangeHandler, UpdateBasicAddress, initialAddress,
       }
       jibunAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
     }
-    console.log(data);
     setBasicAddress(jibunAddress);
     UpdateBasicAddress(jibunAddress);
 
@@ -65,7 +71,8 @@ const DeliveryModal = ({ ModalChangeHandler, UpdateBasicAddress, initialAddress,
   useEffect(() => {
     setBasicAddress(initialAddress);
     setDetailAddress(initialDetailAddress);
-  });
+    /* eslint-disable-next-line */
+  }, []);
 
   return (
     <>
@@ -85,8 +92,14 @@ const DeliveryModal = ({ ModalChangeHandler, UpdateBasicAddress, initialAddress,
               주소 검색
             </button>
           </div>
-          <div className={basicAddress===""? `${style.textBack} ${style.textColor}` : style.textBack}>{basicAddress===""? "기본 주소 영역입니다." : basicAddress}</div>
-          <input 
+          <div
+            className={
+              basicAddress === "" ? `${style.textBack} ${style.textColor}` : style.textBack
+            }
+          >
+            {basicAddress === "" ? "기본 주소 영역입니다." : basicAddress}
+          </div>
+          <input
             type="text"
             placeholder="상세 주소 영역입니다."
             className={style.textBack}

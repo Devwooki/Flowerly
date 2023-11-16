@@ -23,7 +23,6 @@ const Buyer = () => {
 
   const handleComplete = async () => {
     const tempToken = localStorage.getItem("accessToken");
-    console.log(buyerInput);
 
     try {
       const response = await axios.post(
@@ -41,16 +40,11 @@ const Buyer = () => {
 
       if (response.status === 200) {
         if (tempToken) {
-          console.log(response);
-          console.log("회원가입 성공");
           router.push(`/temp?token=${tempToken}`);
         }
       } else {
-        console.error("회원가입 실패:", response);
       }
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   };
 
   return (

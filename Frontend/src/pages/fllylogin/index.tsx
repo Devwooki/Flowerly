@@ -9,7 +9,6 @@ const FllyLogin = () => {
 
   const loginHandler = () => {
     // event.preventDefault();
-    console.log("loginHandler");
     window.location.href = "https://flower-ly.co.kr/oauth2/authorization/kakao";
     //window.location.href = "http://localhost:6090/oauth2/authorization/kakao";
   };

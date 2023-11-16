@@ -42,6 +42,7 @@ const ParticipationForm: React.FC<ParticipationFormProps> = ({ chattingId, modal
     // axios.get(`https://flower-ly.co.kr/api/chatting/flly/${chattingId}`).then((response) => {
     //   setParticipationInfo(response.data.data);
     // });
+    /* eslint-disable-next-line */
   }, []);
 
   return (

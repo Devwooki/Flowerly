@@ -7,7 +7,6 @@ export default function FirstPage() {
   useEffect(() => {
     //step1. 토큰 검사 로직을 여기에 추가
     //       예: 토큰이 유효하면 홈 페이지로 이동, 토큰이 없으면 회원 가입 페이지로 이동
-    console.log(localStorage.getItem("accessToken"));
     //step2.
     if (localStorage.getItem("accessToken")) {
       route.push("/home"); // 유효한 경우 홈 페이지로 리디렉션
