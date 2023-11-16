@@ -58,8 +58,8 @@ const MypageReviewCard = ({
     <>
       <div className={style.ReviewCardBack}>
         {isBuyerReview ? (
-          <div className={style.BuyerReviewCardHeader} onClick={() => handleStoreDetail()}>
-            <div>
+          <div className={style.BuyerReviewCardHeader}>
+            <div onClick={() => handleStoreDetail()}>
               {$reviewInfo.storeName}
               <span>
                 <Image src="/img/btn/right-btn.png" width={10} height={15} alt="이동"></Image>

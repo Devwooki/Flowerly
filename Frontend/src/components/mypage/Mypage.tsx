@@ -39,13 +39,15 @@ const Mypage = () => {
           if (memberInfo.role === "SELLER") {
             setSellerData(response.data.data);
             setStoreInfo(response.data.data);
-            const newStoreInfo = response.data.data; // 새로운 store 정보
+            const newStoreInfo = response.data.data;
             setMemberInfo((prevMemberInfo) => ({
               ...prevMemberInfo,
-              store: newStoreInfo, // memberInfo의 store만 업데이트
+              store: newStoreInfo,
             }));
           } else {
             setBuyerData(response.data.data);
+            // setMemberInfo(response.data.data);
+            // console.log(response.data.data);
           }
 
           if (response.headers.authorization) {
