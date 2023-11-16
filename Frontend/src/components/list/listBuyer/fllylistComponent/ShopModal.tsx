@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import style from "./ShopModal.module.css";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -44,7 +44,8 @@ const ShopModal = ({ shopInfo, modal, chatModal }: ShopModalProps) => {
               className={style.shopName}
               onClick={(e) => moveToShop(shopInfo.storeInfoDto.storeInfoId, e)}
             >
-              {shopInfo.storeInfoDto.storeName}&nbsp;&nbsp;<Image src={"/img/icon/move.png"} alt="move" width={28} height={28}/>
+              {shopInfo.storeInfoDto.storeName}&nbsp;&nbsp;
+              <Image src={"/img/icon/move.png"} alt="move" width={28} height={28} />
             </div>
             <div className={style.infoTable}>
               <Image src={"/img/icon/seller-location.png"} alt="가게 위치" width={10} height={15} />

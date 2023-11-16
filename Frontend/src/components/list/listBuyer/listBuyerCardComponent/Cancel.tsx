@@ -2,7 +2,6 @@ import React from "react";
 import style from "./Cancel.module.css";
 import { motion } from "framer-motion";
 import { tokenHttp } from "@/api/tokenHttp";
-import axios from "axios";
 import { ToastSuccessMessage } from "@/model/toastMessageJHM";
 
 type CancelProps = {
