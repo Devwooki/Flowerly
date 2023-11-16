@@ -23,6 +23,7 @@ import { ToastErrorMessage, ToastSuccessMessage } from "@/model/toastMessageJHM"
 import { tokenHttp } from "@/api/tokenHttp";
 import TimeSetModal from "@/components/flly/fllyUser/TimeSetModal";
 import { url } from "inspector";
+import LoadingModal from "@/components/flly/fllySeller/LoadingModal";
 
 const FllyTarget = () => {
   const router = useRouter();
@@ -60,6 +61,7 @@ const FllyTarget = () => {
   const imgBoxRef = useRef<HTMLDivElement>(null);
 
   const [checkSubmitted, setCheckSubmitted] = useState<boolean>(false);
+  const [loadingModalState, setLoadingModalState] = useState<boolean>(false);
 
   const handleBasicAddressUpdate = (newAddress: string) => {
     setBasicAddress(newAddress);
@@ -183,7 +185,8 @@ const FllyTarget = () => {
     if (checkSubmitted === false) {
       setCheckSubmitted(true);
       setShowNextModal(false);
-      ToastSuccessMessage("의뢰서를 저장 중입니다.");
+      setLoadingModalState(true);
+      // ToastSuccessMessage("의뢰서를 저장 중입니다.");
       tokenHttp
         .post(`/flly/request`, {
           situation: situation == "선택 안함" ? null : situation,
@@ -202,8 +205,10 @@ const FllyTarget = () => {
         .then((response) => {
           console.log(response.data);
           if (response.data.code === 200) {
-            if (response.headers.authorization) localStorage.setItem("accessToken", response.headers.authorization);
+            if (response.headers.authorization)
+              localStorage.setItem("accessToken", response.headers.authorization);
             router.push("/list");
+            setLoadingModalState(false);
           } else setCheckSubmitted(false);
         })
         .catch((error) => {
@@ -211,6 +216,7 @@ const FllyTarget = () => {
             router.push("/fllylogin");
           } else {
             setCheckSubmitted(false);
+            setLoadingModalState(false);
             ToastErrorMessage("오류가 발생했습니다.");
           }
         });
@@ -247,6 +253,7 @@ const FllyTarget = () => {
   return (
     <>
       <div className={style.fllyBox}>
+        {loadingModalState && <LoadingModal statetext={"플리 생성중"} />}
         {showTimeSetModal && (
           <TimeSetModal
             $dateIdx={dateIdx}

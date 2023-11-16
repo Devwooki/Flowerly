@@ -145,7 +145,7 @@ const FllySellerParticipation = () => {
   return (
     <>
       <div className={style.participationBack}>
-        {loadingModalState && <LoadingModal statetext={"참가중"} />}
+        {loadingModalState && <LoadingModal statetext={"플리 참여 중"} />}
         <div className={style.participationHeader}>
           <Image
             src="/img/btn/left-btn.png"
