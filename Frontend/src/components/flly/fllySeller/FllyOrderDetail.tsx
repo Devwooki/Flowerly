@@ -106,7 +106,7 @@ const FllyOrderDetail = () => {
         });
     } else {
       tokenHttp
-        .get("/seller/flly/request/buyer" + fllyId.fllyId)
+        .get("/seller/flly/request/buyer/" + fllyId.fllyId)
         .then((res) => {
           const rsData = res.data;
           if (rsData.code == 200) {
