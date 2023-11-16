@@ -48,8 +48,8 @@ const BuyerCards = ({ card, onConfirm }: BuyerCardsProps) => {
           <div className={style.cardBtn}>
             <button
               className={style.fllistBtnClose}
-              // onClick={() => ToastErrorMessage("주문 이후에는 플리스트가 비활성화됩니다.")}
-              onClick={() => fllistBtn(card.fllyId)}
+              onClick={() => ToastErrorMessage("주문 이후에는 플리스트가 비활성화됩니다.")}
+              //onClick={() => fllistBtn(card.fllyId)}
             >
               플리스트
             </button>

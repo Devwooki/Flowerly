@@ -3,8 +3,7 @@
   width: 100%;
   height: 100%;
   position: absolute;
-  top: 0px;
-  left: 0px;
+  bottom: 0px;
   z-index: 20;
   display: flex;
   text-align: center;
@@ -12,19 +11,19 @@
 
 .modalBack {
   width: calc(100% - 60px);
-  height: 300px;
+  height: 400px;
   background-color: white;
   margin: auto;
   border-radius: 10px;
 }
 
 .modalMain {
-  width: calc(100% - 40px);
+  width: calc(100% - 60px);
   margin: 30px auto 0px auto;
   text-align: left;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 10px;
 }
 
 .modalMain > div:nth-child(1) {
@@ -38,19 +37,26 @@
   color: #757575;
 }
 
-.modalTextBox {
-  width: calc(100% - 70px);
-  border-radius: 5px;
-  border: 2px solid var(--moregray);
-  margin: 20px auto;
-  height: 190px;
-  resize: none;
-  font-family: "NanumSquareNeoOTF-Lt";
-  padding: 10px;
+.imgBox {
+  width: calc(100% - 40px);
+  margin: 15px auto 20px auto;
+  display: flex;
+  justify-content: center;
+  align-self: center;
+}
+
+.imgBox > img {
+  object-fit: cover;
+  object-position: center;
+}
+
+.imgBox > input {
+  display: none;
 }
 
 .modalBtnBox {
-  width: 100%;
+  width: calc(100% - 60px);
+  margin: 0px auto;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -77,23 +83,4 @@
   background-color: white;
   border: 1px solid var(--moregray);
   color: var(--dark);
-}
-
-.imgBox {
-  width: calc(100% - 40px);
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: row;
-}
-
-.confirmBtn {
-  width: calc(100% - 50px);
-  margin: 2px auto;
-  line-height: 50px;
-  height: 50px;
-  border-radius: 5px;
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
-  font-family: "NanumSquareNeoOTF-Bd";
 }
