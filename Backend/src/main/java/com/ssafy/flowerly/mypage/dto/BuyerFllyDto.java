@@ -21,5 +21,7 @@ public class BuyerFllyDto {
     private Boolean isReviewed;
     private String imageUrls;
 
+    private String createdAt;
+
 
 }
