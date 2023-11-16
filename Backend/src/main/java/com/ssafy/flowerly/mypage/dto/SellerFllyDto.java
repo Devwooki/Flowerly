@@ -20,5 +20,6 @@ public class SellerFllyDto {
     private String progress;
     private String imageUrl;
     private String createdAt;
+    private Long requestId;
 
 }

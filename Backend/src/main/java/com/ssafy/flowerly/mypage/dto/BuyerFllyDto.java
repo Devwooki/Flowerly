@@ -22,6 +22,7 @@ public class BuyerFllyDto {
     private String imageUrls;
 
     private String createdAt;
+    private Long requestId;
 
 
 }
