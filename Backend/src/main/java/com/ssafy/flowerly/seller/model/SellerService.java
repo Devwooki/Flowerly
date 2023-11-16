@@ -1,10 +1,13 @@
 package com.ssafy.flowerly.seller.model;
 
 
+import com.ssafy.flowerly.FCM.service.FCMService;
 import com.ssafy.flowerly.address.repository.DongRepository;
 import com.ssafy.flowerly.address.repository.SigunguRepository;
+import com.ssafy.flowerly.chatting.repository.ChattingRepository;
 import com.ssafy.flowerly.chatting.repository.RequestDeliveryInfoRepository;
 import com.ssafy.flowerly.entity.*;
+import com.ssafy.flowerly.entity.type.ChattingType;
 import com.ssafy.flowerly.entity.type.OrderType;
 import com.ssafy.flowerly.entity.type.ProgressType;
 import com.ssafy.flowerly.entity.type.UploadType;
@@ -24,10 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -46,6 +46,9 @@ public class SellerService {
     private final FllyPickupRegionRepository fllyPickupRegionRepository;
     private final RequestDeliveryInfoRepository requestDeliveryInfoRepository;
     private final S3Service s3Service;
+    private final FCMService fcmService;
+    private final ChattingRepository chattingRepository;
+
 
 
     /*
@@ -54,7 +57,7 @@ public class SellerService {
 
     public Flly getFllyInfo(Long fllyId){
         Flly fllyInfo = fellyRepository.findByFllyIdAndActivate(fllyId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_FLLY));
+                .orElseThrow(() -> new CustomException(ErrorCode.FLLY_NOT_FOUND));
         return fllyInfo;
     }
 
@@ -63,7 +66,7 @@ public class SellerService {
      */
     public Member getMemberInfo(Long memberId, MemberRole memberRole){
         Member member = memberRepository.findByMemberId(memberId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_MEMBER));
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
         //유저가 판매자가 아니라면?
         if(member.getRole() != memberRole){
             throw new CustomException(ErrorCode.MEMBER_NOT_SELLER);
@@ -77,11 +80,11 @@ public class SellerService {
     public FllyRequestDto getRequestLetter(Long fllyId) {
         //여기선 flly 검증 x
         FllyRequestDto fllyRequest = fellyRepository.findByFllyId(fllyId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_FLLY)).toFllyRequestDto();
+                .orElseThrow(() -> new CustomException(ErrorCode.FLLY_NOT_FOUND)).toFllyRequestDto();
         //배달 일때만 주소 세팅
         if(fllyRequest.getOrderType().equals(OrderType.DELIVERY.getTitle())) {
             FllyDeliveryRegion fllyDelivery = fllyDeliveryRegionRepository
-                    .findByFllyFllyId(fllyId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_FLLY_DELIVERYREGION));
+                    .findByFllyFllyId(fllyId).orElseThrow(() -> new CustomException(ErrorCode.FLLY_DELIVERYREGION_NOT_FOUND));
             fllyRequest.setRequestAddress(fllyDelivery.getSido().getSidoName() + " " + fllyDelivery.getSigungu().getSigunguName());
         }
 
@@ -89,7 +92,7 @@ public class SellerService {
     }
 
     /*
-       의뢰 상세서 내용 ( 제안 + 의뢰 )
+       의뢰 상세서 내용 ( 제안 + 의뢰 ) - 판매자
      */
     public ParticipationRequestDto getFllyRequestInfo(Long memberId, Long fllyId){
 
@@ -104,6 +107,26 @@ public class SellerService {
 
         return result;
     }
+    /*
+     의뢰 상세서 내용 ( 제안 + 의뢰 ) - 구매자  // 결제가 된 이후
+   */
+    public ParticipationRequestDto getFllyBuyerRequestInfo(Long memberId, long fllyId) {
+
+        Flly fllyInfo = fellyRepository.findByFllyId(fllyId)
+                .orElseThrow(() -> new CustomException(ErrorCode.FLLY_NOT_FOUND));
+        if(!fllyInfo.getConsumer().getMemberId().equals(memberId)){
+            throw new CustomException(ErrorCode.NOT_CREATED_FLLY_MEMBER);
+        }
+
+        Request requestInfo = requestRepository.
+                findByFllyFllyIdAndIsPaidTrue(fllyId)
+                .orElseThrow(() -> new CustomException(ErrorCode.PAYMENT_NOT_FOUND));
+
+        ParticipationRequestDto resultBuyerRequest = getFllyRequestInfo(requestInfo.getSeller().getMemberId(), fllyId);
+
+        return resultBuyerRequest;
+    }
+    
 
     /*
         판매자가 해당 플리경매에 참여했는가 검증
@@ -133,7 +156,7 @@ public class SellerService {
                         .map(OrderRequestDto::toOrderSelectSimpleDto);
         //채택된 주문이 없을경우
         if(oderBySelect.getContent().isEmpty()){
-            throw new CustomException(ErrorCode.NOT_FIND_ORDERLIST);
+            throw new CustomException(ErrorCode.ORDERLIST_NOT_FOUND);
         }
 
         return oderBySelect;
@@ -150,12 +173,53 @@ public class SellerService {
         checkSellerRequestFlly(mamberId, fllyId);
         //꽃 정보 받아오기
         Flly fllyInfo = getFllyInfo(fllyId);
+        Member buyer = memberRepository.findByMemberId(fllyInfo.getConsumer().getMemberId())
+                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
         if(fllyInfo.getProgress() == ProgressType.FINISH_ORDER){
             fllyInfo.UpdateFllyProgress(ProgressType.FINISH_MAKING);
+            if(fllyInfo.getOrderType().equals(OrderType.DELIVERY)) {
+                try {
+                    fcmService.sendPushMessage(buyer.getMemberId(), "꽃다발 제작이 완료되었습니다.", "배달이 시작될 예정입니다!");
+                } catch (Exception e) {
+                    log.info("제작 완료 중 알림 전송 오류");
+                }
+            } else {
+                try {
+                    fcmService.sendPushMessage(buyer.getMemberId(), "꽃다발 제작이 완료되었습니다.", "픽업 시간에 맞춰 찾아가 주세요!");
+                } catch (Exception e) {
+                    log.info("제작 완료 중 알림 전송 오류");
+                }
+            }
         }
         else if(fllyInfo.getProgress() == ProgressType.FINISH_MAKING) {
             fllyInfo.UpdateFllyProgress(ProgressType.FINISH_DELIVERY);
+
+            //fllyId와 판매자Id롤 참여Id를 불러옴
+            FllyParticipation fllyParticipation = fllyParticipationRepository
+                    .findByFllyFllyIdAndSellerMemberId(fllyId, mamberId)
+                    .orElseThrow(() -> new CustomException(ErrorCode.FLLY_PARTICIPATION_NOT_FOUND));
+            //참여한 id로 채팅정보 불러옴
+            Chatting chattingInfo  = chattingRepository.findByFllyParticipationFllyParticipationId(fllyParticipation.getFllyParticipationId())
+                    .orElseThrow(() -> new CustomException(ErrorCode.CHATTING_NOT_FOUND));
+
+            chattingInfo.updateChattingStatus(ChattingType.COMPLETED);
+
+            chattingRepository.save(chattingInfo);
+
+            if(fllyInfo.getOrderType().equals(OrderType.DELIVERY)) {
+                try {
+                    fcmService.sendPushMessage(buyer.getMemberId(), "꽃다발 배달이 완료되었습니다.", "꽃다발에 대한 리뷰를 작성해 주세요.");
+                } catch (Exception e) {
+                    log.info("배달 완료 중 알림 전송 오류");
+                }
+            } else {
+                try {
+                    fcmService.sendPushMessage(buyer.getMemberId(), "꽃다발 픽업이 완료되었습니다.", "꽃다발에 대한 리뷰를 작성해 주세요.");
+                } catch (Exception e) {
+                    log.info("픽업 완료 중 알림 전송 오류");
+                }
+            }
         }
 
         Flly updateInfo = fellyRepository.save(fllyInfo);
@@ -167,19 +231,18 @@ public class SellerService {
         참여한 플리
      */
     public Page<OrderParticipationDto> getParticipation(Long memberId ,Pageable pageable){
-        //입찰인지 조율이지 + 경매마감시간이 안지난것만 보여져야한다
-        LocalDateTime currentDateTime = LocalDateTime.now();
-        log.info(currentDateTime.toString());
+        //입찰인지 조율이지 + 경매마감시간이 안지난것만 보여져야한다(X)
         Page<OrderParticipationDto> orderParticipation =
-                fllyParticipationRepository.findBySellerMemberIdParticipationDto(memberId, pageable, currentDateTime)
+                fllyParticipationRepository.findBySellerMemberIdParticipationDto(memberId, pageable)
                         .map(FllyParticipation::toOrderParticipationDto);
 
         if(orderParticipation.getContent().isEmpty()){
-            throw new CustomException(ErrorCode.NOT_FIND_FLLY_PARTICIPATE);
+            throw new CustomException(ErrorCode.FLLY_PARTICIPATION_NOT_FOUND);
         }
         return orderParticipation;
     }
-
+    
+    
 
     /*
         플리 참여하기
@@ -206,7 +269,8 @@ public class SellerService {
         }
 
         try {
-            fllyParticipationRepository
+
+            FllyParticipation fllyParticipation = fllyParticipationRepository
                     .save(FllyParticipation.builder()
                             .flly(fllyInfo)
                             .seller(member)
@@ -214,14 +278,24 @@ public class SellerService {
                             .offerPrice(data.getOfferPrice())
                             .content(data.getContent())
                             .build());
+
+            Member buyer = memberRepository.findByMemberId(fllyInfo.getConsumer().getMemberId())
+                            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+            try {
+                fcmService.sendPushMessage(buyer.getMemberId(), "꽃집이 플리에 참여했습니다.", "진행중인 플리의 플리스트에서 확인해 보세요!");
+            } catch (Exception e) {
+                log.info("sellerFllyParticipate 알림 전송 중 에러 발생");
+            }
         }catch (Exception e){
             throw new CustomException(ErrorCode.SELLER_PARTICIPATE_FAIL);
         }
 
+
+
     }
     
     /*
-        주변 플리 정보 불러오기
+        주변 플리 정보 불러오기(빼달)
      */
     public Page<FllyNearDto> getNearFllyDeliverylist(Long memberId, Pageable pageable) {
 
@@ -268,7 +342,7 @@ public class SellerService {
     }
 
     /*
-        주변 플리 정보 불러오기
+        주변 플리 정보 불러오기(픽업)
      */
     public Page<FllyNearDto> getNearFllyPickuplist(Long memberId, Pageable pageable) {
 
@@ -284,21 +358,20 @@ public class SellerService {
         //나의 주소를 가지고 전체 값을 찾아야한다! (시를 보내 구군의 전체를 찾고 / 시구군을 보내 동에서 전체를 찾는다 )
         if(store != null){
             Sigungu sigunguAll = sigunguRepository.findBysigunguCodeAllCode(store.getSido());
-            Dong dongAll = dongRepository.findByDongCodeAllCode(store.getSigungu());
 
+            List<Dong> dongAll = dongRepository.findByDongCodeAllCode(store.getSido());
             //픽업일경우에는 전체 + 내 주소만 보면되기때문
             List<Sigungu> pickupSigugun = new ArrayList<>();
-            List<Dong> pickupDong = new ArrayList<>();
-
-            pickupSigugun.add(store.getSigungu());
             pickupSigugun.add(sigunguAll);
-            pickupDong.add(store.getDong());
-            pickupDong.add(dongAll);
+            dongAll.add(store.getDong());
 
             //2-2 가게의 시 군 구 와 전체 시군구 와 전체 동을 가지고 flly픽업정보에서 찾는다
-            pickupAbleList =  fllyPickupRegionRepository
-                    .getSellerPickupAbleList(pickupSigugun, pickupDong, pageable, memberId)
-                    .map(FllyPickupRegion::toPickupFllyNearDto);
+//            pickupAbleList = fllyPickupRegionRepository
+//                    .getSellerPickupAbleList(pickupSigugun, dongAll, pageable, memberId)
+//                    .map(FllyPickupRegion::toPickupFllyNearDto);
+            pickupAbleList = fllyPickupRegionRepository
+                    .getSellerPickupAbleList(pickupSigugun, dongAll, pageable, memberId)
+                    .map(Flly::toPickupFllyNearDto);
 
         }
 
@@ -316,13 +389,13 @@ public class SellerService {
 
         Map<String, Object> result = new HashMap<>();
         FllyRequestSimpleDto fllyRequest = fellyRepository.findByFllyId(fllyId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FIND_FLLY)).toFllyRequestSimpleDto();
+                .orElseThrow(() -> new CustomException(ErrorCode.FLLY_NOT_FOUND)).toFllyRequestSimpleDto();
 
-        FllyOrderInfoDto fllyOrderInfo = requestRepository.findBySellerMemberIdAndFllyFllyId(memberId, fllyId)
+        FllyOrderInfoDto fllyOrderInfo = requestRepository.findByFllyFllyIdAndIsPaidTrue(fllyId)
                 .orElseThrow(() -> new CustomException(ErrorCode.SELLER_NOT_REQUEST)).toFllyOrderInfoDto();
 
-        String responseUrl = fllyParticipationRepository.findByFllyFllyIdAndSellerMemberId(fllyId, memberId).orElseThrow(
-                () -> new CustomException(ErrorCode.NOT_FIND_FLLY_PARTICIPATE)).getImageUrl();
+        String responseUrl = fllyParticipationRepository.findByFllyFllyIdAndSellerMemberId(fllyId, fllyOrderInfo.getSellerId()).orElseThrow(
+                () -> new CustomException(ErrorCode.FLLY_PARTICIPATION_NOT_FOUND)).getImageUrl();
 
         FllyDeliveryInfoDto deliveryInfo = null;
 
@@ -339,4 +412,6 @@ public class SellerService {
 
         return result;
     }
+
+    
 }

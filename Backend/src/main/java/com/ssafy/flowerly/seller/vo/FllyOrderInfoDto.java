@@ -21,5 +21,6 @@ public class FllyOrderInfoDto {
     private String responseContent;
     private Integer price;
     private String createTime;
+    private Long SellerId;
 
 }

@@ -110,7 +110,7 @@ public class JWTService {
 
         if(refreshToken != null){
             ResponseCookie refreshCookie = ResponseCookie.from(refreshHeader, refreshToken)
-                    .sameSite("Lax")
+                    .sameSite("None")
                     .httpOnly(true)
                     .secure(true)
                     .maxAge(refreshExpiration)
@@ -178,7 +178,7 @@ public class JWTService {
 
         // RefreshToken 쿠키 유효기간 0설정
         ResponseCookie refreshCookie = ResponseCookie.from(refreshHeader, refreshToken)
-                .sameSite("Lax")
+                .sameSite("None")
                 .httpOnly(true)
                 .secure(true)
                 .maxAge(0)
@@ -187,9 +187,19 @@ public class JWTService {
 
         //Redis의 RefreshToken 제거
         redisTemplate.delete(refreshToken);
+
+        //쿠키 전체 제거
+        DeleteCookies(request,response);
         response.setStatus(HttpServletResponse.SC_OK);
     }
 
+    private void DeleteCookies(HttpServletRequest request, HttpServletResponse response){
+        Cookie[] cookies = request.getCookies();
+        for(Cookie cki : cookies){
+            cki.setMaxAge(0);
+            response.addCookie(cki);
+        }
+    }
     //=======================
     //    테스트용 더미 토큰 생성
     //=======================
@@ -206,7 +216,7 @@ public class JWTService {
         //redis에 RefreshToken 저장
         redisTemplate.opsForValue().set(
                 dummyRefreshToken,
-                String.valueOf(1L),
+                String.valueOf(memberId),
                 9999999999L,
                 TimeUnit.MILLISECONDS
         );

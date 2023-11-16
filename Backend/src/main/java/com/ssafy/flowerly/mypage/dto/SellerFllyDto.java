@@ -18,6 +18,7 @@ public class SellerFllyDto {
     private String orderType;
     private String deliveryPickupTime;
     private String progress;
-
+    private String imageUrl;
+    private String createdAt;
 
 }

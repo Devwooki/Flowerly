@@ -1,6 +1,6 @@
-package com.ssafy.flowerly.seller.buyer;
+package com.ssafy.flowerly.buyer.controller;
 
-import com.ssafy.flowerly.seller.buyer.BuyerService;
+import com.ssafy.flowerly.buyer.service.BuyerService;
 import com.ssafy.flowerly.util.DataResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +24,7 @@ public class BuyerController {
 
     @GetMapping("/my-flly")
     public DataResponse<?> getMyFlly(HttpServletRequest request,
-                                     @PageableDefault(size = 6) Pageable pageable){
+                                     @PageableDefault(size = 50) Pageable pageable){
         Long memberId = (Long) request.getAttribute("memberId");
         return new DataResponse<>(HttpStatus.OK.value(), "진행중인 flly를 반환합니다.", buyerService.getMyFlly(pageable, memberId));
     }

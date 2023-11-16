@@ -45,10 +45,8 @@ public class Member extends BaseTimeEntity {
 //    private LocalDateTime updateddAt;
 
     @Column(nullable = false)
-    private boolean isNotification;
+    private boolean isNotification = true;
 
-    @OneToMany(mappedBy = "member", orphanRemoval = true)
-    private List<FCMToken> fcmTokens = new ArrayList<>();
 
     public MemberDto toDto(){
         return MemberDto.builder()
@@ -67,12 +65,9 @@ public class Member extends BaseTimeEntity {
         System.out.println(this);
         return this;
     }
-//    private void dataUpdate(){
-//        this.updatedAt = LocalDateTime.now();
-//    }
 
     public String notificationToggle(){
-        this.isNotification ^= this.isNotification;
+        this.isNotification = !this.isNotification;
 //        dataUpdate();
         return this.isNotification ?  "이제부터 알림을 받습니다" : "이제부터 알림을 받지 않습니다.";
     }
@@ -89,6 +84,10 @@ public class Member extends BaseTimeEntity {
         this.nickName =nickname;
     }
 
-
-
+    public void signOut(){
+        this.socialId = "";
+        this.isNotification = false;
+        this.role = MemberRole.DELETE;
+        this.email = "";
+    }
 }

@@ -2,7 +2,8 @@ package com.ssafy.flowerly.entity;
 
 import com.ssafy.flowerly.entity.common.BaseCreatedTimeEntity;
 import com.ssafy.flowerly.entity.type.*;
-import com.ssafy.flowerly.seller.buyer.dto.BuyerFllyDto;
+import com.ssafy.flowerly.buyer.dto.BuyerFllyDto;
+import com.ssafy.flowerly.seller.vo.FllyNearDto;
 import com.ssafy.flowerly.seller.vo.FllyRequestDto;
 import com.ssafy.flowerly.seller.vo.FllyRequestSimpleDto;
 import lombok.*;
@@ -11,6 +12,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -103,7 +105,7 @@ public class Flly extends BaseCreatedTimeEntity {
                 .build();
     }
 
-    public BuyerFllyDto toBuyerFlly(String storeName){
+    public BuyerFllyDto toBuyerFlly(){
         DateTimeFormatter Timeformatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
         return BuyerFllyDto.builder()
@@ -123,7 +125,6 @@ public class Flly extends BaseCreatedTimeEntity {
                 .progress(this.progress.getTitle())
                 .budget(this.budget)
                 .deadline(this.deadline != null ? this.deadline.format(Timeformatter) : null)
-                .storeName(storeName)
                 .build();
     }
 
@@ -135,6 +136,7 @@ public class Flly extends BaseCreatedTimeEntity {
 
         return FllyRequestSimpleDto.builder()
                 .fllyId(this.fllyId)
+                .requestImgUrl(this.imageUrl)
                 .situation(this.target != null ? this.situation.toString() : null)
                 .target(this.target != null ? this.target.toString() : null)
                 .color1(this.color1 != null ? this.color1.getTitle() : null)
@@ -143,6 +145,21 @@ public class Flly extends BaseCreatedTimeEntity {
                 .flower1(this.flower1 != null ? this.flower1.toFlowerSimpleInfoDto() : null)
                 .flower2(this.flower2 != null ?this.flower2.toFlowerSimpleInfoDto() : null)
                 .flower3(this.flower3 != null ?this.flower3.toFlowerSimpleInfoDto() : null)
+                .build();
+    }
+
+    public FllyNearDto toPickupFllyNearDto(){
+        DateTimeFormatter Timeformatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+        return FllyNearDto.builder()
+                .fllyId(this.getFllyId())
+                .flowerName1(this.getFlower1() != null ? this.getFlower1().getFlowerName() : "")
+                .flowerName2(this.getFlower2() != null ? this.getFlower2().getFlowerName() : "")
+                .flowerName3(this.getFlower3() != null ? this.getFlower3().getFlowerName() : "")
+                .budget(this.getBudget())
+                .imageUrl(this.getImageUrl())
+                .progress(this.getProgress().getTitle())
+                .deadline(this.getDeadline() != null ? this.getDeadline().format(Timeformatter) : null)
                 .build();
     }
 }

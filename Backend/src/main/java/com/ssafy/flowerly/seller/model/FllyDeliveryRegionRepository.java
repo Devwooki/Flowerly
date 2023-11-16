@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -14,23 +15,25 @@ import java.util.Optional;
 public interface FllyDeliveryRegionRepository extends JpaRepository<FllyDeliveryRegion, Long> {
 
 
-        @Query(
-                "SELECT fr FROM FllyDeliveryRegion fr " +
-                        " Left JOIN Flly fy ON fr.flly.fllyId = fy.fllyId " +
-                        " Where ( fr.dong IN :dongList " +
-                        " OR fr.sigungu IN :sigunguList " +
-                        " OR fr.sido IN :sidoList )" +
-                        " AND fy.isCanceled = false AND fy.deadline > current_timestamp" +
-                        " AND NOT EXISTS(SELECT 1 FROM FllyParticipation  fp " +
-                        " WHERE fp.flly.fllyId = fy.fllyId AND fp.seller.memberId = :memberId )" +
-                        " order by fy.deadline "
-        )
-        Page<FllyDeliveryRegion> getSellerDeliverAbleList(List<Sido> sidoList, List<Sigungu> sigunguList, List<Dong> dongList, Pageable pageable, Long memberId);
+    @Query(
+            "SELECT fr FROM FllyDeliveryRegion fr " +
+                    " Left JOIN Flly fy ON fr.flly.fllyId = fy.fllyId " +
+                    " Where ( fr.dong IN :dongList " +
+                    " OR fr.sigungu IN :sigunguList " +
+                    " OR fr.sido IN :sidoList )" +
+                    " AND fy.isCanceled = false AND fy.deadline > current_timestamp " +
+                    " AND (fy.progress = 'START' OR fy.progress = 'DISCUSSION') " +
+                    " AND NOT EXISTS(SELECT 1 FROM FllyParticipation  fp " +
+                    " WHERE fp.flly.fllyId = fy.fllyId AND fp.seller.memberId = :memberId ) " +
+                    "AND fy.consumer.role != 'DELETE' " +
+                    " order by fy.deadline "
+    )
+    Page<FllyDeliveryRegion> getSellerDeliverAbleList(List<Sido> sidoList, List<Sigungu> sigunguList, List<Dong> dongList, Pageable pageable, Long memberId);
 
 
-        Optional<FllyDeliveryRegion> findByFllyFllyId(Long aLong);
+    Optional<FllyDeliveryRegion> findByFllyFllyId(Long fllyId);
 
-        Optional<FllyDeliveryRegion> findByFlly(Flly flly);
+    Optional<FllyDeliveryRegion> findByFlly(Flly flly);
 }
 
 
