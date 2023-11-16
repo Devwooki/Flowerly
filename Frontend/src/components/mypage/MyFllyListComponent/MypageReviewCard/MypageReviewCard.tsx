@@ -46,6 +46,10 @@ const MypageReviewCard = ({
 
   const isBuyerReview = "storeName" in $reviewInfo;
 
+  const handleStoreDetail = () => {
+    Router.push(`/list/shop/${memberInfo.id}`);
+  };
+
   return (
     <>
       <div className={style.ReviewCardBack}>
