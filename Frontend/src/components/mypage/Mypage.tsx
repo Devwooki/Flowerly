@@ -18,7 +18,7 @@ interface SellerMyPageData {
 
 const Mypage = () => {
   const [memberInfo, setMemberInfo] = useRecoilState<MemberInfo>(memberInfoState);
-  const [storeInfo, setStoreInfo] = useRecoilState<StoreInfo | null>(storeInfoState);
+  const [storeInfo, setStoreInfo] = useRecoilState<StoreInfo>(storeInfoState);
   const [sellerData, setSellerData] = useState<SellerMyPageData | null>(null);
   const [buyerData, setBuyerData] = useState<string>("");
 
@@ -34,9 +34,13 @@ const Mypage = () => {
           if (memberInfo.role === "SELLER") {
             setSellerData(response.data.data);
             setStoreInfo(response.data.data);
+            const newStoreInfo = response.data.data; // 새로운 store 정보
+            setMemberInfo((prevMemberInfo) => ({
+              ...prevMemberInfo,
+              store: newStoreInfo, // memberInfo의 store만 업데이트
+            }));
           } else {
             setBuyerData(response.data.data);
-            console.log(response.data.data);
           }
 
           if (response.headers.authorization) {
@@ -53,12 +57,6 @@ const Mypage = () => {
 
     getMyPageData();
   }, []);
-
-  // useEffect(() => {
-  //   if (storeInfo) {
-  //     setMemberInfo({ ...memberInfo, store: storeInfo });
-  //   }
-  // }, [storeInfo]);
 
   const handleMyStoreInfo = () => {
     Router.push("/mypage/mystore");
@@ -98,7 +96,7 @@ const Mypage = () => {
         </div>
         {memberInfo.role === "SELLER" && sellerData && (
           <div className={style.StoreImgBox}>
-            <MypageStoreImg imageUrls={sellerData.imageUrl} />
+            <MypageStoreImg imageUrls={storeInfo.images} />
           </div>
         )}
 
