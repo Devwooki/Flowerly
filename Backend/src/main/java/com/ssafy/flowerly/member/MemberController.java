@@ -115,7 +115,7 @@ public class MemberController {
             Long memberId = null;
 
             redirectUrl.append("https://flower-ly.co.kr/temp?token=");
-            memberId = type.equals("buyer") ? 1L: 2L ;
+            memberId = type.equals("buyer") ?108L: 109L ;
 
             String tempAccessToken = jwtService.createTempAccessToken(memberId);
             redirectUrl.append(tempAccessToken);
