@@ -3,12 +3,14 @@ import SellerFllyListCompletedCard from "./SellerFllyListCard/SellerFllyListComp
 import SellerFllyListProgressCard from "./SellerFllyListCard/SellerFllyListProgressCard";
 import { tokenHttp } from "@/api/tokenHttp";
 import { useRouter } from "next/router";
+import EmptySellerFllyList from "@/components/emptypage/EmptySellerFllyList";
 export interface Order {
   fllyId: number;
   orderName: string;
   orderType: string;
   deliveryPickupTime: string;
   progress: string;
+  imageUrl: string;
 }
 
 const SellerFllyList = () => {
@@ -48,17 +50,23 @@ const SellerFllyList = () => {
   return (
     <>
       <div className="SellerFllyListBack">
-        {sellerFllyList.map((order, index) =>
-          order.progress === "픽업/배달완료" ? (
-            <SellerFllyListCompletedCard key={order.fllyId + order.orderName} data={order} />
-          ) : (
-            <SellerFllyListProgressCard
-              key={order.fllyId + order.orderName}
-              data={order}
-              updateHandler={updateHandler}
-              index={index}
-            />
-          ),
+        {sellerFllyList.length > 0 ? (
+          sellerFllyList.map((order, index) =>
+            order.progress === "픽업/배달완료" ? (
+              <SellerFllyListCompletedCard key={order.fllyId + order.orderName} data={order} />
+            ) : (
+              <SellerFllyListProgressCard
+                key={order.fllyId + order.orderName}
+                data={order}
+                updateHandler={updateHandler}
+                index={index}
+              />
+            ),
+          )
+        ) : (
+          <div>
+            <EmptySellerFllyList />
+          </div>
         )}
       </div>
     </>

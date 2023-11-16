@@ -6,6 +6,7 @@ import style from "./style/BuyerFllyList.module.css";
 import { tokenHttp } from "@/api/tokenHttp";
 import router from "next/router";
 import { ToastErrorMessage } from "@/model/toastMessageJHM";
+import EmptyBuyerFllyList from "@/components/emptypage/EmptyReviewList";
 
 interface BuyerFillListType {
   fllyId: number;
@@ -16,6 +17,7 @@ interface BuyerFillListType {
   fllyOrderType: string;
   requestOrderType: string;
   isReviewed: boolean;
+  imageUrls: string;
 }
 
 const BuyerFllyList = () => {
@@ -80,7 +82,7 @@ const BuyerFllyList = () => {
         />
       )}
       <div className={style.buyerBack}>
-        {buyerFllyList &&
+        {buyerFllyList && buyerFllyList.length > 0 ? (
           buyerFllyList.map((value, index) => (
             <>
               {value.progress === "픽업/배달완료" ? (
@@ -94,7 +96,12 @@ const BuyerFllyList = () => {
                 <BuyerFllyListProgressCard $fllyInfo={value} />
               )}
             </>
-          ))}
+          ))
+        ) : (
+          <div>
+            <EmptyBuyerFllyList />
+          </div>
+        )}
       </div>
     </>
   );

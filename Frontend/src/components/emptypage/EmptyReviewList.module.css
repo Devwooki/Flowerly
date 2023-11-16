@@ -1,0 +1,13 @@
+.emptyBack {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.emptyBack > div {
+  margin-top: 15px;
+}
+.emptyImg {
+  opacity: 0.8;
+}
