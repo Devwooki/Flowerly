@@ -5,6 +5,8 @@ import lombok.*;
 
 import java.util.List;
 
+
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -29,7 +31,7 @@ public class MyStoreInfoDto {
 
     private String dongName;
 
-    private List<String> images;
+    private List<ImageInfoDto> images;
 
 
 }

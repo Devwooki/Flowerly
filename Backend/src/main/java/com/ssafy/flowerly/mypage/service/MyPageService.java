@@ -172,8 +172,8 @@ public class MyPageService {
         List<StoreImage> storeImages = storeImageRepository.findBySeller_MemberId(memberId);
 
 
-        List<String> imageUrls = storeImages.stream()
-                .map(StoreImage::getImageUrl)
+        List<ImageInfoDto> imageInfoDtos = storeImages.stream()
+                .map(storeImage -> new ImageInfoDto(storeImage.getStoreImageId(), storeImage.getImageUrl()))
                 .collect(Collectors.toList());
 
         return MyStoreInfoDto.builder()
@@ -183,7 +183,7 @@ public class MyPageService {
                 .phoneNumber(storeInfo.getPhoneNumber())
                 .storeNumber(storeInfo.getStoreNumber())
                 .address(storeInfo.getAddress())
-                .images(imageUrls)
+                .images(imageInfoDtos)
                 .build();
     }
 
