@@ -6,7 +6,7 @@ import style from "./style/BuyerFllyList.module.css";
 import { tokenHttp } from "@/api/tokenHttp";
 import router from "next/router";
 import { ToastErrorMessage } from "@/model/toastMessageJHM";
-import EmptyBuyerFllyList from "@/components/emptypage/EmptyReviewList";
+import EmptyBuyerFllyList from "@/components/emptypage/EmptyBuyerFllyList";
 
 interface BuyerFillListType {
   fllyId: number;

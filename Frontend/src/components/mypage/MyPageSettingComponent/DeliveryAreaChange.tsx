@@ -201,7 +201,19 @@ const DeliveryAreaChange = () => {
     <>
       <div className={style.back}>
         <div className={style.container}>
-          <h3>배달 가능 지역 수정</h3>
+          <div className={style.deliveryHeader}>
+            <Image
+              src="/img/btn/left-btn.png"
+              alt="뒤로가기"
+              width={13}
+              height={20}
+              onClick={() => {
+                Router.back();
+              }}
+            />
+            <div className={style.deliveryTitle}>배달 가능 지역 수정</div>
+          </div>
+
           <div>
             <div className={style.deliveryRegionList}>
               {deliveryRegionCodeList.map((address, index) => (

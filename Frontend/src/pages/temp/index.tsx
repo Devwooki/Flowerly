@@ -109,8 +109,6 @@ const Temp = () => {
           console.log("액세스 토큰 로컬 스토리지에 저장 완료");
         }
         router.replace("/");
-        console.log("로그인 성공", response.data.data);
-        ToastSuccessMessage("로그인 성공!");
       } else {
         console.error("로그인 실패: ", response.data.message);
         ToastErrorMessage("로그인 실패");

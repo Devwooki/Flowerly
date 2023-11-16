@@ -9,7 +9,8 @@ import { MemberInfo, memberInfoState } from "@/recoil/memberInfoRecoil";
 
 import { tokenHttp } from "@/api/tokenHttp";
 import { ToastErrorMessage } from "@/model/toastMessageJHM";
-import EmptyReviewList from "../emptypage/EmptyBuyerFllyList";
+import EmptyReviewList from "../emptypage/EmptyReviewList";
+
 interface BaseReviewType {
   reviewId: number;
   content: string;

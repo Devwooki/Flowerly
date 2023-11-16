@@ -1,13 +1,12 @@
 import React from "react";
+import style from "./EmptyBuyerFllyList.module.css";
 import Image from "next/image";
-import style from "./EmptyReviewList.module.css";
-
-const EmptyReviewList = () => {
+const EmptyBuyerFllyList = () => {
   return (
     <div>
       <div className={style.emptyBack}>
         <Image
-          src="/img/etc/no-selection-image.png"
+          src="/img/etc/no-review-image.png"
           alt="empty"
           width={200}
           height={200}
@@ -18,4 +17,4 @@ const EmptyReviewList = () => {
     </div>
   );
 };
-export default EmptyReviewList;
+export default EmptyBuyerFllyList;

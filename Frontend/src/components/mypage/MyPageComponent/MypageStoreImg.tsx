@@ -37,8 +37,6 @@ const MypageStoreImg: React.FC<MypageStoreImgProps> = ({ imageUrls }) => {
     }
   }, []);
 
-  // 이미지 ID와 URL 분리
-
   // useEffect(() => {
   //   const images = imageUrls.map((imageUrl) => {
   //     const parts = imageUrl.split("_");
@@ -69,21 +67,21 @@ const MypageStoreImg: React.FC<MypageStoreImgProps> = ({ imageUrls }) => {
   // array.from() 함수를 사용하여 길이가 3인 배열을 만들고 imageUrls 배열의 인덱스에 값이 있는지 확인
   return (
     <>
-      <div className={style.StoreImg}>
+      {/* <div className={style.StoreImg}>
         <div>대표 사진</div>
 
         <div className={style.ImgBox} ref={imgBoxRef}>
           {Array.from({ length: 3 }).map((_, index) => (
             <div key={index} onClick={() => onImageClick(index)}>
-              {updatedUrls[index] ? (
-                <Image src={updatedUrls[index]} fill alt="대표사진" />
+              {imageUrls ? (
+                <Image src={imageUrls[index]} fill alt="대표사진" />
               ) : (
                 <Image src="/img/etc/NoImg.png" fill alt="NoImg" />
               )}
             </div>
           ))}
         </div>
-      </div>
+      </div> */}
 
       {/* {modalState && (
         <StoreImgModal
