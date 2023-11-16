@@ -20,9 +20,9 @@ type ChattingProps = {
 
 const ChattingListCard: React.FC<ChattingProps> = ({ chattingData, modalHandler }) => {
   const router = useRouter();
+  const upperDivRef = useRef<HTMLDivElement>(null);
 
   const [touchX, setTouchX] = useState(0);
-  const upperDivRef = useRef<HTMLDivElement>(null);
 
   const disableUpperDiv = () => {
     upperDivRef.current!.style.pointerEvents = "none";
@@ -57,6 +57,34 @@ const ChattingListCard: React.FC<ChattingProps> = ({ chattingData, modalHandler 
     if (upperDivRef.current) {
       const offset = Math.max(-50, Math.min(0, -distanceX)); // 최소 -50px, 최대 0px 사이로 제한
       upperDivRef.current.style.setProperty("left", `${offset}px`);
+    }
+  };
+
+  const [clickTimeout, setClickTimeout] = useState<number | null>(null);
+
+  const doubleClickHandler = () => {
+    // 더블 클릭: 타이머 초기화
+    if (clickTimeout !== null) {
+      clearTimeout(clickTimeout);
+      setClickTimeout(null);
+    }
+    console.log("Double click event");
+    if (upperDivRef.current) {
+      upperDivRef.current.style.setProperty("left", "-50px");
+      disableUpperDiv();
+    }
+  };
+
+  const clickHandler = () => {
+    if (clickTimeout === null) {
+      // 첫 번째 클릭: 타이머 설정
+      const timeoutId = window.setTimeout(() => {
+        // 타이머 만료: 단일 클릭으로 간주
+        console.log("Single click event");
+        router.push(`/chatting/room/${chattingData.chattingId}`);
+        setClickTimeout(null);
+      }, 250); // 250ms 후에 타이머 만료
+      setClickTimeout(timeoutId);
     }
   };
 
@@ -104,6 +132,7 @@ const ChattingListCard: React.FC<ChattingProps> = ({ chattingData, modalHandler 
         onTouchStart={touchStartHandler}
         onTouchMove={touchMoveHandler}
         onTouchEnd={touchEndHandler}
+        onDoubleClick={doubleClickHandler}
         ref={upperDivRef}
       >
         <div className={style.contentImg}>
@@ -112,7 +141,9 @@ const ChattingListCard: React.FC<ChattingProps> = ({ chattingData, modalHandler 
             height={70}
             src={chattingData.imageUrl}
             alt="의뢰 이미지"
-            onClick={() => router.push(`/chatting/room/${chattingData.chattingId}`)}
+            onClick={() => {
+              clickHandler();
+            }}
             onError={(e) => {
               e.currentTarget.src = "/img/etc/no-image.jpg";
             }}
@@ -120,7 +151,9 @@ const ChattingListCard: React.FC<ChattingProps> = ({ chattingData, modalHandler 
         </div>
         <div
           className={style.contentDivMain}
-          onClick={() => router.push(`/chatting/room/${chattingData.chattingId}`)}
+          onClick={() => {
+            clickHandler();
+          }}
         >
           <div className={style.cardTop}>
             <div className={style.opponentName}>{chattingData.opponentName}</div>
