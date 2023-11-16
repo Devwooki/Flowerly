@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/router";
-
+import { AnimatePresence, motion } from "framer-motion";
 import style from "./style/ChattingListCard.module.css";
 import Image from "next/image";
 
@@ -79,62 +79,66 @@ const ChattingListCard: React.FC<ChattingProps> = ({ chattingData, modalHandler 
   }, []);
 
   return (
-    <div className={style.wrapper}>
-      <div className={style.cardMain} id={style.underDiv}>
-        <div className={style.contentDiv}></div>
-        <div
-          className={style.exitDiv}
-          onClick={() => {
-            console.log(`${chattingData.chattingId}번 채팅방 나가기`);
-            modalHandler(chattingData.chattingId, true);
-          }}
-        >
-          <Image
-            className={style.icon}
-            src="/img/icon/chatting-exit.png"
-            width={22}
-            height={22}
-            alt="상태이미지"
-          />
-        </div>
-      </div>
-      <div
-        className={style.cardMain}
-        id={style.upperDiv}
-        onTouchStart={touchStartHandler}
-        onTouchMove={touchMoveHandler}
-        onTouchEnd={touchEndHandler}
-        ref={upperDivRef}
-      >
-        <div className={style.contentImg}>
-          <Image
-            width={70}
-            height={70}
-            src={chattingData.imageUrl}
-            alt="의뢰 이미지"
-            onClick={() => router.push(`/chatting/room/${chattingData.chattingId}`)}
-            onError={(e) => {
-              e.currentTarget.src = "/img/etc/no-image.jpg";
-            }}
-          ></Image>
-        </div>
-        <div
-          className={style.contentDivMain}
-          onClick={() => router.push(`/chatting/room/${chattingData.chattingId}`)}
-        >
-          <div className={style.cardTop}>
-            <div className={style.opponentName}>{chattingData.opponentName}</div>
-            <div className={style.time}>{chattingData.lastChattingTime}</div>
+    <>
+      <AnimatePresence>
+        <motion.div className={style.wrapper} layoutId={`wrapper-${chattingData.chattingId}`}>
+          <div className={style.cardMain} id={style.underDiv}>
+            <div className={style.contentDiv}></div>
+            <div
+              className={style.exitDiv}
+              onClick={() => {
+                console.log(`${chattingData.chattingId}번 채팅방 나가기`);
+                modalHandler(chattingData.chattingId, true);
+              }}
+            >
+              <Image
+                className={style.icon}
+                src="/img/icon/chatting-exit.png"
+                width={22}
+                height={22}
+                alt="상태이미지"
+              />
+            </div>
           </div>
-          <div className={style.cardBottom}>
-            <div>{chattingData.lastChattingMessage}</div>
-            {chattingData.unreadCnt > 0 && (
-              <div className={style.newMsg}>{chattingData.unreadCnt}</div>
-            )}
+          <div
+            className={style.cardMain}
+            id={style.upperDiv}
+            onTouchStart={touchStartHandler}
+            onTouchMove={touchMoveHandler}
+            onTouchEnd={touchEndHandler}
+            ref={upperDivRef}
+          >
+            <div className={style.contentImg}>
+              <Image
+                width={70}
+                height={70}
+                src={chattingData.imageUrl}
+                alt="의뢰 이미지"
+                onClick={() => router.push(`/chatting/room/${chattingData.chattingId}`)}
+                onError={(e) => {
+                  e.currentTarget.src = "/img/etc/no-image.jpg";
+                }}
+              ></Image>
+            </div>
+            <div
+              className={style.contentDivMain}
+              onClick={() => router.push(`/chatting/room/${chattingData.chattingId}`)}
+            >
+              <div className={style.cardTop}>
+                <div className={style.opponentName}>{chattingData.opponentName}</div>
+                <div className={style.time}>{chattingData.lastChattingTime}</div>
+              </div>
+              <div className={style.cardBottom}>
+                <div>{chattingData.lastChattingMessage}</div>
+                {chattingData.unreadCnt > 0 && (
+                  <div className={style.newMsg}>{chattingData.unreadCnt}</div>
+                )}
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-    </div>
+        </motion.div>
+      </AnimatePresence>
+    </>
   );
 };
 

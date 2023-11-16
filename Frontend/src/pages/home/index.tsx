@@ -78,9 +78,8 @@ export default function Home() {
     <div>
       <div className={style.home}>
         <div className={style.mainHeader}>
-          <div className={style.header}>플리로고</div>
-          <div className={style.title}>플리가 추천하는</div>
-          <div className={style.title}>가을의 꽃을 만나보세요</div>
+          <div className={style.titleUp}>플리가 추천하는</div>
+          <div className={style.titleDown}>가을의 꽃을 만나보세요</div>
         </div>
         <Swiper
           // loop={true}
@@ -92,8 +91,8 @@ export default function Home() {
           pagination={{ clickable: true, type: "bullets" }}
           creativeEffect={{
             prev: {
-              opacity: 0.7,
-              translate: [0, 0, -200],
+              // opacity: 0.7,
+              translate: [0, 0, -250],
             },
             next: {
               translate: [0, "100%", 0],
