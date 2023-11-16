@@ -60,7 +60,7 @@ const BuyerFllyList = () => {
         if (res.data.code === 200) {
           const sortedData = res.data.data.sort(
             (a: BuyerFillListType, b: BuyerFillListType) =>
-              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+              new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
           );
 
           setBuyerFllyList(sortedData);
@@ -89,20 +89,23 @@ const BuyerFllyList = () => {
       )}
       <div className={style.buyerBack}>
         {buyerFllyList && buyerFllyList.length > 0 ? (
-          buyerFllyList.map((value, index) => (
-            <>
-              {value.progress === "픽업/배달완료" ? (
-                <BuyerFllyListCompletedCard
-                  ModalChangeHandler={ModalChangeHandler}
-                  $fllyInfo={value}
-                  SelectIdChangeHandler={SelectIdChangeHandler}
-                  $index={index}
-                />
-              ) : (
-                <BuyerFllyListProgressCard $fllyInfo={value} />
-              )}
-            </>
-          ))
+          buyerFllyList.map(
+            (value, index) =>
+              value.progress !== "플리취소" && (
+                <>
+                  {value.progress === "픽업/배달완료" ? (
+                    <BuyerFllyListCompletedCard
+                      ModalChangeHandler={ModalChangeHandler}
+                      $fllyInfo={value}
+                      SelectIdChangeHandler={SelectIdChangeHandler}
+                      $index={index}
+                    />
+                  ) : (
+                    <BuyerFllyListProgressCard $fllyInfo={value} />
+                  )}
+                </>
+              ),
+          )
         ) : (
           <div className={style.emptyBack}>
             <EmptyBuyerFllyList />
