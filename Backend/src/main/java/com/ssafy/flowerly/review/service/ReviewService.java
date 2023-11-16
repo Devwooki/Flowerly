@@ -46,6 +46,7 @@ public class ReviewService {
                 .map(review -> {
 
                     String storeName = storeInfoRepository.findStoreName(review.getSeller());
+                    Long storeId = storeInfoRepository.findSellerMemberIdByMemberId(review.getSeller().getMemberId());
 
                     return ReviewResponseDto.builder()
                             .reviewId(review.getReviewId())
@@ -53,6 +54,7 @@ public class ReviewService {
                             .content(review.getContent())
                             .createdAt(review.getCreatedAt() != null ? review.getCreatedAt().format(formatter) : null)
                             .storeName(storeName)
+                            .storeId(storeId)
                             .build();
                 });
     }

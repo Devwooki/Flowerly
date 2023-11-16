@@ -144,7 +144,7 @@ public class MyPageService {
                 Request paidRequest = paidRequestOpt.get();
                 storeName = paidRequest.getSeller().getNickName();
                 requestOrderType = paidRequest.getOrderType().getTitle();
-                deliveryPickupTime = paidRequest.getDeliveryPickupTime().toString();
+                deliveryPickupTime = paidRequest.getDeliveryPickupTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
                 isReviewed = reviewRepository.existsByRequestRequestId(paidRequest.getRequestId());
             }
 
