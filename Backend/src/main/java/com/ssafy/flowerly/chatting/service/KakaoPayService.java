@@ -14,6 +14,7 @@ import com.ssafy.flowerly.exception.ErrorCode;
 import com.ssafy.flowerly.member.model.MemberRepository;
 import com.ssafy.flowerly.seller.model.RequestRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -29,6 +30,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class KakaoPayService {
 
@@ -147,7 +149,11 @@ public class KakaoPayService {
         // 알림 전송
         Member seller = memberRepository.findByMemberId(request.getSeller().getMemberId())
                         .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
-        fcmService.sendPushMessage(seller.getMemberId(), "구매자가 결제를 완료했습니다.", "꽃다발 제작을 준비해 주세요!");
+        try {
+            fcmService.sendPushMessage(seller.getMemberId(), "구매자가 결제를 완료했습니다.", "꽃다발 제작을 준비해 주세요!");
+        } catch (Exception e) {
+            log.info("주문 완료 중 알림 전송 오류 발생");
+        }
     }
 
     public PaymentDto.KakaoApproveResponse kakaoApprove(String tid, String requestId, String sellerId, String pgToken) {
