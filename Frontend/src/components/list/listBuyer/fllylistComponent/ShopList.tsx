@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import style from "./ShopList.module.css";
 import ShopCard from "./ShopCard";
-import { motion } from "framer-motion";
 import { tokenHttp } from "@/api/chattingTokenHttp";
 import { useInfiniteQuery } from "react-query";
 import { useInView } from "react-intersection-observer";
@@ -32,6 +31,7 @@ const ShopList = ({ fllyId }: ShopListProps) => {
       retry: false,
       onError: (error) => {
         if (error?.response?.status === 403) {
+          ToastErrorMessage("로그인 만료되어 로그인 화면으로 이동합니다.");
           router.push("/fllylogin");
         } else ToastErrorMessage("오류가 발생했습니다.");
       },

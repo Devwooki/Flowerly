@@ -37,6 +37,7 @@ tokenHttp.interceptors.response.use(
       // Router.push("/fllylogin");
     } else {
       console.log(error);
+      Router.push("/fllylogin");
     }
     // 에러를 반환하여 후속 .then() 또는 .catch()에서 처리할 수 있도록 합니다.
     return Promise.reject(error);

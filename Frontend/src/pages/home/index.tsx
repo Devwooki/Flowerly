@@ -14,7 +14,6 @@ import { useEffect, useState } from "react";
 import { tokenHttp } from "@/api/tokenHttp";
 import { ToastErrorMessage } from "@/model/toastMessageJHM";
 import { useRouter } from "next/router";
-import { motion } from "framer-motion";
 
 interface cardResponse {
   flowerCode: number;
@@ -67,6 +66,7 @@ export default function Home() {
       .catch((error) => {
         if (error.response.status === 403) {
           router.push("/fllylogin");
+          ToastErrorMessage("로그인 만료되어 로그인 화면으로 이동합니다.");
         } else ToastErrorMessage("오류가 발생했습니다.");
       });
   };
