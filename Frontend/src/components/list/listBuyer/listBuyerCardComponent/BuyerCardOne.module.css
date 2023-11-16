@@ -151,3 +151,8 @@
   margin-right: 15px;
   background-color: var(--moregray);
 }
+
+.cardBtn button {
+  font-family: "NanumSquareNeoOTF-Rg";
+  /* font-family: "NanumSquareNeoOTF-Bd"; */
+}
