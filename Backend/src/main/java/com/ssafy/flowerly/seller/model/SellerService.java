@@ -179,9 +179,17 @@ public class SellerService {
         if(fllyInfo.getProgress() == ProgressType.FINISH_ORDER){
             fllyInfo.UpdateFllyProgress(ProgressType.FINISH_MAKING);
             if(fllyInfo.getOrderType().equals(OrderType.DELIVERY)) {
-                fcmService.sendPushMessage(buyer.getMemberId(), "꽃다발 제작이 완료되었습니다.", "배달이 시작될 예정입니다!");
+                try {
+                    fcmService.sendPushMessage(buyer.getMemberId(), "꽃다발 제작이 완료되었습니다.", "배달이 시작될 예정입니다!");
+                } catch (Exception e) {
+                    log.info("제작 완료 중 알림 전송 오류");
+                }
             } else {
-                fcmService.sendPushMessage(buyer.getMemberId(), "꽃다발 제작이 완료되었습니다.", "픽업 시간에 맞춰 찾아가 주세요!");
+                try {
+                    fcmService.sendPushMessage(buyer.getMemberId(), "꽃다발 제작이 완료되었습니다.", "픽업 시간에 맞춰 찾아가 주세요!");
+                } catch (Exception e) {
+                    log.info("제작 완료 중 알림 전송 오류");
+                }
             }
         }
         else if(fllyInfo.getProgress() == ProgressType.FINISH_MAKING) {
@@ -200,9 +208,17 @@ public class SellerService {
             chattingRepository.save(chattingInfo);
 
             if(fllyInfo.getOrderType().equals(OrderType.DELIVERY)) {
-                fcmService.sendPushMessage(buyer.getMemberId(), "꽃다발 배달이 완료되었습니다.", "꽃다발에 대한 리뷰를 작성해 주세요.");
+                try {
+                    fcmService.sendPushMessage(buyer.getMemberId(), "꽃다발 배달이 완료되었습니다.", "꽃다발에 대한 리뷰를 작성해 주세요.");
+                } catch (Exception e) {
+                    log.info("배달 완료 중 알림 전송 오류");
+                }
             } else {
-                fcmService.sendPushMessage(buyer.getMemberId(), "꽃다발 픽업이 완료되었습니다.", "꽃다발에 대한 리뷰를 작성해 주세요.");
+                try {
+                    fcmService.sendPushMessage(buyer.getMemberId(), "꽃다발 픽업이 완료되었습니다.", "꽃다발에 대한 리뷰를 작성해 주세요.");
+                } catch (Exception e) {
+                    log.info("픽업 완료 중 알림 전송 오류");
+                }
             }
         }
 
