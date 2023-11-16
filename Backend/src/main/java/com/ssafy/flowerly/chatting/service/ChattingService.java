@@ -19,6 +19,7 @@ import com.ssafy.flowerly.seller.model.FllyParticipationRepository;
 import com.ssafy.flowerly.seller.model.FllyRepository;
 import com.ssafy.flowerly.seller.model.RequestRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -30,6 +31,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ChattingService {
@@ -79,8 +81,12 @@ public class ChattingService {
             responseMap.put("isNew", true);
             responseMap.put("chattingId", newChatting.getChattingId());
 
-            // 판매자에게 알림
-            fcmService.sendPushMessage(seller.getMemberId(), "구매자가 채팅을 요청했습니다.", "채팅 리스트에서 확인해 보세요!");
+            try {
+                // 판매자에게 알림
+                fcmService.sendPushMessage(seller.getMemberId(), "구매자가 채팅을 요청했습니다.", "채팅 리스트에서 확인해 보세요!");
+            } catch (CustomException e) {
+                log.info("알림 전송 중 오류 발생");
+            }
         }
 
         return responseMap;
@@ -171,7 +177,12 @@ public class ChattingService {
         } else if(chatting.getChattingStatus().equals(ChattingType.COMPLETED)) {
             isValidRoom = false;
             messageDtos.add(new ChattingMessageDto.Response(
-                    null, null, "INFORMATION", "완료된 주문입니다.", null));
+                    null, null, "INFORMATION", "종료된 주문입니다.", null));
+        } else if(chatting.getChattingStatus().equals(ChattingType.NORMAL) &&
+                (chatting.getFlly().getProgress().equals(ProgressType.FINISH_ORDER) || chatting.getFlly().getProgress().equals(ProgressType.FINISH_MAKING) || chatting.getFlly().getProgress().equals(ProgressType.FINISH_MAKING))) {
+            isValidRoom = false;
+            messageDtos.add(new ChattingMessageDto.Response(
+                    null, null, "INFORMATION", "이미 체결된 주문입니다.", null));
         }
 
         return new ChattingDto.RoomResponse(

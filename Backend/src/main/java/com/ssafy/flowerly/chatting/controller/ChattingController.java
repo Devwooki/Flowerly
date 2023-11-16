@@ -40,6 +40,7 @@ public class ChattingController {
         chattingRequestDto.setConsumerId(memberId);
 
         Map<String, Object> responseMap = chattingService.createChatting(chattingRequestDto);
+        System.out.println("responseMap: " + responseMap);
 
         log.info("채팅방 생성");
         return new DataResponse<>(200, "채팅방 생성 성공", responseMap);
