@@ -4,8 +4,15 @@ import Image from "next/image";
 import StoreImgModal from "../StoreImgComponent/StoreImgModal";
 import StoreImgSlider from "./StoreImgSlider";
 import StoreImgPlusModal from "../StoreImgComponent/StoreImgPlusModal";
-import { ImageInfo } from "@/recoil/memberInfoRecoil";
+import {
+  ImageInfo,
+  MemberInfo,
+  StoreInfo,
+  memberInfoState,
+  storeInfoState,
+} from "@/recoil/memberInfoRecoil";
 import { tokenHttp } from "@/api/tokenHttp";
+import { useRecoilSnapshot, useRecoilState } from "recoil";
 
 interface MypageStoreImgProps {
   imageInfos: ImageInfo[];
@@ -15,29 +22,16 @@ const MypageStoreImg: React.FC<MypageStoreImgProps> = ({ imageInfos }) => {
   const imgBoxRef = useRef<HTMLDivElement>(null);
 
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
-
   const [showStoreImgModal, setShowStoreImgModal] = useState(false);
   const [showStoreImgPlusModal, setShowStoreImgPlusModal] = useState(false);
-  const [imgInfos, setImgInfos] = useState<ImageInfo[]>([]);
+  const [storeInfoRecoil, setStoreInfoRecoil] = useRecoilState(storeInfoState);
+  const [imgInfos, setImgInfos] = useState<ImageInfo[]>(imageInfos);
 
   // 이미지 클릭 핸들러
   const onImageClick = (index: number) => {
     setSelectedImageIndex(index);
     setShowStoreImgModal(true);
   };
-
-  //이미지 사이즈 변화
-  useEffect(() => {
-    if (imgBoxRef.current) {
-      let imgBoxWidth = imgBoxRef.current.offsetWidth - 10;
-      let imgSize = imgBoxWidth / 3;
-      const divElements = imgBoxRef.current.querySelectorAll("div");
-      divElements.forEach((div) => {
-        div.style.width = imgSize.toFixed() + "px";
-        div.style.height = imgSize.toFixed() + "px";
-      });
-    }
-  }, []);
 
   //모달 상태 변경 핸들러
   const ModalChangeHandler = () => {
@@ -50,6 +44,7 @@ const MypageStoreImg: React.FC<MypageStoreImgProps> = ({ imageInfos }) => {
   };
 
   const updateImg = (newUrl: string) => {
+    // console.log("update", newUrl);
     if (!newUrl) return;
 
     tokenHttp
@@ -57,7 +52,8 @@ const MypageStoreImg: React.FC<MypageStoreImgProps> = ({ imageInfos }) => {
       .then((response) => {
         if (response.data.code === 200) {
           const newStoreInfo = response.data.data;
-          setImgInfos(newStoreInfo.images);
+          setStoreInfoRecoil(newStoreInfo);
+          setImgInfos([...newStoreInfo.images]);
         }
       })
       .catch((err) => {
@@ -73,17 +69,17 @@ const MypageStoreImg: React.FC<MypageStoreImgProps> = ({ imageInfos }) => {
     <>
       <div className={style.StoreImg}>
         <div>
-          대표 사진
+          <div>대표 사진</div>
           <Image
             src="/img/icon/plus01.png"
             alt="plus"
-            width={32}
-            height={32}
+            width={30}
+            height={30}
             onClick={onPlusClick}
           />
         </div>
 
-        <StoreImgSlider imageInfos={imageInfos} onImageClick={onImageClick} />
+        <StoreImgSlider imageInfos={imgInfos} onImageClick={onImageClick} />
       </div>
 
       {showStoreImgModal && (

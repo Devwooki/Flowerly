@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import style from "./StoreImgModal.module.css";
 import { tokenHttp } from "@/api/tokenHttp";
 import { useRouter } from "next/router";
+import Image from "next/image";
 import { ImageInfo } from "@/recoil/memberInfoRecoil";
 interface Props {
   ModalChangeHandler: () => void;
@@ -11,7 +12,14 @@ interface Props {
 }
 
 const StoreImgModal = ({ ModalChangeHandler, imageInfos, DeleteImg, index }: Props) => {
-  const router = useRouter();
+  const [imgUrl, setImgUrl] = useState<string>("");
+
+  useEffect(() => {
+    console.log(index);
+    if (index !== null) {
+      setImgUrl(imageInfos[index].imageUrl);
+    }
+  }, []);
 
   const NotClickEventHandler = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
@@ -45,7 +53,10 @@ const StoreImgModal = ({ ModalChangeHandler, imageInfos, DeleteImg, index }: Pro
         <div className={style.modalBack} onClick={NotClickEventHandler}>
           <div className={style.modalMain}>
             <div>이미지를 삭제하시겠습니까?</div>
-            <div></div>
+            <div>삭제후 복구하실수 없습니다</div>
+          </div>
+          <div className={style.imgBox}>
+            {imgUrl && <Image src={imgUrl} width={200} height={200} alt="삭제이미지" />}
           </div>
           <div className={style.modalBtnBox}>
             <div onClick={ModalChangeHandler}>취소</div>

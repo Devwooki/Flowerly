@@ -5,30 +5,66 @@
   /* border: 1px solid black; */
 }
 
-.MypageNameBack > div:nth-child(1) {
-  font-size: 14px;
+@media screen and (min-width: 380px) {
+  .MypageNameBack > div:nth-child(1) {
+    font-size: 14px;
+  }
+
+  .MypageNameBack > div:nth-child(2) {
+    display: flex;
+    font-size: 32px;
+    font-family: "NanumSquareNeoOTF-Bd";
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  .MypageNameBack > div:nth-child(2) > div:nth-child(2) {
+    font-size: 16px;
+    margin: 15px 0px 0px 15px;
+    color: var(--dark);
+    font-family: "NanumSquareNeoOTF-Rg";
+  }
+
+  .MypageNameBack > div:nth-child(2) > div:nth-child(2):hover {
+    cursor: pointer;
+  }
+
+  .link {
+    font-size: 14px;
+    align-items: flex-end;
+    display: flex;
+    margin-left: 5px;
+  }
 }
 
-.MypageNameBack > div:nth-child(2) {
-  display: flex;
-  font-size: 32px;
-  font-family: "NanumSquareNeoOTF-Bd";
-}
+@media screen and (max-width: 379px) {
+  .MypageNameBack > div:nth-child(1) {
+    font-size: 12px;
+  }
 
-.MypageNameBack > div:nth-child(2) > div:nth-child(2) {
-  font-size: 16px;
-  margin: 15px 0px 0px 15px;
-  color: var(--dark);
-  font-family: "NanumSquareNeoOTF-Rg";
-}
+  .MypageNameBack > div:nth-child(2) {
+    display: flex;
+    font-size: 26px;
+    font-family: "NanumSquareNeoOTF-Bd";
+    white-space: nowrap;
+    overflow: hidden;
+  }
 
-.MypageNameBack > div:nth-child(2) > div:nth-child(2):hover {
-  cursor: pointer;
-}
+  .MypageNameBack > div:nth-child(2) > div:nth-child(2) {
+    font-size: 16px;
+    margin: 15px 0px 0px 15px;
+    color: var(--dark);
+    font-family: "NanumSquareNeoOTF-Rg";
+  }
 
-.link {
-  font-size: 14px;
-  align-items: flex-end;
-  display: flex;
-  margin-left: 5px;
+  .MypageNameBack > div:nth-child(2) > div:nth-child(2):hover {
+    cursor: pointer;
+  }
+
+  .link {
+    font-size: 14px;
+    align-items: flex-end;
+    display: flex;
+    margin-left: 5px;
+  }
 }

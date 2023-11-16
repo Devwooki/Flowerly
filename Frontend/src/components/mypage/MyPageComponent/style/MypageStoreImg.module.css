@@ -1,11 +1,21 @@
 .StoreImg {
   width: calc(100% - 50px);
-  margin: 30px auto 30px auto;
+  margin: 10px auto 10px auto;
 }
 
 .StoreImg > div:nth-child(1) {
   font-family: "NanumSquareNeoOTF-Bd";
   font-size: 20px;
+  height: 30px;
+  line-height: 30px;
+  display: flex;
+  gap: 10px;
+}
+
+.storeImgSlider {
+  width: 100%;
+  padding-top: 10px;
+  /* border: 1px solid black; */
 }
 
 .ImgBox {
