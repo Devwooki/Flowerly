@@ -1,7 +1,8 @@
-import React from "react";
+import React, { use, useEffect, useRef } from "react";
 import style from "./StoreImgPlusModal.module.css";
 import { tokenHttp } from "@/api/tokenHttp";
 import { useRouter } from "next/router";
+import imageCompression from "browser-image-compression";
 
 interface Props {
   ModalChangeHandler: () => void;
@@ -13,19 +14,32 @@ interface Props {
 const StoreImgPlusModal = ({ ModalChangeHandler, UpdateImg }: Props) => {
   const router = useRouter();
   const [newUrl, setNewUrl] = React.useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  const fileInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const fileList: File[] = Array.from(e.target.files || []);
+  const fileInputHandler = async () => {
+    if (!inputRef.current) return;
+    const file: File = inputRef.current.files![0];
 
-    if (fileList.length === 0) {
+    if (!file) {
       return;
     }
 
     const formData = new FormData();
 
-    fileList.forEach((file) => {
-      formData.append("image", file);
-    });
+    const options = {
+      maxSizeMB: 0.2,
+      maxWidthOrHeight: 1920,
+      useWebWorker: true,
+    };
+
+    let redirectFile = null;
+    if (file) {
+      redirectFile = await imageCompression(file, options);
+      console.log(redirectFile);
+      formData.append("image", redirectFile);
+    }
+
+    console.log(formData);
 
     tokenHttp
       .post("/s3/upload/store", formData, {
@@ -34,6 +48,7 @@ const StoreImgPlusModal = ({ ModalChangeHandler, UpdateImg }: Props) => {
         },
       })
       .then((res) => {
+        console.log(res);
         if (res.data.code === 200) {
           const uploadedUrl = res.data.data[0] as string;
           setNewUrl(uploadedUrl);
@@ -42,6 +57,7 @@ const StoreImgPlusModal = ({ ModalChangeHandler, UpdateImg }: Props) => {
           if (res.headers.authorization) {
             localStorage.setItem("accessToken", res.headers.authorization);
           }
+          ModalChangeHandler();
         }
       })
       .catch((err) => {
@@ -51,7 +67,7 @@ const StoreImgPlusModal = ({ ModalChangeHandler, UpdateImg }: Props) => {
       });
   };
 
-  const uploadImage = () => {
+  useEffect(() => {
     if (!newUrl) return;
 
     const newImageData = {
@@ -63,6 +79,7 @@ const StoreImgPlusModal = ({ ModalChangeHandler, UpdateImg }: Props) => {
       .then((res) => {
         if (res.data.code === 200) {
           UpdateImg(newUrl);
+          console.log(newUrl);
           if (res.headers.authorization) {
             localStorage.setItem("accessToken", res.headers.authorization);
           }
@@ -73,7 +90,7 @@ const StoreImgPlusModal = ({ ModalChangeHandler, UpdateImg }: Props) => {
           router.push("/fllylogin");
         }
       });
-  };
+  }, [newUrl]);
 
   return (
     <>
@@ -81,13 +98,13 @@ const StoreImgPlusModal = ({ ModalChangeHandler, UpdateImg }: Props) => {
         <div className={style.modalBack}>
           <div className={style.modalMain}>
             <div>이미지를 등록해주세요!</div>
-            <input type="file" onChange={fileInputHandler} multiple={false} />
+            <input type="file" multiple={false} ref={inputRef} />
             <div></div>
           </div>
           <div className={style.modalBtnBox}>
             <div onClick={ModalChangeHandler}>취소</div>
 
-            <div onClick={uploadImage}>등록</div>
+            <div onClick={fileInputHandler}>등록</div>
           </div>
         </div>
       </div>
