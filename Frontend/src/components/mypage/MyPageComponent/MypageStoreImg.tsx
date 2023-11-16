@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import style from "./style/MypageStoreImg.module.css";
 import Image from "next/image";
 import StoreImgModal from "../StoreImgComponent/StoreImgModal";
+import StoreImgSlider from "./StoreImgSlider";
+import StoreImgPlusModal from "../StoreImgComponent/StoreImgPlusModal";
 
 interface MypageStoreImgProps {
   imageUrls: string[];
@@ -14,14 +16,17 @@ interface ImageInfo {
 
 const MypageStoreImg: React.FC<MypageStoreImgProps> = ({ imageUrls }) => {
   const imgBoxRef = useRef<HTMLDivElement>(null);
-  const [modalState, setModalState] = useState<boolean>();
+
   const [parsedImages, setParsedImages] = useState<ImageInfo[]>([]);
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
   const [updatedUrls, setUpdatedUrls] = useState<string[]>(imageUrls);
+  const [showStoreImgModal, setShowStoreImgModal] = useState(false);
+  const [showStoreImgPlusModal, setShowStoreImgPlusModal] = useState(false);
+
   // 이미지 클릭 핸들러
   const onImageClick = (index: number) => {
     setSelectedImageIndex(index);
-    setModalState(true);
+    setShowStoreImgModal(true);
   };
 
   //이미지 사이즈 변화
@@ -37,18 +42,19 @@ const MypageStoreImg: React.FC<MypageStoreImgProps> = ({ imageUrls }) => {
     }
   }, []);
 
-  // useEffect(() => {
-  //   const images = imageUrls.map((imageUrl) => {
-  //     const parts = imageUrl.split("_");
-  //     return { id: parseInt(parts[0], 10), url: parts[1] };
-  //   });
-  //   setParsedImages(images);
-  // }, [imageUrls]);
+  useEffect(() => {
+    const images = imageUrls.map((imageUrl) => {
+      const parts = imageUrl.split("_");
+      return { id: parseInt(parts[0], 10), url: parts[1] };
+    });
+    setParsedImages(images);
+  }, [imageUrls]);
 
-  // //모달 상태 변경 핸들러
-  // const ModalChangeHandler = () => {
-  //   setModalState(!modalState);
-  // };
+  //모달 상태 변경 핸들러
+  const ModalChangeHandler = () => {
+    setShowStoreImgModal(false);
+    setShowStoreImgPlusModal(false);
+  };
 
   // updateImg 함수
 
@@ -64,33 +70,43 @@ const MypageStoreImg: React.FC<MypageStoreImgProps> = ({ imageUrls }) => {
     }
   };
 
-  // array.from() 함수를 사용하여 길이가 3인 배열을 만들고 imageUrls 배열의 인덱스에 값이 있는지 확인
+  const onPlusClick = () => {
+    setShowStoreImgPlusModal(true);
+  };
+
   return (
     <>
-      {/* <div className={style.StoreImg}>
-        <div>대표 사진</div>
-
-        <div className={style.ImgBox} ref={imgBoxRef}>
-          {Array.from({ length: 3 }).map((_, index) => (
-            <div key={index} onClick={() => onImageClick(index)}>
-              {imageUrls ? (
-                <Image src={imageUrls[index]} fill alt="대표사진" />
-              ) : (
-                <Image src="/img/etc/NoImg.png" fill alt="NoImg" />
-              )}
-            </div>
-          ))}
+      <div className={style.StoreImg}>
+        <div>
+          대표 사진
+          <Image
+            src="/img/icon/plus01.png"
+            alt="plus"
+            width={32}
+            height={32}
+            onClick={onPlusClick}
+          />
         </div>
-      </div> */}
 
-      {/* {modalState && (
+        <StoreImgSlider imageUrls={imageUrls} onImageClick={onImageClick} />
+      </div>
+
+      {showStoreImgModal && (
         <StoreImgModal
           ModalChangeHandler={ModalChangeHandler}
           imageInfo={parsedImages}
           UpdateImg={updateImg}
           index={selectedImageIndex}
         />
-      )} */}
+      )}
+
+      {showStoreImgPlusModal && (
+        <StoreImgPlusModal
+          ModalChangeHandler={ModalChangeHandler}
+          UpdateImg={updateImg}
+          onPlusClick={onPlusClick}
+        />
+      )}
     </>
   );
 };
