@@ -57,7 +57,10 @@ const StoreImgPlusModal = ({ ModalChangeHandler, UpdateImg }: Props) => {
   };
 
   const fileInputHandler = async () => {
-    if (!fileInfo || !debouncedClick) {
+    if (!debouncedClick) {
+      ToastErrorMessage("현재 업로드 중입니다! 잠시만 기다려주세요");
+    }
+    if (!fileInfo) {
       ToastErrorMessage("이미지 파일을 업로드 해주세요");
       return;
     }
