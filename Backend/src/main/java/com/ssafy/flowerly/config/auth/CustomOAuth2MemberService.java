@@ -29,7 +29,7 @@ public class CustomOAuth2MemberService implements OAuth2UserService<OAuth2UserRe
 
     @Override // 소셜로그인 API 사용자 정보 제공 URI로 요청을 보내서 사용자의 정보를 얻는 메소드
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        log.info("CustomOAuth2MemberService.loadUser() 실행 / OAuth2.0 로그인 요청 진입");
+        //log.info("CustomOAuth2MemberService.loadUser() 실행 / OAuth2.0 로그인 요청 진입");
 
         // DefaultOAuth2UserService를 통해 DefaultOAuth2User 객체를 생성해서 반환한다.
         OAuth2UserService<OAuth2UserRequest, OAuth2User> delegate = new DefaultOAuth2UserService();
@@ -47,9 +47,9 @@ public class CustomOAuth2MemberService implements OAuth2UserService<OAuth2UserRe
                                                     .getProviderDetails()
                                                     .getUserInfoEndpoint()
                                                     .getUserNameAttributeName();
-        log.info("registrationId : {}", registrationId);
-        log.info("socialType : {}", socialType);
-        log.info("userNameAttribute : {} ", userNameAttributeName);
+        //log.info("registrationId : {}", registrationId);
+        //log.info("socialType : {}", socialType);
+        //log.info("userNameAttribute : {} ", userNameAttributeName);
 
         //socialType에 따라 유저 정보를 통해 OAuthAttribute 생성한다.
         OAuth2UserInfo oAuth2UserInfo = new KakaoOAuth2UserInfo(oAuth2User.getAttributes());
@@ -90,12 +90,12 @@ public class CustomOAuth2MemberService implements OAuth2UserService<OAuth2UserRe
         return memberRepository.findBySocialId(socialId)
                 //이메일이나 닉네임이 바뀔경우 업데이트 해주는 것
                 .map(m -> {
-                    log.info("유저 정보가 있내");
+                    //log.info("유저 정보가 있내");
                     return memberRepository.save(m.updateMail(oAuth2UserInfo.getEmail()));
                 })//업데이트 하는 것
                 //유저 정보가 없으면 생성한다.
                 .orElseGet(()-> {
-                    log.info("유저 정보가 없네 만들어야징");
+                    //log.info("유저 정보가 없네 만들어야징");
                     return memberRepository.save(oAuth2UserInfo.toEntity(socialId, socialType));//없으면 계정을 생성
                 }
         );

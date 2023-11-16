@@ -36,9 +36,8 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-
-        log.info("OAuth2.0 성공!!!");
-        log.info("요청 URI : {}", request.getRequestURI());
+        //log.info("OAuth2.0 성공!!!");
+        //log.info("요청 URI : {}", request.getRequestURI());
         try{
             CustomOAuth2User oAuth2User = (CustomOAuth2User) authentication.getPrincipal();
             //getPrincipal()로 얻은 Member정보가 GEUST인 경우 처음 요청 -> 정보 입력 페이지로 리다이렉트 한다.
@@ -63,7 +62,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 
     // 추후 과제 : 소설 로그인 시, 무조건 토큰 생성이 아닌 JWT필터링 처럼 RefreshToken 유무에 따라 다르게 처리한다.
     private void loginSuccess(HttpServletResponse response, CustomOAuth2User oAuth2User) throws IOException {
-        log.info("로그인 성공!");
+        //log.info("로그인 성공!");
         String accessToken = jwtService.createTempAccessToken(oAuth2User.getMemberId());
         jwtService.sendAccessToken(response,accessToken);
         //jwtService.sendAccessTokenAndRefreshToken(response, accessToken, null);

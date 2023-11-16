@@ -25,8 +25,8 @@ public class AuthInterceptor implements HandlerInterceptor {
         String prevPath = request.getHeader("X-Request-Path");
         String prevHost = request.getHeader("X-Request-Host");
         //request를 보낸 대상의 end-point가 /temp가 아니면 예외 발생
-        log.info("{}", request.getRequestURI());
-        log.info("{}, {} ",prevPath, prevHost);
+        //log.info("{}", request.getRequestURI());
+        //log.info("{}, {} ",prevPath, prevHost);
 
         if(prevHost == null || prevPath == null)
             throw new CustomException(ErrorCode.INVALID_ACCESS);

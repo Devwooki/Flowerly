@@ -23,7 +23,7 @@ public class FCMController {
                                     @RequestBody Map<String, Object> requestData){
         Long memberId = (Long) request.getAttribute("memberId");
         String fcmToken = (String) requestData.get("fcmToken");
-        log.info("{}, {}", memberId, fcmToken);
+        //log.info("{}, {}", memberId, fcmToken);
         return new DataResponse<>(HttpStatus.SC_OK, "토큰 등록성공", fcmService.addToken(memberId, fcmToken));
     }
 

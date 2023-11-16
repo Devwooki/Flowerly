@@ -23,7 +23,7 @@ public class DemoApplication {
 	@PostConstruct
 	public void started(){
 		TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
-		log.info("서버 시간 : {}", new Date());
+		//log.info("서버 시간 : {}", new Date());
 	}
 
 	public static void main(String[] args) {
