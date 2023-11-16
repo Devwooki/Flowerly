@@ -8,7 +8,7 @@ interface Props {
   ModalChangeHandler: () => void;
   $selectId: number;
   UpdateAdptList: (fllyUpdateProgress: string) => void;
-  $SelectInfo: adoptType;
+  $fllySelectInfo: adoptType;
 }
 
 interface adoptType {
@@ -26,24 +26,24 @@ const ListAdoptCheckModal = ({
   ModalChangeHandler,
   $selectId,
   UpdateAdptList,
-  $SelectInfo,
+  $fllySelectInfo,
 }: Props) => {
   const router = useRouter();
   const [message, setMessage] = useState<string>();
 
   useEffect(() => {
-    if ($SelectInfo.progress === "주문완료") {
+    if ($fllySelectInfo.progress === "주문완료") {
       setMessage("제작");
     }
-    if ($SelectInfo.progress === "제작완료") {
-      if ($SelectInfo.orderType === "배달") {
+    if ($fllySelectInfo.progress === "제작완료") {
+      if ($fllySelectInfo.orderType === "배달") {
         setMessage("배송");
       } else {
         setMessage("픽업");
       }
     }
     /* eslint-disable-next-line */
-  }, [$SelectInfo]);
+  }, [$fllySelectInfo]);
 
   const NotClickEventHandler = (e: React.MouseEvent<HTMLDivElement>) => {
     //상위 함수를 실행하지 말아라 (모달 꺼지는거 방지)
