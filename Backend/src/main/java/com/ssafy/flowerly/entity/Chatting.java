@@ -1,6 +1,7 @@
 package com.ssafy.flowerly.entity;
 
 import com.ssafy.flowerly.chatting.dto.ChattingDto;
+import com.ssafy.flowerly.chatting.service.ChattingService;
 import com.ssafy.flowerly.entity.common.BaseCreatedTimeEntity;
 import com.ssafy.flowerly.entity.common.BaseTimeEntity;
 import com.ssafy.flowerly.entity.type.ChattingType;
@@ -109,5 +110,9 @@ public class Chatting extends BaseCreatedTimeEntity {
                 .unreadCntSeller(0)
                 .chattingStatus(ChattingType.NORMAL)
                 .build();
+    }
+
+    public void updateStatus(ChattingType chattingType) {
+        this.chattingStatus = chattingType;
     }
 }

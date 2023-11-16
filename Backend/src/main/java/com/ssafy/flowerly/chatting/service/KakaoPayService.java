@@ -6,10 +6,8 @@ import com.ssafy.flowerly.chatting.dto.PaymentDto;
 import com.ssafy.flowerly.chatting.dto.StompChatRequest;
 import com.ssafy.flowerly.chatting.repository.ChattingRepository;
 import com.ssafy.flowerly.chatting.repository.PaymentRepository;
-import com.ssafy.flowerly.entity.Flly;
-import com.ssafy.flowerly.entity.Member;
-import com.ssafy.flowerly.entity.Payment;
-import com.ssafy.flowerly.entity.Request;
+import com.ssafy.flowerly.entity.*;
+import com.ssafy.flowerly.entity.type.ChattingType;
 import com.ssafy.flowerly.entity.type.ProgressType;
 import com.ssafy.flowerly.exception.CustomException;
 import com.ssafy.flowerly.exception.ErrorCode;
@@ -35,10 +33,11 @@ import java.util.Optional;
 public class KakaoPayService {
 
     private final ChattingService chattingService;
+    private final FCMService fcmService;
     private final PaymentRepository paymentRepository;
     private final MemberRepository memberRepository;
     private final RequestRepository requestRepository;
-    private final FCMService fcmService;
+    private final ChattingRepository chattingRepository;
 
     private static final ObjectMapper mapper = new ObjectMapper();
 
@@ -136,6 +135,10 @@ public class KakaoPayService {
         request.complete();
         // 플리 진행 상태 변경
         request.getFlly().setProgress(ProgressType.FINISH_ORDER);
+        // 채팅방 상태 변경
+        Chatting chatting = chattingRepository.findById(approveReq.getChattingId())
+                .orElseThrow(() -> new CustomException(ErrorCode.CHATTING_NOT_FOUND));
+        chatting.updateStatus(ChattingType.ORDERED);
         // 결제 완료 메세지 전송
         chattingService.saveChattingMessage(
                 new StompChatRequest(approveReq.getChattingId(), memberId, "PAYMENT_COMPLETE", "결제가 완료되었습니다.")
