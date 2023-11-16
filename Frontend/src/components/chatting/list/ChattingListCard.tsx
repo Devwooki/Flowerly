@@ -60,31 +60,15 @@ const ChattingListCard: React.FC<ChattingProps> = ({ chattingData, modalHandler 
     }
   };
 
-  const [clickTimeout, setClickTimeout] = useState<number | null>(null);
+  const clickHandler = () => {
+    router.push(`/chatting/room/${chattingData.chattingId}`);
+  };
 
-  const doubleClickHandler = () => {
-    // 더블 클릭: 타이머 초기화
-    if (clickTimeout !== null) {
-      clearTimeout(clickTimeout);
-      setClickTimeout(null);
-    }
-    console.log("Double click event");
+  const rightClickHandler = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.preventDefault();
     if (upperDivRef.current) {
       upperDivRef.current.style.setProperty("left", "-50px");
       disableUpperDiv();
-    }
-  };
-
-  const clickHandler = () => {
-    if (clickTimeout === null) {
-      // 첫 번째 클릭: 타이머 설정
-      const timeoutId = window.setTimeout(() => {
-        // 타이머 만료: 단일 클릭으로 간주
-        console.log("Single click event");
-        router.push(`/chatting/room/${chattingData.chattingId}`);
-        setClickTimeout(null);
-      }, 250); // 250ms 후에 타이머 만료
-      setClickTimeout(timeoutId);
     }
   };
 
@@ -134,7 +118,7 @@ const ChattingListCard: React.FC<ChattingProps> = ({ chattingData, modalHandler 
             onTouchStart={touchStartHandler}
             onTouchMove={touchMoveHandler}
             onTouchEnd={touchEndHandler}
-            onDoubleClick={doubleClickHandler}
+            onContextMenu={rightClickHandler}
             ref={upperDivRef}
           >
             <div className={style.contentImg}>
