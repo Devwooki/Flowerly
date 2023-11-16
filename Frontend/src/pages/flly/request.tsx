@@ -82,7 +82,7 @@ const FllyTarget = () => {
   };
 
   const handleClickPrev = () => {
-    setShowPrevModal(true);
+    if (checkSubmitted === false) setShowPrevModal(true);
   };
 
   const handleClickNext = () => {
