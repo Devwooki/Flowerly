@@ -3,38 +3,51 @@ import style from "./style/Mypage.module.css";
 import MypageName from "./MyPageComponent/MypageName";
 import MypageCategory from "./MyPageComponent/MypageCategory";
 import MypageStoreImg from "./MyPageComponent/MypageStoreImg";
-import { memberInfoState, MemberInfo } from "@/recoil/memberInfoRecoil";
+import {
+  memberInfoState,
+  MemberInfo,
+  StoreInfo,
+  storeInfoState,
+  ImageInfo,
+} from "@/recoil/memberInfoRecoil";
 import { useRecoilState } from "recoil";
 import { tokenHttp } from "@/api/tokenHttp";
 import Router from "next/router";
 import { ToastErrorMessage } from "@/model/toastMessageJHM";
+import { useResetRecoilState } from "recoil";
 
 interface SellerMyPageData {
   storeName: string;
   imageUrl: string[];
 }
 
-interface BuyerMyPageData {
-  nickName: string;
-}
-
 const Mypage = () => {
-  //나중에 리코일로 변경하면됩니다
   const [memberInfo, setMemberInfo] = useRecoilState<MemberInfo>(memberInfoState);
+  const [storeInfo, setStoreInfo] = useRecoilState<StoreInfo>(storeInfoState);
   const [sellerData, setSellerData] = useState<SellerMyPageData | null>(null);
-  const [buyerData, setBuyerData] = useState<BuyerMyPageData | null>(null);
+  const [buyerData, setBuyerData] = useState<string>("");
+
+  const resetMemberInfo = useResetRecoilState(memberInfoState);
 
   useEffect(() => {
     console.log(memberInfo);
 
     const getMyPageData = () => {
       tokenHttp
-        .get(memberInfo.role === "SELLER" ? "/mypage/seller" : "/mypage/buyer")
+        .get(memberInfo.role === "SELLER" ? "/mypage/store" : "/mypage/buyer")
         .then((response) => {
           if (memberInfo.role === "SELLER") {
             setSellerData(response.data.data);
+            setStoreInfo(response.data.data);
+            const newStoreInfo = response.data.data;
+            setMemberInfo((prevMemberInfo) => ({
+              ...prevMemberInfo,
+              store: newStoreInfo,
+            }));
           } else {
             setBuyerData(response.data.data);
+            // setMemberInfo(response.data.data);
+            // console.log(response.data.data);
           }
 
           if (response.headers.authorization) {
@@ -50,10 +63,32 @@ const Mypage = () => {
     };
 
     getMyPageData();
-  }, [memberInfo]);
+  }, []);
 
   const handleMyStoreInfo = () => {
     Router.push("/mypage/mystore");
+  };
+
+  const handleMyInfo = () => {
+    Router.push("/mypage/myinfo");
+  };
+
+  const handleLogout = () => {
+    tokenHttp
+      .get("/member/logout")
+      .then((res) => {
+        if (res.status === 200) {
+          ToastErrorMessage("로그아웃 되었습니다.");
+          localStorage.removeItem("accessToken");
+          resetMemberInfo();
+          Router.push("/");
+        }
+      })
+      .catch((err) => {
+        if (err.response.status === 403) {
+          Router.push("/fllylogin");
+        }
+      });
   };
 
   return (
@@ -62,11 +97,13 @@ const Mypage = () => {
         <div className={style.MyPageTitle}>마이페이지</div>
 
         <div className={style.NameBox}>
-          <MypageName name={sellerData ? sellerData.storeName : buyerData?.nickName || ""} />
+          {(sellerData || buyerData) && (
+            <MypageName data={sellerData ? sellerData.storeName : buyerData} />
+          )}
         </div>
         {memberInfo.role === "SELLER" && sellerData && (
           <div className={style.StoreImgBox}>
-            <MypageStoreImg imageUrls={sellerData.imageUrl} />
+            <MypageStoreImg imageInfos={storeInfo.images} />
           </div>
         )}
 
@@ -82,13 +119,19 @@ const Mypage = () => {
           </div>
         )}
         {memberInfo.role === "USER" && (
-          <div className={style.MypageSidBox}>
+          <div className={style.MypageSidBox} onClick={() => handleMyInfo()}>
             <div>
-              <div>내정보 수정 </div>
+              <div>내정보 수정</div>
               <div> &gt;</div>
             </div>
           </div>
         )}
+        <div className={style.MypageSidBox} onClick={() => handleLogout()}>
+          <div>
+            <div>로그아웃</div>
+            <div> &gt;</div>
+          </div>
+        </div>
       </div>
     </>
   );

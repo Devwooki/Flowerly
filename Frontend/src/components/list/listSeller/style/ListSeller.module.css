@@ -37,7 +37,7 @@
 }
 
 .headerTitle {
-  margin-left: 40px;
+  margin-left: 20px;
   margin-top: 30px;
   font-size: 28px;
   height: 32px;
@@ -50,4 +50,19 @@
   padding-top: 130px;
   overflow: scroll;
   /* border: 1px solid black; */
+}
+
+/* 없을떄 이미지 */
+.noListBox {
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+.noListBox > div {
+  margin: auto auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  text-align: center;
 }

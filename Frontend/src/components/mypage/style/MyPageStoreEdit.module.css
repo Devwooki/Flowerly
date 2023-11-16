@@ -1,0 +1,94 @@
+.myStoreBack {
+  width: 100%;
+  height: calc(100vh - 40px);
+  /* position: relative; */
+}
+
+.myStoreHeader {
+  width: 100%;
+  height: 70px;
+  display: flex;
+}
+
+.myStoreHeader > img {
+  margin: auto 0px auto 20px;
+}
+
+.myStoreHeader > div {
+  margin: auto 0px auto 20px;
+  font-size: 28px;
+  font-family: "Pretendard-Bold";
+}
+
+.myStoreMain {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.storeInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.storeInfoTitle {
+  width: calc(100% - 80px);
+  margin: 2px auto;
+  font-size: 16px;
+  font-family: "NanumSquareNeoOTF-Lt";
+}
+
+.storeInfoContent {
+  padding: 18px 25px;
+  width: calc(100% - 80px);
+  margin: 2px auto;
+  border-radius: 15px;
+  background-color: rgb(229, 233, 234, 0.3);
+  font-family: "NanumSquareNeoOTF-Rg";
+  border: none;
+}
+
+.infoWithBtn {
+  /* width: calc(100% - 80px); */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: calc(100% - 40px);
+  margin: 2px 15px;
+}
+
+.infoWithBtn input {
+  flex-grow: 1;
+  margin-right: 10px;
+}
+
+.infoWithBtn button {
+  flex-shrink: 0;
+}
+
+.confirmButton {
+  background-color: #485256;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+  border-radius: 5px;
+  border: 0px;
+  width: 80px;
+  height: 40px;
+  font-family: NanumSquareNeoOTF-Bd;
+  color: white;
+  font-size: 12px;
+
+  text-align: center;
+}
+
+.nextButton {
+  padding: 18px 25px;
+  width: calc(100% - 40px);
+  margin: 2px auto;
+  border-radius: 15px;
+  background-color: #c1e0df;
+  font-family: "Pretendard-Bold";
+  text-align: center;
+  border: none;
+  font-size: 14px;
+}

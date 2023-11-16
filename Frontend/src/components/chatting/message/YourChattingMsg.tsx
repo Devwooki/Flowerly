@@ -6,6 +6,7 @@ import OrderFormMsg from "./OrderFormMsg";
 import RequestMsg from "./RequestMsg";
 import PaymentMsg from "./PaymentMsg";
 import ImageMsg from "./ImageMsg";
+import PaymentCompleteMsg from "./PaymentCompleteMsg";
 
 type ChattingMsgProps = {
   message: {
@@ -15,6 +16,7 @@ type ChattingMsgProps = {
     type: string;
   };
   chattingId: number;
+  isValidRoom: boolean;
   modalHandler: Function;
   imageLoadHandler: Function;
   lastRequestMsgId: string | null;
@@ -23,6 +25,7 @@ type ChattingMsgProps = {
 const YourChattingMsg: React.FC<ChattingMsgProps> = ({
   message,
   chattingId,
+  isValidRoom,
   modalHandler,
   imageLoadHandler,
   lastRequestMsgId,
@@ -57,17 +60,19 @@ const YourChattingMsg: React.FC<ChattingMsgProps> = ({
       {message.type === "PARTICIPATION" ? (
         <ParticipationInfo chattingId={chattingId} modalHandler={modalHandler} />
       ) : message.type === "ORDER_FORM" ? (
-        <OrderFormMsg modalHandler={modalHandler} />
+        <OrderFormMsg modalHandler={modalHandler} isValidRoom={isValidRoom} />
       ) : message.type === "ORDER_COMPLETE" ? (
         <RequestMsg isLast={lastRequestMsgId == message.messageId} modalHandler={modalHandler} />
       ) : message.type === "PAYMENT_FORM" ? (
-        <PaymentMsg chattingId={chattingId} />
+        <PaymentMsg chattingId={chattingId} isValidRoom={isValidRoom} />
       ) : message.type === "IMAGE" ? (
         <ImageMsg
           imgUrl={message.content}
           onImageLoad={imageLoadHandler}
           modalHandler={modalHandler}
         />
+      ) : message.type === "PAYMENT_COMPLETE" ? (
+        <PaymentCompleteMsg chattingId={chattingId} />
       ) : (
         <div className={style.contentDiv}>{message.content}</div>
       )}

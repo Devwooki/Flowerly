@@ -1,13 +1,30 @@
 import React, { useEffect, useRef, useState } from "react";
 import style from "./style/MypageStoreImg.module.css";
 import Image from "next/image";
+import StoreImgModal from "../StoreImgComponent/StoreImgModal";
+import StoreImgSlider from "./StoreImgSlider";
+import StoreImgPlusModal from "../StoreImgComponent/StoreImgPlusModal";
+import { ImageInfo } from "@/recoil/memberInfoRecoil";
+import { tokenHttp } from "@/api/tokenHttp";
 
 interface MypageStoreImgProps {
-  imageUrls: string[];
+  imageInfos: ImageInfo[];
 }
 
-const MypageStoreImg: React.FC<MypageStoreImgProps> = ({ imageUrls }) => {
+const MypageStoreImg: React.FC<MypageStoreImgProps> = ({ imageInfos }) => {
   const imgBoxRef = useRef<HTMLDivElement>(null);
+
+  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
+
+  const [showStoreImgModal, setShowStoreImgModal] = useState(false);
+  const [showStoreImgPlusModal, setShowStoreImgPlusModal] = useState(false);
+  const [imgInfos, setImgInfos] = useState<ImageInfo[]>([]);
+
+  // 이미지 클릭 핸들러
+  const onImageClick = (index: number) => {
+    setSelectedImageIndex(index);
+    setShowStoreImgModal(true);
+  };
 
   //이미지 사이즈 변화
   useEffect(() => {
@@ -22,19 +39,69 @@ const MypageStoreImg: React.FC<MypageStoreImgProps> = ({ imageUrls }) => {
     }
   }, []);
 
+  //모달 상태 변경 핸들러
+  const ModalChangeHandler = () => {
+    setShowStoreImgModal(false);
+    setShowStoreImgPlusModal(false);
+  };
+
+  const deleteImg = (id: number) => {
+    setImgInfos((prevImageInfos) => prevImageInfos.filter((info) => info.storeImageId !== id));
+  };
+
+  const updateImg = (newUrl: string) => {
+    if (!newUrl) return;
+
+    tokenHttp
+      .get("/mypage/store")
+      .then((response) => {
+        if (response.data.code === 200) {
+          const newStoreInfo = response.data.data;
+          setImgInfos(newStoreInfo.images);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
+  const onPlusClick = () => {
+    setShowStoreImgPlusModal(true);
+  };
+
   return (
     <>
       <div className={style.StoreImg}>
-        <div>대표 사진</div>
-
-        <div className={style.ImgBox} ref={imgBoxRef}>
-          {imageUrls.map((url, index) => (
-            <div key={index}>
-              <Image src={url} fill alt="대표사진" />
-            </div>
-          ))}
+        <div>
+          대표 사진
+          <Image
+            src="/img/icon/plus01.png"
+            alt="plus"
+            width={32}
+            height={32}
+            onClick={onPlusClick}
+          />
         </div>
+
+        <StoreImgSlider imageInfos={imageInfos} onImageClick={onImageClick} />
       </div>
+
+      {showStoreImgModal && (
+        <StoreImgModal
+          ModalChangeHandler={ModalChangeHandler}
+          imageInfos={imageInfos}
+          DeleteImg={deleteImg}
+          index={selectedImageIndex}
+        />
+      )}
+
+      {showStoreImgPlusModal && (
+        <StoreImgPlusModal
+          ModalChangeHandler={ModalChangeHandler}
+          UpdateImg={updateImg}
+          onPlusClick={onPlusClick}
+        />
+      )}
     </>
   );
 };

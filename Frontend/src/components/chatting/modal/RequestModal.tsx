@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import style from "./style/RequestModal.module.css";
 import Image from "next/image";
 
-import { tokenHttp } from "@/api/chattingTokenHttp";
+import { tokenHttp } from "@/api/tokenHttp";
 import { useRouter } from "next/router";
 
 import { useRecoilValue } from "recoil";

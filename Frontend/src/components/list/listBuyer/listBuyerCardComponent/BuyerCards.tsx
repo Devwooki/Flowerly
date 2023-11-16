@@ -11,11 +11,12 @@ import { AnimatePresence, motion } from "framer-motion";
 
 type BuyerCardsProps = {
   card: BuyerCard;
+  onConfirm: () => void;
 };
 
 const stateProps = ["입찰", "조율", "주문완료", "제작완료", "픽업/배달완료"];
 
-const BuyerCards = ({ card }: BuyerCardsProps) => {
+const BuyerCards = ({ card, onConfirm }: BuyerCardsProps) => {
   const [cancelModal, setCancelModal] = useState(false); // 취소 모달
   const isClient = typeof window !== "undefined";
   const [windowWidth, setWindowWidth] = useState<number>(0);
@@ -24,7 +25,9 @@ const BuyerCards = ({ card }: BuyerCardsProps) => {
   const setCardProps = useSetRecoilState(FllylistDiscRecoil);
   const [selectedColor, setSelectedColor] = useState<string[]>([]);
 
-  useEffect(() => setSelectedColor([`${card.color1}`, `${card.color2}`, `${card.color3}`]), [card]);
+  useEffect(() => {
+    setSelectedColor([card.color1, card.color2, card.color3].filter((color) => color !== null));
+  }, [card]);
 
   const buttomBtnCmd = (stepNumber: number) => {
     switch (stepNumber) {
@@ -107,7 +110,7 @@ const BuyerCards = ({ card }: BuyerCardsProps) => {
         return "주황";
       case "분홍색":
         return "분홍";
-      case "노랑색":
+      case "노란색":
         return "노랑";
       case "파란색":
         return "파랑";
@@ -143,6 +146,7 @@ const BuyerCards = ({ card }: BuyerCardsProps) => {
         fllyId: fllyId,
       },
     });
+    // window.location.href = `https://flower-ly.co.kr/list/buyer/${fllyId}`;
   };
 
   const handleCancel = () => {
@@ -183,51 +187,72 @@ const BuyerCards = ({ card }: BuyerCardsProps) => {
         <div className={style.cardInfo}>
           <Image src={card.imageUrl} alt="꽃 이미지" width={150} height={150} />
           <div className={style.InfoText}>
-            <div className={style.infoTitle}>상품정보</div>
             <div className={style.infoTable}>
               <div className={style.infoTitle}>상황</div>
-              <div className={style.info}>{card.situation}</div>
+              <div className={style.info}>{card.situation === null ? "없음" : card.situation}</div>
             </div>
             <div className={style.infoTable}>
               <div className={style.infoTitle}>대상</div>
-              <div className={style.info}>{card.target}</div>
+              <div className={style.info}>{card.target === null ? "없음" : card.target}</div>
             </div>
             <div className={style.infoColorTable}>
               <div>주요색상</div>
-              {selectedColor.map((color, idx) => {
-                const rgbColor = mapColorNameToRGB(color);
-                return (
-                  <div
-                    key={idx}
-                    className={`${style.colorInfo} ${style.colorfirst}`}
-                    style={{
-                      color: isClient && windowWidth <= 426 ? rgbColor : "black",
-                      backgroundColor: isClient && windowWidth <= 426 ? rgbColor : "",
-                      // backgroundColor: isClient && windowWidth <= 426 ? "" : "var(--moregray)",
-                    }}
-                  >
-                    {windowWidth <= 426 ? "" : mapFlowerText(color)}
-                    {/* {windowWidth <= 426 ? "" : ""} */}
-                  </div>
-                  // <Image
-                  //   src={`/img/flowerColor/${mapFlowerColor(color)}.png`}
-                  //   alt="꽃 색상"
-                  //   width={40}
-                  //   height={40}
-                  //   key={idx}
-                  // />
-                );
-              })}
+              {selectedColor.length > 0 ? (
+                selectedColor.map((color, idx) => {
+                  const rgbColor = mapColorNameToRGB(color);
+                  return (
+                    <div
+                      key={idx}
+                      className={`${style.colorInfo} ${style.colorfirst}`}
+                      style={{
+                        color: isClient && windowWidth <= 426 ? rgbColor : "black",
+                        backgroundColor: isClient && windowWidth <= 426 ? rgbColor : "",
+                        // backgroundColor: isClient && windowWidth <= 426 ? "" : "var(--moregray)",
+                      }}
+                    >
+                      {windowWidth <= 426 ? "" : mapFlowerText(color)}
+                      {/* {windowWidth <= 426 ? "" : ""} */}
+                    </div>
+                    // <Image
+                    //   src={`/img/flowerColor/${mapFlowerColor(color)}.png`}
+                    //   alt="꽃 색상"
+                    //   width={40}
+                    //   height={40}
+                    //   key={idx}
+                    // />
+                  );
+                })
+              ) : (
+                <div
+                  className={`${style.colorInfo} ${style.colorfirst}`}
+                  style={{
+                    color: isClient && windowWidth <= 426 ? "black" : "black",
+                    backgroundColor: isClient && windowWidth <= 426 ? "grey" : "",
+                    // backgroundColor: isClient && windowWidth <= 426 ? "" : "var(--moregray)",
+                  }}
+                >
+                  {windowWidth <= 426 ? "" : "없음"}
+                  {/* {windowWidth <= 426 ? "" : ""} */}
+                </div>
+              )}
             </div>
             <div className={style.infoTable}>
               <div className={style.infoTitle}>꽃집</div>
-              <div className={`${style.flowerShop}`}>{card.consumer}</div>
+              <div className={`${style.flowerShop}`}>
+                {card.storeName === "조율" || card.storeName === "입찰"
+                  ? card.storeName + "중"
+                  : card.storeName}
+              </div>
             </div>
           </div>
         </div>
         {buttomBtnCmd(stepNumber)}
       </motion.div>
-      <AnimatePresence>{cancelModal && <Cancel onCancel={handleCancel} />}</AnimatePresence>
+      <AnimatePresence>
+        {cancelModal && (
+          <Cancel onCancel={handleCancel} onConfirm={onConfirm} fllyId={card.fllyId} />
+        )}
+      </AnimatePresence>
     </>
   );
 };

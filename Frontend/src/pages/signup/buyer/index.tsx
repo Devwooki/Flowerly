@@ -54,7 +54,7 @@ const Buyer = () => {
   };
 
   return (
-    <div>
+    <div className={style.back}>
       <div className={style.container}>
         <div className={style.header}>
           플리에서 사용할 <br></br>

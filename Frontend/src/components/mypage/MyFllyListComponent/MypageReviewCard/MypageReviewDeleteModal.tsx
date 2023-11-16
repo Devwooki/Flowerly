@@ -1,6 +1,8 @@
 import React from "react";
 import style from "./MypageReviewDeleteModal.module.css";
 import { ToastSuccessMessage } from "@/model/toastMessageJHM";
+import { tokenHttp } from "@/api/chattingTokenHttp";
+import router from "next/router";
 
 interface Props {
   ModalChangeHandler: () => void;
@@ -18,7 +20,25 @@ const MypageReviewDeleteModal = ({ ModalChangeHandler, $reviewId, UpdateReviewLi
   const SummitBtnHandler = () => {
     console.log($reviewId);
     //만약 200이라면 삭제 리뷰 아이디 엑시오스로 요청
-    UpdateReviewList();
+
+    tokenHttp
+      .delete(`/review/delete/${$reviewId}`)
+      .then((res) => {
+        if (res.data.code === 200) {
+          UpdateReviewList();
+          ToastSuccessMessage("리뷰가 삭제되었습니다.");
+          ModalChangeHandler();
+
+          if (res.headers.authorization) {
+            localStorage.setItem("accessToken", res.headers.authorization);
+          }
+        }
+      })
+      .catch((err) => {
+        if (err.response.status === 403) {
+          router.push("/fllylogin");
+        }
+      });
   };
 
   return (

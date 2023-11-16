@@ -1,20 +1,29 @@
 .ShopInforBack {
   position: relative;
 }
+
 .ShopInfoHeader {
   background-color: white;
   margin-bottom: 15px;
 }
+
 .headerTitle {
-  margin-left: 40px;
+  margin-left: 20px;
   margin-top: 30px;
   font-size: 28px;
   height: 32px;
   font-family: "Pretendard-Bold";
+  display: flex;
+  align-items: center;
 }
+
+.headerTitle img {
+  margin-right: 15px;
+}
+
 .ShopInfoMain {
   width: 100%;
   height: calc(100vh - 130px);
   overflow: scroll;
-  background-color: var(--moregray);
+  background-color: var(--gray);
 }

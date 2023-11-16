@@ -13,9 +13,14 @@ import { ToastErrorMessage } from "@/model/toastMessageJHM";
 type ChattingMenuProps = {
   sendOrderFormHandler: Function;
   sendImgHandler: Function;
+  modalHandler: Function;
 };
 
-const ChattingMenu: React.FC<ChattingMenuProps> = ({ sendOrderFormHandler, sendImgHandler }) => {
+const ChattingMenu: React.FC<ChattingMenuProps> = ({
+  sendOrderFormHandler,
+  sendImgHandler,
+  modalHandler,
+}) => {
   const inputFileRef = useRef<HTMLInputElement>(null);
   const memberInfo = useRecoilValue(memberInfoState);
   const router = useRouter();
@@ -119,6 +124,9 @@ const ChattingMenu: React.FC<ChattingMenuProps> = ({ sendOrderFormHandler, sendI
               width={32}
               height={32}
               alt="신고"
+              onClick={() => {
+                modalHandler("REPORT", true);
+              }}
             />
           </div>
           <div className={style.menuName}>신고</div>

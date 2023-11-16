@@ -34,6 +34,17 @@ const FllySellerCard = ({ $FllyDeliveryNear }: { $FllyDeliveryNear: FllyNearType
     );
   };
 
+  const pageParticipationHandelr = () => {
+    rounter.push(
+      {
+        pathname: "/flly/create/[fllyId]",
+        query: { fllyId: $FllyDeliveryNear.fllyId },
+      },
+      "/flly/create", // 이것은 브라우저 주소창에 표시될 URL입니다.
+      { shallow: true },
+    );
+  };
+
   return (
     <>
       <div className={style.back}>
@@ -42,8 +53,8 @@ const FllySellerCard = ({ $FllyDeliveryNear }: { $FllyDeliveryNear: FllyNearType
             <Image
               src={imageSrc}
               onError={errImageChangHandler}
-              width={190}
-              height={190}
+              width={170}
+              height={170}
               alt="이미지"
             ></Image>
             <div className={style.cardMainImgInfo}>{$FllyDeliveryNear.progress}중</div>
@@ -59,18 +70,20 @@ const FllySellerCard = ({ $FllyDeliveryNear }: { $FllyDeliveryNear: FllyNearType
             </div>
             <div>
               <Image src="/img/icon/seller-money.png" alt="돈" width={22} height={22}></Image>
-              <span>{$FllyDeliveryNear.budget} 원</span>
+              <span> {Number($FllyDeliveryNear.budget).toLocaleString()} 원</span>
             </div>
             <div>
               <Image src="/img/icon/seller-time.png" alt="마감" width={22} height={22}></Image>
               <span>~ {$FllyDeliveryNear.deadline}</span>
             </div>
             <div>
-              <button onClick={pageMoveHandler}>참여하기</button>
+              <button onClick={pageParticipationHandelr}>참여하기</button>
             </div>
           </div>
         </div>
-        <div className={style.cardfooter}>자세히 보기</div>
+        <div className={style.cardfooter} onClick={pageMoveHandler}>
+          자세히 보기
+        </div>
       </div>
     </>
   );

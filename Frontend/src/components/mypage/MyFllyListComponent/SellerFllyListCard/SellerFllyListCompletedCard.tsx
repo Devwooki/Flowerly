@@ -1,33 +1,50 @@
 import React from "react";
 import style from "./SellerFllyListCompletedCard.module.css";
+import Router from "next/router";
 
-const SellerFllyListCompletedCard = () => {
+interface Order {
+  fllyId: number;
+  orderName: string;
+  orderType: string;
+  deliveryPickupTime: string;
+  progress: string;
+  imageUrl: string;
+}
+
+interface SellerFllyListCompletedCardProps {
+  data: Order;
+}
+
+const SellerFllyListCompletedCard: React.FC<SellerFllyListCompletedCardProps> = ({ data }) => {
+  const handleMoveToOrder = () => {
+    Router.push(`/flly/detail/${data.fllyId}`);
+  };
   return (
     <>
       <div className={style.cardBack}>
-        <div className={style.ImgBox} style={{ backgroundImage: `url(/test/horizental.jpg)` }} />
+        <div className={style.ImgBox} style={{ backgroundImage: `url('${data.imageUrl}')` }} />
         <div className={style.InfoBox}>
           <div className={style.OrderAddBox}>
-            <div>
+            <div onClick={handleMoveToOrder}>
               주문서 보기 <span> &gt;</span>
             </div>
           </div>
           <div className={style.OrderInfoBox}>
             <div className={style.OrderInfoBoxHarf}>
               <div>주문자</div>
-              <div>김동민</div>
+              <div>{data.orderName}</div>
             </div>
             <div className={style.OrderInfoBoxHarf}>
               <div>주문유형</div>
-              <div>배달</div>
+              <div>{data.orderType}</div>
             </div>
             <div className={style.OrderInfoBoxAll}>
               <div>배송완료 일시</div>
-              <div>23.10.21. 18:00</div>
+              <div>{data.deliveryPickupTime}</div>
             </div>
           </div>
           <div className={style.OrderFooter}>
-            <div>배달 완료</div>
+            <div>{data.progress}</div>
           </div>
         </div>
       </div>

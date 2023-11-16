@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import style from "./style/ParticipationInfo.module.css";
 import Image from "next/image";
 
-import { tokenHttp } from "@/api/chattingTokenHttp";
+import { tokenHttp } from "@/api/tokenHttp";
 
 type ParticipationFormProps = {
   chattingId: number;
@@ -55,7 +55,7 @@ const ParticipationForm: React.FC<ParticipationFormProps> = ({ chattingId, modal
         <div className={style.middle}>
           <div
             className={style.imgDiv}
-            style={{ backgroundImage: `url(${"/test/test-flower-img.png"})` }}
+            style={{ backgroundImage: `url(${participationInfo?.imageUrl})` }}
           ></div>
           <div className={style.contentDiv}>
             <div className={style.contentItem}>
@@ -70,7 +70,7 @@ const ParticipationForm: React.FC<ParticipationFormProps> = ({ chattingId, modal
                 {participationInfo && participationInfo.offerPrice.toLocaleString()} 원
               </div>
             </div>
-            <div className={style.contentItem}>
+            <div className={style.contentItem} id={style.comment}>
               <div>{participationInfo && participationInfo.content}</div>
             </div>
           </div>

@@ -11,6 +11,11 @@ export interface MemberInfo {
   notification: boolean;
 }
 
+export interface ImageInfo {
+  storeImageId: number;
+  imageUrl: string;
+}
+
 export interface StoreInfo {
   storeInfoId: number;
   storeName: string;
@@ -18,7 +23,13 @@ export interface StoreInfo {
   sellerName: string;
   phoneNumber: string;
   address: string;
-  images: string[];
+  images: ImageInfo[];
+}
+
+export interface sellerAddressType {
+  sido: string;
+  sigungu: string;
+  dong: string;
 }
 
 const isBrowser = typeof window !== "undefined";
@@ -27,6 +38,20 @@ const localStorage = isBrowser ? window.localStorage : undefined;
 const { persistAtom } = recoilPersist({
   key: "fllyMemberInfo",
   storage: localStorage,
+});
+
+export const storeInfoState = atom<StoreInfo>({
+  key: "storeInfoState",
+  default: {
+    storeInfoId: 0,
+    storeName: "",
+    storeNumber: "",
+    sellerName: "",
+    phoneNumber: "",
+    address: "",
+    images: [],
+  },
+  effects_UNSTABLE: [persistAtom],
 });
 
 export const memberInfoState = atom<MemberInfo>({

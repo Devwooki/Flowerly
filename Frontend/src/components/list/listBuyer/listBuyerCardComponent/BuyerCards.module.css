@@ -10,13 +10,13 @@
 
 .cardInfo {
   display: flex;
-  position: relative;
   margin: 10px 0 10px;
+  position: relative;
+  align-items: center;
 }
 
 .cardInfo > img {
   min-width: 150px;
-  margin-top: 40px;
   border-radius: 10px;
 }
 
@@ -29,7 +29,7 @@
 }
 .infoTable {
   display: flex;
-  margin-bottom: 5px;
+  /* margin-bottom: 5px; */
   margin-left: 5px;
   font-size: 14px;
   /* border: 1px solid black; */
@@ -81,7 +81,6 @@
   color: black;
   width: 27px;
   background-color: var(--moregray);
-  /* display: inline; */
 }
 
 @media (max-width: 426px) {
@@ -136,4 +135,9 @@
 .fllistBtnClose {
   margin-right: 15px;
   background-color: var(--moregray);
+}
+
+.cardBtn button {
+  font-family: "NanumSquareNeoOTF-Rg";
+  /* font-family: "NanumSquareNeoOTF-Bd"; */
 }

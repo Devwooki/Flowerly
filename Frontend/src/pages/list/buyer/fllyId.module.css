@@ -9,14 +9,21 @@
   z-index: 10;
 }
 .headerTitle {
-  margin-left: 40px;
+  margin-left: 20px;
   margin-top: 30px;
   font-size: 28px;
   height: 32px;
   font-family: "Pretendard-Bold";
+  display: flex;
+  align-items: center;
 }
+
+.headerTitle img {
+  margin-right: 15px;
+}
+
 .ListBuyerMain {
   width: 100%;
-  height: calc(100vh - 130px);
+  height: calc(100vh - 120px);
   overflow: scroll;
 }

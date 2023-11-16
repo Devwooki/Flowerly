@@ -7,6 +7,7 @@ import { ToastErrorMessage } from "@/model/toastMessageJHM";
 import { useRouter } from "next/router";
 import { tokenHttp } from "@/api/tokenHttp";
 import { useInView } from "react-intersection-observer";
+import Image from "next/image";
 
 interface FllyNearType {
   fllyId: number;
@@ -39,7 +40,7 @@ const FllySeller = () => {
         }
         if (rData.code === -4004) {
           setNearFllyList([]);
-          ToastErrorMessage(rData.message);
+          // ToastErrorMessage(rData.message);
         }
         if (res.headers.authorization) {
           localStorage.setItem("accessToken", res.headers.authorization);
@@ -77,7 +78,7 @@ const FllySeller = () => {
     <>
       <div className={style.fllyBox}>
         <div className={style.header}>
-          <div className={style.headerTitle}>진행중인 플리</div>
+          <div className={style.headerTitle}>주변 플리 목록</div>
           {/* <div className={style.headerSortBox}>
             <select className={style.headerSortBoxSelect}>
               <option>최신순</option>
@@ -108,10 +109,31 @@ const FllySeller = () => {
           </div>
         </div>
         <div className={style.mainBox}>
-          {nearFllyList.length > 0 &&
+          {nearFllyList.length > 0 ? (
             nearFllyList.map((value, index) => (
               <FllySellerCard key={index} $FllyDeliveryNear={value} />
-            ))}
+            ))
+          ) : (
+            <div className={style.noListBox}>
+              <div>
+                <Image
+                  src={
+                    dpState === "delivery"
+                      ? "/img/etc/no-delivery-image.png"
+                      : "/img/etc/no-pickup-image.png"
+                  }
+                  width={200}
+                  height={200}
+                  alt="플리가 없습니다"
+                ></Image>
+                <div>
+                  {dpState === "delivery"
+                    ? "배달 가능한 플리가 없습니다"
+                    : "픽업 가능한 플리가 없습니다"}
+                </div>
+              </div>
+            </div>
+          )}
           {/* 무한 스크롤 적용*/ currentPage < totalPage && <div ref={lastRef}></div>}
         </div>
       </div>

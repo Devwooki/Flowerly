@@ -44,6 +44,9 @@
   display: flex;
 }
 
+.infoColorTable div:nth-child(1) {
+  line-height: 25px;
+}
 .infoColorTable div:nth-child(2) {
   margin-left: 10px;
 }
@@ -90,10 +93,9 @@
   display: inline-block;
   font-size: 14px;
   margin: 0 5px 0 0;
-  color: currentColor;
+  color: black;
   width: 27px;
-  /* background-color: var(--moregray); */
-  /* display: inline; */
+  background-color: var(--moregray);
 }
 
 @media (max-width: 426px) {
@@ -111,7 +113,7 @@
   line-height: 20px;
   height: 20px;
   border-radius: 5px;
-  margin: 0 auto;
+  /* margin: 0 auto; */
   margin-top: 5px;
   font-size: 14px;
   /* background-color: white; */
@@ -148,4 +150,9 @@
 .fllistBtnClose {
   margin-right: 15px;
   background-color: var(--moregray);
+}
+
+.cardBtn button {
+  font-family: "NanumSquareNeoOTF-Rg";
+  /* font-family: "NanumSquareNeoOTF-Bd"; */
 }

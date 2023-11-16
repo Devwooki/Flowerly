@@ -1,0 +1,216 @@
+.back {
+  width: 100%;
+  height: calc(100vh - 40px);
+  display: flex;
+  overflow: scroll;
+
+  position: relative;
+}
+
+.container {
+  width: calc(100% - 40px);
+  margin: auto auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.container > h3 {
+  font-family: "Pretendard-Bold";
+  font-size: 28px;
+  margin-bottom: 40px;
+}
+
+.container > div {
+  width: calc(100% - 40px);
+  /* border: 1px solid black; */
+}
+
+.deliveryRegionList {
+  height: 40px;
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  font-size: 12px;
+  padding-left: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  overflow-x: scroll;
+  white-space: nowrap;
+  align-items: center;
+  justify-content: flex-start;
+  border: 1px solid var(--moregray);
+}
+
+.deliveryRegionItem {
+  font-family: NanumSquareNeoOTF-Rg;
+  display: flex;
+  height: 15px;
+  margin-right: 10px;
+  line-height: 17px;
+}
+
+.deliveryRegionItem > img {
+  object-fit: contain;
+  object-position: center;
+  margin: 3px 3px;
+  overflow: hidden;
+  /* border: 1px solid black; */
+}
+
+.finishButton {
+  background-color: #c1e0df;
+  box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.25);
+  border-radius: 2px;
+  border: 0px;
+  width: calc(100% - 40px);
+  height: 40px;
+  font-family: "NanumSquareNeoOTF-Rg";
+  margin-bottom: 50px;
+}
+
+.dataArea {
+  /* border: 1px solid red; */
+  display: flex;
+  justify-content: space-between;
+  height: 320px;
+  /* width: calc(100% - 60px); */
+  overflow-y: auto;
+  overflow: hidden;
+  font-size: 12px;
+  text-align: center;
+  position: relative;
+  border: 1px solid var(--moregray);
+  margin: 15px auto 20px auto;
+}
+
+.dataArea > div {
+  overflow: scroll;
+  height: 100%;
+}
+
+.dataArea > div:nth-child(1) {
+  width: 40%;
+  border-right: 1px solid var(--moregray);
+}
+
+.dataArea > div:nth-child(2) {
+  width: 60%;
+}
+
+.sigunguTable {
+  flex: 1;
+  width: 100%;
+  font-size: 12px;
+}
+
+.dongTable {
+  flex: 2;
+  width: 100%;
+  font-size: 12px;
+}
+
+.sigunguTable,
+.dongTable {
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.sigunguTable td,
+.dongTable td {
+  white-space: nowrap; /* 글자를 1줄로 표시 */
+  /* overflow: hidden; */
+  /* 셀의 크기를 초과하는 내용은 숨김 */
+  text-overflow: ellipsis; /* 숨겨진 내용을 '...'로 표시 */
+  border: 1px solid lightgray; /* 연한 회색 테두리 적용 */
+  padding: 5px 10px; /* 셀 내부의 패딩 추가 */
+  font-family: "NanumSquareNeoOTF-Lt";
+}
+
+.sigunguTable td {
+  height: 25px;
+}
+
+.dongTable td {
+  height: 25px;
+}
+
+/* 테이블의 가로선 */
+.sigunguTable tr,
+.dongTable tr {
+  border-bottom: 1px solid lightgray; /* 각 행의 하단에 연한 회색 테두리 추가 */
+}
+
+/* 마지막 행의 하단 테두리를 제거 */
+.sigunguTable tr:last-child,
+.dongTable tr:last-child {
+  border-bottom: none;
+}
+
+.selectedItem {
+  background-color: #485256;
+  color: #ffffff;
+}
+
+.sidoDropDown select {
+  border: 1px solid var(--dark);
+  position: relative;
+  width: 100%;
+  height: 40px;
+  background-color: #f2f2f2;
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f8f8f8;
+  color: #333;
+  font-size: 12px;
+  appearance: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: NanumSquareNeoOTF-Rg;
+}
+
+.sidoDropDown option {
+  background-color: #fff;
+  color: #333;
+  font-family: NanumSquareNeoOTF-Rg;
+}
+
+.sidoDropDown {
+  position: relative;
+  font-family: NanumSquareNeoOTF-Rg;
+}
+
+.sidoDropDown::after {
+  content: "▼";
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #999;
+  pointer-events: none;
+}
+
+.deliveryHeader {
+  display: flex;
+  height: 80px;
+  width: 100%;
+  z-index: 10;
+  background-color: white;
+  /* border: 1px solid red; */
+}
+
+.deliveryHeader > img {
+  margin-top: 37px;
+  margin-left: 20px;
+}
+
+.deliveryHeader > img:hover {
+  cursor: pointer;
+}
+
+.deliveryTitle {
+  margin-top: 30px;
+  font-size: 28px;
+  height: 32px;
+  margin-left: 15px;
+  font-family: "Pretendard-Bold";
+}

@@ -7,6 +7,7 @@ import { ToastErrorMessage } from "@/model/toastMessageJHM";
 import { tokenHttp } from "@/api/tokenHttp";
 import { useRouter } from "next/router";
 import { useInView } from "react-intersection-observer";
+import Image from "next/image";
 
 interface adoptType {
   requestId: number;
@@ -35,6 +36,7 @@ interface participationType {
   fllybudget: number;
   fllyDeadline: string;
   fllyResponeDto: fllyResponeDtoType;
+  fllyProgress: string;
 }
 
 const ListSeller = () => {
@@ -60,9 +62,11 @@ const ListSeller = () => {
   const ChangeStatHander = (clickName: string) => {
     if (ListState !== clickName && clickName === "participation") {
       setCurrentPage(0);
+      setAdoptData([]);
       setListState("participation");
     } else if (ListState !== clickName && clickName === "adopt") {
       setCurrentPage(0);
+      setParticipationData([]);
       setListState("adopt");
     } else null;
   };
@@ -101,12 +105,10 @@ const ListSeller = () => {
           setCurrentPage((parent) => parent + 1);
           if (ListState === "adopt") {
             setAdoptData((parent) => [...parent, ...reData.data.content]);
-            console.log(adoptData);
+            // console.log(adoptData);
           } else {
             setParticipationData((parent) => [...parent, ...reData.data.content]);
           }
-        } else {
-          ToastErrorMessage(reData.message);
         }
         if (res.headers.authorization) {
           localStorage.setItem("accessToken", res.headers.authorization);
@@ -181,21 +183,51 @@ const ListSeller = () => {
         <div className={style.ListSellerMain}>
           {ListState === "adopt" ? (
             <>
-              {adoptData.map((value, index) => (
-                <ListAdoptCard
-                  ModalChangeHandler={ModalChangeHandler}
-                  SelectIdChangeHandler={SelectIdChangeHandler}
-                  $adoptInfo={value}
-                  key={value.fllyId + index}
-                  $index={index}
-                />
-              ))}
+              {adoptData.length > 0 ? (
+                <>
+                  {adoptData.map((value, index) => (
+                    <ListAdoptCard
+                      ModalChangeHandler={ModalChangeHandler}
+                      SelectIdChangeHandler={SelectIdChangeHandler}
+                      $adoptInfo={value}
+                      key={value.fllyId + index}
+                      $index={index}
+                    />
+                  ))}
+                </>
+              ) : (
+                <div className={style.noListBox}>
+                  <div>
+                    <Image
+                      src={"/img/etc/no-selection-image.png"}
+                      width={200}
+                      height={200}
+                      alt="플리가 없습니다"
+                    ></Image>
+                    <div>채택된 플리가 없습니다</div>
+                  </div>
+                </div>
+              )}
             </>
           ) : (
             <>
-              {participationData.map((value, index) => (
-                <ListParticipationCard key={value.fllyId + index} $participationInfo={value} />
-              ))}
+              {participationData.length > 0 ? (
+                participationData.map((value, index) => (
+                  <ListParticipationCard key={value.fllyId + index} $participationInfo={value} />
+                ))
+              ) : (
+                <div className={style.noListBox}>
+                  <div>
+                    <Image
+                      src={"/img/etc/no-participation-image.png"}
+                      width={200}
+                      height={200}
+                      alt="플리가 없습니다"
+                    ></Image>
+                    <div>참여한 플리가 없습니다</div>
+                  </div>
+                </div>
+              )}
             </>
           )}
           {

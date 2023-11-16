@@ -20,3 +20,20 @@
   height: calc(100vh - 130px);
   overflow: scroll;
 }
+
+.noDataTable {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.noData {
+  opacity: 0.8;
+}
+
+.noDataText {
+  margin-top: 15px;
+  text-align: center;
+  font-family: "NanumSquareNeoOTF-Lt";
+}

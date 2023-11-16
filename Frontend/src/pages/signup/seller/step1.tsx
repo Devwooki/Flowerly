@@ -5,6 +5,7 @@ import axios from "axios";
 import { useRecoilState } from "recoil";
 import { sellerInputState, sellerAddressState } from "@/recoil/tokenRecoil";
 import { useDaumPostcodePopup } from "react-daum-postcode";
+import { ToastSuccessMessage, ToastErrorMessage } from "@/model/toastMessageJHM";
 
 const Step1 = () => {
   const router = useRouter();
@@ -38,7 +39,7 @@ const Step1 = () => {
     if (isAllDataFilled() && isStoreNumberValid) {
       router.push("/signup/seller/step2");
     } else {
-      alert("모든 정보를 입력해주세요");
+      ToastErrorMessage("모든 정보를 입력해주세요");
     }
   };
 
@@ -71,10 +72,10 @@ const Step1 = () => {
         const b_stt_cd = data.data[0].b_stt_cd;
 
         if (b_stt_cd === "01") {
-          alert("사업자등록번호가 확인되었습니다.");
+          ToastSuccessMessage("사업자등록번호가 확인되었습니다.");
           setIsStoreNumberValid(true);
         } else {
-          alert("존재하지 않는 사업자등록번호입니다. 다시 입력해주세요");
+          ToastErrorMessage("존재하지 않는 사업자등록번호입니다. 다시 입력해주세요");
           setIsStoreNumberValid(false);
         }
       } else {
@@ -125,7 +126,7 @@ const Step1 = () => {
   }, [basicAddress, detailAddress, setSellerInput]);
 
   return (
-    <div>
+    <div className={style.back}>
       <div className={style.container}>
         <h2>회원가입</h2>
         <div className={style.inputContainer}>

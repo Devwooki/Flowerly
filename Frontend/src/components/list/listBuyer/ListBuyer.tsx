@@ -1,41 +1,37 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import style from "./ListBuyer.module.css";
 import BuyerCardOne from "./listBuyerCardComponent/BuyerCardOne";
 import { useQuery } from "react-query";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import BuyerCards from "./listBuyerCardComponent/BuyerCards";
 import { tokenHttp } from "@/api/tokenHttp";
+import { useRouter } from "next/router";
+import { ToastErrorMessage } from "@/model/toastMessageJHM";
+import Image from "next/image";
 
 const ListBuyer = () => {
-  const { data, isLoading, isFetching, isError } = useQuery<BuyerCard[], AxiosError>(
+  const router = useRouter();
+  const { data, refetch } = useQuery<BuyerCard[], AxiosError>(
     ["listBuyerQuery"],
     async () => {
       const res = await tokenHttp.get("/buyer/my-flly");
-      console.log(res.data.data.content);
+      // console.log("플리스트", [res.data.data.content]);
 
-      if (res.headers.authorization) {
-        console.log("accessToken", res.headers.authorization);
-        localStorage.setItem("accessToken", res.headers.authorization);
-      }
+      // return [res.data.data.content[2]];
       return res.data.data.content;
     },
     {
       onError: (error) => {
-        console.log("에러 발생했다 임마");
-        console.log(error?.response?.status);
+        // console.log("에러 발생했다 임마");
+        if (error?.response?.status === 403) {
+          ToastErrorMessage("로그인 만료되어 로그인 화면으로 이동합니다.");
+          router.push("/fllylogin");
+        }
       },
-      retry: 2,
+      retry: false,
       cacheTime: 0,
     },
   );
-
-  if (isLoading) {
-    return <div>로딩중</div>;
-  }
-
-  if (isError) {
-    return <div>에러 발생</div>;
-  }
 
   return (
     <div className={style.ListBuyerBack}>
@@ -44,12 +40,17 @@ const ListBuyer = () => {
       </div>
       <div className={style.ListBuyerMain}>
         {data && data.length >= 2 ? (
-          data.map((card) => <BuyerCards card={card} key={card.fllyId} />)
+          data.map((card) => <BuyerCards card={card} key={card.fllyId} onConfirm={refetch} />)
         ) : data && data.length === 1 ? (
-          <BuyerCardOne card={data[0]} key={data[0].fllyId} />
+          <BuyerCardOne card={data[0]} key={data[0].fllyId} onConfirm={refetch} />
         ) : (
-          // 다른 경우에 대한 처리 (예: 데이터가 없을 때)
-          <div>텅텅!!</div>
+          // 데이터가 없을 때
+          <div className={style.noDataTable}>
+            <div className={style.noData}>
+              <Image src="/img/etc/no-list-image.png" alt="플리" width={200} height={200} />
+              <div className={style.noDataText}>아직 생성된 플리가 없습니다.</div>
+            </div>
+          </div>
         )}
       </div>
     </div>

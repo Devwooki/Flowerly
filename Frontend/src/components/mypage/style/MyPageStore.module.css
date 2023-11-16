@@ -32,15 +32,27 @@
 }
 
 .storeInfoTitle {
-  font-size: 20px;
+  width: calc(100% - 80px);
+  margin: 2px auto;
+  font-size: 16px;
   font-family: "NanumSquareNeoOTF-Lt";
 }
 
 .storeInfoContent {
   padding: 18px 25px;
   width: calc(100% - 80px);
-  margin: 0px auto;
+  margin: 2px auto;
   border-radius: 15px;
   background-color: rgb(229, 233, 234, 0.3);
   font-family: "NanumSquareNeoOTF-Rg";
+}
+
+.modifyBtn {
+  padding: 18px 25px;
+  width: calc(100% - 80px);
+  margin: 6px auto;
+  border-radius: 15px;
+  background-color: #c1e0df;
+  font-family: "Pretendard-Bold";
+  text-align: center;
 }
