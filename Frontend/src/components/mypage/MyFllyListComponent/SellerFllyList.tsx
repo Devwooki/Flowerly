@@ -36,7 +36,7 @@ const SellerFllyList = () => {
             // 정렬
             const sortedData = res.data.data.sort(
               (a: Order, b: Order) =>
-                new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+                new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
             );
 
             setSellerFllyList(sortedData);
