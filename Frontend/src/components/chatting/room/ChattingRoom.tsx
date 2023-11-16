@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import style from "./style/ChattingRoom.module.css";
 import { useRouter } from "next/router";
-import { useRecoilValue } from "recoil";
 
 import SockJS from "sockjs-client";
 import { Client, CompatClient, Stomp } from "@stomp/stompjs";
@@ -17,11 +16,15 @@ import PickupOrderModal from "../modal/PickupOrderModal";
 import DeliveryOrderModal from "../modal/DeliveryOrderModal";
 import RequestModal from "../modal/RequestModal";
 import ImageModal from "../modal/ImageModal";
+import ReportModal from "../modal/ReportModal";
 
 import { memberInfoState } from "@/recoil/memberInfoRecoil";
+import { paymentErrorRecoil } from "@/recoil/paymentRecoil";
+import { useRecoilValue, useResetRecoilState } from "recoil";
 import Image from "next/image";
 
-import { tokenHttp } from "@/api/chattingTokenHttp";
+import { tokenHttp } from "@/api/tokenHttp";
+import { ToastErrorMessage } from "@/model/toastMessageJHM";
 
 type ChattingRoomProps = {
   chattingId: number;
@@ -39,6 +42,7 @@ type ChattingMsg = {
   chattingId: number;
   opponentMemberId: number;
   opponentName: string;
+  isValidRoom: boolean;
   lastId: string;
   messages: Message[];
 };
@@ -66,12 +70,14 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
     tokenHttp
       .get(`/chatting/${chattingId}`)
       .then((response) => {
+        console.log(response.data.data);
         if (response.data.code === 200) {
           const responseData = response.data.data;
           setChattingMsgs({
             chattingId: responseData.chattingId,
             opponentMemberId: responseData.opponentMemberId,
             opponentName: responseData.opponentName,
+            isValidRoom: responseData.isValidRoom,
             lastId: responseData.lastId,
             messages: addDateMsg(responseData.messages),
           });
@@ -82,23 +88,26 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
         }
       })
       .catch((err) => {
+        console.log(err);
         if (err.response.status === 403) {
           router.push("/fllylogin");
         }
       });
   };
 
+  const paymentError = useRecoilValue(paymentErrorRecoil);
+  const resetPaymentError = useResetRecoilState(paymentErrorRecoil);
+
   useEffect(() => {
-    // console.log("첫 렌더링");
+    // 첫 렌더링
 
-    // const accessToken = localStorage.getItem("accessToken");
+    const accessToken = localStorage.getItem("accessToken")?.substring(7); // Bearer 제거
     // const accessToken =
-    //   "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcwODY4MzQ4NiwibWVtYmVySWQiOjF9.wU3IYYWErRie5E5s7oIRYMliboyumfMrCZILaKnwlxXxJXCW1kHZ5fJ-mKvsAwYuMV4-UT0F4qoUX9rVcrTiNw";
-    const accessToken =
-      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcwODc1MjUwMywibWVtYmVySWQiOjJ9.o_v_EVuucqlh2NPfHioqquPjm3U-JTP-7ZP2xJkxIxMsPBMhxnw0DL-Avnh2ryBa_J6JYS7YdCc5dZuMS_9IUw";
+    //   "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcwODY4MzQ4NiwibWVtYmVySWQiOjF9.wU3IYYWErRie5E5s7oIRYMliboyumfMrCZILaKnwlxXxJXCW1kHZ5fJ-mKvsAwYuMV4-UT0F4qoUX9rVcrTiNw"; // 1번
+    // const accessToken =
+    //   "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcwODc1MjUwMywibWVtYmVySWQiOjJ9.o_v_EVuucqlh2NPfHioqquPjm3U-JTP-7ZP2xJkxIxMsPBMhxnw0DL-Avnh2ryBa_J6JYS7YdCc5dZuMS_9IUw"; // 2번
 
-    // SockJS와 STOMP 설정
-    // const socket = new SockJS(`http://localhost:6090/stomp-chat?token=${accessToken}`); // 로컬 테스트용
+    // const socket = new SockJS(`http://localhost:6090/stomp-chat`); // 로컬 테스트용
     const socket = new SockJS("https://flower-ly.co.kr/stomp-chat"); // 배포용
 
     stompClient.current = Stomp.over(socket);
@@ -128,6 +137,7 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
                 opponentMemberId: 0,
                 lastId: "",
                 opponentName: "",
+                isValidRoom: true,
                 messages: [newMsg],
               };
             }
@@ -144,9 +154,13 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
     setInitialLoading(false);
     scrollDown();
 
-    // 컴포넌트 unmount 시 연결 종료
+    if (paymentError.isError == true) {
+      ToastErrorMessage(paymentError.errorMsg);
+      resetPaymentError();
+    }
+
     return () => {
-      if (stompClient.current) {
+      if (stompClient.current && accessToken) {
         stompClient.current.disconnect(
           () => {
             console.log("Disconnected");
@@ -160,7 +174,7 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
   }, []);
 
   useEffect(() => {
-    // console.log("무한스크롤");
+    // 무한스크롤
     if (inView && !initialLoading && chattingMsgs?.lastId) {
       setInfiniteScrolling(true);
       setPrevLastId(chattingMsgs.lastId);
@@ -183,6 +197,7 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
           }
         })
         .catch((err) => {
+          console.log(err);
           if (err.response.status === 403) {
             router.push("/fllylogin");
           }
@@ -191,20 +206,21 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
   }, [inView]);
 
   useEffect(() => {
+    // 무한 스크롤 시 위치 조정
     if (prevLastId && !initialLoading && inView) {
-      // console.log("스크롤 위치 조정");
-
       requestAnimationFrame(() => {
         // containerRef.current!.scrollTop = containerRef.current!.scrollHeight - prevScrollHeight;
+
         const currentElement = document.getElementById(prevLastId);
-        // console.log(currentElement?.id);
         currentElement?.scrollIntoView({ behavior: "auto" });
       });
+    } else {
+      scrollDown();
     }
   }, [chattingMsgs]);
 
   const addDateMsg = (messages: Message[]) => {
-    // console.log("addDateMsg");
+    // 날짜 표시를 위한 함수
     const newMessges: Message[] = [];
     let lastDate;
 
@@ -212,15 +228,15 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
       if (message.type == "DATE") continue;
       if (message.type == "ORDER_COMPLETE") setLastRequestMsgId(message.messageId);
 
-      const sendTime = new Date(message.sendTime.replaceAll(".", "/"));
+      const sendTime = new Date(message.sendTime?.replaceAll(".", "/"));
 
       if (
-        !lastDate ||
-        sendTime.getFullYear() != lastDate.getFullYear() ||
-        sendTime.getMonth() != lastDate.getMonth() ||
-        sendTime.getDate() != lastDate.getDate()
+        message.sendTime &&
+        (!lastDate ||
+          sendTime.getFullYear() != lastDate.getFullYear() ||
+          sendTime.getMonth() != lastDate.getMonth() ||
+          sendTime.getDate() != lastDate.getDate())
       ) {
-        // 새로운 날짜가 시작될 때 그룹을 추가
         newMessges.push({
           messageId: "",
           memberId: -1,
@@ -246,8 +262,8 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
   };
 
   const imageLoadHandler = () => {
-    // console.log("imageLoadHandler");
-    if (!infiniteScrolling) scrollDown(); // 이미지  로딩 완료되면 스크롤 조정
+    // 이미지 로딩 완료되면 스크롤 조정
+    if (!infiniteScrolling) scrollDown();
     if (sendImage) {
       scrollDown();
       setSendImage(false);
@@ -255,19 +271,42 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
   };
 
   const moveBack = () => {
-    router.back();
+    router.push("/chatting");
   };
 
   const scrollDown = () => {
-    // console.log("scrollDown");
+    // 스크롤 제일 아래로 조정하는 함수
     messageEndRef.current?.scrollIntoView({ behavior: "auto" });
   };
 
+  const changeMenuOpen = () => {
+    setMenuOpen(!menuOpen);
+
+    if (menuOpen) {
+      containerRef.current!.scrollTop -= 120;
+    } else {
+      if (
+        containerRef.current!.scrollTop >=
+        containerRef.current!.scrollHeight - containerRef.current!.clientHeight - 120
+      ) {
+        // 스크롤이 최대 크기를 넘어가는 경우
+        requestAnimationFrame(() => {
+          scrollDown();
+        });
+      } else {
+        containerRef.current!.scrollTop += 120;
+      }
+    }
+  };
+
+  // ====== 메세지 전송 관련 ======
   const sendMessage = (type: string, content: string) => {
     const destination = `/pub/message/${chattingId}`;
     const stompChatRequest = {
       chattingId,
-      memberId: 2, // 리코일에 든 아이디로 바꾸기
+      // memberId: 2, // 리코일에 든 아이디로 바꾸기
+      // memberId: 1,
+      memberId: memberInfo.id,
       type: type,
       content: content,
     };
@@ -279,34 +318,16 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
     }
 
     if (type === "IMAGE") setSendImage(true);
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        scrollDown();
-      });
-    });
+
+    // requestAnimationFrame(() => {
+    //   requestAnimationFrame(() => {
+    //     scrollDown();
+    //   });
+    // });
   };
 
-  // 타입별 메세지 전송 관련
   const sendTextMessage = (content: string) => {
     sendMessage("TEXT", content);
-  };
-  const changeMenuOpen = () => {
-    setMenuOpen(!menuOpen);
-
-    if (menuOpen) {
-      containerRef.current!.scrollTop -= 120;
-    } else {
-      if (
-        containerRef.current!.scrollTop >=
-        containerRef.current!.scrollHeight - containerRef.current!.clientHeight - 120
-      ) {
-        requestAnimationFrame(() => {
-          scrollDown(); // 스크롤이 최대 크기를 넘어가는 경우
-        });
-      } else {
-        containerRef.current!.scrollTop += 120;
-      }
-    }
   };
   const sendOrderForm = () => {
     sendMessage("ORDER_FORM", "주문 유형을 선택해주세요.");
@@ -315,20 +336,20 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
     sendMessage("ORDER_COMPLETE", "주문서가 도착했습니다.");
   };
   const sendPaymentReqMsg = () => {
-    // console.log("sendPaymentReqMsg");
     sendMessage("PAYMENT_FORM", "결제를 요청하였습니다.");
   };
   const sendImageMsg = (imgUrl: string) => {
     sendMessage("IMAGE", imgUrl);
   };
 
-  // 모달 상태 관련
+  // ======= 모달 상태 관련 =======
   const [fllyModalState, setFllyModalState] = useState(false);
   const [pickupModalState, setPickupModalState] = useState(false);
   const [deliveryModalState, setDeliveryModalState] = useState(false);
   const [requestModalState, setRequestModalState] = useState(false);
   const [imageModalState, setImageModalState] = useState(false);
   const [imgUrl, setImgUrl] = useState<string>();
+  const [reportModalState, setReportModalState] = useState(false);
 
   const modalHandler = (modalType: string, state: boolean, data: string) => {
     if (modalType == "FLLY") {
@@ -342,6 +363,8 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
     } else if (modalType == "IMAGE") {
       setImageModalState(state);
       setImgUrl(data);
+    } else if (modalType == "REPORT") {
+      setReportModalState(state);
     }
   };
 
@@ -379,11 +402,16 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
             chattingMsgs.messages.map((message, idx) => {
               return message.type == "DATE" ? (
                 <div className={style.dateDiv}>{message.content}</div>
+              ) : message.type == "INFORMATION" ? (
+                <div className={style.informationWrapper}>
+                  <div className={style.informationDiv}>{message.content}</div>
+                </div>
               ) : message.memberId == chattingMsgs.opponentMemberId ? (
                 <YourChattingMsg
                   key={idx}
                   message={message}
                   chattingId={chattingId}
+                  isValidRoom={chattingMsgs.isValidRoom}
                   modalHandler={modalHandler}
                   imageLoadHandler={imageLoadHandler}
                   lastRequestMsgId={lastRequestMsgId}
@@ -393,6 +421,7 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
                   key={idx}
                   message={message}
                   chattingId={chattingId}
+                  isValidRoom={chattingMsgs.isValidRoom}
                   modalHandler={modalHandler}
                   imageLoadHandler={imageLoadHandler}
                   lastRequestMsgId={lastRequestMsgId}
@@ -402,11 +431,25 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
           <div ref={messageEndRef}></div> {/* 스크롤 맨아래로 설정하기 위한 빈 div */}
         </div>
         <div className={style.bottom}>
-          <ChattingInput sendHandler={sendTextMessage} menuHandler={changeMenuOpen} />
+          <ChattingInput
+            sendHandler={sendTextMessage}
+            menuHandler={changeMenuOpen}
+            isValidRoom={chattingMsgs?.isValidRoom}
+          />
           {menuOpen && (
-            <ChattingMenu sendOrderFormHandler={sendOrderForm} sendImgHandler={sendImageMsg} />
+            <ChattingMenu
+              sendOrderFormHandler={sendOrderForm}
+              sendImgHandler={sendImageMsg}
+              modalHandler={modalHandler}
+            />
           )}
         </div>
+        {reportModalState && (
+          <ReportModal
+            memberName={chattingMsgs?.opponentName ? chattingMsgs.opponentName : null}
+            modalHandler={modalHandler}
+          />
+        )}
       </div>
       {fllyModalState && <FllyDetailModal chattingId={chattingId} modalHandler={modalHandler} />}
       {pickupModalState && (

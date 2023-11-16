@@ -1,17 +1,11 @@
-type ShopInfo = {
-  reImg: string;
-  shopId: number;
-  shopName: string;
-  shopLoc: string;
-  recommandPrice: string;
-  recommandComment: string;
-};
-
-type ShopInfoDetail = {
-  shopName: string;
-  shopLoc: string;
-  shopImg: string[];
-};
+// type ShopInfo = {
+//   reImg: string;
+//   shopId: number;
+//   shopName: string;
+//   shopLoc: string;
+//   recommandPrice: string;
+//   recommandComment: string;
+// };
 
 type markerlist = {
   position: {
@@ -21,13 +15,28 @@ type markerlist = {
   content: string;
 };
 
-type review = {
-  userName: string;
-  reviewTime: string;
-  reviewContent: string;
+type shopInfo = {
+  store: ShopInfoDetail;
+  review: review;
 };
 
-/* 현욱이가 준 값 */
+type ShopInfoDetail = {
+  storeInfoId: number;
+  storeName: string;
+  phoneNumber: string;
+  address: string;
+  images: string[];
+};
+
+type review = {
+  content: reviewlist[];
+};
+
+type reviewlist = {
+  consumerNickName: string;
+  createdAt: string;
+  content: string;
+};
 
 type fllyList = {
   flly: BuyerCard;
@@ -59,4 +68,9 @@ type storeInfoDto = {
   address: string;
   member: null | string;
   images: null | string[];
+};
+
+type chatRoomBtn = {
+  chattingId: number;
+  isNew: boolean;
 };

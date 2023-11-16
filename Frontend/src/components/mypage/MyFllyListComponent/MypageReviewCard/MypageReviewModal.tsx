@@ -1,11 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import style from "./MypageReviewModal.module.css";
 import axios from "axios";
 import { ToastErrorMessage, ToastSuccessMessage } from "@/model/toastMessageJHM";
+import { tokenHttp } from "@/api/tokenHttp";
+import Router from "next/router";
 
 interface Props {
   ModalChangeHandler: () => void;
   $selectId: number;
+
   UpdateFllyList: () => void;
 }
 
@@ -15,13 +18,35 @@ const MypageReviewModal = ({ ModalChangeHandler, $selectId, UpdateFllyList }: Pr
     e.stopPropagation();
   };
 
-  const SummitBtnHandler = () => {
-    //엑시오스 요청
-    console.log($selectId);
-    //요청이 200이 넘어온다면!
-    UpdateFllyList();
+  const [content, setContent] = useState<string>("");
+
+  const handleContentChange = (e: any) => {
+    setContent(e.target.value);
   };
 
+  const SummitBtnHandler = () => {
+    tokenHttp
+      .post("/review/create", {
+        requestId: $selectId,
+        content: content,
+      })
+      .then((res) => {
+        if (res.data.code === 200) {
+          ToastSuccessMessage("리뷰가 성공적으로 등록되었습니다.");
+          UpdateFllyList();
+          ModalChangeHandler();
+
+          if (res.headers.authorization) {
+            localStorage.setItem("accessToken", res.headers.authorization);
+          }
+        }
+      })
+      .catch((err) => {
+        if (err.response.status === 403) {
+          Router.push("/fllylogin");
+        }
+      });
+  };
   return (
     <>
       <div className={style.checkBack} onClick={ModalChangeHandler}>
@@ -30,7 +55,7 @@ const MypageReviewModal = ({ ModalChangeHandler, $selectId, UpdateFllyList }: Pr
             <div>리뷰를 남겨주세요!</div>
             <div>상품에 대해 만족하셨나요? 상품에 대해 리뷰를 남겨주세요</div>
           </div>
-          <textarea className={style.modalTextBox} />
+          <textarea className={style.modalTextBox} onChange={handleContentChange} />
           <div className={style.modalBtnBox}>
             <div onClick={SummitBtnHandler}>확인</div>
             <div onClick={ModalChangeHandler}>취소</div>

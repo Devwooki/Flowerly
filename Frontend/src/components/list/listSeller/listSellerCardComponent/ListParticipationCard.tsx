@@ -20,6 +20,7 @@ interface participationType {
   fllybudget: number;
   fllyDeadline: string;
   fllyResponeDto: fllyResponeDtoType;
+  fllyProgress: string;
 }
 
 interface Props {
@@ -60,14 +61,18 @@ const ListParticipationCard = ({ $participationInfo }: Props) => {
               <div>
                 <Image src="/img/icon/seller-flower.png" width={20} height={20} alt="상태이미지" />
                 <div>
-                  {$participationInfo.fllyFlower1 && $participationInfo.fllyFlower1},
-                  {$participationInfo.fllyFlower2 && $participationInfo.fllyFlower2},{" "}
-                  {$participationInfo.fllyFlower3 && $participationInfo.fllyFlower3}
+                  {$participationInfo.fllyFlower1 && $participationInfo.fllyFlower1}
+                  {$participationInfo.fllyFlower2 && ", " + $participationInfo.fllyFlower2}
+                  {$participationInfo.fllyFlower3 && ", " + $participationInfo.fllyFlower3}
+                  {$participationInfo.fllyFlower1 === null &&
+                    $participationInfo.fllyFlower2 === null &&
+                    $participationInfo.fllyFlower3 === null &&
+                    "랜덤"}
                 </div>
               </div>
               <div>
                 <Image src="/img/icon/seller-money.png" width={20} height={20} alt="상태이미지" />
-                <div>{$participationInfo.fllybudget} 원</div>
+                <div>{Number($participationInfo.fllybudget).toLocaleString()} 원</div>
               </div>
               <div>
                 <Image src="/img/icon/seller-time.png" width={20} height={20} alt="상태이미지" />
@@ -88,13 +93,15 @@ const ListParticipationCard = ({ $participationInfo }: Props) => {
             <div>
               <div className={style.cardResponseInfo}>
                 <Image src="/img/icon/seller-money.png" width={20} height={20} alt="상태이미지" />
-                <div>{$participationInfo.fllyResponeDto.requestPrice} 원</div>
+                <div>
+                  {Number($participationInfo.fllyResponeDto.requestPrice).toLocaleString()} 원
+                </div>
               </div>
               <div className={style.responseText}>{$participationInfo.fllyResponeDto.content}</div>
             </div>
           </div>
         </div>
-        <div className={style.footerBox}>이거 넣어야함</div>
+        <div className={style.footerBox}>{$participationInfo.fllyProgress}</div>
       </div>
     </>
   );

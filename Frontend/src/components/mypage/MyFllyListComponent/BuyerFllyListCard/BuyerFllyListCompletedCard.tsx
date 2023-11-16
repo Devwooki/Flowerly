@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import style from "./BuyerFllyListCompletedCard.module.css";
+import Router from "next/router";
 
 interface BuyerFillListType {
   fllyId: number;
@@ -10,6 +11,7 @@ interface BuyerFillListType {
   fllyOrderType: string;
   requestOrderType: string;
   isReviewed: boolean;
+  imageUrls: string;
 }
 
 interface Props {
@@ -30,12 +32,23 @@ const BuyerFllyListCompletedCard = ({
     ModalChangeHandler();
   };
 
+  const handleFllyDetail = () => {
+    Router.push(`/flly/order/sheet/${$fllyInfo.fllyId}`);
+  };
+
+  const handleFllyReview = () => {
+    Router.push("/mypage/review");
+  };
+
   return (
     <>
       <div className={style.cardBack}>
-        <div className={style.ImgBox} style={{ backgroundImage: `url(/test/horizental.jpg)` }} />
+        <div
+          className={style.ImgBox}
+          style={{ backgroundImage: `url('${$fllyInfo.imageUrls}')` }}
+        />
         <div className={style.InfoBox}>
-          <div className={style.OrderAddBox}>
+          <div className={style.OrderAddBox} onClick={() => handleFllyDetail()}>
             <div>
               주문서 보기 <span> &gt;</span>
             </div>
@@ -43,23 +56,23 @@ const BuyerFllyListCompletedCard = ({
           <div className={style.OrderInfoBox}>
             <div className={style.OrderInfoBoxHarf}>
               <div>구매처</div>
-              <div>행복한 꽃집</div>
+              <div>{$fllyInfo.storeName}</div>
             </div>
             <div className={style.OrderInfoBoxHarf}>
               <div>주문유형</div>
-              <div>배달</div>
+              <div>{$fllyInfo.requestOrderType}</div>
             </div>
             <div className={style.OrderInfoBoxAll}>
-              <div>배송일시</div>
-              <div>23.10.21. 18:00</div>
+              {$fllyInfo.requestOrderType === "배달" ? <div>배달 일시</div> : <div>픽업 일시</div>}
+              <div>{$fllyInfo.deliveryPickupTime}</div>
             </div>
           </div>
           {$fllyInfo.isReviewed ? (
-            <div className={style.OrderFooterTrue}>
+            <div className={style.OrderFooterTrue} onClick={() => handleFllyReview()}>
               <div>리뷰 작성 완료</div>
             </div>
           ) : (
-            <div className={style.OrderFooterFalse} onClick={ReviewBtnHandler}>
+            <div className={style.OrderFooterFalse} onClick={() => ReviewBtnHandler()}>
               <div>리뷰 작성</div>
             </div>
           )}

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import style from "./Disc.module.css";
 import Image from "next/image";
+import { motion } from "framer-motion";
 
 type DiscProps = {
   card: BuyerCard;
@@ -10,20 +11,30 @@ const Disc = ({ card }: DiscProps) => {
   const [moreBtn, setMoreBtn] = useState(false);
   const [selectedColor, setSelectedColor] = useState<string[]>([]);
   const [selectedFlower, setSelectedFlower] = useState<flower[]>([]);
+  const [location, setLocation] = useState<string>();
 
   const handlerMoreBtn = () => {
     setMoreBtn((pre) => !pre);
-    console.log(moreBtn);
   };
 
   useEffect(() => {
-    console.log("DISC", card);
-
-    setSelectedColor([`${card.color1}`, `${card.color2}`, `${card.color3}`]),
-      setSelectedFlower([card.flower1, card.flower2, card.flower3]);
+    setSelectedColor([card.color1, card.color2, card.color3].filter((flower) => flower !== null)),
+      setSelectedFlower(
+        [card.flower1, card.flower2, card.flower3].filter((flower) => flower !== null),
+      );
   }, [card]);
 
-  console.log(selectedFlower);
+  useEffect(() => {
+    // 주소 처리를 위한 useEffect
+    if (card.requestAddress) {
+      const splitT = card.requestAddress.indexOf("T");
+      if (splitT === -1) {
+        setLocation(card.requestAddress);
+        return;
+      }
+      setLocation(card.requestAddress.substring(0, splitT));
+    }
+  }, [card]);
 
   return (
     <div className={style.discMain}>
@@ -32,7 +43,7 @@ const Disc = ({ card }: DiscProps) => {
         <div className={style.discText}>
           <div className={style.discTable}>
             <div>예산</div>
-            <div>{card.budget}</div>
+            <div>{Number(card.budget).toLocaleString()}</div>
           </div>
           <div className={style.discTable}>
             <div>마감</div>
@@ -41,13 +52,24 @@ const Disc = ({ card }: DiscProps) => {
         </div>
       </div>
       {!moreBtn && (
-        <div className={style.detailPlus} onClick={() => handlerMoreBtn()}>
+        <motion.div
+          className={style.detailPlus}
+          onClick={() => handlerMoreBtn()}
+          layoutId={`detailPlus-${card.fllyId}`}
+        >
           상세 보기
-        </div>
+        </motion.div>
       )}
       {moreBtn && (
-        <>
-          <div className={` ${style.discTextPlus} ${moreBtn ? style.open : ""}`}>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0, transition: { duration: 0.05 } }}
+        >
+          <motion.div
+            className={` ${style.discTextPlus} ${moreBtn ? style.open : ""}`}
+            layoutId={`discTextPlus-${card.fllyId}`}
+          >
             <div className={style.divider} />
             <div className={style.discDetailTable}>
               <div className={style.detailTitle}>의뢰인</div>
@@ -55,27 +77,31 @@ const Disc = ({ card }: DiscProps) => {
             </div>
             <div className={style.discDetailTable}>
               <div className={style.detailTitle}>상황</div>
-              <div className={style.detailContent}>{card.situation}</div>
+              <div className={style.detailContent}>{card.situation || "선택안함"}</div>
             </div>
             <div className={style.discDetailTable}>
               <div className={style.detailTitle}>대상</div>
-              <div className={style.detailContent}>{card.target}</div>
+              <div className={style.detailContent}>{card.target || "선택안함"}</div>
             </div>
             <div className={style.discDetailTable}>
               <div className={style.detailTitle}>색상</div>
-              {selectedColor.map((color, idx) => (
-                <div className={style.detailContent} key={idx}>
-                  {idx > 0 && <span>&nbsp;</span>}
-                  {color}
-                </div>
-              ))}
+              {selectedColor.length > 0
+                ? selectedColor.map((color, idx) => (
+                    <div className={style.detailContent} key={idx}>
+                      {idx > 0 && <span>&nbsp;</span>}
+                      {color}
+                    </div>
+                  ))
+                : "선택안함"}
             </div>
             <div className={style.discDetailTable}>
               <div className={style.detailTitle}>선택한 꽃</div>
               <div className={style.detailContent}>
-                {selectedFlower.map(
-                  (flower, idx) => flower && <div key={idx}>{flower.flowerName}</div>,
-                )}
+                {selectedFlower.length > 0
+                  ? selectedFlower.map(
+                      (flower, idx) => flower && <div key={idx}>{flower.flowerName}</div>,
+                    )
+                  : "선택안함"}
               </div>
             </div>
             <div className={style.divider} />
@@ -83,21 +109,25 @@ const Disc = ({ card }: DiscProps) => {
               <div className={style.detailTitle}>주문유형</div>
               <div className={style.detailContent}>{card.orderType}</div>
             </div>
-            <div className={style.discDetailTable}>
-              <div className={style.detailTitle}>주소</div>
-              <div className={style.detailContent}>{card.requestAddress}</div>
-            </div>
+            {card.orderType === "배달" ? (
+              <div className={style.discDetailTable}>
+                <div className={style.detailTitle}>주소</div>
+                <div className={style.detailContent}>{location}</div>
+              </div>
+            ) : (
+              <></>
+            )}
             <div className={style.discDetailTable} style={{ display: "inline-block" }}>
               <div className={style.detailTitle}>요청사항</div>
               <div className={`${style.detailContent} ${style.requestContent}`}>
                 {card.requestContent}
               </div>
             </div>
-          </div>
-          <div className={style.detailMius} onClick={() => handlerMoreBtn()}>
+          </motion.div>
+          <motion.div className={style.detailMius} onClick={() => handlerMoreBtn()}>
             접기
-          </div>
-        </>
+          </motion.div>
+        </motion.div>
       )}
     </div>
   );

@@ -11,7 +11,7 @@ import "dayjs/locale/ko";
 
 import DaumPostcode from "react-daum-postcode";
 import { ToastErrorMessage } from "@/model/toastMessageJHM";
-import { tokenHttp } from "@/api/chattingTokenHttp";
+import { tokenHttp } from "@/api/tokenHttp";
 import { useRouter } from "next/router";
 
 type DeliveryOrderProps = {
@@ -94,41 +94,78 @@ const DeliveryOrderModal: React.FC<DeliveryOrderProps> = ({
   }, [orderInputs.recipientPhoneNumber]);
 
   const saveRequest = () => {
-    // console.log("saveRequest");
+    console.log("saveRequest");
     if (date && time) {
-      setOrderInputs((prev) => {
-        const updatedInputs = {
-          ...prev,
-          deliveryPickupTime: date.format("YYYY-MM-DD") + " " + time.format("HH:mm"),
-          address: baseAddress.trim() + " " + deatilAddress.trim(),
-        };
-        // console.log(updatedInputs);
+      const updatedInputs = {
+        ...orderInputs,
+        deliveryPickupTime: date.format("YYYY-MM-DD") + " " + time.format("HH:mm"),
+        address: baseAddress.trim() + " " + deatilAddress.trim(),
+      };
+      console.log(updatedInputs);
 
-        tokenHttp
-          .post(`/chatting/request/${chattingId}`, updatedInputs)
-          .then((response) => {
-            if (response.data.code === 200) {
-              sendHandler();
-              //요거 필수!! (엑세스 토큰 만료로 재발급 받았다면 바꿔줘!! )
-              if (response.headers.authorization) {
-                localStorage.setItem("accessToken", response.headers.authorization);
-              }
-            } else if (response.data.code == "-604") {
-              ToastErrorMessage("이미 진행중인 주문이 있습니다.");
-              //요거 필수!! (엑세스 토큰 만료로 재발급 받았다면 바꿔줘!! )
-              if (response.headers.authorization) {
-                localStorage.setItem("accessToken", response.headers.authorization);
-              }
+      tokenHttp
+        .post(`/chatting/request/${chattingId}`, updatedInputs)
+        .then((response) => {
+          console.log(response.data);
+          if (response.data.code === 200) {
+            sendHandler();
+            //요거 필수!! (엑세스 토큰 만료로 재발급 받았다면 바꿔줘!! )
+            if (response.headers.authorization) {
+              localStorage.setItem("accessToken", response.headers.authorization);
             }
-          })
-          .catch((err) => {
-            if (err.response.status === 403) {
-              router.push("/fllylogin");
+          } else if (response.data.code == "-604") {
+            ToastErrorMessage("이미 진행중인 주문이 있습니다.");
+            //요거 필수!! (엑세스 토큰 만료로 재발급 받았다면 바꿔줘!! )
+            if (response.headers.authorization) {
+              localStorage.setItem("accessToken", response.headers.authorization);
             }
-          });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          if (err.response.status === 403) {
+            router.push("/fllylogin");
+          }
+        });
 
-        return updatedInputs;
-      });
+      setOrderInputs(updatedInputs);
+
+      // setOrderInputs((prev) => {
+      //   const updatedInputs = {
+      //     ...prev,
+      //     deliveryPickupTime: date.format("YYYY-MM-DD") + " " + time.format("HH:mm"),
+      //     address: baseAddress.trim() + " " + deatilAddress.trim(),
+      //   };
+
+      //   console.log(updatedInputs);
+
+      //   tokenHttp
+      //     .post(`/chatting/request/${chattingId}`, updatedInputs)
+      //     .then((response) => {
+      //       console.log(response.data);
+      //       if (response.data.code === 200) {
+      //         sendHandler();
+      //         //요거 필수!! (엑세스 토큰 만료로 재발급 받았다면 바꿔줘!! )
+      //         if (response.headers.authorization) {
+      //           localStorage.setItem("accessToken", response.headers.authorization);
+      //         }
+      //       } else if (response.data.code == "-604") {
+      //         ToastErrorMessage("이미 진행중인 주문이 있습니다.");
+      //         //요거 필수!! (엑세스 토큰 만료로 재발급 받았다면 바꿔줘!! )
+      //         if (response.headers.authorization) {
+      //           localStorage.setItem("accessToken", response.headers.authorization);
+      //         }
+      //       }
+      //     })
+      //     .catch((err) => {
+      //       console.log(err);
+      //       if (err.response.status === 403) {
+      //         router.push("/fllylogin");
+      //       }
+      //     });
+
+      //   return updatedInputs;
+      // });
     } else {
       ToastErrorMessage("날짜, 시간을 입력하세요.");
     }
@@ -172,32 +209,32 @@ const DeliveryOrderModal: React.FC<DeliveryOrderProps> = ({
 
   return (
     <>
-      {addressModal && (
-        <div
-          className={style.addressModalBg}
-          onClick={() => {
-            setAddressModal(false);
-          }}
-        >
-          <DaumPostcode
-            onComplete={handleComplete}
-            autoClose
-            style={{
-              margin: "0 auto",
-              zIndex: 9999,
-              width: "90%",
-              height: "60vh",
-              display: "fixed",
-              top: "20vh",
-              left: "5%",
-              position: "absolute",
-              color: "black",
-              borderRadius: "10px",
-            }}
-          />
-        </div>
-      )}
       <div className={style.modalBg}>
+        {addressModal && (
+          <div
+            className={style.addressModalBg}
+            onClick={() => {
+              setAddressModal(false);
+            }}
+          >
+            <DaumPostcode
+              onComplete={handleComplete}
+              autoClose
+              style={{
+                margin: "0 auto",
+                zIndex: 9999,
+                width: "90%",
+                height: "60vh",
+                // display: "fixed",
+                top: "20vh",
+                left: "5%",
+                position: "absolute",
+                color: "black",
+                borderRadius: "10px",
+              }}
+            />
+          </div>
+        )}
         <div className={style.modalMain}>
           <div className={style.top}>
             <div className={style.title}>배달 주문서 작성</div>

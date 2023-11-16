@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { ToastErrorMessage, ToastSuccessMessage } from "@/model/toastMessageJHM";
 import imageCompression from "browser-image-compression";
 import { tokenHttp } from "@/api/tokenHttp";
+import LoadingModal from "./LoadingModal";
 
 const FllySellerParticipation = () => {
   const [userImgSrc, setUserImgSrc] = useState<string>();
@@ -14,9 +15,13 @@ const FllySellerParticipation = () => {
   const fllyId = useParams();
   const router = useRouter();
 
+  //여러번 클릭안되게 하기위한 로직
+  const [debouncedClick, setDebouncedClick] = useState<boolean>(true);
+
   const [money, setMoney] = useState<string>();
   const [content, setContent] = useState<String>();
   const [fileInfo, setFileInfo] = useState<File>();
+  const [loadingModalState, setLoadingModalState] = useState<boolean>(false);
 
   //이미지버튼 클릭시 발생 핸들러
   const imgChangBtnClickHandler = () => {
@@ -76,6 +81,9 @@ const FllySellerParticipation = () => {
   };
 
   const submitHandler = async () => {
+    if (!debouncedClick) return;
+    setDebouncedClick(false);
+
     const options = {
       maxSizeMB: 0.2,
       maxWidthOrHeight: 1920,
@@ -106,6 +114,8 @@ const FllySellerParticipation = () => {
     formData.append("content", content.toString());
     formData.append("offerPrice", money);
 
+    setLoadingModalState(true);
+
     tokenHttp
       .post("/seller/flly/participate", formData, {
         headers: {
@@ -122,10 +132,12 @@ const FllySellerParticipation = () => {
         if (res.headers.authorization) {
           localStorage.setItem("accessToken", res.headers.authorization);
         }
+        setLoadingModalState(false);
       })
       .catch((err) => {
         if (err.response.status === 403) {
           router.push("/fllylogin");
+          setLoadingModalState(false);
         }
       });
   };
@@ -133,6 +145,7 @@ const FllySellerParticipation = () => {
   return (
     <>
       <div className={style.participationBack}>
+        {loadingModalState && <LoadingModal statetext={"플리 참여 중"} />}
         <div className={style.participationHeader}>
           <Image
             src="/img/btn/left-btn.png"
@@ -156,7 +169,7 @@ const FllySellerParticipation = () => {
             ></input>
             {!userImgSrc ? (
               <Image
-                src="/img/btn/img-select-btn.png"
+                src="/img/btn/Img-select-btn.png"
                 alt="이미지 선택"
                 width={150}
                 height={70}

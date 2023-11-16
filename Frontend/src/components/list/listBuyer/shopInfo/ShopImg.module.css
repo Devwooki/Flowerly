@@ -20,3 +20,20 @@
 .imgOne {
   margin: 0 8px 0 0;
 }
+
+.noDataTable {
+  width: 100%;
+}
+
+.noData {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.8;
+}
+
+.noDataText {
+  margin-top: 15px;
+  text-align: center;
+  font-family: "NanumSquareNeoOTF-Lt";
+}

@@ -25,4 +25,5 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     Optional<Review> findByReviewIdAndIsRemovedFalse(Long reviewId);
 
     Optional<Review> findByRequestAndConsumerAndIsRemovedFalse(Request request, Member consumer);
+    Optional<Review> findByConsumerMemberIdAndReviewIdAndIsRemovedFalse(Long reviewId, Long memberId);
 }

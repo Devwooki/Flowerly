@@ -37,6 +37,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ currentStep }) => {
         setBarWidth(stepWidths[currentStep]);
       }
     };
+    updateWidth();
     window.addEventListener("resize", updateWidth);
 
     // 컴포넌트가 언마운트되거나 currentStep이 변경되기 전에 이벤트 리스너를 정리
@@ -59,7 +60,6 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ currentStep }) => {
 
       <div className={style.text}>
         <div style={{ color: coloroSelect(0, currentStep) }}>입찰</div>
-
         <div style={{ color: coloroSelect(1, currentStep) }}>조율</div>
         <div style={{ color: coloroSelect(2, currentStep) }}>주문완료</div>
         <div style={{ color: coloroSelect(3, currentStep) }}>제작완료</div>

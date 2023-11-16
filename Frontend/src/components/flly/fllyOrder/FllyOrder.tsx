@@ -8,7 +8,9 @@ import ShippingInfoBox from "./fllyOrderComponent/ShippingInfoBox";
 import PaymentInfoBox from "./fllyOrderComponent/PaymentInfoBox";
 import { useParams } from "next/navigation";
 import { tokenHttp } from "@/api/tokenHttp";
+import { MemberInfo, memberInfoState } from "@/recoil/memberInfoRecoil";
 import { ToastErrorMessage } from "@/model/toastMessageJHM";
+import { useRecoilValue } from "recoil";
 
 interface flowerType {
   flowerName: string;
@@ -54,8 +56,8 @@ const FllyOrder = () => {
   const [requestInfo, setRequestInfo] = useState<resultSimpleType>();
   const [orderInfo, setOrderInfo] = useState<orderInfoType>();
   const [deliverInfo, setDeliverInfo] = useState<deliveryInfoType>();
-  //나중에 바뀔거
-  const [memberType, setMemberType] = useState<string>("seller");
+
+  const memberInfo = useRecoilValue<MemberInfo>(memberInfoState);
 
   useEffect(() => {
     tokenHttp
@@ -101,7 +103,9 @@ const FllyOrder = () => {
               <FllyInfoBox
                 $requestInfo={requestInfo}
                 $imgUrl={
-                  memberType === "seller" ? requestInfo.requestImgUrl : orderInfo?.responseImgUrl
+                  memberInfo.role === "SELLER"
+                    ? orderInfo?.responseImgUrl
+                    : requestInfo.requestImgUrl
                 }
               />
             </div>

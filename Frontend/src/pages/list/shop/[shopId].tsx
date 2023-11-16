@@ -1,45 +1,78 @@
 import { useRouter } from "next/router";
-import React, { useEffect } from "react";
+import React from "react";
 import style from "./ShopInfoMain.module.css";
 import ShopLocation from "@/components/list/listBuyer/shopInfo/ShopLocation";
 import ShopImg from "@/components/list/listBuyer/shopInfo/ShopImg";
 import ShopReview from "@/components/list/listBuyer/shopInfo/ShopReview";
+import { GetServerSideProps } from "next";
+import { useQuery } from "react-query";
+import { AxiosError } from "axios";
+import { tokenHttp } from "@/api/tokenHttp";
+import Image from "next/image";
+import { ToastErrorMessage } from "@/model/toastMessageJHM";
 
 const ShopInfoMain = () => {
   const router = useRouter();
 
-  useEffect(() => {
-    console.log(router.query); // 전달받은 샵 ID를 Api한테 쓰면 댐
-  }, [router.query]);
-
-  const ShopInfoDetail: ShopInfoDetail = {
-    shopName: "나이테플라워",
-    shopLoc: "대전광역시 중구 대둔산로 384",
-    shopImg: [
-      "https://neighbrew.s3.ap-northeast-2.amazonaws.com/FlOWER/9ab5e8bb-56f9-4cff-967b-22075b73e37a010_pink_gookhwa.jpg.jpg",
-      "https://neighbrew.s3.ap-northeast-2.amazonaws.com/FlOWER/da3f0e9f-0c1e-45d8-ba34-86e57331687b011_yellow_gookhwa.jpg.jpg",
-      "https://neighbrew.s3.ap-northeast-2.amazonaws.com/FlOWER/f82c544a-7f65-4879-9293-76ceaba5a6d2069_pink_peony.jpg.jpg",
-      "https://neighbrew.s3.ap-northeast-2.amazonaws.com/FlOWER/9ab5e8bb-56f9-4cff-967b-22075b73e37a010_pink_gookhwa.jpg.jpg",
-      "https://neighbrew.s3.ap-northeast-2.amazonaws.com/FlOWER/da3f0e9f-0c1e-45d8-ba34-86e57331687b011_yellow_gookhwa.jpg.jpg",
-      "https://neighbrew.s3.ap-northeast-2.amazonaws.com/FlOWER/f82c544a-7f65-4879-9293-76ceaba5a6d2069_pink_peony.jpg.jpg",
-      "https://neighbrew.s3.ap-northeast-2.amazonaws.com/FlOWER/9ab5e8bb-56f9-4cff-967b-22075b73e37a010_pink_gookhwa.jpg.jpg",
-      "https://neighbrew.s3.ap-northeast-2.amazonaws.com/FlOWER/da3f0e9f-0c1e-45d8-ba34-86e57331687b011_yellow_gookhwa.jpg.jpg",
-      "https://neighbrew.s3.ap-northeast-2.amazonaws.com/FlOWER/f82c544a-7f65-4879-9293-76ceaba5a6d2069_pink_peony.jpg.jpg",
-    ],
-  };
+  const { data } = useQuery<shopInfo, AxiosError>(
+    ["ShopInfoMainQuery"],
+    async () => {
+      const res = await tokenHttp.get(`/flly/store/${router.query.shopId}`);
+      return res.data.data;
+    },
+    {
+      onError: (error) => {
+        if (error?.response?.status === 403) {
+          ToastErrorMessage("로그인 만료되어 로그인 화면으로 이동합니다.");
+          router.push("/fllylogin");
+        }
+      },
+      retry: false,
+    },
+  );
 
   return (
-    <div className={style.ShopInfoBack}>
-      <div className={style.ShopInfoHeader}>
-        <div className={style.headerTitle}>가게정보</div>
+    <>
+      <div className={style.ShopInfoBack}>
+        <div className={style.ShopInfoHeader}>
+          <div className={style.headerTitle}>
+            <Image
+              src="/img/btn/left-btn.png"
+              alt="뒤로가기"
+              width={13}
+              height={20}
+              onClick={() => {
+                router.back();
+              }}
+            />
+            <div>가게정보</div>
+          </div>
+        </div>
+        <div className={style.ShopInfoMain}>
+          {data && (
+            <>
+              <ShopLocation ShopInfoDetail={data?.store} />
+              <ShopImg shopImg={data?.store.images} />
+              <ShopReview review={data?.review.content} />
+            </>
+          )}
+        </div>
       </div>
-      <div className={style.ShopInfoMain}>
-        <ShopLocation ShopInfoDetail={ShopInfoDetail} />
-        <ShopImg shopImg={ShopInfoDetail.shopImg} />
-        <ShopReview />
-      </div>
-    </div>
+    </>
   );
 };
 
 export default ShopInfoMain;
+
+export const getServerSideProps: GetServerSideProps = async (context: any) => {
+  // context.params를 통해 URL 파라미터에 접근할 수 있습니다.
+  console.log(context.params);
+
+  const { shopId } = context.params;
+
+  console.log("SSR shopId", shopId);
+  // 필요한 데이터를 props로 페이지에 전달할 수 있습니다.
+  return {
+    props: { shopId },
+  };
+};

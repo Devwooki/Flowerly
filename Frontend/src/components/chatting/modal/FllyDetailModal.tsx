@@ -3,7 +3,7 @@ import style from "./style/FllyDetailModal.module.css";
 import Image from "next/image";
 import axios from "axios";
 
-import { tokenHttp } from "@/api/chattingTokenHttp";
+import { tokenHttp } from "@/api/tokenHttp";
 import { useRouter } from "next/router";
 
 type FllyDetailProps = {
@@ -131,7 +131,7 @@ const FllyDetailModal: React.FC<FllyDetailProps> = ({ chattingId, modalHandler }
               <div className={style.partDiv}>
                 <div
                   className={style.imgDiv}
-                  style={{ backgroundImage: `url(${"/test/test-flower-img.png"})` }}
+                  style={{ backgroundImage: `url(${fllyDetail?.participationDto.imageUrl})` }}
                 ></div>
                 <div className={style.textDiv}>
                   <div id={style.price}>

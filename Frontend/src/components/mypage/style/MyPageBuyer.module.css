@@ -1,0 +1,72 @@
+.myInfoBack {
+  width: 100%;
+  height: calc(100vh - 40px);
+}
+
+.myInfoHeader {
+  width: 100%;
+  height: 70px;
+  display: flex;
+  align-items: center;
+}
+
+.myInfoHeader > img {
+  margin: auto 0px auto 20px;
+}
+
+.myInfoHeader > div:nth-child(2) {
+  margin: auto 0px auto 20px;
+  font-size: 28px;
+  font-family: "Pretendard-Bold";
+}
+
+.myInfoMain {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.deleteBtn {
+  font-size: 18px;
+  font-family: "Pretendard-Bold";
+  margin-left: auto;
+  margin-right: 20px;
+}
+
+.imgLogo {
+  display: flex;
+  margin-top: 100px;
+
+  justify-content: center;
+  align-items: center;
+}
+
+.nickNameInput {
+  padding: 18px 25px;
+  width: calc(100% - 160px);
+  margin: 2px 0px;
+  border-radius: 15px;
+  background-color: rgb(229, 233, 234, 0.3);
+  font-family: "NanumSquareNeoOTF-Rg";
+  border: none;
+}
+
+.nickNameChangeBtn {
+  padding: 18px 20px;
+  width: calc(100% - 240px);
+  margin: 0px 0px;
+  border-radius: 15px;
+  background-color: #c1e0df;
+  font-family: "Pretendard-Bold";
+  font-size: 24px;
+  text-align: center;
+  border: none;
+  font-size: 14px;
+}
+.nickName {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+}

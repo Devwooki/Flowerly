@@ -1,0 +1,134 @@
+.modalBack {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  background-color: rgba(0, 0, 0, 0.2);
+  display: flex;
+}
+
+.modalBox {
+  margin: auto auto;
+  width: calc(100% - 40px);
+  height: 460px;
+  background-color: white;
+  padding: 30px 0px;
+  border-radius: 15px;
+}
+
+.modalMain {
+  width: calc(100% - 50px);
+  margin: 0px auto;
+}
+
+.titleBox {
+  display: flex;
+}
+
+.titleBox > div:nth-child(1) {
+  font-size: 24px;
+  font-family: "NanumSquareNeoOTF-Bd";
+  height: 34px;
+}
+
+.titleBox > div:nth-child(2) {
+  font-size: 12px;
+  font-family: "NanumSquareNeoOTF-rg";
+  color: var(--sky);
+  height: 34px;
+  line-height: 50px;
+  margin-left: 5px;
+}
+
+.titleSideText {
+  font-size: 12px;
+  font-family: "NanumSquareNeoOTF-rg";
+  color: var(--sky);
+}
+
+.dateBox {
+  margin-top: 30px;
+}
+
+.boxTitle {
+  font-size: 16px;
+  font-family: "NanumSquareNeoOTF-Bd";
+  width: 100%;
+  padding-bottom: 5px;
+  border-bottom: 1px solid var(--moregray);
+  margin-bottom: 10px;
+}
+
+.dataBtnBox {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dataBtnBox > div {
+  width: calc(100% - 10px);
+  margin: 0px auto;
+  height: 40px;
+  line-height: 40px;
+  font-size: 16px;
+  font-family: "NanumSquareNeoOTF-Rg";
+  text-align: center;
+  border: 1px solid var(--moregray);
+  border-radius: 5px;
+  background-color: white;
+}
+
+.clickActive {
+  background-color: var(--mint) !important;
+}
+
+.timeBox {
+  margin-top: 30px;
+}
+
+/* .timeSetBox {
+  width: 250px;
+  margin: 0px auto;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  border: 1px solid black;
+} */
+
+/* .selectTimeBox {
+  border: 2px solid var(--moregray);
+  border-radius: 2px;
+  width: 70px;
+  text-align: center;
+} */
+
+/* .timeSetBox > div {
+  height: 30px;
+  font-size: 18px;
+  font-family: "NanumSquareNeoOTF-Rg";
+  line-height: 30px;
+} */
+
+.timeBox > input {
+  border: 2px solid var(--moregray);
+  border-radius: 2px;
+  width: calc(100% - 40px);
+  height: 40px;
+  text-align: center;
+  display: flex;
+  font-size: 16px;
+  font-family: "NanumSquareNeoOTF-Rg";
+  margin: 0px auto;
+}
+
+.submitBtn {
+  margin: 30px auto 0px auto;
+  border-radius: 5px;
+  width: calc(100% - 20px);
+  text-align: center;
+  height: 45px;
+  font-size: 18px;
+  font-family: "NanumSquareNeoOTF-Rg";
+  line-height: 45px;
+  background-color: var(--sky);
+}

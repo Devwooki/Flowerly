@@ -2,7 +2,7 @@ import { ToastErrorMessage } from "@/model/toastMessageJHM";
 import axios from "axios";
 
 const baseURL = "https://flower-ly.co.kr/api";
-// const baseURL = "http://localhost:6090/api";
+//const baseURL = "http://localhost:6090/api";
 
 export const tokenHttp = axios.create({
   baseURL,
@@ -13,11 +13,11 @@ export const tokenHttp = axios.create({
 });
 
 tokenHttp.interceptors.request.use(async (req) => {
-  // const accessToken = localStorage.getItem("accessToken");
+  const accessToken = localStorage.getItem("accessToken");
   // const accessToken =
   //   "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcwODY4MzQ4NiwibWVtYmVySWQiOjF9.wU3IYYWErRie5E5s7oIRYMliboyumfMrCZILaKnwlxXxJXCW1kHZ5fJ-mKvsAwYuMV4-UT0F4qoUX9rVcrTiNw"; // 1번
-  const accessToken =
-    "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcwODc1MjUwMywibWVtYmVySWQiOjJ9.o_v_EVuucqlh2NPfHioqquPjm3U-JTP-7ZP2xJkxIxMsPBMhxnw0DL-Avnh2ryBa_J6JYS7YdCc5dZuMS_9IUw"; // 2번
+  // const accessToken =
+  //   "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcwODc1MjUwMywibWVtYmVySWQiOjJ9.o_v_EVuucqlh2NPfHioqquPjm3U-JTP-7ZP2xJkxIxMsPBMhxnw0DL-Avnh2ryBa_J6JYS7YdCc5dZuMS_9IUw"; // 2번
 
   // console.log("토큰Http", accessToken);
   if (!accessToken) {
@@ -25,7 +25,7 @@ tokenHttp.interceptors.request.use(async (req) => {
     throw new Error("expire token");
   }
 
-  req.headers["Authorization"] = "Bearer " + accessToken;
+  req.headers["Authorization"] = accessToken;
   return req;
 });
 

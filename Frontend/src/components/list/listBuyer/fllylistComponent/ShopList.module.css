@@ -2,9 +2,38 @@
   margin-top: 20px;
   background-color: var(--gray);
   height: calc(100vh - 370px);
+  min-height: 350px;
   max-width: 450px;
   padding: 15px;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: 375px; /* 각 그리드 항목의 높이를 100px로 설정 */
   gap: 10px;
+}
+
+.moreBtn {
+  grid-column: span 2;
+}
+
+.noPages {
+  grid-column: span 2;
+  text-align: center;
+  margin: 20px;
+  font-size: 18px;
+}
+
+.noDataTable {
+  grid-column: span 2;
+}
+
+.noData {
+  display: flex;
+  margin-top: 30%;
+  align-items: center;
+  justify-content: center;
+}
+
+.noDataText {
+  text-align: center;
+  font-family: "NanumSquareNeoOTF-Lt";
 }

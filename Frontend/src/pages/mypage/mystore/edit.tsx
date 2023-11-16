@@ -1,5 +1,6 @@
 import React from "react";
-import MyPageStoreEdit from "@/components/mypage/MyPageStoreEedit";
+import MyPageStoreEdit from "@/components/mypage/MyPageStoreEdit";
+
 const MyStoreEdit = () => {
   return (
     <>

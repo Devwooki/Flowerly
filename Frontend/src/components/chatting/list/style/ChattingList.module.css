@@ -1,3 +1,9 @@
+.back {
+  position: relative;
+  width: 100%;
+  height: calc(100vh - 50px);
+}
+
 .header {
   position: absolute;
   display: flex;
@@ -10,11 +16,10 @@
 }
 
 .headerTitle {
-  /* margin-top: 30px; */
   font-size: 28px;
-  font-weight: bold;
   height: 32px;
   margin-left: 20px;
+  margin-top: 30px;
   padding: 0 3px 5px;
   font-family: "Pretendard-Bold";
   border-bottom: 3px solid var(--blue);
@@ -32,10 +37,10 @@
 .container {
   position: absolute;
   margin-top: 80px;
-  padding-top: 10px;
+  padding-top: 20px;
   width: 100%;
   overflow: scroll;
-  height: calc(100vh - 135px);
+  height: calc(100vh - 150px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -44,6 +49,7 @@
 
 .right {
   box-sizing: border-box;
+  margin-top: 30px;
   margin-right: 20px;
   height: 40px;
   align-items: center;
@@ -70,6 +76,20 @@
 
 .icon {
   position: absolute;
-  top: 29px;
+  top: 45px;
   right: 30px;
+}
+
+.noDataDiv {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.noDataDiv > div {
+  margin-top: 15px;
+}
+.noDataImg {
+  opacity: 0.8;
 }

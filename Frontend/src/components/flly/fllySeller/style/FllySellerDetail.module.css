@@ -6,7 +6,7 @@
   font-family: "NanumSquareNeoOTF-Rg";
 }
 
-.detailHeader {
+.detailSellerHeader {
   position: relative;
   height: 440px;
   width: 100%;
@@ -14,15 +14,26 @@
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
+  margin-bottom: 65px;
 }
 
-.detailHeader > img:nth-child(1) {
+.detailBuyerHeader {
+  position: relative;
+  height: 440px;
+  width: 100%;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  margin-bottom: 30px;
+}
+
+.backImg {
   position: absolute;
   top: 45px;
   left: 30px;
 }
 
-.detailHeader > img:nth-child(1):hover {
+.backImg:hover {
   cursor: pointer;
 }
 
@@ -39,8 +50,9 @@
 }
 
 .detailMain {
-  margin: 90px auto 65px auto;
+  margin: 0px auto 65px auto;
   width: calc(100% - 40px);
+  padding-bottom: 20px;
   /* height: calc(100vh - 590px); */
   /* border: 1px solid black; */
 }

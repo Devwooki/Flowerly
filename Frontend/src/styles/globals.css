@@ -54,3 +54,14 @@ body {
   font-family: "NanumSquareNeoOTF-Rg";
   src: url("../../public/fonts/NanumSquareNeoOTF-Rg.woff") format("woff");
 }
+
+.swiper .swiper-pagination {
+  position: absolute;
+
+  /* border: 1px solid black; */
+}
+
+.swiper .swiper-pagination-bullet {
+  background-color: var(--dark);
+  margin: 0 20px;
+}

@@ -18,7 +18,7 @@ export interface dongDataType {
 export interface regionType {
   sidoCode: number;
   sigunguCode: number;
-  dongCode: number;
+  dongCode: number | null;
 }
 
 export const regionState = atom<regionType[]>({

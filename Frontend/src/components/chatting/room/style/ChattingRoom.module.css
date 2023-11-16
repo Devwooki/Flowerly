@@ -84,3 +84,20 @@
   line-height: 0px;
   margin: 0px 16px;
 }
+
+.informationDiv {
+  /* border: 1px solid black; */
+  display: inline-block;
+  text-align: center;
+  width: auto;
+  padding: 6px 20px;
+  margin: 20px 0;
+  border-radius: 20px;
+  background-color: rgba(0, 0, 0, 0.25);
+  color: white;
+  /* font-family: "NanumSquareNeoOTF-Rg"; */
+}
+.informationWrapper {
+  display: flex;
+  justify-content: center;
+}

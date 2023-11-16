@@ -6,17 +6,31 @@ import MypageReviewCard from "./MyFllyListComponent/MypageReviewCard/MypageRevie
 import MypageReviewDeleteModal from "./MyFllyListComponent/MypageReviewCard/MypageReviewDeleteModal";
 import { useRecoilState } from "recoil";
 import { MemberInfo, memberInfoState } from "@/recoil/memberInfoRecoil";
-import axios from "axios";
+
 import { tokenHttp } from "@/api/tokenHttp";
 import { ToastErrorMessage } from "@/model/toastMessageJHM";
+import EmptyReviewList from "../emptypage/EmptyReviewList";
 
-interface ReviewType {
+interface BaseReviewType {
   reviewId: number;
-  requestId: number;
-  storeName: string;
   content: string;
   createdAt: string;
+  type: "buyer" | "seller";
 }
+
+interface BuyerReviewType extends BaseReviewType {
+  requestId: number;
+  storeName: string;
+  storeId: number;
+  type: "buyer";
+}
+
+interface SellerReviewType extends BaseReviewType {
+  consumerNickName: string;
+  type: "seller";
+}
+
+type ReviewType = BuyerReviewType | SellerReviewType;
 
 const MypageReview = () => {
   const router = useRouter();
@@ -52,11 +66,14 @@ const MypageReview = () => {
 
   useEffect(() => {
     tokenHttp
-      .get("/review/buyer-review")
+      .get(memberInfo.role === "USER" ? "/review/buyer-review" : "/review/store-review")
       .then((res) => {
         if (res.data.code === 200) {
           setReviewList(res.data.data.content);
-          localStorage.setItem("accessToken", res.headers.authorization);
+
+          if (res.headers.authorization) {
+            localStorage.setItem("accessToken", res.headers.authorization);
+          }
         }
       })
       .catch((err) => {
@@ -66,6 +83,13 @@ const MypageReview = () => {
         }
       });
   }, []);
+
+  // 리뷰 정렬
+  const sortReviewsDescending = (reviews: ReviewType[]) => {
+    return reviews.sort((a, b) => b.reviewId - a.reviewId);
+  };
+
+  const sortedReviews: ReviewType[] = sortReviewsDescending(reviewList);
 
   return (
     <>
@@ -93,17 +117,21 @@ const MypageReview = () => {
           {memberInfo.role === "USER" ? <div>내가 쓴 리뷰</div> : <div>우리 가게 리뷰</div>}
         </div>
         <div className={style.fllyReviewMain}>
-          {reviewList &&
-            reviewList.map((value, index) => (
-              <>
-                <MypageReviewCard
-                  ModalChangeHandler={ModalChangeHandler}
-                  SelectIdChangeHandler={SelectIdChangeHandler}
-                  $requestIndex={index}
-                  $reviewInfo={value}
-                />
-              </>
-            ))}
+          {sortedReviews.length > 0 ? (
+            sortedReviews.map((value, index) => (
+              <MypageReviewCard
+                key={value.reviewId}
+                ModalChangeHandler={ModalChangeHandler}
+                SelectIdChangeHandler={SelectIdChangeHandler}
+                $requestIndex={index}
+                $reviewInfo={value}
+              />
+            ))
+          ) : (
+            <div className={style.emptyBack}>
+              <EmptyReviewList />
+            </div>
+          )}
         </div>
       </div>
     </>
