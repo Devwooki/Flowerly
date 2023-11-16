@@ -104,6 +104,7 @@ public class MyPageService {
 
     public List<SellerFllyDto> getSellerFlly(Long memberId) {
         List<Request> requests = requestRepository.findBySellerMemberId(memberId);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
 
         return requests.stream().map(request -> {
@@ -122,6 +123,7 @@ public class MyPageService {
                     .deliveryPickupTime(request.getDeliveryPickupTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))
                     .progress(request.getFlly().getProgress().getTitle())
                     .imageUrl(imageUrl)
+                    .createdAt(request.getCreatedAt() != null ? request.getCreatedAt().format(formatter) : null)
                     .build();
         }).collect(Collectors.toList());
     }
@@ -129,7 +131,7 @@ public class MyPageService {
 
     public List<BuyerFllyDto> getBuyerFlly(Long memberId) {
         List<Flly> fllyList = fllyRepository.findByConsumerMemberId(memberId);
-
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
         return fllyList.stream().map(flly -> {
             Optional<Request> paidRequestOpt = requestRepository.findByFllyFllyIdAndIsPaid(flly.getFllyId(), true);
@@ -138,6 +140,7 @@ public class MyPageService {
             String requestOrderType = null;
             String deliveryPickupTime = null;
             Boolean isReviewed = false;
+            String createdAt = null;
 
 
             if (paidRequestOpt.isPresent()) {
@@ -146,6 +149,7 @@ public class MyPageService {
                 requestOrderType = paidRequest.getOrderType().getTitle();
                 deliveryPickupTime = paidRequest.getDeliveryPickupTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
                 isReviewed = reviewRepository.existsByRequestRequestId(paidRequest.getRequestId());
+                createdAt = paidRequest.getCreatedAt() != null ? paidRequest.getCreatedAt().format(formatter) : null;
             }
 
 
@@ -159,6 +163,7 @@ public class MyPageService {
                     .deliveryPickupTime(deliveryPickupTime)
                     .isReviewed(isReviewed)
                     .imageUrls(flly.getImageUrl())
+                    .createdAt(createdAt)
                     .build();
         }).collect(Collectors.toList());
 
