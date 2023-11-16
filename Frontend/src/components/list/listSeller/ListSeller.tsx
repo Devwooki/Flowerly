@@ -105,12 +105,10 @@ const ListSeller = () => {
           setCurrentPage((parent) => parent + 1);
           if (ListState === "adopt") {
             setAdoptData((parent) => [...parent, ...reData.data.content]);
-            console.log(adoptData);
+            // console.log(adoptData);
           } else {
             setParticipationData((parent) => [...parent, ...reData.data.content]);
           }
-        } else {
-          ToastErrorMessage(reData.message);
         }
         if (res.headers.authorization) {
           localStorage.setItem("accessToken", res.headers.authorization);
