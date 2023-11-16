@@ -1,11 +1,22 @@
 import style from "./style/OrderFormMsg.module.css";
 
+import { memberInfoState } from "@/recoil/memberInfoRecoil";
+import { useRecoilValue } from "recoil";
+
 type OrderFormProps = {
   modalHandler: Function;
   isValidRoom: boolean;
 };
 
 const OrderFormMsg: React.FC<OrderFormProps> = ({ modalHandler, isValidRoom }) => {
+  const memberInfo = useRecoilValue(memberInfoState);
+
+  const btnClickHandler = (type: string) => {
+    if (memberInfo.role == "USER") {
+      modalHandler(type, true);
+    }
+  };
+
   return (
     <>
       <div className={style.mainBox}>
@@ -16,7 +27,7 @@ const OrderFormMsg: React.FC<OrderFormProps> = ({ modalHandler, isValidRoom }) =
               <button
                 className={style.btn}
                 onClick={() => {
-                  modalHandler("PICKUP", true);
+                  btnClickHandler("PICKUP");
                 }}
               >
                 픽업
@@ -24,7 +35,7 @@ const OrderFormMsg: React.FC<OrderFormProps> = ({ modalHandler, isValidRoom }) =
               <button
                 className={style.btn}
                 onClick={() => {
-                  modalHandler("DELIVERY", true);
+                  btnClickHandler("DELIVERY");
                 }}
               >
                 배달
