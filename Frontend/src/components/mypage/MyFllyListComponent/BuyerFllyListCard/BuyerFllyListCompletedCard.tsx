@@ -12,6 +12,8 @@ interface BuyerFillListType {
   requestOrderType: string;
   isReviewed: boolean;
   imageUrls: string;
+  createdAt: string;
+  requestId: number | null;
 }
 
 interface Props {
@@ -28,8 +30,10 @@ const BuyerFllyListCompletedCard = ({
   $index,
 }: Props) => {
   const ReviewBtnHandler = () => {
-    SelectIdChangeHandler($fllyInfo.fllyId, $index);
-    ModalChangeHandler();
+    if ($fllyInfo.requestId) {
+      SelectIdChangeHandler($fllyInfo.requestId, $index);
+      ModalChangeHandler();
+    }
   };
 
   const handleFllyDetail = () => {

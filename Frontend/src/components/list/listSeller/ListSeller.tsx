@@ -151,6 +151,7 @@ const ListSeller = () => {
             ModalChangeHandler={ModalChangeHandler}
             $selectId={selectId}
             UpdateAdptList={UpdateAdptList}
+            $fllySelectInfo={adoptData[clickIndex]}
           />
         )}
         <div className={style.ListSellerHeader}>
