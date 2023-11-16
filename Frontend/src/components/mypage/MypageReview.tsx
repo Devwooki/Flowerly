@@ -6,7 +6,7 @@ import MypageReviewCard from "./MyFllyListComponent/MypageReviewCard/MypageRevie
 import MypageReviewDeleteModal from "./MyFllyListComponent/MypageReviewCard/MypageReviewDeleteModal";
 import { useRecoilState } from "recoil";
 import { MemberInfo, memberInfoState } from "@/recoil/memberInfoRecoil";
-import axios from "axios";
+
 import { tokenHttp } from "@/api/tokenHttp";
 import { ToastErrorMessage } from "@/model/toastMessageJHM";
 import EmptyReviewList from "../emptypage/EmptyBuyerFllyList";
