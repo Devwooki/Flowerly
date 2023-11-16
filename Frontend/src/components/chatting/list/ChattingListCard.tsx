@@ -99,7 +99,6 @@ const ChattingListCard: React.FC<ChattingProps> = ({ chattingData, modalHandler 
             <div
               className={style.exitDiv}
               onClick={() => {
-                console.log(`${chattingData.chattingId}번 채팅방 나가기`);
                 modalHandler(chattingData.chattingId, true);
               }}
             >

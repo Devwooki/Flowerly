@@ -24,7 +24,6 @@ const ListAdoptCheckModal = ({ ModalChangeHandler, $selectId, UpdateAdptList }: 
       .then((res) => {
         const rData = res.data;
         if (rData.code === 200) {
-          console.log(rData);
           ToastSuccessMessage(rData.message);
           UpdateAdptList(rData.data.fllyUpdateProgress);
           ModalChangeHandler();

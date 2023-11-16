@@ -3,7 +3,7 @@ import style from "./style/ChattingRoom.module.css";
 import { useRouter } from "next/router";
 
 import SockJS from "sockjs-client";
-import { Client, CompatClient, Stomp } from "@stomp/stompjs";
+import { CompatClient, Stomp } from "@stomp/stompjs";
 
 import { useInView } from "react-intersection-observer";
 
@@ -88,7 +88,7 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
         }
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
         if (err.response.status === 403) {
           router.push("/fllylogin");
         }
@@ -163,7 +163,7 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
       if (stompClient.current && accessToken) {
         stompClient.current.disconnect(
           () => {
-            console.log("Disconnected");
+            // console.log("Disconnected");
           },
           {
             Authorization: accessToken,
@@ -171,6 +171,7 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
         );
       }
     };
+    /* eslint-disable-next-line */
   }, []);
 
   useEffect(() => {
@@ -197,12 +198,13 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
           }
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
           if (err.response.status === 403) {
             router.push("/fllylogin");
           }
         });
     }
+    /* eslint-disable-next-line */
   }, [inView]);
 
   useEffect(() => {
@@ -217,6 +219,7 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
     } else {
       scrollDown();
     }
+    /* eslint-disable-next-line */
   }, [chattingMsgs]);
 
   const addDateMsg = (messages: Message[]) => {

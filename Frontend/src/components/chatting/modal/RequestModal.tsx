@@ -54,6 +54,7 @@ const RequestModal: React.FC<RequestModalProps> = ({ chattingId, modalHandler, s
           router.push("/fllylogin");
         }
       });
+    /* eslint-disable-next-line */
   }, []);
 
   const savePrice = () => {
@@ -67,7 +68,7 @@ const RequestModal: React.FC<RequestModalProps> = ({ chattingId, modalHandler, s
       tokenHttp
         .post(`/chatting/request/price`, body)
         .then((response) => {
-          console.log(response);
+          // console.log(response);
           if (response.data.code === 200) {
             //요거 필수!! (엑세스 토큰 만료로 재발급 받았다면 바꿔줘!! )
             if (response.headers.authorization) {

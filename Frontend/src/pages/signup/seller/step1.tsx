@@ -20,7 +20,6 @@ const Step1 = () => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setSellerInput({ ...sellerInput, [name]: value });
-    console.log(sellerInput);
   };
 
   const isAllDataFilled = () => {
@@ -65,7 +64,6 @@ const Step1 = () => {
           },
         },
       );
-      console.log(response.data);
 
       if (response.status === 200) {
         const data = response.data;
@@ -79,11 +77,8 @@ const Step1 = () => {
           setIsStoreNumberValid(false);
         }
       } else {
-        console.log("사업자등록번호 상태 조회 실패:", response);
       }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   // 다음 주소 api
@@ -104,7 +99,6 @@ const Step1 = () => {
       }
       roadAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
     }
-    console.log(data);
     setBasicAddress(roadAddress);
 
     setSellerAddress({
@@ -122,7 +116,6 @@ const Step1 = () => {
   useEffect(() => {
     const finalAddress = `${basicAddress}T${detailAddress}`;
     setSellerInput((prevSellerInput) => ({ ...prevSellerInput, address: finalAddress }));
-    console.log(finalAddress);
   }, [basicAddress, detailAddress, setSellerInput]);
 
   return (

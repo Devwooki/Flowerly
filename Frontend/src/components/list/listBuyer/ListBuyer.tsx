@@ -15,14 +15,11 @@ const ListBuyer = () => {
     ["listBuyerQuery"],
     async () => {
       const res = await tokenHttp.get("/buyer/my-flly");
-      // console.log("플리스트", [res.data.data.content]);
-
       // return [res.data.data.content[2]];
       return res.data.data.content;
     },
     {
       onError: (error) => {
-        // console.log("에러 발생했다 임마");
         if (error?.response?.status === 403) {
           ToastErrorMessage("로그인 만료되어 로그인 화면으로 이동합니다.");
           router.push("/fllylogin");

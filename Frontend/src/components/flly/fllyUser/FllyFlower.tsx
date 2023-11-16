@@ -22,62 +22,55 @@ const FllyFlower = () => {
   const [flowersMeaning, setFlowersMeaning] = useState<flowerCardType[]>([]);
 
   const axiosHandler = () => {
-    console.log(situation, target, colors);
     axios
       .post(`https://flower-ly.co.kr/api/flly`, {
-        "situation" : [situation == "선택 안함"? null : situation],
-        "target" : [target == "선택 안함"? null : target],
-        "colors": colors.includes("선택 안함")? null : colors
+        situation: [situation == "선택 안함" ? null : situation],
+        target: [target == "선택 안함" ? null : target],
+        colors: colors.includes("선택 안함") ? null : colors,
       })
       .then((res) => {
-        console.log(res.data);
         const data = res.data;
         if (data.code === 200) {
           setFlowers(data.data.flowers);
           setFlowersColor(data.data.flowersColor);
           setFlowersMeaning(data.data.flowersMeaning);
-          console.log("=== ",selected);
         }
-        else console.log("오류 발생");
       });
   };
 
-  const handleSelect = (e:flowerCardType) => {
-    if(selected.includes(e.flowerCode)) {
+  const handleSelect = (e: flowerCardType) => {
+    if (selected.includes(e.flowerCode)) {
       subValue(e);
-    } else if(selected.length < 3) {
+    } else if (selected.length < 3) {
       addValue(e);
     }
   };
 
-  const subValue = (value:flowerCardType) => {
-    const updatedSelected = selected.filter(item => item != value.flowerCode);
-    const updatedFlowers = selectedFlowers.filter(item => item !== value);
+  const subValue = (value: flowerCardType) => {
+    const updatedSelected = selected.filter((item) => item != value.flowerCode);
+    const updatedFlowers = selectedFlowers.filter((item) => item !== value);
     setSelected(updatedSelected);
     setSelcetedFlowers(updatedFlowers);
-    console.log(selected);
-  }
+  };
 
-  const addValue = (newValue:flowerCardType) => {
-    console.log(selected);
+  const addValue = (newValue: flowerCardType) => {
     const updatedSelected = [...selected, newValue.flowerCode];
     const updatedFlowers = [...selectedFlowers, newValue];
     setSelected(updatedSelected);
     setSelcetedFlowers(updatedFlowers);
-    console.log(selected);
   };
 
   useEffect(() => {
-    selectedFlowers.map((value, index)=>{
+    selectedFlowers.map((value, index) => {
       selected.push(value.flowerCode);
-    })
-    console.log(selectedFlowers);
-    console.log("selected ", selected);
-  },[])
+    });
+    /* eslint-disable-next-line */
+  }, []);
 
   useEffect(() => {
     axiosHandler();
-  },[])
+    /* eslint-disable-next-line */
+  }, []);
 
   return (
     <>
@@ -88,12 +81,29 @@ const FllyFlower = () => {
             <div className={style.guidePlus}>최대 3개까지 선택 가능합니다.</div>
           </div>
           <div className={style.selectAreaBox}>
-            {flowers.length === 0? <div className={style.selectLoading}>꽃 목록을 로딩중입니다.</div> : 
+            {flowers.length === 0 ? (
+              <div className={style.selectLoading}>꽃 목록을 로딩중입니다.</div>
+            ) : (
               <div className={style.selectBox}>
                 {flowers.map((item, index) => (
-                  <div key={index} className={style.selectCard} onClick={() => {handleSelect(item)}}>
-                    <div className={selected.includes(item.flowerCode)?`${style.selectImg} ${style.selectedImg}` : style.selectImg} style={{ backgroundImage: `url(${item.imageUrl})` }}>
-                      {selected.includes(item.flowerCode) && <Image src="/img/icon/check.png" width={60} height={45} alt="체크"></Image>}
+                  <div
+                    key={index}
+                    className={style.selectCard}
+                    onClick={() => {
+                      handleSelect(item);
+                    }}
+                  >
+                    <div
+                      className={
+                        selected.includes(item.flowerCode)
+                          ? `${style.selectImg} ${style.selectedImg}`
+                          : style.selectImg
+                      }
+                      style={{ backgroundImage: `url(${item.imageUrl})` }}
+                    >
+                      {selected.includes(item.flowerCode) && (
+                        <Image src="/img/icon/check.png" width={60} height={45} alt="체크"></Image>
+                      )}
                     </div>
                     <div className={style.selectWord}>
                       <div className={style.flowerName}>{item.flowerName}</div>
@@ -102,15 +112,35 @@ const FllyFlower = () => {
                   </div>
                 ))}
               </div>
-            }
-            {(flowersColor != null && flowersColor.length != 0) && 
+            )}
+            {flowersColor != null && flowersColor.length != 0 && (
               <div>
                 <div className={style.sentence}>선택한 색의 꽃</div>
                 <div className={style.selectBox}>
                   {flowersColor.map((item, index) => (
-                    <div key={index} className={style.selectCard} onClick={() => {handleSelect(item)}}>
-                      <div className={selected.includes(item.flowerCode)?`${style.selectImg} ${style.selectedImg}` : style.selectImg} style={{ backgroundImage: `url(${item.imageUrl})` }}>
-                        {selected.includes(item.flowerCode) && <Image src="/img/icon/check.png" width={60} height={45} alt="체크"></Image>}
+                    <div
+                      key={index}
+                      className={style.selectCard}
+                      onClick={() => {
+                        handleSelect(item);
+                      }}
+                    >
+                      <div
+                        className={
+                          selected.includes(item.flowerCode)
+                            ? `${style.selectImg} ${style.selectedImg}`
+                            : style.selectImg
+                        }
+                        style={{ backgroundImage: `url(${item.imageUrl})` }}
+                      >
+                        {selected.includes(item.flowerCode) && (
+                          <Image
+                            src="/img/icon/check.png"
+                            width={60}
+                            height={45}
+                            alt="체크"
+                          ></Image>
+                        )}
                       </div>
                       <div className={style.selectWord}>
                         <div className={style.flowerName}>{item.flowerName}</div>
@@ -120,15 +150,35 @@ const FllyFlower = () => {
                   ))}
                 </div>
               </div>
-            }
-            {(flowersMeaning != null && flowersMeaning.length != 0) && 
+            )}
+            {flowersMeaning != null && flowersMeaning.length != 0 && (
               <div>
                 <div className={style.sentence}>선택한 상황과 대상의 꽃</div>
                 <div className={style.selectBox}>
                   {flowersMeaning.map((item, index) => (
-                    <div key={index} className={style.selectCard} onClick={() => {handleSelect(item)}}>
-                      <div className={selected.includes(item.flowerCode)?`${style.selectImg} ${style.selectedImg}` : style.selectImg} style={{ backgroundImage: `url(${item.imageUrl})` }}>
-                        {selected.includes(item.flowerCode) && <Image src="/img/icon/check.png" width={60} height={45} alt="체크"></Image>}
+                    <div
+                      key={index}
+                      className={style.selectCard}
+                      onClick={() => {
+                        handleSelect(item);
+                      }}
+                    >
+                      <div
+                        className={
+                          selected.includes(item.flowerCode)
+                            ? `${style.selectImg} ${style.selectedImg}`
+                            : style.selectImg
+                        }
+                        style={{ backgroundImage: `url(${item.imageUrl})` }}
+                      >
+                        {selected.includes(item.flowerCode) && (
+                          <Image
+                            src="/img/icon/check.png"
+                            width={60}
+                            height={45}
+                            alt="체크"
+                          ></Image>
+                        )}
                       </div>
                       <div className={style.selectWord}>
                         <div className={style.flowerName}>{item.flowerName}</div>
@@ -138,7 +188,7 @@ const FllyFlower = () => {
                   ))}
                 </div>
               </div>
-            }
+            )}
           </div>
           <div className={style.btnBox}>
             <div className={style.prevBtn}>&lt;</div>

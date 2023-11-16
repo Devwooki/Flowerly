@@ -46,6 +46,7 @@ const PaymentMsg: React.FC<PaymentMsgProps> = ({ chattingId, isValidRoom }) => {
           router.push("/fllylogin");
         }
       });
+    /* eslint-disable-next-line */
   }, []);
 
   const payAxiosHandler = () => {

@@ -10,17 +10,12 @@ type ChattingInputProps = {
 
 const ChattingInput: React.FC<ChattingInputProps> = ({ sendHandler, menuHandler, isValidRoom }) => {
   const [sendMsg, setSendMsg] = useState("");
-  const [valid, setValid] = useState();
   const sendMessage = () => {
     if (sendMsg.trim() != "") {
       sendHandler(sendMsg);
       setSendMsg("");
     }
   };
-
-  useEffect(() => {
-    console.log(isValidRoom);
-  }, []);
 
   return (
     <>

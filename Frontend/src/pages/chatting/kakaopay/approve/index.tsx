@@ -12,10 +12,6 @@ const KakaopayApproveMain = () => {
   const resetPaymentInfo = useResetRecoilState(paymentInfoRecoil);
 
   useEffect(() => {
-    // console.log(router.query.pg_token);
-    // console.log(paymentInfo.chattingId);
-    // console.log(paymentInfo.paymentId);
-
     const body = {
       chattingId: paymentInfo.chattingId,
       paymentId: paymentInfo.paymentId,
@@ -45,6 +41,7 @@ const KakaopayApproveMain = () => {
           router.push("/fllylogin");
         }
       });
+    /* eslint-disable-next-line */
   }, []);
   return (
     <>

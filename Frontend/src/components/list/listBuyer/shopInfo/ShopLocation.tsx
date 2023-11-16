@@ -54,6 +54,7 @@ const ShopLocation = ({ ShopInfoDetail }: ShopLocationProps) => {
         // console.log("위치 검색 실패");
       }
     });
+    /* eslint-disable-next-line */
   }, [location]);
 
   return (

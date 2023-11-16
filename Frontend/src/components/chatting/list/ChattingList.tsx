@@ -11,7 +11,7 @@ import { memberInfoState } from "@/recoil/memberInfoRecoil";
 import { tokenHttp } from "@/api/tokenHttp";
 
 import SockJS from "sockjs-client";
-import { Client, CompatClient, Stomp } from "@stomp/stompjs";
+import { CompatClient, Stomp } from "@stomp/stompjs";
 
 type Chatting = {
   chattingId: number;
@@ -99,6 +99,7 @@ const ChattingList = () => {
         }, {});
       }
     };
+    /* eslint-disable-next-line */
   }, []);
 
   const modalHandler = (chattingId: number, state: boolean) => {

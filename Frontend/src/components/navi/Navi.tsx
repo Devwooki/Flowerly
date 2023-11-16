@@ -79,12 +79,12 @@ const Navi = () => {
     } else if (loc === "my") {
       router.push("/mypage");
     }
-    console.log("selectedButton", selectedButton);
   };
 
   useEffect(() => {
     // 라우터 경로가 변경될 때마다 setSelectedButton을 업데이트
     setSelectedButton(determineInitialButton());
+    /* eslint-disable-next-line */
   }, [router.pathname]);
 
   return (

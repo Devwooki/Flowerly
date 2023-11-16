@@ -94,7 +94,7 @@ const DeliveryOrderModal: React.FC<DeliveryOrderProps> = ({
   }, [orderInputs.recipientPhoneNumber]);
 
   const saveRequest = () => {
-    console.log("saveRequest");
+    // console.log("saveRequest");
     if (!orderInputs.ordererName) {
       ToastErrorMessage("주문자를 입력해주세요.");
     } else if (!orderInputs.phoneNumber) {
@@ -115,12 +115,12 @@ const DeliveryOrderModal: React.FC<DeliveryOrderProps> = ({
         deliveryPickupTime: date.format("YYYY-MM-DD") + " " + time.format("HH:mm"),
         address: baseAddress.trim() + " " + deatilAddress.trim(),
       };
-      console.log(updatedInputs);
+      // console.log(updatedInputs);
 
       tokenHttp
         .post(`/chatting/request/${chattingId}`, updatedInputs)
         .then((response) => {
-          console.log(response.data);
+          // console.log(response.data);s
           if (response.data.code === 200) {
             sendHandler();
             //요거 필수!! (엑세스 토큰 만료로 재발급 받았다면 바꿔줘!! )
@@ -136,7 +136,7 @@ const DeliveryOrderModal: React.FC<DeliveryOrderProps> = ({
           }
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
           if (err.response.status === 403) {
             router.push("/fllylogin");
           }
@@ -178,7 +178,7 @@ const DeliveryOrderModal: React.FC<DeliveryOrderProps> = ({
 
   const [addressModal, setAddressModal] = useState<Boolean>(false);
   const handleComplete = (data: AddressData) => {
-    console.log(data.address);
+    // console.log(data.address);
     setBaseAddress(data.address);
     setAddressModal(false);
   };

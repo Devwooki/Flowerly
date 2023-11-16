@@ -53,6 +53,7 @@ const YourChattingMsg: React.FC<ChattingMsgProps> = ({
           dateTime.getDate().toString().padStart(2, "0"),
       );
     }
+    /* eslint-disable-next-line */
   }, []);
 
   return (

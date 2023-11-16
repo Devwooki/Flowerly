@@ -41,7 +41,6 @@ const ListAdoptCard = ({
   const router = useRouter();
 
   useEffect(() => {
-    console.log($adoptInfo.fllyId);
     if ($adoptInfo.progress === "주문완료") {
       setProgressState("제작중");
       setProgressImg(flowerSrc);
@@ -54,6 +53,7 @@ const ListAdoptCard = ({
       }
       setProgressImg(paperSrc);
     }
+    /* eslint-disable-next-line */
   }, [$adoptInfo.progress]);
 
   const pageMoveHandelr = () => {

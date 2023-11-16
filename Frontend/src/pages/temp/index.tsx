@@ -25,12 +25,11 @@ const Temp = () => {
   }, [path, host]);
 
   useEffect(() => {
-    console.log("유즈이펙트 테스트");
     if (token && host && path) {
-      console.log("토큰 있나 토큰있나 ?");
       getMemberinfo(token);
       onMessageFCM();
     }
+    /* eslint-disable-next-line */
   }, [token, host, path]);
 
   const onMessageFCM = async () => {
@@ -59,28 +58,20 @@ const Temp = () => {
           .then((currentToken) => {
             if (currentToken) {
               // 정상적으로 토큰이 발급되면 콘솔에 출력합니다.
-              console.log("토큰이에요 \n" + currentToken);
 
               tokenHttp
                 .post("/fcm", {
                   fcmToken: currentToken,
                 })
-                .then((response) => {
-                  console.log(response);
-                })
+                .then((response) => {})
                 .catch((err) => err.response.error.status);
             } else {
-              console.log("No registration token available. Request permission to generate one.");
             }
           })
-          .catch((err) => {
-            console.log("An error occurred while retrieving token. ", err);
-          });
+          .catch((err) => {});
 
         // 메세지가 수신되면 역시 콘솔에 출력합니다.
-        onMessage(messaging, (payload) => {
-          console.log("Message received. ", payload);
-        });
+        onMessage(messaging, (payload) => {});
       }
     }
   };
@@ -97,25 +88,19 @@ const Temp = () => {
         },
       });
 
-      console.log(response);
       if (response.data.code === 200) {
         setMemberInfo(response.data.data);
 
         const accessToken = response.headers.authorization;
-        console.log("최종 엑세스 토큰", accessToken);
 
         if (accessToken) {
           localStorage.setItem("accessToken", accessToken);
-          console.log("액세스 토큰 로컬 스토리지에 저장 완료");
         }
         router.replace("/");
       } else {
-        console.error("로그인 실패: ", response.data.message);
         ToastErrorMessage("로그인 실패");
       }
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   };
 
   return null;

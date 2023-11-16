@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import style from "./FllySellerCard.module.css";
 import Image from "next/image";
 import { useRouter } from "next/router";
-//import Picture from "next-export-optimize-images/picture";
 
 interface FllyNearType {
   fllyId: number;

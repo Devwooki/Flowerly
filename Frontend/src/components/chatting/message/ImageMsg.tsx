@@ -22,6 +22,7 @@ const ImageMsg: React.FC<ImageMsgProps> = ({ imgUrl, onImageLoad, modalHandler }
       onImageLoad();
     };
     img.src = imgUrl;
+    /* eslint-disable-next-line */
   }, [imgUrl]);
 
   return (

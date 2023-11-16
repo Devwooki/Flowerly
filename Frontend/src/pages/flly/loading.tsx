@@ -50,7 +50,6 @@ const FllyLoading = () => {
         n: 2,
         size: "1024x1024",
       });
-      console.log("dalle 생성 이미지 ", response);
       const NewImage: bouquetType[] = [];
       if (response) {
         response.data.forEach((image) => {
@@ -60,10 +59,7 @@ const FllyLoading = () => {
       }
     } catch (error: any) {
       if (error.response) {
-        console.log(error.response.status);
-        console.log(error.response.data);
       } else {
-        console.log(error.message);
       }
     }
   };
@@ -74,16 +70,18 @@ const FllyLoading = () => {
     } else {
       setBouquets([...imgList, ...bouquets]);
     }
+    /* eslint-disable-next-line */
   }, [imgList]);
 
   useEffect(() => {
-    console.log(order);
     // router.push("bouquet"); // 지우기
     if (order != "") generateImage();
+    /* eslint-disable-next-line */
   }, [order]);
 
   useEffect(() => {
     if (imgList.length !== 0) router.push("bouquet");
+    /* eslint-disable-next-line */
   }, [bouquets]);
 
   return (

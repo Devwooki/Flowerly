@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import style from "@/components/flly/fllyUser/FllyColor.module.css"
+import style from "@/components/flly/fllyUser/FllyColor.module.css";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { colorState, flowerState } from "@/recoil/fllyRecoil";
@@ -14,13 +14,31 @@ const FllyColor = () => {
   const [color, setColor] = useRecoilState(colorState);
   const [selected, setSelected] = useState<string[]>([]);
   const [selectedFlowers, setSelcetedFlowers] = useRecoilState(flowerState);
-  const colorNames = ["RED", "ORANGE", "PINK", "YELLOW", "BLUE", "PURPLE", "WHITE", "선택 안함"]
-  const selectList = ["빨간색", "주황색", "분홍색", "노랑색", "파란색", "보라색", "흰색", "선택 안함"];
-  const colorList = ["#DB4455", "#F67828", "#FFC5BF", "#FBE870", "#0489DD", "#CE92D8", "#FFFFFF", "#DADADA"];
-  const handleSelect = (e:string, index:number) => {
-    if(e=="선택 안함") {
-      const included = selected.includes(colorNames[index])? true: false;
-      if(included) {
+  const colorNames = ["RED", "ORANGE", "PINK", "YELLOW", "BLUE", "PURPLE", "WHITE", "선택 안함"];
+  const selectList = [
+    "빨간색",
+    "주황색",
+    "분홍색",
+    "노랑색",
+    "파란색",
+    "보라색",
+    "흰색",
+    "선택 안함",
+  ];
+  const colorList = [
+    "#DB4455",
+    "#F67828",
+    "#FFC5BF",
+    "#FBE870",
+    "#0489DD",
+    "#CE92D8",
+    "#FFFFFF",
+    "#DADADA",
+  ];
+  const handleSelect = (e: string, index: number) => {
+    if (e == "선택 안함") {
+      const included = selected.includes(colorNames[index]) ? true : false;
+      if (included) {
         setSelected([]);
         setColor([]);
       } else {
@@ -29,25 +47,25 @@ const FllyColor = () => {
         setColor(updatedSelected);
       }
     } else {
-      if(selected.includes(colorNames[index])) {
-       subValue(colorNames[index]);
-      } else if(selected.length < 3) {
-        if(selected.includes("선택 안함")) {
+      if (selected.includes(colorNames[index])) {
+        subValue(colorNames[index]);
+      } else if (selected.length < 3) {
+        if (selected.includes("선택 안함")) {
           addValue(colorNames[index], true);
         } else addValue(colorNames[index], false);
       }
     }
   };
-  
-  const subValue = (value:string) => {
-    const updatedSelect = selected.filter(item => item !== value);
+
+  const subValue = (value: string) => {
+    const updatedSelect = selected.filter((item) => item !== value);
     setSelected(updatedSelect);
     setColor(updatedSelect);
-  }
+  };
 
-  const addValue = (newValue:string, hasNo:boolean) => {
-    if(hasNo) {
-      const updatedSelected = [...selected.filter(item => item !== "선택 안함"), newValue];
+  const addValue = (newValue: string, hasNo: boolean) => {
+    if (hasNo) {
+      const updatedSelected = [...selected.filter((item) => item !== "선택 안함"), newValue];
       setSelected(updatedSelected);
       setColor(updatedSelected);
     } else {
@@ -59,14 +77,15 @@ const FllyColor = () => {
 
   useEffect(() => {
     setSelected(color);
+    /* eslint-disable-next-line */
   }, []);
 
   useEffect(() => {
-    if(color.length !== 0) setCheck(true);
+    if (color.length !== 0) setCheck(true);
   }, [color]);
 
   const handleClick = () => {
-    if(check) {
+    if (check) {
       setSelcetedFlowers([]);
       router.push("flower");
     } else ToastErrorMessage("항목을 선택해 주세요.");
@@ -77,7 +96,9 @@ const FllyColor = () => {
       <div className={style.fllyBox}>
         <div className={style.contentBox}>
           <div className={style.progress}>
-            <div className={style.progressBar}><div className={style.barCompleted}></div></div>
+            <div className={style.progressBar}>
+              <div className={style.barCompleted}></div>
+            </div>
             <div className={style.progressNum}>3/3</div>
           </div>
           <div className={style.headerTitle}>
@@ -88,22 +109,31 @@ const FllyColor = () => {
           <div className={style.selectAreaBox}>
             <div className={style.selectBox}>
               {selectList.map((item, index) => (
-                <div key={index} style={{ backgroundColor: colorList[index] }} className={style.selectCard} onClick={() => {handleSelect(item, index)}}>
+                <div
+                  key={index}
+                  style={{ backgroundColor: colorList[index] }}
+                  className={style.selectCard}
+                  onClick={() => {
+                    handleSelect(item, index);
+                  }}
+                >
                   <div className={style.selectWord}>{item}</div>
-                  <div className={item != "흰색"? style.selectCheck : style.selectCheckWhite}>
+                  <div className={item != "흰색" ? style.selectCheck : style.selectCheckWhite}>
                     {selected.includes(colorNames[index]) && (
                       <Image src="/img/icon/check.png" width={24} height={18} alt="아이콘" />
                     )}
                   </div>
                 </div>
-              ))}            
+              ))}
             </div>
-            </div>
+          </div>
           <div className={style.btnBox}>
             <Link href="/flly/target">
               <div className={style.prevBtn}>&lt;</div>
             </Link>
-            <div onClick={handleClick} className={style.nextBtn}>다음</div>
+            <div onClick={handleClick} className={style.nextBtn}>
+              다음
+            </div>
           </div>
         </div>
       </div>

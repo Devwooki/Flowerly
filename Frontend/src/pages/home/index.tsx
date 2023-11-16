@@ -72,6 +72,7 @@ export default function Home() {
   };
   useEffect(() => {
     axiosHandler();
+    /* eslint-disable-next-line */
   }, []);
 
   return (
