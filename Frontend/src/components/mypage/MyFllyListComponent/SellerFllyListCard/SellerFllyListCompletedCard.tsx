@@ -8,6 +8,7 @@ interface Order {
   orderType: string;
   deliveryPickupTime: string;
   progress: string;
+  imageUrl: string;
 }
 
 interface SellerFllyListCompletedCardProps {
@@ -21,7 +22,7 @@ const SellerFllyListCompletedCard: React.FC<SellerFllyListCompletedCardProps> = 
   return (
     <>
       <div className={style.cardBack}>
-        <div className={style.ImgBox} style={{ backgroundImage: `url(/thumb.jpg)` }} />
+        <div className={style.ImgBox} style={{ backgroundImage: `url('${data.imageUrl}')` }} />
         <div className={style.InfoBox}>
           <div className={style.OrderAddBox}>
             <div onClick={handleMoveToOrder}>

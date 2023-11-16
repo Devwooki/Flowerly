@@ -9,6 +9,7 @@ import { MemberInfo, memberInfoState } from "@/recoil/memberInfoRecoil";
 import axios from "axios";
 import { tokenHttp } from "@/api/tokenHttp";
 import { ToastErrorMessage } from "@/model/toastMessageJHM";
+import EmptyReviewList from "../emptypage/EmptyBuyerFllyList";
 interface BaseReviewType {
   reviewId: number;
   content: string;
@@ -114,18 +115,21 @@ const MypageReview = () => {
           {memberInfo.role === "USER" ? <div>내가 쓴 리뷰</div> : <div>우리 가게 리뷰</div>}
         </div>
         <div className={style.fllyReviewMain}>
-          {sortedReviews &&
+          {sortedReviews.length > 0 ? (
             sortedReviews.map((value, index) => (
-              <>
-                <MypageReviewCard
-                  key={value.reviewId}
-                  ModalChangeHandler={ModalChangeHandler}
-                  SelectIdChangeHandler={SelectIdChangeHandler}
-                  $requestIndex={index}
-                  $reviewInfo={value}
-                />
-              </>
-            ))}
+              <MypageReviewCard
+                key={value.reviewId}
+                ModalChangeHandler={ModalChangeHandler}
+                SelectIdChangeHandler={SelectIdChangeHandler}
+                $requestIndex={index}
+                $reviewInfo={value}
+              />
+            ))
+          ) : (
+            <div>
+              <EmptyReviewList />
+            </div>
+          )}
         </div>
       </div>
     </>

@@ -1,10 +1,18 @@
 import React from "react";
-
+import style from "./EmptyBuyerFllyList.module.css";
+import Image from "next/image";
 const EmptyBuyerFllyList = () => {
   return (
     <div>
-      <div className="empty">
-        <div className="empty__text">주문내역이 없습니다.</div>
+      <div className={style.emptyBack}>
+        <Image
+          src="/img/etc/no-review-image.png"
+          alt="empty"
+          width={200}
+          height={200}
+          className={style.emptyImg}
+        />
+        <div>리뷰 내역이 없습니다.</div>
       </div>
     </div>
   );

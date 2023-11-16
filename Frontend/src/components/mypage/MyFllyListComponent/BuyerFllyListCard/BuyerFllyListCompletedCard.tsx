@@ -11,6 +11,7 @@ interface BuyerFillListType {
   fllyOrderType: string;
   requestOrderType: string;
   isReviewed: boolean;
+  imageUrls: string;
 }
 
 interface Props {
@@ -43,7 +44,10 @@ const BuyerFllyListCompletedCard = ({
   return (
     <>
       <div className={style.cardBack}>
-        <div className={style.ImgBox} style={{ backgroundImage: `url(/thumb.jpg)` }} />
+        <div
+          className={style.ImgBox}
+          style={{ backgroundImage: `url('${$fllyInfo.imageUrls}')` }}
+        />
         <div className={style.InfoBox}>
           <div className={style.OrderAddBox} onClick={() => handleFllyDetail()}>
             <div>

@@ -3,7 +3,7 @@ import style from "./style/Mypage.module.css";
 import MypageName from "./MyPageComponent/MypageName";
 import MypageCategory from "./MyPageComponent/MypageCategory";
 import MypageStoreImg from "./MyPageComponent/MypageStoreImg";
-import { memberInfoState, MemberInfo } from "@/recoil/memberInfoRecoil";
+import { memberInfoState, MemberInfo, StoreInfo, storeInfoState } from "@/recoil/memberInfoRecoil";
 import { useRecoilState } from "recoil";
 import { tokenHttp } from "@/api/tokenHttp";
 import Router from "next/router";
@@ -18,6 +18,7 @@ interface SellerMyPageData {
 
 const Mypage = () => {
   const [memberInfo, setMemberInfo] = useRecoilState<MemberInfo>(memberInfoState);
+  const [storeInfo, setStoreInfo] = useRecoilState<StoreInfo | null>(storeInfoState);
   const [sellerData, setSellerData] = useState<SellerMyPageData | null>(null);
   const [buyerData, setBuyerData] = useState<string>("");
 
@@ -28,10 +29,11 @@ const Mypage = () => {
 
     const getMyPageData = () => {
       tokenHttp
-        .get(memberInfo.role === "SELLER" ? "/mypage/seller" : "/mypage/buyer")
+        .get(memberInfo.role === "SELLER" ? "/mypage/store" : "/mypage/buyer")
         .then((response) => {
           if (memberInfo.role === "SELLER") {
             setSellerData(response.data.data);
+            setStoreInfo(response.data.data);
           } else {
             setBuyerData(response.data.data);
             console.log(response.data.data);
@@ -50,7 +52,13 @@ const Mypage = () => {
     };
 
     getMyPageData();
-  }, [memberInfo]);
+  }, []);
+
+  // useEffect(() => {
+  //   if (storeInfo) {
+  //     setMemberInfo({ ...memberInfo, store: storeInfo });
+  //   }
+  // }, [storeInfo]);
 
   const handleMyStoreInfo = () => {
     Router.push("/mypage/mystore");
