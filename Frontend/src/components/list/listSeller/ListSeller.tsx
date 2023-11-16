@@ -168,7 +168,7 @@ const ListSeller = () => {
                 ChangeStatHander("adopt");
               }}
             >
-              채택된 플리얌
+              채택된 플리
             </div>
             <div
               className={

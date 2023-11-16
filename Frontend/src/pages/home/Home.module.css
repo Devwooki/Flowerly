@@ -20,7 +20,13 @@
   font-size: 20px;
 }
 
-.title {
+.titleUp {
+  /* border: 1px solid black; */
+  display: block;
+  font-size: 26px;
+}
+
+.titleDown {
   /* border: 1px solid black; */
   display: block;
   font-size: 30px;
