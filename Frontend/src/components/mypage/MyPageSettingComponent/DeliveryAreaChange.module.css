@@ -3,15 +3,16 @@
   height: calc(100vh - 40px);
   display: flex;
   overflow: scroll;
-
+  justify-content: center;
+  align-items: center;
   position: relative;
 }
 
 .container {
   width: calc(100% - 40px);
-  margin: auto auto;
   display: flex;
   flex-direction: column;
+  justify-content: center;
 }
 
 .container > h3 {
@@ -21,6 +22,7 @@
 }
 
 .container > div {
+  margin: 5px auto;
   width: calc(100% - 40px);
   /* border: 1px solid black; */
 }
@@ -58,6 +60,7 @@
 
 .finishButton {
   background-color: #c1e0df;
+  margin: 15px auto;
   box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.25);
   border-radius: 2px;
   border: 0px;
@@ -79,7 +82,8 @@
   text-align: center;
   position: relative;
   border: 1px solid var(--moregray);
-  margin: 15px auto 20px auto;
+  margin-top: 15px;
+  margin-bottom: 20px;
 }
 
 .dataArea > div {
