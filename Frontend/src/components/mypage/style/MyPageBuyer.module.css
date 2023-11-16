@@ -27,7 +27,7 @@
 }
 
 .deleteBtn {
-  font-size: 14px;
+  font-size: 18px;
   font-family: "Pretendard-Bold";
   margin-left: auto;
   margin-right: 20px;
@@ -43,8 +43,8 @@
 
 .nickNameInput {
   padding: 18px 25px;
-  width: calc(100% - 100px);
-  margin: 2px auto;
+  width: calc(100% - 160px);
+  margin: 2px 0px;
   border-radius: 15px;
   background-color: rgb(229, 233, 234, 0.3);
   font-family: "NanumSquareNeoOTF-Rg";
@@ -52,13 +52,21 @@
 }
 
 .nickNameChangeBtn {
-  padding: 18px 25px;
-  width: calc(100% - 100px);
-  margin: 2px auto;
+  padding: 18px 20px;
+  width: calc(100% - 240px);
+  margin: 0px 0px;
   border-radius: 15px;
   background-color: #c1e0df;
   font-family: "Pretendard-Bold";
+  font-size: 24px;
   text-align: center;
   border: none;
   font-size: 14px;
+}
+.nickName {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
 }

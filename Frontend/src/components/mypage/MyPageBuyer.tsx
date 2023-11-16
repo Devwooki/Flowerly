@@ -40,6 +40,26 @@ const MyPageBuyer = () => {
       });
   };
 
+  const deleteMember = () => {
+    tokenHttp
+      .delete("/member/signout")
+      .then((res) => {
+        if (res.data.code === 200) {
+          ToastSuccessMessage("탈퇴가 완료되었습니다.");
+
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("refreshToken");
+          localStorage.removeItem("memberInfo");
+          Router.push("/");
+        }
+      })
+      .catch((err) => {
+        if (err.response.status === 403) {
+          Router.push("/fllylogin");
+        }
+      });
+  };
+
   return (
     <>
       <div className={style.myInfoBack}>
@@ -54,23 +74,31 @@ const MyPageBuyer = () => {
             }}
           />
           <div className={style.headerTitle}>내 정보 수정</div>
-          <div className={style.deleteBtn}>탈퇴하기</div>
+          <div className={style.deleteBtn} onClick={() => deleteMember()}>
+            탈퇴하기
+          </div>
         </div>
         <div className={style.myInfoMain}>
           <div className={style.imgLogo}>
             <Image src="/img/logo/flly_logo.png" alt="logo" width={200} height={200} />
           </div>
-          <input
-            type="text"
-            name="nickName"
-            value={newNickName}
-            onChange={(e) => setNewNickName(e.target.value)}
-            className={style.nickNameInput}
-          />
-
-          <button className={style.nickNameChangeBtn} onClick={modifyNickName}>
-            수정하기
-          </button>
+          <div className={style.nickName}>
+            <input
+              type="text"
+              name="nickName"
+              value={newNickName}
+              onChange={(e) => setNewNickName(e.target.value)}
+              className={style.nickNameInput}
+            />
+            <Image
+              src="/img/icon/checked02.png"
+              alt="check"
+              width={40}
+              height={40}
+              onClick={modifyNickName}
+              className={style.checkBtn}
+            />
+          </div>
         </div>
       </div>
     </>
