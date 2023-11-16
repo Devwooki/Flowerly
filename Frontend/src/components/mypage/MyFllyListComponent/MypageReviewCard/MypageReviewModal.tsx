@@ -28,7 +28,6 @@ const MypageReviewModal = ({ ModalChangeHandler, $selectId, UpdateFllyList }: Pr
     tokenHttp
       .post("/review/create", {
         requestId: $selectId,
-
         content: content,
       })
       .then((res) => {

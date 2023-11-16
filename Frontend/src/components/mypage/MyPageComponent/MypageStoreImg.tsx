@@ -69,7 +69,7 @@ const MypageStoreImg: React.FC<MypageStoreImgProps> = ({ imageUrls }) => {
   // array.from() 함수를 사용하여 길이가 3인 배열을 만들고 imageUrls 배열의 인덱스에 값이 있는지 확인
   return (
     <>
-      {/* <div className={style.StoreImg}>
+      <div className={style.StoreImg}>
         <div>대표 사진</div>
 
         <div className={style.ImgBox} ref={imgBoxRef}>
@@ -85,7 +85,7 @@ const MypageStoreImg: React.FC<MypageStoreImgProps> = ({ imageUrls }) => {
         </div>
       </div>
 
-      {modalState && (
+      {/* {modalState && (
         <StoreImgModal
           ModalChangeHandler={ModalChangeHandler}
           imageInfo={parsedImages}
