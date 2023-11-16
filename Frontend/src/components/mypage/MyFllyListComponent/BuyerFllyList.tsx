@@ -19,6 +19,7 @@ interface BuyerFillListType {
   isReviewed: boolean;
   imageUrls: string;
   createdAt: string;
+  requestId: number | null;
 }
 
 const BuyerFllyList = () => {
@@ -31,8 +32,8 @@ const BuyerFllyList = () => {
   const [clickIndex, setClickIndex] = useState<number>(0);
 
   //선택한 flly 세팅을 위한 핸들러
-  const SelectIdChangeHandler = (fllyId: number, index: number) => {
-    setSelectId(fllyId);
+  const SelectIdChangeHandler = (requestId: number, index: number) => {
+    setSelectId(requestId);
     setClickIndex(index);
   };
 
