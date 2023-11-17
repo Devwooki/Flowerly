@@ -68,7 +68,7 @@ const ChatStart = ({ onCancel, shopInfo }: CancelProps) => {
   );
 
   if (isError) {
-    return <div>에러 발생</div>;
+    return <div>에러 발생!</div>;
   }
 
   if (isLoading) {
