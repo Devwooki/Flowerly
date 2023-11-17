@@ -269,12 +269,12 @@ Next.js : 13.XX
     importScripts("https://www.gstatic.com/firebasejs/9.0.2/firebase-messaging-compat.js");
     
     firebase.initializeApp({
-      apiKey: "AIzaSyCDZIH8n2O56d5pYGfJQR6rl8p3gnxcTfM",
-      authDomain: "flower-ly.firebaseapp.com",
-      projectId: "flower-ly",
-      storageBucket: "flower-ly.appspot.com",
-      messagingSenderId: "973445539914",
-      appId: "1:973445539914:web:4f7c1bf91af1a253a7deb3",
+      apiKey: "YOUR_KEY",
+      authDomain: "{YOUR_SERVICE}.firebaseapp.com",
+      projectId: "{YOUR_SERVICE}",
+      storageBucket: "{YOUR_SERVICE}.appspot.com",
+      messagingSenderId: "{YOUR_SERVICE}",
+      appId: "YOUR_KEY",
     });
     
     const messaging = firebase.messaging();
