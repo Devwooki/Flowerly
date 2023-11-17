@@ -398,7 +398,7 @@ EC2 접근후
 
     - http:// EC2  pulic Ip4 : 위에 설정한 jenkis port번호
 
-   ![Untitled](./resouces/Untitled.png)
+   ![Untitled](resouces/Untitled.png)
 
     - jekins 초기 비밀번호 위치를 모르겠다면
 
@@ -408,7 +408,7 @@ EC2 접근후
 
     - 다운로드 ( Install suggestea plugins )
 
-   ![Untitled](./resouces/Untitled.png)
+   ![Untitled](resouces/Untitled 1.png)
 
 2. Jenkins 환경설정(feat 이현욱)
 - Spring 과 React 를 Build 하고 배포하기 때문에 Docker를 설치해줘야한다..
