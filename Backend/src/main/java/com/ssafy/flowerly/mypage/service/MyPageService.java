@@ -124,6 +124,7 @@ public class MyPageService {
                     .progress(request.getFlly().getProgress().getTitle())
                     .imageUrl(imageUrl)
                     .createdAt(request.getCreatedAt() != null ? request.getCreatedAt().format(formatter) : null)
+                    .requestId(request.getRequestId())
                     .build();
         }).collect(Collectors.toList());
     }
@@ -141,6 +142,7 @@ public class MyPageService {
             String deliveryPickupTime = null;
             Boolean isReviewed = false;
             String createdAt = null;
+            Long requestId = null;
 
 
             if (paidRequestOpt.isPresent()) {
@@ -150,6 +152,8 @@ public class MyPageService {
                 deliveryPickupTime = paidRequest.getDeliveryPickupTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
                 isReviewed = reviewRepository.existsByRequestRequestId(paidRequest.getRequestId());
                 createdAt = paidRequest.getCreatedAt() != null ? paidRequest.getCreatedAt().format(formatter) : null;
+                requestId = paidRequest.getRequestId();
+
             }
 
 
@@ -164,6 +168,7 @@ public class MyPageService {
                     .isReviewed(isReviewed)
                     .imageUrls(flly.getImageUrl())
                     .createdAt(createdAt)
+                    .requestId(requestId)
                     .build();
         }).collect(Collectors.toList());
 

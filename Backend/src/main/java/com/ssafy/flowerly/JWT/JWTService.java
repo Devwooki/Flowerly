@@ -61,7 +61,7 @@ public class JWTService {
     }
 
     public String createTempAccessToken(Long memberId){
-        log.info("memberInfo 전달용 임시 토큰 생성");
+        //log.info("memberInfo 전달용 임시 토큰 생성");
         Date now = new Date();
         Date expireDate = new Date(now.getTime() + 30000); //10초 짜리
         return JWT.create()
@@ -96,7 +96,7 @@ public class JWTService {
         response.setStatus(HttpServletResponse.SC_OK);
 
         response.setHeader(accessHeader, BEARER + accessToken);
-        log.info("accessToken 재발급 : {}", accessToken);
+        //log.info("accessToken 재발급 : {}", accessToken);
     }
 
     //AccessToken 및 RefreshToken을 전송한다
@@ -115,16 +115,16 @@ public class JWTService {
                     .secure(true)
                     .maxAge(refreshExpiration)
                     .build();
-            log.info("refreshToken 만듬 : {}", refreshCookie.toString());
+            //log.info("refreshToken 만듬 : {}", refreshCookie.toString());
             response.setHeader("Set-Cookie", refreshCookie.toString());
         }
 
-        log.info("AccessToken 및 RefreshToken 설정 완");
+        //log.info("AccessToken 및 RefreshToken 설정 완");
     }
 
     // 헤더에서 AccessToken 추출
     public Optional<String> extractAccessToken(HttpServletRequest request) {
-        log.info("엑세스 토큰 추출중");
+        //log.info("엑세스 토큰 추출중");
         return Optional.ofNullable(request.getHeader(accessHeader))
                 .filter(accessToken -> accessToken.startsWith(BEARER))
                 .map(accessToken -> accessToken.replace(BEARER, ""));
@@ -132,13 +132,13 @@ public class JWTService {
 
     //쿠키에서 RefreshToken 추출
     public Optional<String> extractRefreshToken(HttpServletRequest request) {
-        log.info("리프레시 토큰 추출중");
+        //log.info("리프레시 토큰 추출중");
         Cookie[] cookies = request.getCookies();
 
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (refreshHeader.equals(cookie.getName())) {
-                    log.info("리프레시 토큰 추출했지 : {} ", cookie.getValue());
+                    //log.info("리프레시 토큰 추출했지 : {} ", cookie.getValue());
                     return Optional.of(cookie.getValue());
                 }
             }
@@ -152,7 +152,7 @@ public class JWTService {
             JWT.require(Algorithm.HMAC512(secretKey)).build().verify(token);
             return true;
         }catch(Exception e){
-            log.error("유효하지 않은 토큰 입니다. {}", e.getMessage());
+            //log.error("유효하지 않은 토큰 입니다. {}", e.getMessage());
             return false;
         }
     }

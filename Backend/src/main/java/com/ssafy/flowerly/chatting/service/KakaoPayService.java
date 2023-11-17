@@ -2,6 +2,7 @@ package com.ssafy.flowerly.chatting.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.flowerly.FCM.service.FCMService;
+import com.ssafy.flowerly.chatting.dto.ChattingDto;
 import com.ssafy.flowerly.chatting.dto.PaymentDto;
 import com.ssafy.flowerly.chatting.dto.StompChatRequest;
 import com.ssafy.flowerly.chatting.repository.ChattingRepository;
@@ -19,6 +20,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -40,6 +42,8 @@ public class KakaoPayService {
     private final MemberRepository memberRepository;
     private final RequestRepository requestRepository;
     private final ChattingRepository chattingRepository;
+
+    private final SimpMessagingTemplate simpMessagingTemplate;
 
     private static final ObjectMapper mapper = new ObjectMapper();
 
@@ -146,9 +150,11 @@ public class KakaoPayService {
                 new StompChatRequest(approveReq.getChattingId(), memberId, "PAYMENT_COMPLETE", "결제가 완료되었습니다.")
         );
 
-        // 알림 전송
+        // 스톰프 메세지 전송 + 알림 전송
         Member seller = memberRepository.findByMemberId(request.getSeller().getMemberId())
                         .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+        simpMessagingTemplate.convertAndSend("/sub/list/" + seller.getMemberId(),
+                                            ChattingDto.UpdateResponse.of(chatting, chatting.getUnreadCntSeller()));
         try {
             fcmService.sendPushMessage(seller.getMemberId(), "구매자가 결제를 완료했습니다.", "꽃다발 제작을 준비해 주세요!");
         } catch (Exception e) {

@@ -59,8 +59,8 @@ public class SecurityConfig {
 
         //Oauth 설정
         http.oauth2Login()
-                //.loginPage("https://flower-ly.co.kr/api/member/need-login")    //로그인에 실패할 경우 이동시킬 url이다
-                .loginPage("http://localhost:6090/api/member/need-login")
+                .loginPage("https://flower-ly.co.kr/api/member/need-login")    //로그인에 실패할 경우 이동시킬 url이다
+                //.loginPage("http://localhost:6090/api/member/need-login")
                 .successHandler(oAuth2LoginSuccessHandler)  //성공할 경우 수행할 핸들러
                 .failureHandler(oAuth2LoginFailureHandler)  //실패할 경우 수행할 핸들러
                 .userInfoEndpoint()                         //Oauth2 정보를 가져오는데 사용할 서비스

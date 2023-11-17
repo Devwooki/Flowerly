@@ -91,7 +91,7 @@ public class JWTAuthenticationProcessingFilter extends OncePerRequestFilter {
             return;
         }
 
-        log.info("accesstoken이 만료 되었따!!!!! refreshToken 검증 시작");
+        //log.info("accesstoken이 만료 되었따!!!!! refreshToken 검증 시작");
 
         //accessToken이 만료 되었으므로 RefreshToken을 검증한다.
         String refreshToken = jwtService.extractRefreshToken(request)
@@ -109,7 +109,7 @@ public class JWTAuthenticationProcessingFilter extends OncePerRequestFilter {
     //토큰이 유효하다면 accessToken에서 memberId를 추출하고 member를 찾아 인증 객체에 넣는다.
     //추후 Controller 등에서 사용하기 위해 Attribute에 memberId를 넣는다
     private void checkAccessTokenAndAuthentication(HttpServletRequest request, String accessToken){
-        log.info("accessToken 검증 시작");
+        //log.info("accessToken 검증 시작");
 
         jwtService.extractMemberId(accessToken)
                 .flatMap(memberRepository::findByMemberId)
@@ -118,7 +118,7 @@ public class JWTAuthenticationProcessingFilter extends OncePerRequestFilter {
                     request.setAttribute("memberId", member.getMemberId());
                     saveAuthentication(member);
                 });
-        log.info("검증 성공! 컨트롤러로 접속!");
+        //log.info("검증 성공! 컨트롤러로 접속!");
     }
 
     // 인증을 수행하는 메소드
@@ -146,7 +146,7 @@ public class JWTAuthenticationProcessingFilter extends OncePerRequestFilter {
     //RefreshToken이 Redis에 있는지 체크하는 로직
     public void checkRefreshTokenAndReIssueAccessToken(HttpServletResponse response, String refreshToken) throws IOException {
         try{
-            log.info(">>>> RefreshToken 검증 시작! <<<<");
+            //log.info(">>>> RefreshToken 검증 시작! <<<<");
             //RefreshToken으로 유저 정보(ID) 찾기
             String storedValue = redisTemplate.opsForValue().get(refreshToken);
             if(storedValue == null)
@@ -156,7 +156,7 @@ public class JWTAuthenticationProcessingFilter extends OncePerRequestFilter {
             redisTemplate.delete(refreshToken);
 
             // RefreshToken 및 AccessToken 재발급
-            log.info("storedValue :{}", storedValue);
+            //log.info("storedValue :{}", storedValue);
             Long memberId = Long.valueOf(storedValue);
             reIssueTokens(response, memberId);
 
