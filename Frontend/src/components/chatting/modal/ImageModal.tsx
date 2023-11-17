@@ -13,7 +13,6 @@ const ImageModal: React.FC<ImageModalProps> = ({ modalHandler, imgUrl }) => {
     const img = new Image();
     // 이미지 로드 완료 시의 콜백 함수
     img.onload = () => {
-      console.log(img.height, img.width);
       let widthValue = window.innerWidth > 450 ? 450 : window.innerWidth;
       let heightValue = (widthValue * img.height) / img.width;
 

@@ -19,9 +19,7 @@ const UserTypeChangeModal = ({ userChangModalHandler }: Props) => {
   //유저정보 변경 눌렀을때
   const SummitBtnHandler = () => {
     if (memberInfo.role === "USER") {
-      console.log("저 구매자인데 유저 정보변경을 눌렀어요!!!");
     } else if (memberInfo.role === "SELLER") {
-      console.log("저 판매자인데 유저 정보변경을 눌렀어요!!!");
     }
   };
 

@@ -108,7 +108,6 @@ const FllyOrderDetail = () => {
         .then((res) => {
           const rsData = res.data;
           if (rsData.code == 200) {
-            console.log(res.data.data);
             setFllyRequestInfo(rsData.data.fllyRequestDto);
             setFllyResponseInfo(rsData.data.fllyResponeDto);
           } else {

@@ -77,11 +77,8 @@ const StoreImgPlusModal = ({ ModalChangeHandler, UpdateImg }: Props) => {
     let redirectFile = null;
     if (fileInfo) {
       redirectFile = await imageCompression(fileInfo, options);
-      console.log(redirectFile);
       formData.append("image", redirectFile);
     }
-
-    console.log(formData);
 
     tokenHttp
       .post("/s3/upload/store", formData, {
@@ -90,11 +87,9 @@ const StoreImgPlusModal = ({ ModalChangeHandler, UpdateImg }: Props) => {
         },
       })
       .then((res) => {
-        console.log(res);
         if (res.data.code === 200) {
           const uploadedUrl = res.data.data[0] as string;
           setNewUrl(uploadedUrl);
-          console.log(uploadedUrl);
 
           if (res.headers.authorization) {
             localStorage.setItem("accessToken", res.headers.authorization);
@@ -120,7 +115,6 @@ const StoreImgPlusModal = ({ ModalChangeHandler, UpdateImg }: Props) => {
       .then((res) => {
         if (res.data.code === 200) {
           UpdateImg(newUrl);
-          console.log(newUrl);
           if (res.headers.authorization) {
             localStorage.setItem("accessToken", res.headers.authorization);
           }
@@ -132,6 +126,7 @@ const StoreImgPlusModal = ({ ModalChangeHandler, UpdateImg }: Props) => {
           router.push("/fllylogin");
         }
       });
+    /* eslint-disable-next-line */
   }, [newUrl]);
 
   return (

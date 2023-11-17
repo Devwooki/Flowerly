@@ -90,11 +90,8 @@ const MyPageStoreEdit = () => {
           setIsStoreNumberValid(false);
         }
       } else {
-        console.log("사업자등록번호 상태 조회 실패:", response);
       }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   // 다음 주소 api
@@ -115,7 +112,6 @@ const MyPageStoreEdit = () => {
       }
       roadAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
     }
-    console.log(data);
     setBasicAddress(roadAddress);
 
     setEditData({
@@ -170,9 +166,6 @@ const MyPageStoreEdit = () => {
               images: prevInfo.store?.images || [],
             },
           }));
-
-          console.log(memberInfo);
-          console.log(response.data.data);
 
           ToastSuccessMessage("가게 정보가 수정되었습니다.");
 

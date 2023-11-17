@@ -52,6 +52,7 @@ const SellerFllyList = () => {
         });
     };
     getSellerFllyList();
+    /* eslint-disable-next-line */
   }, []);
 
   return (
