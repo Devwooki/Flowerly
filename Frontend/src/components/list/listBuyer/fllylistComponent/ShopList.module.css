@@ -1,8 +1,7 @@
 .shopListMain {
   margin-top: 20px;
   background-color: var(--gray);
-  height: calc(100vh - 370px);
-  min-height: 350px;
+  min-height: calc(100vh - 370px);
   max-width: 450px;
   padding: 15px;
   display: grid;
