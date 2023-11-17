@@ -33,7 +33,7 @@ const ShopCard = ({ shopInfo }: ShopCardProps) => {
 
   const moveToShop = (shopId: number, event: React.MouseEvent) => {
     event.stopPropagation(); // 이벤트 버블링 방지
-    router.push({ pathname: "/list/shop/[shopId]", query: { shopId: shopId } });
+    window.location.href = `/list/shop/${shopId}`;
   };
 
   const modalState = () => {
