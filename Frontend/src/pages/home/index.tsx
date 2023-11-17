@@ -36,7 +36,6 @@ export default function Home() {
   const [cards, setCards] = useState([] as card[]);
   const router = useRouter();
   const today = new Date();
-  console.log(today.getMonth() + 1);
 
   const axiosHandler = () => {
     tokenHttp

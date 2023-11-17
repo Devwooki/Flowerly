@@ -32,8 +32,6 @@ const Mypage = () => {
   const resetMemberInfo = useResetRecoilState(memberInfoState);
 
   useEffect(() => {
-    console.log(memberInfo);
-
     const getMyPageData = () => {
       tokenHttp
         .get(memberInfo.role === "SELLER" ? "/mypage/store" : "/mypage/buyer")
@@ -57,7 +55,6 @@ const Mypage = () => {
           }
         })
         .catch((error) => {
-          console.error("마이페이지 데이터를 불러오는데 실패했습니다.", error);
           if (error.response && error.response.status === 403) {
             Router.push("/fllylogin");
           }
@@ -65,6 +62,7 @@ const Mypage = () => {
     };
 
     getMyPageData();
+    /* eslint-disable-next-line */
   }, []);
 
   const handleMyStoreInfo = () => {

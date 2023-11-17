@@ -32,6 +32,7 @@ const BuyerFllyListProgressCard = ({ $fllyInfo }: Props) => {
     else if (progress === "주문완료") setProgressStep(2);
     else if (progress === "제작완료") setProgressStep(3);
     else if (progress === "픽업/배달완료") setProgressStep(4);
+    /* eslint-disable-next-line */
   }, []);
 
   const handleFllyList = () => {

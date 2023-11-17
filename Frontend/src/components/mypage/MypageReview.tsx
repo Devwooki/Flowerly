@@ -82,6 +82,7 @@ const MypageReview = () => {
           ToastErrorMessage("로그인 만료되어 로그인화면으로 이동합니다.");
         }
       });
+    /* eslint-disable-next-line */
   }, []);
 
   // 리뷰 정렬

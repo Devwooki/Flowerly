@@ -35,7 +35,6 @@ const SellerFllyListProgressCard: React.FC<SellerFllyListProgressCardProps> = ({
       .then((res) => {
         if (res.data.code === 200) {
           // 수정필요
-          console.log(res.data.data);
           updateHandler(index, res.data.data.fllyUpdateProgress);
 
           ToastSuccessMessage("플리가 완료되었습니다.");

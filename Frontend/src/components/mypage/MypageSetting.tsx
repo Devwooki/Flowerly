@@ -15,6 +15,7 @@ const MypageSetting = () => {
 
   useEffect(() => {
     setAlarmState(memberInfo.notification);
+    /* eslint-disable-next-line */
   }, []);
 
   //우저정보 변경 모달확인
@@ -39,7 +40,6 @@ const MypageSetting = () => {
           ToastSuccessMessage(res.data.data);
           setAlarmState(newAlarmState);
           setMemberInfo({ ...memberInfo, notification: newAlarmState });
-          console.log(res.data.data);
 
           if (res.headers.authorization) {
             localStorage.setItem("accessToken", res.headers.authorization);
@@ -47,7 +47,6 @@ const MypageSetting = () => {
         }
       })
       .catch((err) => {
-        console.error("알림 설정 실패", err);
         if (err.response.status === 403) {
           router.push("/fllylogin");
         }

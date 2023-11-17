@@ -15,10 +15,10 @@ const StoreImgModal = ({ ModalChangeHandler, imageInfos, DeleteImg, index }: Pro
   const [imgUrl, setImgUrl] = useState<string>("");
 
   useEffect(() => {
-    console.log(index);
     if (index !== null) {
       setImgUrl(imageInfos[index].imageUrl);
     }
+    /* eslint-disable-next-line */
   }, []);
 
   const NotClickEventHandler = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -42,9 +42,7 @@ const StoreImgModal = ({ ModalChangeHandler, imageInfos, DeleteImg, index }: Pro
           }
         }
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => {});
   };
 
   return (
