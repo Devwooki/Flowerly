@@ -50,10 +50,7 @@ const DeliveryAreaChange = () => {
       try {
         const response = await axios.get("https://flower-ly.co.kr/api/address/sido");
         setSidoData(response.data.data);
-        console.log(response);
-      } catch (error) {
-        console.error(error);
-      }
+      } catch (error) {}
     };
     getSidoData();
   }, []);
@@ -61,7 +58,6 @@ const DeliveryAreaChange = () => {
   useEffect(() => {
     if (selectedSido) {
       getSigunguData(selectedSido.sidoCode);
-      console.log(selectedSido.sidoCode);
     } else {
       setSigunguData([]);
     }
@@ -70,7 +66,6 @@ const DeliveryAreaChange = () => {
   useEffect(() => {
     if (selectedSigungu) {
       getDongData(selectedSigungu.sigunguCode);
-      console.log(selectedSigungu.sigunguCode);
     } else {
       setSigunguData([]);
     }
@@ -80,20 +75,14 @@ const DeliveryAreaChange = () => {
     try {
       const response = await axios.get(`https://flower-ly.co.kr/api/address/sigungu/${sidoCode}`);
       setSigunguData(response.data.data.content);
-      console.log(response);
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   };
 
   const getDongData = async (sigunguCode: number) => {
     try {
       const response = await axios.get(`https://flower-ly.co.kr/api/address/dong/${sigunguCode}`);
       setDongData(response.data.data.content);
-      console.log(response);
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   };
 
   const handleSidoChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -149,7 +138,6 @@ const DeliveryAreaChange = () => {
       tokenHttp
         .get("mypage/delivery")
         .then((response) => {
-          console.log(response.data.data);
           resetDeliveryRegionList();
           resetDeliveryRegionCodeList();
 
@@ -163,14 +151,13 @@ const DeliveryAreaChange = () => {
           }
         })
         .catch((error) => {
-          console.error("배달 가능 지역 조회 실패", error);
-
           if (error.response && error.response.status === 403) {
             Router.push("/fllylogin");
           }
         });
     };
     getDeliveryRegion();
+    /* eslint-disable-next-line */
   }, []);
 
   // 배달 가능 지역 수정

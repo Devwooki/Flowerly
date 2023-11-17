@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import style from "./style/MypageName.module.css";
 import { memberInfoState, MemberInfo } from "@/recoil/memberInfoRecoil";
 import { useRecoilValue } from "recoil";
-import Link from "next/link";
-import Router from "next/router";
 
 interface MypageNameProps {
   data: string;
@@ -13,7 +11,7 @@ const MypageName: React.FC<MypageNameProps> = ({ data }) => {
   const memberInfo = useRecoilValue<MemberInfo>(memberInfoState);
 
   const handleStoreDetail = () => {
-    Router.push(`/list/shop/${memberInfo.id}`);
+    window.location.href = `/list/shop/${memberInfo.id}`;
   };
 
   return (

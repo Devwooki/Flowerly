@@ -44,6 +44,7 @@ const ShopList = ({ fllyId }: ShopListProps) => {
     if (inView) {
       fetchNextPage();
     }
+    /* eslint-disable-next-line */
   }, [inView]);
 
   return (

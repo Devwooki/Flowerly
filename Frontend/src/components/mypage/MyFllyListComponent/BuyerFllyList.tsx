@@ -58,7 +58,6 @@ const BuyerFllyList = () => {
     tokenHttp
       .get("/mypage/buyer/flly")
       .then((res) => {
-        console.log(res);
         if (res.data.code === 200) {
           const sortedData = res.data.data.sort(
             (a: BuyerFillListType, b: BuyerFillListType) =>
