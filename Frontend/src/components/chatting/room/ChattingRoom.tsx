@@ -387,7 +387,7 @@ const ChattingRoom: React.FC<ChattingRoomProps> = ({ chattingId }) => {
                 height={20}
                 alt="가게정보"
                 onClick={() => {
-                  router.push(`/list/shop/${chattingMsgs?.opponentMemberId}`);
+                  window.location.href = `/list/shop/${chattingMsgs?.opponentMemberId}`;
                 }}
               />
             </div>

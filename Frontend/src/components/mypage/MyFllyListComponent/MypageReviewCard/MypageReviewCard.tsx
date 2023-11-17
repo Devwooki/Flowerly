@@ -50,7 +50,7 @@ const MypageReviewCard = ({
 
   const handleStoreDetail = () => {
     if (isBuyerReview && "storeId" in $reviewInfo) {
-      router.push(`/list/shop/${$reviewInfo.storeId}`);
+      window.location.href = `/list/shop/${$reviewInfo.storeId}`;
     }
   };
 
