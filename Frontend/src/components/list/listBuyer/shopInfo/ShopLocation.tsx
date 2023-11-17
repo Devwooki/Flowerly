@@ -55,16 +55,16 @@ const ShopLocation = ({ ShopInfoDetail }: ShopLocationProps) => {
       }
     });
     /* eslint-disable-next-line */
-  }, [location]);
+  }, [location, map]);
 
   return (
     <div className={style.locationMain}>
       <Map
-        center={{ lat: 37.3024115, lng: 126.3864649 }}
+        center={{ lat: 36.3476277, lng: 127.3681356 }}
         className={style.mapRender}
         level={4}
         draggable={false}
-        onCreate={setMap}
+        onCreate={(map) => setMap(map)}
       >
         {/* <MapMarker
           position={{ lat: 36.3478603, lng: 127.3938198 }}
