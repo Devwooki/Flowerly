@@ -52,10 +52,7 @@ const Step2 = () => {
       try {
         const response = await axios.get("https://flower-ly.co.kr/api/address/sido");
         setSidoData(response.data.data);
-        console.log(response);
-      } catch (error) {
-        console.error(error);
-      }
+      } catch (error) {}
     };
     getSidoData();
   }, []);
@@ -63,7 +60,6 @@ const Step2 = () => {
   useEffect(() => {
     if (selectedSido) {
       getSigunguData(selectedSido.sidoCode);
-      console.log(selectedSido.sidoCode);
     } else {
       setSigunguData([]);
     }
@@ -72,7 +68,6 @@ const Step2 = () => {
   useEffect(() => {
     if (selectedSigungu) {
       getDongData(selectedSigungu.sigunguCode);
-      console.log(selectedSigungu.sigunguCode);
     } else {
       setSigunguData([]);
     }
@@ -87,27 +82,20 @@ const Step2 = () => {
   useEffect(() => {
     setPath(window.location.pathname);
     setHost(window.location.host);
-    console.log(path, host);
   }, [path, host]);
 
   const getSigunguData = async (sidoCode: number) => {
     try {
       const response = await axios.get(`https://flower-ly.co.kr/api/address/sigungu/${sidoCode}`);
       setSigunguData(response.data.data.content);
-      console.log(response);
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   };
 
   const getDongData = async (sigunguCode: number) => {
     try {
       const response = await axios.get(`https://flower-ly.co.kr/api/address/dong/${sigunguCode}`);
       setDongData(response.data.data.content);
-      console.log(response);
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   };
 
   const handleSidoChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -165,7 +153,6 @@ const Step2 = () => {
         deliveryRegions: deliveryRegionCodeList,
         sellerAddress: sellerAddress,
       };
-      console.log(signupData);
 
       if (host && path) {
         const response = await axios.post(
@@ -182,17 +169,13 @@ const Step2 = () => {
         );
 
         if (response.status === 200) {
-          console.log(response);
-          console.log("회원가입 성공");
           // 회원가입 성공
           router.push(`/temp?token=${tempToken}`);
         }
 
         router.push("/");
       }
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   };
 
   return (

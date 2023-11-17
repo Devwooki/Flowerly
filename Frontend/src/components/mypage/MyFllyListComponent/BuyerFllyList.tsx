@@ -19,6 +19,7 @@ interface BuyerFillListType {
   isReviewed: boolean;
   imageUrls: string;
   createdAt: string;
+  requestId: number | null;
 }
 
 const BuyerFllyList = () => {
@@ -31,8 +32,8 @@ const BuyerFllyList = () => {
   const [clickIndex, setClickIndex] = useState<number>(0);
 
   //선택한 flly 세팅을 위한 핸들러
-  const SelectIdChangeHandler = (fllyId: number, index: number) => {
-    setSelectId(fllyId);
+  const SelectIdChangeHandler = (requestId: number, index: number) => {
+    setSelectId(requestId);
     setClickIndex(index);
   };
 
@@ -43,7 +44,7 @@ const BuyerFllyList = () => {
     //clickIndex값이 유효하다면 변경해준다 ( 추후 길이도 체크해줘야함 && clickIndex < updatedAdoptData.length 처럼)
     if (clickIndex >= 0) {
       //해당 clickIndex의 정보를 접근해 업데이트! (이렇게 해야 화면에 변화가 생긴다)
-      updateFllyListData[clickIndex].isReviewed = false;
+      updateFllyListData[clickIndex].isReviewed = true;
       setBuyerFllyList(updateFllyListData);
     }
   };
@@ -57,10 +58,11 @@ const BuyerFllyList = () => {
     tokenHttp
       .get("/mypage/buyer/flly")
       .then((res) => {
+        console.log(res);
         if (res.data.code === 200) {
           const sortedData = res.data.data.sort(
             (a: BuyerFillListType, b: BuyerFillListType) =>
-              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+              new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
           );
 
           setBuyerFllyList(sortedData);
@@ -89,20 +91,23 @@ const BuyerFllyList = () => {
       )}
       <div className={style.buyerBack}>
         {buyerFllyList && buyerFllyList.length > 0 ? (
-          buyerFllyList.map((value, index) => (
-            <>
-              {value.progress === "픽업/배달완료" ? (
-                <BuyerFllyListCompletedCard
-                  ModalChangeHandler={ModalChangeHandler}
-                  $fllyInfo={value}
-                  SelectIdChangeHandler={SelectIdChangeHandler}
-                  $index={index}
-                />
-              ) : (
-                <BuyerFllyListProgressCard $fllyInfo={value} />
-              )}
-            </>
-          ))
+          buyerFllyList.map(
+            (value, index) =>
+              value.progress !== "플리취소" && (
+                <>
+                  {value.progress === "픽업/배달완료" ? (
+                    <BuyerFllyListCompletedCard
+                      ModalChangeHandler={ModalChangeHandler}
+                      $fllyInfo={value}
+                      SelectIdChangeHandler={SelectIdChangeHandler}
+                      $index={index}
+                    />
+                  ) : (
+                    <BuyerFllyListProgressCard $fllyInfo={value} />
+                  )}
+                </>
+              ),
+          )
         ) : (
           <div className={style.emptyBack}>
             <EmptyBuyerFllyList />

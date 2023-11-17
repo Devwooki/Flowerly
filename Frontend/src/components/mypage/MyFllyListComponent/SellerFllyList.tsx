@@ -36,7 +36,7 @@ const SellerFllyList = () => {
             // 정렬
             const sortedData = res.data.data.sort(
               (a: Order, b: Order) =>
-                new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+                new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
             );
 
             setSellerFllyList(sortedData);
@@ -56,19 +56,21 @@ const SellerFllyList = () => {
 
   return (
     <>
-      <div className="SellerFllyListBack">
+      <div className={style.SellerFllyListBack}>
         {sellerFllyList.length > 0 ? (
           sellerFllyList.map((order, index) =>
-            order.progress === "픽업/배달완료" ? (
-              <SellerFllyListCompletedCard key={order.fllyId + order.orderName} data={order} />
-            ) : (
-              <SellerFllyListProgressCard
-                key={order.fllyId + order.orderName}
-                data={order}
-                updateHandler={updateHandler}
-                index={index}
-              />
-            ),
+            order.progress !== "플리취소" ? (
+              order.progress === "픽업/배달완료" ? (
+                <SellerFllyListCompletedCard key={order.fllyId + order.orderName} data={order} />
+              ) : (
+                <SellerFllyListProgressCard
+                  key={order.fllyId + order.orderName}
+                  data={order}
+                  updateHandler={updateHandler}
+                  index={index}
+                />
+              )
+            ) : null,
           )
         ) : (
           <div className={style.emptyBack}>

@@ -31,7 +31,7 @@ const FllySellerParticipation = () => {
   };
 
   useEffect(() => {
-    console.log(fllyId);
+    /* eslint-disable-next-line */
   }, []);
 
   //이미지 변경시 미리보기 이벤트 발생

@@ -3,7 +3,6 @@ import style from "./style/ListSeller.module.css";
 import ListAdoptCard from "./listSellerCardComponent/ListAdoptCard";
 import ListParticipationCard from "./listSellerCardComponent/ListParticipationCard";
 import ListAdoptCheckModal from "./listSellerCardComponent/ListAdoptCheckModal";
-import { ToastErrorMessage } from "@/model/toastMessageJHM";
 import { tokenHttp } from "@/api/tokenHttp";
 import { useRouter } from "next/router";
 import { useInView } from "react-intersection-observer";
@@ -97,15 +96,12 @@ const ListSeller = () => {
     tokenHttp
       .get("/seller/" + addUrl + "?page=" + currentPage)
       .then((res) => {
-        console.log(res);
         const reData = res.data;
         if (reData.code === 200) {
-          console.log(res);
           setTotalPage(reData.data.totalPages);
           setCurrentPage((parent) => parent + 1);
           if (ListState === "adopt") {
             setAdoptData((parent) => [...parent, ...reData.data.content]);
-            // console.log(adoptData);
           } else {
             setParticipationData((parent) => [...parent, ...reData.data.content]);
           }
@@ -132,6 +128,7 @@ const ListSeller = () => {
     } else {
       axiosHandler("flly/seller");
     }
+    /* eslint-disable-next-line */
   }, [ListState]);
 
   /*무한 스크롤을 볼경우*/
@@ -143,6 +140,7 @@ const ListSeller = () => {
         axiosHandler("flly/seller");
       }
     }
+    /* eslint-disable-next-line */
   }, [inView]);
 
   return (
@@ -153,6 +151,7 @@ const ListSeller = () => {
             ModalChangeHandler={ModalChangeHandler}
             $selectId={selectId}
             UpdateAdptList={UpdateAdptList}
+            $fllySelectInfo={adoptData[clickIndex]}
           />
         )}
         <div className={style.ListSellerHeader}>

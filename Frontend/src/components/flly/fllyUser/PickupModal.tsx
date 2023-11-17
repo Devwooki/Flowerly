@@ -37,9 +37,7 @@ const DeliveryModal = ({
       try {
         const response = await axios.get("https://flower-ly.co.kr/api/address/sido");
         setSidoData(response.data.data);
-      } catch (error) {
-        console.error(error);
-      }
+      } catch (error) {}
     };
     getSidoData();
   }, []);
@@ -47,7 +45,6 @@ const DeliveryModal = ({
   useEffect(() => {
     if (selectedSido) {
       getSigunguData(selectedSido.sidoCode);
-      console.log(selectedSido.sidoCode);
     } else {
       setSigunguData([]);
     }
@@ -56,7 +53,6 @@ const DeliveryModal = ({
   useEffect(() => {
     if (selectedSigungu) {
       getDongData(selectedSigungu.sigunguCode);
-      console.log(selectedSigungu.sigunguCode);
     } else {
       setSigunguData([]);
     }
@@ -66,20 +62,14 @@ const DeliveryModal = ({
     try {
       const response = await axios.get(`https://flower-ly.co.kr/api/address/sigungu/${sidoCode}`);
       setSigunguData(response.data.data.content);
-      console.log(response);
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   };
 
   const getDongData = async (sigunguCode: number) => {
     try {
       const response = await axios.get(`https://flower-ly.co.kr/api/address/dong/${sigunguCode}`);
       setDongData(response.data.data.content);
-      console.log(response);
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   };
 
   const handleSidoChange = (event: React.ChangeEvent<HTMLSelectElement>) => {

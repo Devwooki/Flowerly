@@ -37,6 +37,7 @@ const PaymentCompleteMsg: React.FC<PaymentMsgProps> = ({ chattingId }) => {
           router.push("/fllylogin");
         }
       });
+    /* eslint-disable-next-line */
   }, []);
 
   return (

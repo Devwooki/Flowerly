@@ -18,7 +18,6 @@ tokenHttp.interceptors.request.use(async (req) => {
 
   // console.log("토큰Http", accessToken);
   if (!accessToken) {
-    console.log("token 이 존재하지 않습니다.");
     throw new Error("expire token");
   }
 
@@ -36,7 +35,6 @@ tokenHttp.interceptors.response.use(
       localStorage.removeItem("accessToken");
       // Router.push("/fllylogin");
     } else {
-      console.log(error);
       Router.push("/fllylogin");
     }
     // 에러를 반환하여 후속 .then() 또는 .catch()에서 처리할 수 있도록 합니다.

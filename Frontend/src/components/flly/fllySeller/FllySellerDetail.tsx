@@ -5,7 +5,6 @@ import RequestDetail from "./fllySellerDetailComponent/RequestDetail";
 import { useParams } from "next/navigation";
 import { ToastErrorMessage } from "@/model/toastMessageJHM";
 import { useRouter } from "next/router";
-import { backIn } from "framer-motion";
 import { tokenHttp } from "@/api/tokenHttp";
 import { useRecoilValue } from "recoil";
 import { MemberInfo, memberInfoState } from "@/recoil/memberInfoRecoil";
@@ -42,13 +41,11 @@ const FllySellerDetail = () => {
   const memberInfo = useRecoilValue<MemberInfo>(memberInfoState);
 
   useEffect(() => {
-    console.log(fllyId.fllyId);
     tokenHttp
       .get("/seller/request/" + fllyId.fllyId)
       .then((res) => {
         const rsData = res.data;
         if (rsData.code == 200) {
-          console.log(res.data.data);
           setFllyRequestInfo(rsData.data);
         } else {
           ToastErrorMessage(rsData.message);
@@ -62,6 +59,7 @@ const FllySellerDetail = () => {
           router.push("/fllylogin");
         }
       });
+    /* eslint-disable-next-line */
   }, []);
 
   const pageMoveHandelr = () => {

@@ -203,7 +203,6 @@ const FllyTarget = () => {
           budget: price,
         })
         .then((response) => {
-          console.log(response.data);
           if (response.data.code === 200) {
             if (response.headers.authorization)
               localStorage.setItem("accessToken", response.headers.authorization);
@@ -237,10 +236,6 @@ const FllyTarget = () => {
       imgBoxRef.current.style.height = imgBoxRef.current.offsetWidth + "px";
     }
   }, []);
-
-  useEffect(() => {
-    console.log("픽업리스트", pickupList);
-  }, [pickupList]);
 
   useEffect(() => {
     setDates([

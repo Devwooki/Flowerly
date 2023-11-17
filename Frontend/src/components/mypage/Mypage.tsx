@@ -15,6 +15,8 @@ import { tokenHttp } from "@/api/tokenHttp";
 import Router from "next/router";
 import { ToastErrorMessage } from "@/model/toastMessageJHM";
 import { useResetRecoilState } from "recoil";
+import StoreImgModal from "./StoreImgComponent/StoreImgModal";
+import StoreImgPlusModal from "./StoreImgComponent/StoreImgPlusModal";
 
 interface SellerMyPageData {
   storeName: string;

@@ -43,10 +43,11 @@ const FllyBouquet = () => {
     } else if (bouquet) {
       setSelected(bouquet);
     }
+    /* eslint-disable-next-line */
   }, [bouquets]);
 
   const handleNextClick = () => {
-    if(bouquet !== null) setShowNextModal(true);
+    if (bouquet !== null) setShowNextModal(true);
     else ToastErrorMessage("항목을 선택해 주세요.");
   };
 

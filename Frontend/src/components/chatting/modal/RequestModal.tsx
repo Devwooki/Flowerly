@@ -54,31 +54,37 @@ const RequestModal: React.FC<RequestModalProps> = ({ chattingId, modalHandler, s
           router.push("/fllylogin");
         }
       });
+    /* eslint-disable-next-line */
   }, []);
 
   const savePrice = () => {
     // console.log(price);
-    const body = {
-      requestId: requestInfo?.requestId,
-      price: price,
-    };
+    if (price) {
+      const body = {
+        requestId: requestInfo?.requestId,
+        price: price,
+      };
 
-    tokenHttp
-      .post(`/chatting/request/price`, body)
-      .then((response) => {
-        console.log(response);
-        if (response.data.code === 200) {
-          //요거 필수!! (엑세스 토큰 만료로 재발급 받았다면 바꿔줘!! )
-          if (response.headers.authorization) {
-            localStorage.setItem("accessToken", response.headers.authorization);
+      tokenHttp
+        .post(`/chatting/request/price`, body)
+        .then((response) => {
+          // console.log(response);
+          if (response.data.code === 200) {
+            //요거 필수!! (엑세스 토큰 만료로 재발급 받았다면 바꿔줘!! )
+            if (response.headers.authorization) {
+              localStorage.setItem("accessToken", response.headers.authorization);
+            }
           }
-        }
-      })
-      .catch((err) => {
-        if (err.response.status === 403) {
-          router.push("/fllylogin");
-        }
-      });
+        })
+        .catch((err) => {
+          if (err.response.status === 403) {
+            router.push("/fllylogin");
+          }
+        });
+
+      sendHandler();
+      modalHandler("REQUEST", false);
+    }
   };
 
   return (
@@ -186,8 +192,6 @@ const RequestModal: React.FC<RequestModalProps> = ({ chattingId, modalHandler, s
                 className={style.btn}
                 onClick={() => {
                   savePrice();
-                  sendHandler();
-                  modalHandler("REQUEST", false);
                 }}
               >
                 결제 요청

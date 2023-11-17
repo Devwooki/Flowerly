@@ -64,7 +64,7 @@ const ChattingMenu: React.FC<ChattingMenuProps> = ({
           }
         });
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 

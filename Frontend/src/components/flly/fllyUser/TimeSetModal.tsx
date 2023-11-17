@@ -23,7 +23,6 @@ const TimeSetModal = ({
   const inputTime = useRef<HTMLInputElement>(null);
 
   const dateBtnClickHandler = (index: number) => {
-    console.log("날자 클릭 핸들러", index);
     // setSelectDateIndex(index);
   };
 

@@ -53,6 +53,7 @@ const FllyDetailModal: React.FC<FllyDetailProps> = ({ chattingId, modalHandler }
           router.push("/fllylogin");
         }
       });
+    /* eslint-disable-next-line */
   }, []);
 
   return (

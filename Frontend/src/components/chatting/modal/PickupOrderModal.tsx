@@ -57,19 +57,27 @@ const PickupOrderModal: React.FC<PcikupOrderProps> = ({
   }, [orderInputs.phoneNumber]);
 
   const saveRequest = () => {
-    console.log("saveRequest");
-    // console.log(orderInputs);
-    if (date && time) {
+    // console.log("saveRequest");
+
+    if (!orderInputs.ordererName) {
+      ToastErrorMessage("주문자를 입력해주세요.");
+    } else if (!orderInputs.phoneNumber) {
+      ToastErrorMessage("연락처를 입력해주세요.");
+    } else if (!date || !time) {
+      ToastErrorMessage("픽업일시를 입력해주세요.");
+    } else if (!orderInputs.requestContent) {
+      ToastErrorMessage("요청 사항을 입력해주세요.");
+    } else {
       const updatedInputs = {
         ...orderInputs,
         deliveryPickupTime: date.format("YYYY-MM-DD") + " " + time.format("HH:mm"),
       };
-      console.log(updatedInputs);
+      // console.log(updatedInputs);
 
       tokenHttp
         .post(`/chatting/request/${chattingId}`, updatedInputs)
         .then((response) => {
-          console.log(response.data);
+          // console.log(response.data);
           if (response.data.code === 200) {
             sendHandler();
             //요거 필수!! (엑세스 토큰 만료로 재발급 받았다면 바꿔줘!! )
@@ -85,50 +93,14 @@ const PickupOrderModal: React.FC<PcikupOrderProps> = ({
           }
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
           if (err.response.status === 403) {
             router.push("/fllylogin");
           }
         });
 
       setOrderInputs(updatedInputs);
-      // setOrderInputs((prev) => {
-      //   const updatedInputs = {
-      //     ...prev,
-      //     deliveryPickupTime: date.format("YYYY-MM-DD") + " " + time.format("HH:mm"),
-      //   };
-
-      //   console.log(updatedInputs);
-
-      //   tokenHttp
-      //     .post(`/chatting/request/${chattingId}`, updatedInputs)
-      //     .then((response) => {
-      //       console.log(response.data);
-      //       if (response.data.code === 200) {
-      //         sendHandler();
-      //         //요거 필수!! (엑세스 토큰 만료로 재발급 받았다면 바꿔줘!! )
-      //         if (response.headers.authorization) {
-      //           localStorage.setItem("accessToken", response.headers.authorization);
-      //         }
-      //       } else if (response.data.code == "-604") {
-      //         ToastErrorMessage("이미 진행중인 주문이 있습니다.");
-      //         //요거 필수!! (엑세스 토큰 만료로 재발급 받았다면 바꿔줘!! )
-      //         if (response.headers.authorization) {
-      //           localStorage.setItem("accessToken", response.headers.authorization);
-      //         }
-      //       }
-      //     })
-      //     .catch((err) => {
-      //       console.log(err);
-      //       if (err.response.status === 403) {
-      //         router.push("/fllylogin");
-      //       }
-      //     });
-
-      //   return updatedInputs;
-      // });
-    } else {
-      ToastErrorMessage("날짜, 시간을 입력하세요.");
+      modalHandler("PICKUP", false);
     }
   };
 
@@ -217,19 +189,6 @@ const PickupOrderModal: React.FC<PcikupOrderProps> = ({
               </div>
               <div className={style.contentItem}>
                 <div className={style.itemTitle}>픽업일시</div>
-                {/* <div
-                  className={style.input}
-                  id={style.dateInput}
-                  onClick={() => dateClickHandler()}
-                >
-                  <Image
-                    className={style.icon}
-                    src="/img/icon/calendar.png"
-                    width={18}
-                    height={18}
-                    alt="상태이미지"
-                  />
-                </div> */}
                 <ThemeProvider theme={theme}>
                   <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
                     <MobileDatePicker
@@ -270,7 +229,6 @@ const PickupOrderModal: React.FC<PcikupOrderProps> = ({
               className={style.btn}
               onClick={() => {
                 saveRequest();
-                modalHandler("PICKUP", false);
               }}
             >
               전송하기

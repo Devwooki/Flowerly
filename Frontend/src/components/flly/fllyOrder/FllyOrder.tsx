@@ -9,7 +9,6 @@ import PaymentInfoBox from "./fllyOrderComponent/PaymentInfoBox";
 import { useParams } from "next/navigation";
 import { tokenHttp } from "@/api/tokenHttp";
 import { MemberInfo, memberInfoState } from "@/recoil/memberInfoRecoil";
-import { ToastErrorMessage } from "@/model/toastMessageJHM";
 import { useRecoilValue } from "recoil";
 
 interface flowerType {
@@ -63,7 +62,7 @@ const FllyOrder = () => {
     tokenHttp
       .get(`/seller/flly/order/` + fllyId.fllyId)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         const rData = res.data;
         if (rData.code === 200) {
           setRequestInfo(rData.data.reqestInfo);
@@ -79,6 +78,7 @@ const FllyOrder = () => {
           router.push("/fllylogin");
         }
       });
+    /* eslint-disable-next-line */
   }, []);
 
   return (

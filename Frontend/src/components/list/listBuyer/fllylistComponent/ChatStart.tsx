@@ -27,7 +27,6 @@ const ChatStart = ({ onCancel, shopInfo }: CancelProps) => {
   const [sub, setSub] = useState<string>();
 
   const handleConfirm = () => {
-    console.log("확인 버튼이 클릭되었습니다.");
     router.push({
       pathname: `/chatting/room/[id]`,
       query: {
@@ -49,8 +48,6 @@ const ChatStart = ({ onCancel, shopInfo }: CancelProps) => {
     },
     {
       onError: (error) => {
-        // console.log("에러 발생했다 임마");
-        // console.log(error?.response?.status);
         if (error?.response?.status === 403) {
           router.push("/fllylogin");
           ToastErrorMessage("로그인 만료되어 로그인 화면으로 이동합니다.");
@@ -58,11 +55,9 @@ const ChatStart = ({ onCancel, shopInfo }: CancelProps) => {
       },
       onSuccess: (data) => {
         if (data?.isNew) {
-          // console.log("새거");
           setTitle(`${shopInfo.storeInfoDto.storeName}와 채팅이 생성되었습니다. `);
           setSub("해당 채팅방으로 이동하시겠습니까?");
         } else {
-          // console.log("기존");
           setTitle(`${shopInfo.storeInfoDto.storeName}와 채팅이 이미 존재합니다. `);
           setSub("해당 채팅방으로 이동하시겠습니까?");
         }
@@ -73,7 +68,7 @@ const ChatStart = ({ onCancel, shopInfo }: CancelProps) => {
   );
 
   if (isError) {
-    return <div>에러 발생</div>;
+    return <div>에러 발생!</div>;
   }
 
   if (isLoading) {

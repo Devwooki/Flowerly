@@ -25,12 +25,14 @@ const MypageReviewModal = ({ ModalChangeHandler, $selectId, UpdateFllyList }: Pr
   };
 
   const SummitBtnHandler = () => {
+    console.log("안녕/?");
     tokenHttp
       .post("/review/create", {
         requestId: $selectId,
         content: content,
       })
       .then((res) => {
+        console.log(res);
         if (res.data.code === 200) {
           ToastSuccessMessage("리뷰가 성공적으로 등록되었습니다.");
           UpdateFllyList();

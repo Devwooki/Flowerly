@@ -18,21 +18,14 @@ const Cancel = ({ onCancel, onConfirm, fllyId }: CancelProps) => {
   };
 
   const handleConfirm = async () => {
-    console.log("확인 버튼이 클릭되었습니다.");
     await tokenHttp
       .delete(`/flly/${fllyId}`)
       .then(() => {
         ToastSuccessMessage("해당 플리가 삭제되었습니다.");
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => {});
 
     onConfirm();
-  };
-
-  const handleCancel = () => {
-    console.log("취소 버튼이 클릭되었습니다.");
   };
 
   return (
@@ -48,7 +41,7 @@ const Cancel = ({ onCancel, onConfirm, fllyId }: CancelProps) => {
         <div>진행중인 플리를 취소하시겠습니까?</div>
         <div>진행중인 내용이 영구적으로 삭제됩니다.</div>
         <div className={style.modalBtnBox}>
-          <div onClick={handleCancel}>취소</div>
+          <div>취소</div>
           <div onClick={handleConfirm}>확인</div>
         </div>
       </motion.div>

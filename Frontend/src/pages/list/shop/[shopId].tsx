@@ -66,11 +66,9 @@ export default ShopInfoMain;
 
 export const getServerSideProps: GetServerSideProps = async (context: any) => {
   // context.params를 통해 URL 파라미터에 접근할 수 있습니다.
-  console.log(context.params);
 
   const { shopId } = context.params;
 
-  console.log("SSR shopId", shopId);
   // 필요한 데이터를 props로 페이지에 전달할 수 있습니다.
   return {
     props: { shopId },

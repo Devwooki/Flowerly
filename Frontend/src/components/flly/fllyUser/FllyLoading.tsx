@@ -29,45 +29,38 @@ const FllyLoading = () => {
   };
 
   const generateImage = async () => {
-    console.log("생성전 문구", order);
     try {
       const response = await openai.images.generate({
         prompt: order,
         n: 4,
         size: "1024x1024",
       });
-      console.log(order);
-      console.log("ㅋㅋㅋ", response);
       const NewImage: bouquetType[] = [];
       if (response) {
         response.data.forEach((image) => {
-          if(image.url) NewImage.push({ url: image.url });
+          if (image.url) NewImage.push({ url: image.url });
         });
         setImgList(NewImage);
       }
     } catch (error: any) {
       if (error.response) {
-        console.log(error.response.status);
-        console.log(error.response.data);
       } else {
-        console.log(error.message);
       }
     }
   };
 
   useEffect(() => {
-    console.log(imgList.length);
     if (imgList.length <= 0) {
       generateOrder();
     } else {
       setBouquets([...imgList, ...bouquets]);
-      console.log("페이지이동");
     }
+    /* eslint-disable-next-line */
   }, [imgList]);
 
   useEffect(() => {
     // if(order != "") generateImage();
-  },[order])
+  }, [order]);
 
   return (
     <>

@@ -1,8 +1,10 @@
-import React, { use, useEffect, useRef } from "react";
+import React, { use, useEffect, useRef, useState } from "react";
 import style from "./StoreImgPlusModal.module.css";
 import { tokenHttp } from "@/api/tokenHttp";
 import { useRouter } from "next/router";
 import imageCompression from "browser-image-compression";
+import { ToastErrorMessage } from "@/model/toastMessageJHM";
+import Image from "next/image";
 
 interface Props {
   ModalChangeHandler: () => void;
@@ -14,15 +16,55 @@ interface Props {
 const StoreImgPlusModal = ({ ModalChangeHandler, UpdateImg }: Props) => {
   const router = useRouter();
   const [newUrl, setNewUrl] = React.useState("");
-  const inputRef = useRef<HTMLInputElement>(null);
 
-  const fileInputHandler = async () => {
-    if (!inputRef.current) return;
-    const file: File = inputRef.current.files![0];
+  //여러번 클릭안되게 하기위한 로직
+  const [debouncedClick, setDebouncedClick] = useState<boolean>(true);
 
-    if (!file) {
+  const [userImgSrc, setUserImgSrc] = useState<string>();
+  const [fileInfo, setFileInfo] = useState<File>();
+  const inputFileRef = useRef<HTMLInputElement>(null);
+
+  //이미지버튼 클릭시 발생 핸들러
+  const imgChangBtnClickHandler = () => {
+    if (inputFileRef.current) {
+      inputFileRef.current.click();
+    }
+  };
+
+  //이미지 변경시 미리보기 이벤트 발생
+  const changeImgHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const fileForm = /(.*?)\.(jpg|jpeg|png|gif|bmp|pdf|JPG|JPEG|PNG|GIF|BMP|PDF)$/;
+    const imgValue = e.target.value;
+
+    if (!imgValue.match(fileForm)) {
+      ToastErrorMessage("이미지 파일만 업로드 가능");
       return;
     }
+
+    if (e.target.files && e.target.files.length > 0) {
+      const imgFile = e.target.files[0];
+      setFileInfo(imgFile);
+
+      if (imgFile) {
+        const render = new FileReader();
+        render.readAsDataURL(imgFile);
+
+        render.onload = () => {
+          setUserImgSrc(render.result as string);
+        };
+      }
+    }
+  };
+
+  const fileInputHandler = async () => {
+    if (!debouncedClick) {
+      ToastErrorMessage("현재 업로드 중입니다! 잠시만 기다려주세요");
+    }
+    if (!fileInfo) {
+      ToastErrorMessage("이미지 파일을 업로드 해주세요");
+      return;
+    }
+    setDebouncedClick(false);
 
     const formData = new FormData();
 
@@ -33,8 +75,8 @@ const StoreImgPlusModal = ({ ModalChangeHandler, UpdateImg }: Props) => {
     };
 
     let redirectFile = null;
-    if (file) {
-      redirectFile = await imageCompression(file, options);
+    if (fileInfo) {
+      redirectFile = await imageCompression(fileInfo, options);
       console.log(redirectFile);
       formData.append("image", redirectFile);
     }
@@ -57,7 +99,6 @@ const StoreImgPlusModal = ({ ModalChangeHandler, UpdateImg }: Props) => {
           if (res.headers.authorization) {
             localStorage.setItem("accessToken", res.headers.authorization);
           }
-          ModalChangeHandler();
         }
       })
       .catch((err) => {
@@ -83,6 +124,7 @@ const StoreImgPlusModal = ({ ModalChangeHandler, UpdateImg }: Props) => {
           if (res.headers.authorization) {
             localStorage.setItem("accessToken", res.headers.authorization);
           }
+          ModalChangeHandler();
         }
       })
       .catch((err) => {
@@ -98,8 +140,23 @@ const StoreImgPlusModal = ({ ModalChangeHandler, UpdateImg }: Props) => {
         <div className={style.modalBack}>
           <div className={style.modalMain}>
             <div>이미지를 등록해주세요!</div>
-            <input type="file" multiple={false} ref={inputRef} />
-            <div></div>
+            <div>아래 이미지를 클릭해주세요</div>
+            <div className={style.imgBox}>
+              <Image
+                src={userImgSrc ? userImgSrc : "/img/etc/NoImg.png"}
+                width={200}
+                height={200}
+                alt=""
+                onClick={imgChangBtnClickHandler}
+              ></Image>
+              <input
+                type="file"
+                multiple={false}
+                ref={inputFileRef}
+                onChange={changeImgHandler}
+                accept="image/*"
+              />
+            </div>
           </div>
           <div className={style.modalBtnBox}>
             <div onClick={ModalChangeHandler}>취소</div>
