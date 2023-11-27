@@ -216,28 +216,61 @@
 ### 담당 역할
 
 <table>
-<tr>
-<td><b>이현욱</b></td>
-<td>Security, 구매자 API, FCM, S3</td>
-</tr>
-<tr>
-<td><b>권기연</b></td>
-<td>회원가입, 마이페이지</td>
-</tr>
-<tr>
-<td><b>김동민</b></td>
-<td>메인 화면, 구매자 화면</td>
-</tr>
-<tr>
-<td><b>김하영</b></td>
-<td>플리 생성, 생성형 AI</td>
-</tr>
-<tr>
-<td><b>정수정</b></td>
-<td>채팅, 카카오페이</td>
-</tr>
-<tr>
-<td><b>정현모</b></td>
-<td>마이페이지, 판매자</td>
-</tr>
+ <tr>
+  <td>
+  <a href="https://github.com/Devwooki"> 
+   <img src="https://avatars.githubusercontent.com/u/70623636?v=4" />
+  </a>
+  </td>
+    <td>
+  <a href="https://github.com/giyeonkwon013"> 
+   <img src="https://avatars.githubusercontent.com/u/122511574?v=4" />
+  </a>
+  </td>
+    <td>
+  <a href="https://github.com/DongMinE"> 
+   <img src="https://avatars.githubusercontent.com/u/91265819?v=4" />
+  </a>
+  </td>
+    <td>
+  <a href="https://github.com/hayeongK"> 
+   <img src="https://avatars.githubusercontent.com/u/83320865?v=4" />
+  </a>
+  </td>
+    <td>
+  <a href="https://github.com/sujeong1201"> 
+   <img src="https://avatars.githubusercontent.com/u/37768793?v=4" />
+  </a>
+  </td>
+    <td>
+  <a href="https://github.com/wjdgusaho"> 
+   <img src="https://avatars.githubusercontent.com/u/56811267?v=4" />
+  </a>
+  </td>
+ </tr>
+ <tr>
+  <td><b>이현욱 (팀장)</b></td>
+  <td><b>권기연</b></td>
+  <td><b>김동민</b></td>
+  <td><b>김하영</b></td>
+  <td><b>정수정</b></td>
+  <td><b>정현모</b></td>
+ </tr>
+ <tr>
+  <td>Infra, BackEnd</td>
+  <td>FrontEnd, BackEnd</td>
+  <td>FrontEnd</td>
+  <td>FrontEnd, BackEnd</td>
+  <td>FrontEnd, BackEnd</td>
+  <td>Infra, FrontEnd, BackEnd</td>
+ </tr>
+ <tr>
+  <td>Security, 구매자 API, FCM, S3</td>
+  <td>회원가입, 마이페이지</td>
+  <td>메인 화면, 구매자 화면</td>
+  <td>플리 생성, 생성형 AI</td>
+  <td>채팅, 카카오페이</td>
+  <td>판매자, 마이페이지</td>
+ </tr>
 </table>
+
