@@ -227,12 +227,12 @@
   </td>
  </tr>
  <tr>
-  <td><b>이현욱 (팀장)</b></td>
-  <td><b>권기연</b></td>
-  <td><b>김동민</b></td>
-  <td><b>김하영</b></td>
-  <td><b>정수정</b></td>
-  <td><b>정현모</b></td>
+  <td><b>OOO (팀장)</b></td>
+  <td><b>권OO</b></td>
+  <td><b>김OO</b></td>
+  <td><b>김OO</b></td>
+  <td><b>정OO</b></td>
+  <td><b>정OO</b></td>
  </tr>
  <tr>
   <td>Infra, BackEnd</td>
