@@ -227,7 +227,7 @@
   </td>
  </tr>
  <tr>
-  <td><b>OOO (팀장)</b></td>
+  <td><b>이OO (팀장)</b></td>
   <td><b>권OO</b></td>
   <td><b>김OO</b></td>
   <td><b>김OO</b></td>
